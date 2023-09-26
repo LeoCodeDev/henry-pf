@@ -3,3 +3,11 @@ function laCajaDePandora(numero) {
     ? numero.toString(2) 
     : numero.toString(16);
 }
+
+const leopoldo = ()=>{
+    return {
+        nombre: 'Leopoldo',
+        edad: 35,
+        nacionalidad: "venezolano"
+    }
+}
