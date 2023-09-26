@@ -1,5 +1,5 @@
 function laCajaDePandora(numero) {
-    if (typeof numero !== 'number' || isNaN(numero)) {
+ if (typeof numero !== 'number' || isNaN(numero)) {
     return "Por favor, ingresa un número válido.";
   }
 
@@ -10,7 +10,12 @@ function laCajaDePandora(numero) {
   }
 }
 
-
+function David() {
+  return {
+    nombre: "David",
+    edad: 32,
+    nacionalidad: "argentino"
+}
 
 function esaMelendez(){
   return {nombre:"Esaú", edad:33, nacionalidad: "Mexican"}
@@ -21,4 +26,3 @@ function holaSoyDiose {
     edad: 23,
     nacionalidad: "Venezolana"
   }
-}
