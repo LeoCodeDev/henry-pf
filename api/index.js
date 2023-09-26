@@ -12,6 +12,9 @@ if (typeof numero !== 'number' || isNaN(numero)) {
 
 console.log(laCajaDePandora(17)) 
 
+function seba(){
+  return {nombre:"Sebastian", edad:36, nacionalidad: "Argentino"}
+
 let miNombre= ()=>{
   return miSer= {
     nombre : 'JUAN MANUEL MONTOYA GIRALDO',
