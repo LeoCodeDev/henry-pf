@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/react,node,git,dotenv,visualstudiocode,windows,linux,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=react,node,git,dotenv,visualstudiocode,windows,linux,macos
+# Created by https://www.toptal.com/developers/gitignore/api/node,windows,linux,macos,visualstudiocode,dotenv
+# Edit at https://www.topbuildtal.com/developers/gitignore?templates=node,windows,linux,macos,visualstudiocode,dotenv
 
 ### dotenv ###
 .env
@@ -107,6 +107,7 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+build
 
 # Dependency directories
 node_modules/
@@ -206,19 +207,6 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
-### react ###
-.DS_*
-**/*.backup.*
-**/*.back.*
-
-node_modules
-
-*.sublime*
-
-psd
-thumb
-sketch
-
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -264,29 +252,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/react,node,git,dotenv,visualstudiocode,windows,linux,macos
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# End of https://www.toptal.com/developers/gitignore/api/node,windows,linux,macos,visualstudiocode,dotenv
