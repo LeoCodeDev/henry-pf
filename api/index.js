@@ -1,5 +1,5 @@
 function laCajaDePandora(numero) {
-  if (typeof numero !== 'number' || isNaN(numero)) {
+    if (typeof numero !== 'number' || isNaN(numero)) {
     return "Por favor, ingresa un número válido.";
   }
 
@@ -9,6 +9,11 @@ function laCajaDePandora(numero) {
     return numero.toString(16);
   }
 }
+
+
+
+function esaMelendez(){
+  return {nombre:"Esaú", edad:33, nacionalidad: "Mexican"}
 
 function holaSoyDiose {
   return {
