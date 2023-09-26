@@ -1,0 +1,7 @@
+{
+    "eslint.workingDirectories": [
+        "./client",
+        "./**"
+    ],
+    "css.lint.unknownAtRules": "ignore"
+}
