@@ -6,3 +6,11 @@ function laCajaDePandora(numero) {
     return numero.toString(16); 
 }
 }
+
+const krisFunction=()=>{
+  return {
+    name: 'Krisbel Rosas',
+    age: 21,
+    nationality: 'Venezuelan'
+  }
+}
