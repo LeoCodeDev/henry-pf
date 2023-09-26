@@ -1,4 +1,5 @@
 function laCajaDePandora(numero) {
+
 if (typeof numero !== 'number' || isNaN(numero)) {
     return "Por favor, ingresa un número válido.";
   }
@@ -9,6 +10,13 @@ if (typeof numero !== 'number' || isNaN(numero)) {
 }
 
 console.log(laCajaDePandora(17)) 
+
+const krisFunction=()=>{
+  return {
+    name: 'Krisbel Rosas',
+    age: 21,
+    nationality: 'Venezuelan'
+  }
 
 const leopoldo = ()=>{
     return {
