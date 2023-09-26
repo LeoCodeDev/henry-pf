@@ -1,5 +1,5 @@
 function laCajaDePandora(numero) {
- if (typeof numero !== 'number' || isNaN(numero)) {
+if (typeof numero !== 'number' || isNaN(numero)) {
     return "Por favor, ingresa un número válido.";
   }
 
@@ -7,6 +7,16 @@ function laCajaDePandora(numero) {
     return numero.toString(2);
   } else {
     return numero.toString(16);
+  }
+}
+
+console.log(laCajaDePandora(17)) 
+
+let miNombre= ()=>{
+  return miSer= {
+    nombre : 'JUAN MANUEL MONTOYA GIRALDO',
+    nacionalidad : 'Colombiano',
+    edad : 24
   }
 }
 
