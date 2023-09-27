@@ -28,6 +28,7 @@ a:hover {
 }
 
 body {
+  text-align: center;
   margin: 0;
   display: flex;
   place-items: center;
