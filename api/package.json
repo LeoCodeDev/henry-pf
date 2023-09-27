@@ -12,15 +12,19 @@
   "author": "los elegidos",
   "license": "MIT",
   "devDependencies": {
+    "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",
+    "@types/morgan": "^1.9.5",
     "morgan": "^1.10.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "axios": "^1.5.1",
+    "cors": "^2.8.5",
     "dotenv": "16.3.1",
     "express": "4.18.2",
+    "pg": "^8.11.3",
     "sequelize": "^6.33.0"
   }
 }
