@@ -33,10 +33,6 @@ export const ProductModel = (sequelize: Sequelize) => {
             type: DataTypes.FLOAT,
             allowNull:false
         },
-        sizes:{
-            type: DataTypes.ENUM,
-            values:["XS","S","M","L","XL"],
-        },
         active:{
             type:DataTypes.BOOLEAN,
             defaultValue: true

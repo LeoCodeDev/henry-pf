@@ -12,6 +12,10 @@ export const CategoryModel = (sequelize: Sequelize) => {
         name:{
             type:DataTypes.STRING,
             allowNull: false,
-        }
+        },       
+        variants:{
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            defaultValue: [],
+        },
     },{ timestamps: false })
 }
