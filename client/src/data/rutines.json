@@ -1,0 +1,102 @@
+[
+    {
+      "id": "f4a6a12e-819f-46ae-9d0e-c86ec40f25e7",
+      "duration": 30,
+      "description": "Rutina de fuerza para piernas",
+      "punctuation": 4.8,
+      "exercises": [
+        "e6712f27-1e03-4e16-9247-9e31a1b7a61d", 
+        "a1f41f0a-7ee9-4f7b-8e71-53c30c3e13b3", 
+        "c8a43a51-31d2-4d0e-a71c-c4c96e7cb8e2"  
+      ]
+    },
+    {
+      "id": "6acbbba2-0bb4-45f4-9444-1b597de72721",
+      "duration": 45,
+      "description": "Rutina de cardio para quemar calorías",
+      "punctuation": 4.7,
+      "exercises": [
+        "f123fd67-98dd-4823-aa3e-71c40bca0f36", 
+        "6b4ce7a7-6fb6-4e45-9b8f-8e8ad8d8f2f6", 
+        "a6d845f9-d09a-421f-ba03-8f2f417eb90f"  
+      ]
+    },
+    {
+      "id": "8f17aa59-9a2f-4a03-90e3-31857d4eab7d",
+      "duration": 40,
+      "description": "Rutina de espalda y bíceps",
+      "punctuation": 4.9,
+      "exercises": [
+        "7543e4c8-1e22-4c15-94d8-6ab1db860d69", 
+        "ef84c1d8-8f88-4ea0-9c0b-0e53e35e95f2", 
+        "5d39a006-1c22-4e5c-893a-9c9ecadbf471"  
+      ]
+    },
+    {
+      "id": "957c512f-9121-438e-9683-19d4f198189f",
+      "duration": 35,
+      "description": "Rutina de abdominales y core",
+      "punctuation": 4.5,
+      "exercises": [
+        "10df9c2d-60d1-4b4f-aa56-15dd3295a5c3", 
+        "0eb4b5d5-1e9f-49ac-9db0-5819e862e8e0", 
+        "55ce5b2d-49ef-4a03-8e6c-ec8ad54e3ca6"  
+      ]
+    },
+    {
+      "id": "6a877fe4-74e4-4b25-aaef-c6e05f0d09f0",
+      "duration": 50,
+      "description": "Rutina de entrenamiento completo",
+      "punctuation": 4.6,
+      "exercises": [
+        "0576ca98-3ea6-4a14-9d3b-6e17c1c2a0e1", 
+        "6b4ce7a7-6fb6-4e45-9b8f-8e8ad8d8f2f6", 
+        "a6d845f9-d09a-421f-ba03-8f2f417eb90f"  
+      ]
+    },
+    {
+      "id": "b2a462d1-542c-4b5f-9647-e7d85a79854d",
+      "duration": 40,
+      "description": "Rutina de yoga para la flexibilidad",
+      "punctuation": 4.8,
+      "exercises": [
+        "c0915f52-47d9-42e9-8b4f-6d220d2c7a4b", 
+        "af576eb0-3c04-461c-8c99-9bdc69512a9e", 
+        "f26c2e93-493c-45eb-b3a4-3a01e8002d5b"  
+      ]
+    },
+    {
+      "id": "faa4c9f0-4c9a-4d58-bfe9-f0c1d0838d2c",
+      "duration": 45,
+      "description": "Rutina de alta intensidad (HIIT)",
+      "punctuation": 4.7,
+      "exercises": [
+        "bf35ad5f-55a0-4e91-899b-d23c74f8cdd2", 
+        "6b4ce7a7-6fb6-4e45-9b8f-8e8ad8d8f2f6", 
+        "f26c2e93-493c-45eb-b3a4-3a01e8002d5b"  
+      ]
+    },
+    {
+      "id": "ca12f0d6-12c3-4d78-9f9a-2aaf02e8bfef",
+      "duration": 55,
+      "description": "Rutina de resistencia con pesas",
+      "punctuation": 4.9,
+      "exercises": [
+        "ef84c1d8-8f88-4ea0-9c0b-0e53e35e95f2", 
+        "0576ca98-3ea6-4a14-9d3b-6e17c1c2a0e1", 
+        "bf35ad5f-55a0-4e91-899b-d23c74f8cdd2"  
+      ]
+    },
+    {
+      "id": "a9bceda0-450c-45e5-883f-617b61e65b4c",
+      "duration": 40,
+      "description": "Rutina de estiramientos y relajación",
+      "punctuation": 4.5,
+      "exercises": [
+        "c8a43a51-31d2-4d0e-a71c-c4c96e7cb8e2", 
+        "c0915f52-47d9-42e9-8b4f-6d220d2c7a4b", 
+        "bf35ad5f-55a0-4e91-899b-d23c74f8cdd2"  
+      ]
+    }
+  ]
+  
