@@ -1,14 +1,13 @@
 import './App.css'
-import LandingPage from './components/LandingPage/LandingPage'
+import { BrowserRouter } from 'react-router-dom'
+import Router from './views/router'
+import React from 'react'
 
-const App = (): JSX.Element => {
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <LandingPage />
-      </div>
-    </>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   )
 }
 
