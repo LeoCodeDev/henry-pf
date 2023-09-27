@@ -28,7 +28,7 @@ const App = (): JSX.Element => {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <h4 className="text-3xl font-bold underline">
+      <h4 className="text-6xl font-prompt text-accent font-normal underline">
       Este es el grupo de los Elegidos
     </h4>
     </>
