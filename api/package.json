@@ -18,6 +18,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "axios": "^1.5.1",
     "dotenv": "16.3.1",
     "express": "4.18.2",
     "sequelize": "^6.33.0"
