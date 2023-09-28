@@ -5,6 +5,7 @@ import cors from 'cors';
 const routes = require('./routes')
 const { sequelize } = require('./db_connection') 
 
+
 dotenv.config();
 
 const app: Express = express()
@@ -31,3 +32,5 @@ sequelize.sync({force: true}).then(() => {
       console.log(`⚡ﻌ[server]: Server is running at https://localhost:${port}`)
   })
 })
+
+
