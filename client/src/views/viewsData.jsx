@@ -1,34 +1,40 @@
-import Home from './Home/Home';
-import Login from './Login/Login';
-import ProductDetail from './Product Detail/ProductDetail';
-import ProductList from './Product List/ProductList';
-import Admin from './Admin/Admin'
+import Home from "./Home/Home";
+import Login from "./Login/Login";
+import ProductDetail from "./Product Detail/ProductDetail";
+import ProductList from "./Product List/ProductList";
+import Admin from "./Admin/Admin";
+import SignUp from "../components/LandingPage/SignUp";
 
 const viewsData = [
   {
-    path: 'home',
+    path: "home",
     element: <Home />,
-    title: 'home',
+    title: "home",
   },
   {
-    path: '',
+    path: "",
     element: <Login />,
-    title: 'login',
+    title: "login",
   },
   {
-    path: 'product-detail',
+    path: "/signup",
+    element: <SignUp />,
+    title: "signup",
+  },
+  {
+    path: "product-detail",
     element: <ProductDetail />,
-    title: 'product-detail',
+    title: "product-detail",
   },
   {
-    path: 'product-list',
+    path: "product-list",
     element: <ProductList />,
-    title: 'product-list',
+    title: "product-list",
   },
   {
-    path: 'admin',
+    path: "admin",
     element: <Admin />,
-    title: 'admin-view',
+    title: "admin-view",
   },
 ];
 
