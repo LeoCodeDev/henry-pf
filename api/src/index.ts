@@ -2,9 +2,9 @@ import express, {Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
-const routes = require('./routes')
+const routes = require('./routes/index')
 const { sequelize } = require('./db_connection') 
-const router = require('./routes/routerGetProduct')
+
 
 
 dotenv.config();
