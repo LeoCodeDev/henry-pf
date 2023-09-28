@@ -24,7 +24,6 @@ const sequelize = new Sequelize(DB_DEPLOY,
     }})
 
 
-
 ProductModel(sequelize)
 CategoryModel(sequelize)
 UserModel(sequelize)
