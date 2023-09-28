@@ -2,6 +2,7 @@ import express, {Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
+const routes = require('./routes')
 const { sequelize } = require('./db_connection') 
 
 dotenv.config();
@@ -12,6 +13,7 @@ const port = process.env.PORT || 8000;
 app.use(morgan('dev'))
 app.use(cors())
 app.use(express.json())
+app.use('/', routes)
 
 // typescript para ignorar parámetros no usados debes agregarle
 // un guion bajo delante de la palabra. ejem => _req 
