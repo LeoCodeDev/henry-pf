@@ -6,7 +6,6 @@ import {CategoryModel} from './models/Category';
 import {UserModel} from './models/User';
 import {TeamModel} from './models/Team';
 
-
 const sequelize = new Sequelize(
     `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DBB}`,
     { logging: false, native: false }
