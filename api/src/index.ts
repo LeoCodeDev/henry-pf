@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
 const { sequelize } = require('./db_connection') 
+const router = require('./routes/routerGetProduct')
 
 dotenv.config();
 
@@ -20,9 +21,9 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Express + TypeScript Server Grupo Health Tech')
 })
 
-app.get('/api', (_req: Request, res: Response) => {
-    res.send('App del grupo Los Elegidos')
-})
+app.use('/', router);
+
+
 
 sequelize.sync({force: true}).then(() => {
   app.listen(port, () => {
