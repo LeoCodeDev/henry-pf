@@ -27,7 +27,7 @@ app.get('/api', (_req: Request, res: Response) => {
     res.send('App del grupo Los Elegidos')
 })
 
-sequelize.sync({force: true}).then(() => {
+sequelize.sync({alter:true}).then(() => {
   app.listen(port, () => {
       console.log(`⚡ﻌ[server]: Server is running at https://localhost:${port}`)
   })
