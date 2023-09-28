@@ -1,6 +1,5 @@
 const express= require('express')
 const router= express.Router()
-const postTeam= require('../controllers/postTeam')
 const postUser= require('../controllers/postUser')
 const userLogin= require('../controllers/userLogin')
 const getUser= require('../controllers/getUser')
@@ -10,7 +9,8 @@ const  getCategories  = require("../controllers/getCategories");
 const getProductsById = require("../controllers/getProductById");
 const putNewPasswordUser = require("../controllers/PutNewPasswordUser");
 
-router.post('/postTeam', postTeam)
+
+
 router.post('/postUser', postUser)
 router.post('/login', userLogin)
 router.get('/getUser', getUser)
