@@ -20,11 +20,6 @@ app.use('/', routes)
 // typescript para ignorar parámetros no usados debes agregarle
 // un guion bajo delante de la palabra. ejem => _req 
 // (esto lo hacemos para cuando no vamos a usar el parámetro en ese código)
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Express + TypeScript Server Grupo Health Tech')
-})
-
-app.use('/', router);
 
 
 
