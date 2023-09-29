@@ -1,11 +1,15 @@
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './views/router';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../theme';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Router />
+      <ThemeProvider theme={theme}>
+        <Router />
+      </ThemeProvider>
     </BrowserRouter>
   );
 };
