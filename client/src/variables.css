@@ -1,0 +1,38 @@
+/* Font Sizes */
+:root {
+    --font-size-sm: 0.750rem;
+    --font-size-base: 1rem;
+    --font-size-xl: 1.333rem;
+    --font-size-2xl: 1.777rem;
+    --font-size-3xl: 2.369rem;
+    --font-size-4xl: 3.158rem;
+    --font-size-5xl: 4.210rem;
+    --font-size-6xl: 4.375rem;
+  }
+  
+  /* Font Families */
+  :root {
+    --font-family-poppins: 'Poppins', sans-serif;
+    --font-family-prompt: 'Prompt', sans-serif;
+  }
+  
+  /* Font Weights */
+  :root {
+    --font-weight-normal: 400;
+    --font-weight-bold: 700;
+  }
+  
+  /* Colors */
+  :root {
+    --color-text-light: #c9c9c9;
+    --color-background: #010402;
+    --color-text-dark: #1E1E1E;
+    --color-primary: #228d07;
+    --color-secondary: #bfbfbf;
+    --color-secondary-dark: #06080B;
+    --color-accent: #539a07;
+  }
+  /* Background Color */
+  :root {
+    --background-color: #010402
+  }
