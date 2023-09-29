@@ -4,8 +4,8 @@ const {Category} = require('../db_connection')
 
 const getCategories =async ( _req : Request , res:Response ) => {
     try {
-        const allCatergories = Category.findAll();
-        return res.status(200).json(allCatergories);
+        const allCategories = await Category.findAll();
+        return res.status(200).json(allCategories);
     } catch (error : any) {
         return res.status(500).json({error: error.message})
     } 
