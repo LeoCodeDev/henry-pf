@@ -1,0 +1,49 @@
+.containerMain {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 5rem;
+}
+
+/*Filters and Orders*/
+
+.selectDropdown {
+  position: relative;
+  background-color: #010402;
+  border-radius: 1rem;
+}
+.selectDropdown select {
+  font-size: 1rem;
+  border-radius: 1rem;
+  font-weight: normal;
+  padding: 0.625rem 2.5rem 0.625rem 2.5rem;
+  background-color: #010402;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align: center;
+}
+
+select option {
+  background-color: #010402;
+  border: none;
+}
+
+/* Pagination */
+
+.paginationContain {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 599px) {
+  .paginationContain p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .paginationContain p {
+      font-size: 1rem;
+  }
+}
