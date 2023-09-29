@@ -6,6 +6,7 @@ const getUser= require('../controllers/getUser')
 const postProduct = require('../controllers/postProduct');
 const  getProducts  = require("../controllers/getProducts");
 const  getCategories  = require("../controllers/getCategories");
+const getProductByName= require('../controllers/getProductByName')
 
 
 router.post('/postUser', postUser)
@@ -14,6 +15,8 @@ router.get('/getUser', getUser)
 router.post('/postProduct', postProduct);
 router.get("/products", getProducts);
 router.get("/categories",getCategories );
+router.get("/productByName",getProductByName );
+
 
 
 module.exports= router
