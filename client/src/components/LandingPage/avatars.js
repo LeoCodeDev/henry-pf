@@ -7,10 +7,8 @@ import av6 from "../../assets/images/avatars/avatar6.jpg";
 import av7 from "../../assets/images/avatars/avatar7.jpg";
 import av8 from "../../assets/images/avatars/avatar8.jpg";
 import av9 from "../../assets/images/avatars/avatar9.jpg";
-import av10 from "../../assets/images/avatars/avatar10.jpg";
 
 export const avatars = [
-  { src: av10, label: "default" },
   { src: av1, label: "Avatar 1" },
   { src: av2, label: "Avatar 2" },
   { src: av3, label: "Avatar 3" },
