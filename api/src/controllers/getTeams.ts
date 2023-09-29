@@ -4,10 +4,10 @@ import { Request, Response } from "express";
 const getTeams= async (_req:Request, res:Response)=>{
     try {
         const allTeams= await Team.findAll()
-        if(allTeams) res.status(200).json(allTeams)
-        res.status(404).json({message:"No teams found"})
+        if(allTeams) return res.status(200).json(allTeams)
+        return res.status(404).json({message:"No teams found"})
     } catch (error) {
-        res.status(500).json(error)
+        return res.status(500).json(error)
     }
 }
 
