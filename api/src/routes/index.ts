@@ -8,11 +8,12 @@ const  getProducts  = require("../controllers/getProducts");
 const  getCategories  = require("../controllers/getCategories");
 const getProductByName= require('../controllers/getProductByName')
 const getProductsById = require("../controllers/getProductById");
-const putNewPasswordUser = require("../controllers/PutNewPasswordUser");
+const putNewPasswordUser = require("../controllers/putNewPasswordUser");
 const getTeams = require("../controllers/getTeams");
 const getAllFavorites = require('../controllers/getAllFavorites');
 const postFavorite = require('../controllers/postFavorite');
 const delFavorite = require('../controllers/delFavorite');
+const getAllUsers= require('../controllers/getAllUsers')
 
 
 
@@ -29,7 +30,7 @@ router.get("/getTeams", getTeams )
 router.get('/getAllFavorites', getAllFavorites);
 router.post('/postFavorite', postFavorite);
 router.delete('/delFavorite', delFavorite);
-
+router.get('/allUsers', getAllUsers)
 
 
 

@@ -1,4 +1,8 @@
 @import './variables.css';
+@font-face {
+  font-family: 'poppins';
+  src: url('../src/assets/Fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+}
 
 body {
   color-scheme: light dark;
@@ -11,6 +15,4 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
-
 

@@ -4,18 +4,24 @@ import { Request, Response} from "express";
 
 
 const putNewPasswordUser = async (req : Request, res : Response) => {
-    const { newPassword } = req.body;
+    const {  actualPassword , newPassword , newPasswordAgain} = req.body;
     const { id } = req.params;
   
     try {
-      // Busca el usuario por su ID
+
+
       const user = await User.findByPk(id);
   
       if (!user) {
         return res.status(404).json({ message: "Usuario no encontrado" });
       }
+      if (actualPassword !== user.password) return res.status(401).json({ message: "Contraseña incorrecta" });
+
+      if (newPassword !== newPasswordAgain)
+        return res.status(401).json({ message: "Las contraseñas no coinciden" });
+
       user.password = newPassword;
-      await user.save({ fields: ['password'] });
+      await user.save();
   
       return res.status(200).json({ message: "Contraseña actualizada con éxito" });
     } catch (error: any) {
