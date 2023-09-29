@@ -10,9 +10,22 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { useState } from 'react'
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 export const CardProduct = ({ product }) => {
-  const [data] = product
+  const data = product
+
+  const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 300,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1440,
+      },
+    },
+  });
 
   const [isFav, setFav] = useState(false)
   const [cart, setCart] = useState(false)
@@ -34,7 +47,8 @@ export const CardProduct = ({ product }) => {
   }
 
   return (
-    <Card sx={{ maxWidth: 266, bgcolor: 'transparent' }}>
+    <ThemeProvider theme={theme}>
+      <Card sx={{ bgcolor: 'transparent', sm: { margin: '0.5rem', width: '9rem'}, md: { width: '17rem' ,margin: '4rem', xl: { width: '26rem' ,margin: '3rem'}} }}>
       <CardMedia
         sx={{
           height: 274
@@ -75,5 +89,7 @@ export const CardProduct = ({ product }) => {
         </div>
       </CardContent>
     </Card>
+    </ThemeProvider>
+    
   )
 }
