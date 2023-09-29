@@ -10,6 +10,9 @@ const getProductByName= require('../controllers/getProductByName')
 const getProductsById = require("../controllers/getProductById");
 const putNewPasswordUser = require("../controllers/PutNewPasswordUser");
 const getTeams = require("../controllers/getTeams");
+const getAllFavorites = require('../controllers/getAllFavorites');
+const postFavorite = require('../controllers/postFavorite');
+const delFavorite = require('../controllers/delFavorite');
 
 
 
@@ -23,6 +26,15 @@ router.get("/productByName",getProductByName );
 router.get("/products/:id", getProductsById);
 router.put("/newPassword/:id", putNewPasswordUser);
 router.get("/getTeams", getTeams )
+router.get('/getAllFavorites', getAllFavorites);
+router.post('/postFavorite', postFavorite);
+router.delete('/delFavorite', delFavorite);
+
+
+
+
+
+
 
 
 
