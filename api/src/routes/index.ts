@@ -17,7 +17,7 @@ router.get('/getUser', getUser)
 router.post('/postProduct', postProduct);
 router.get("/products", getProducts);
 router.get("/categories",getCategories );
-router.get("/products/:id", getProducts);
+router.get("/products/:id", getProductsById);
 router.put("/newPassword/:id", putNewPasswordUser);
 
 
