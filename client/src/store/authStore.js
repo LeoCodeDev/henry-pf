@@ -3,27 +3,27 @@ import { create } from 'zustand'
 
 const useAuthStore = create((set) => ({
   user: {
-    first_name: 'Guest',
+    username: 'Guest',
     email: '',
     role: 'guest',
-    avatar: '../assets/images/avatar_guest.png',
-    team: 'none',
+    avatar: '../assets/images/avatars/avatar10.jpg',
+    teamName: 'none',
   },
   isLogged: false,
   login: (userData) => set({ user: userData, isLogged: true }),
   authenticate: async (credentials) => {
     try {
       const { data } = await axios.post('/login', credentials)
-      const { first_name, email, role, avatar, team } = data
-      if (data && first_name && email && role && avatar && team) {
+      const { username, email, role, avatar, teamName, access } = data
+      if (data && username && email && role && avatar && teamName) {
         const userData = {
-          first_name,
+          username,
           email,
           role,
           avatar,
-          team,
+          teamName,
         }
-        set({ user: userData, isLogged: true })
+        set({ user: userData, isLogged: access })
       } else {
         throw new Error('Invalid credentials')
       }
@@ -34,11 +34,11 @@ const useAuthStore = create((set) => ({
   logout: () =>
     set({
       user: {
-        first_name: 'Guest',
+        username: 'Guest',
         email: '',
         role: 'guest',
-        avatar: '../assets/images/avatar_guest.png',
-        team: 'none',
+        avatar: '../assets/images/avatars/avatar10.jpg',
+        teamName: 'none',
       },
       isLogged: false,
     }),
