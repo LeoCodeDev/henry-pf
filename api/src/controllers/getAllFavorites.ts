@@ -9,7 +9,7 @@ const getAllFavorites = async (req: Request, res: Response) =>{
             where: {username},
             include: Product
         })
-        return res.status(200).json(allFavorites);
+        return res.status(200).json(allFavorites.Products);
     } catch (error) {
         return res.status(500).json(error)
     }
