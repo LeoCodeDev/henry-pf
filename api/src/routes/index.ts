@@ -6,8 +6,10 @@ const getUser= require('../controllers/getUser')
 const postProduct = require('../controllers/postProduct');
 const  getProducts  = require("../controllers/getProducts");
 const  getCategories  = require("../controllers/getCategories");
+const getProductByName= require('../controllers/getProductByName')
 const getProductsById = require("../controllers/getProductById");
 const putNewPasswordUser = require("../controllers/PutNewPasswordUser");
+const getTeams = require("../controllers/getTeams");
 
 
 
@@ -17,8 +19,11 @@ router.get('/getUser', getUser)
 router.post('/postProduct', postProduct);
 router.get("/products", getProducts);
 router.get("/categories",getCategories );
+router.get("/productByName",getProductByName );
 router.get("/products/:id", getProductsById);
 router.put("/newPassword/:id", putNewPasswordUser);
+router.get("/getTeams", getTeams )
+
 
 
 module.exports= router
