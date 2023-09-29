@@ -1,0 +1,39 @@
+/*Container*/
+
+.contain{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.613rem;
+}
+
+/* TOP TRENDING */
+.top{
+    color: var(--color-text-light);
+    font-family: var(--font-family-prompt);
+    font-weight:500
+}
+
+@media (max-width: 599px) {
+    .top {
+      font-size: 2rem;
+      margin-bottom: 4.813rem;
+    }
+}
+
+@media (min-width: 600px) {
+    .top {
+        font-size: 3rem;
+        margin-bottom: 5rem;
+    }
+  }
+
+
+/* Categories */
+.categories {
+    background-color: var(--color-secondary);
+}
+
+.MuiButton-root {
+    padding: 0;
+}
