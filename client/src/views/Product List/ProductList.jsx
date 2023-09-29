@@ -15,7 +15,7 @@ const ProductList = () => {
       <section>
         <Bottom />
       </section>
-      <section>
+      <section  style={{display: 'flex', justifyContent: 'center'}}>
       <Products />
       </section>
     </div>
