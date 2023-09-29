@@ -12,8 +12,8 @@ const delFavorite = async (req: Request, res: Response)=> {
         }
         await user.removeProduct(product);
         return res.status(201).json({message: "Favorite deleted"})
-    } catch (error) {
-        return res.status(500).json(error);
+    } catch (error: any) {
+        return res.status(500).json({error: error.message});
     }
 }
 

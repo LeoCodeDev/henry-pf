@@ -10,8 +10,8 @@ const getAllFavorites = async (req: Request, res: Response) =>{
             include: Product
         })
         return res.status(200).json(allFavorites.Products);
-    } catch (error) {
-        return res.status(500).json(error)
+    } catch (error:any) {
+        return res.status(500).json({error: error.message})
     }
 }
 
