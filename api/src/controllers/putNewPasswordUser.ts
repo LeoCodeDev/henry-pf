@@ -13,17 +13,17 @@ const putNewPasswordUser = async (req : Request, res : Response) => {
       const user = await User.findByPk(id);
   
       if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+        return res.status(404).json({ message: "User not found" });
       }
-      if (actualPassword !== user.password) return res.status(401).json({ message: "Contraseña incorrecta" });
+      if (actualPassword !== user.password) return res.status(401).json({ message: "Incorrect password" });
 
       if (newPassword !== newPasswordAgain)
-        return res.status(401).json({ message: "Las contraseñas no coinciden" });
+        return res.status(401).json({ message: "Passwords do not match" });
 
       user.password = newPassword;
       await user.save();
   
-      return res.status(200).json({ message: "Contraseña actualizada con éxito" });
+      return res.status(200).json({ message: "updated password " });
     } catch (error: any) {
 
       return res.status(500).json({ error: error.message });
