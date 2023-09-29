@@ -37,6 +37,9 @@ Category.hasMany(Product)
 User.belongsTo(Team)
 Team.hasMany(User)
 
+Product.belongsToMany(User,{through: 'fav_users_products'})
+User.belongsToMany(Product,{through: 'fav_users_products'})
+
 module.exports = {
     Product,
     Category,
