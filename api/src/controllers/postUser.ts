@@ -26,7 +26,6 @@ const postUser= async (req: Request, res: Response) => {
             console.log('user', user)
             if(role==="User"){
             const [associatedTeam, _created]= await Team.findOrCreate({ where: { name: team } });
-            console.log('hola',associatedTeam, team)
             if(associatedTeam){
                 await user.setTeam(associatedTeam)
             }}

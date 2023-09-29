@@ -23,7 +23,7 @@ app.use('/', routes)
 
 
 
-sequelize.sync({force: true}).then(() => {
+sequelize.sync({alter:true}).then(() => {
   app.listen(port, () => {
       console.log(`⚡ﻌ[server]: Server is running at https://localhost:${port}`)
   })
