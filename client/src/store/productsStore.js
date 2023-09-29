@@ -7,12 +7,10 @@ const useProductsStore = create((set) => ({
   fetchProducts: async () => {
     try {
       const { data } = await axios.get('/products')
-      if (!data.allProducts) {
+      if (!data) {
         throw new Error('No products found')
       } else {
-        set((state) => {
-          state.setProducts(data.allProducts)
-        })
+        set({products: data})
       }
     } catch (error) {
       throw new Error(error.message)
