@@ -12,7 +12,7 @@ const userLogin= async (req: Request, res: Response)=>{
             if(password===userFound.password){
                 const team= await Team.findOne({where:{id_team:userFound.TeamIdTeam}})
                 const teamName= team.name
-                res.status(200).json({id_user:userFound.id_user, username:userFound.username,first_name:userFound.first_name, last_name:userFound.last_name, password:userFound.password, active:userFound.active, email:userFound.email, avatar:userFound.avatar, birth_date:userFound.birth_date, role:userFound.role, TeamIdTeam:userFound.TeamIdTeam, teamName,access: true})
+                res.status(200).json({id_user:userFound.id_user, username:userFound.username,first_name:userFound.first_name, last_name:userFound.last_name, pasword:userFound.password, active:userFound.active, email:userFound.email, avatar:userFound.avatar, birth_date:userFound.birth_date, role:userFound.role, TeamIdTeam:userFound.TeamIdTeam, teamName,access: true})
             } else{
                 res.status(401).json({message:'Wrong password'})
             }
