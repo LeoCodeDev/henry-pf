@@ -1,8 +1,23 @@
 import { create } from 'zustand'
+import axios from 'axios'
 
 const useProductsStore = create((set) => ({
   products: [],
   filteredProducts: [],
+  fetchProducts: async () => {
+    try {
+      const { data } = await axios.get('/products')
+      if (!data.allProducts) {
+        throw new Error('No products found')
+      } else {
+        set((state) => {
+          state.setProducts(data.allProducts)
+        })
+      }
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  },
   setProducts: (products) =>
     set({
       products,
@@ -22,10 +37,20 @@ const useProductsStore = create((set) => ({
     set((state) => ({
       filteredProducts: state.products,
     })),
-  addProduct: (product) =>
-    set((state) => ({
-      products: [...state.products, product],
-    })),
+  addProduct: async (product) => {
+    try {
+      const {data} = await axios.post('/products', product)
+      if (data.status !== 200){
+        throw new Error('Error adding product')
+      }else{
+        set((state) => ({
+          products: [...state.products, product],
+        }))
+      }
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  },
   applySort: (sort) => {
     const options = {
       abc: (a, b) => a.product_name.localeCompare(b.product_name),
