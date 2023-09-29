@@ -1,0 +1,27 @@
+.card_txt{
+    font-family: var(--font-family-poppins);
+    color: var(--color-text-light);
+    padding: 0;
+    padding-top: .2rem;
+    position: relative;
+}
+.icons{
+    color: var(--color-text-light);
+    display: flex;
+    position: absolute;
+    left: 10.5rem;
+    gap: 1rem;
+    top: 2rem;
+    color: var(--color-accent);
+}
+
+.cart{
+    position: relative;
+    color: var(--color-text-light);
+}
+.plus{
+    position: absolute;
+    color:var(--color-accent);
+    top: -.4rem;
+    left: 1.5rem;
+}
