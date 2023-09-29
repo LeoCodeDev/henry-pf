@@ -9,6 +9,7 @@ const  getCategories  = require("../controllers/getCategories");
 const getProductByName= require('../controllers/getProductByName')
 const getProductsById = require("../controllers/getProductById");
 const putNewPasswordUser = require("../controllers/PutNewPasswordUser");
+const getTeams = require("../controllers/getTeams");
 
 
 
@@ -21,6 +22,7 @@ router.get("/categories",getCategories );
 router.get("/productByName",getProductByName );
 router.get("/products/:id", getProductsById);
 router.put("/newPassword/:id", putNewPasswordUser);
+router.get("/getTeams", getTeams )
 
 
 

@@ -4,8 +4,10 @@ import { Request, Response } from "express";
 
 const postUser= async (req: Request, res: Response) => {
     try {
-        const { username, first_name, last_name, password, avatar, email, birth_date, active,  role, team} = req.body;
-        if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && team!== "" && role!== "") {        
+        const { username, first_name, last_name, password, avatar, email, birth_date, role, team} = req.body;
+        if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && team!== "" && role!== "") {
+        const existingUser = await User.findOne({ where: { username } });
+        if (existingUser) res.status(400).json({ message: 'Username is already in use' });
         const [user, created] = await User.findOrCreate({
             where: { email },
             defaults: {
@@ -16,7 +18,6 @@ const postUser= async (req: Request, res: Response) => {
                 avatar,
                 email,
                 birth_date,
-                active,
                 role 
             },
             include:Team
@@ -33,7 +34,7 @@ const postUser= async (req: Request, res: Response) => {
         } else {
             res.status(200).json({ message: 'Email already registered', data: user });
         }
-    } else{
+    } else {
         res.status(400).json({ message: 'Missing data' });
     }
     }
