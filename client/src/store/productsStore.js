@@ -18,6 +18,23 @@ const useProductsStore = create((set) => ({
       throw new Error(error.message)
     }
   },
+  setProductsByName: async (name) => {
+    if (typeof name !== 'string' || name.length < 1)
+      throw new Error('Invalid name')
+
+    try {
+      const { data } = await axios(`/productByName?name=${name}`)
+      if (data.status !== 200) {
+        throw new Error('No products found')
+      } else {
+        set((state) => {
+          state.setProducts(data.selectedProduct)
+        })
+      }
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  },
   setProducts: (products) =>
     set({
       products,
@@ -39,10 +56,10 @@ const useProductsStore = create((set) => ({
     })),
   addProduct: async (product) => {
     try {
-      const {data} = await axios.post('/products', product)
-      if (data.status !== 200){
+      const { data } = await axios.post('/products', product)
+      if (data.status !== 200) {
         throw new Error('Error adding product')
-      }else{
+      } else {
         set((state) => ({
           products: [...state.products, product],
         }))
