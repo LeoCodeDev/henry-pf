@@ -7,7 +7,7 @@ const postProduct = require('../controllers/postProduct');
 const  getProducts  = require("../controllers/getProducts");
 const  getCategories  = require("../controllers/getCategories");
 const getProductsById = require("../controllers/getProductById");
-const putNewPasswordUser = require("../controllers/PutNewPasswordUser");
+const putNewPasswordUser = require("../controllers/putNewPasswordUser");
 
 
 
