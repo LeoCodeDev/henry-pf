@@ -33,12 +33,14 @@ import AvatarSelection from "./AvatarSelection";
 import { avatars } from "./avatars";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/authStore";
 
 export default function SignUp() {
   const [formVisible, setFormVisible] = useState(false);
   const theme = useTheme();
   const [selectedRole, setSelectedRole] = useState("User");
   const navigate = useNavigate();
+  const { isLogged, authenticate } = useAuthStore();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -179,16 +181,31 @@ export default function SignUp() {
         team: developerType,
       };
 
-      const response = await axios.post("/postUser", dataToSend);
+      await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
-      setTimeout(() => {
-        navigate("/");
-      }, 500);
+
+      try {
+        await authenticate({ email: formData.email, password: formData.password });
+        console.log(isLogged);
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
     } catch (error) {
-      console.error("Error:", error);
-      // Handle errors
+      console.error("Error:", error.message);
     }
   };
+
+  const handleAuthentication = () => {
+    if (isLogged) {
+      navigate("/home");
+    }
+  };
+
+  useEffect(() => {
+    if (isLogged) {
+      handleAuthentication();
+    }
+  }, [isLogged]);
 
   useEffect(() => {
     setTimeout(() => {
