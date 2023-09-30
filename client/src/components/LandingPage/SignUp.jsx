@@ -34,7 +34,6 @@ import { avatars } from "./avatars";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 export default function SignUp() {
   const [formVisible, setFormVisible] = useState(false);
   const theme = useTheme();
@@ -179,13 +178,12 @@ export default function SignUp() {
         role: selectedRole,
         team: developerType,
       };
-      
+
       const response = await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
       setTimeout(() => {
         navigate("/");
       }, 500);
-      
     } catch (error) {
       console.error("Error:", error);
       // Handle errors
@@ -414,7 +412,6 @@ export default function SignUp() {
                   </RadioGroup>
                 </FormControl>
               </Grid>
-
               <Grid item xs={12}>
                 <Button
                   type="submit"

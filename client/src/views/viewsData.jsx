@@ -6,11 +6,11 @@ import Admin from "./Admin/Admin";
 import SignUp from "../components/LandingPage/SignUp";
 
 const viewsData = [
-  {
-    path: "home",
-    element: <Home />,
-    title: "home",
-  },
+  // {
+  //   path: "home",
+  //   element: <Home />,
+  //   title: "home",
+  // },
   {
     path: "",
     element: <Login />,
@@ -27,7 +27,8 @@ const viewsData = [
     title: "product-detail",
   },
   {
-    path: "product-list",
+    // path: "product-list",
+    path: "/home",
     element: <ProductList />,
     title: "product-list",
   },
