@@ -14,6 +14,9 @@ import Typography from "@mui/material/Typography";
 import background from "../../assets/images/back_landing.jpg";
 import { useTheme } from "@mui/material/styles";
 import { isValidEmail, isValidPassword } from "./validations";
+import { useAuthStore } from '../../store/authStore';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function SignInSide() {
   const [formVisible, setFormVisible] = useState(false);
@@ -22,8 +25,10 @@ function SignInSide() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Validación de correo electrónico
@@ -32,7 +37,6 @@ function SignInSide() {
       return;
     }
 
-    // Validación de contraseña
     if (!isValidPassword(password)) {
       setPasswordError(true);
       return;
@@ -44,6 +48,21 @@ function SignInSide() {
       email: data.get("email"),
       password: data.get("password"),
     });
+
+    try {
+      const response = await axios.post("/login", { email, password });
+
+      if (response.status === 200) {
+        navigate("/home");
+      } else {
+        console.error('Error de autenticación:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error de autenticación:', error.message);
+      // Puedes manejar errores de autenticación aquí, como mostrar un mensaje de error al usuario.
+    }
+
+
   };
 
   const handleEmailChange = (event) => {
