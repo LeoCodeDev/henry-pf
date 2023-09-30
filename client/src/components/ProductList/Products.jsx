@@ -10,7 +10,7 @@ const Products = () => {
     fetchProducts();
   }, [fetchProducts]);
   return (
-    <div className={styles.cardsContain} >
+    <div className={styles.cardsContain}>
       {products.map((product) => (
         <CardProduct product={product} key={product.id_product} />
       ))}

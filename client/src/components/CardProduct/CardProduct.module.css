@@ -15,7 +15,7 @@
 }
 
 .price_product {
-    grid-column: 1 / span 22; /* Ocupa la primera columna */
+    grid-column: 1 / span 2; /* Ocupa la primera columna */
     grid-row: 2; /* Está en la segunda fila */
 }
 
@@ -24,7 +24,8 @@
     display: flex;
     position: absolute;
     gap: 1rem;
-    top: 2rem;
+    align-self: center;
+    justify-self: center;
     color: var(--color-accent);
     grid-column: 4 / span 3; /* Ocupa las dos últimas columnas */
     grid-row: 1 / span 2; /* Ocupa las dos filas */
