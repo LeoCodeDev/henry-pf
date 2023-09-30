@@ -1,103 +1,107 @@
-import React, { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import background from "../../assets/images/back_landing.jpg";
-import { useTheme } from "@mui/material/styles";
-import { isValidEmail, isValidPassword } from "./validations";
-import { useAuthStore } from '../../store/authStore';
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import Link from '@mui/material/Link'
+import Paper from '@mui/material/Paper'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import background from '../../assets/images/back_landing.jpg'
+import { useTheme } from '@mui/material/styles'
+import { isValidEmail, isValidPassword } from './validations'
+import { useAuthStore } from '../../store/authStore'
+// import axios from "axios";
+import { useNavigate } from 'react-router-dom'
 
 function SignInSide() {
-  const [formVisible, setFormVisible] = useState(false);
-  const theme = useTheme();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const navigate = useNavigate();
+  const [formVisible, setFormVisible] = useState(false)
+  const theme = useTheme()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
+  const navigate = useNavigate()
+  const { isLogged, authenticate } = useAuthStore()
 
-  
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     // Validación de correo electrónico
     if (!isValidEmail(email)) {
-      setEmailError(true);
-      return;
+      setEmailError(true)
+      return
     }
 
     if (!isValidPassword(password)) {
-      setPasswordError(true);
-      return;
+      setPasswordError(true)
+      return
     }
 
     // Resto del código de manejo de inicio de sesión
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
 
     try {
-      const response = await axios.post("/login", { email, password });
-
-      if (response.status === 200) {
-        navigate("/home");
-      } else {
-        console.error('Error de autenticación:', response.statusText);
-      }
+      await authenticate({ email, password })
     } catch (error) {
-      console.error('Error de autenticación:', error.message);
+      console.error('Error de autenticación:', error.message)
       // Puedes manejar errores de autenticación aquí, como mostrar un mensaje de error al usuario.
     }
+  }
 
+  const handleAuthentication = () => {
+    if (isLogged) {
+      navigate('/home')
+    }
+  }
 
-  };
+  useEffect(() => {
+    if (isLogged) {
+      handleAuthentication()
+    }
+  }, [isLogged])
 
   const handleEmailChange = (event) => {
-    const newEmail = event.target.value;
-    setEmail(newEmail);
+    const newEmail = event.target.value
+    setEmail(newEmail)
 
     // Validación de correo electrónico en tiempo real
     if (!isValidEmail(newEmail)) {
-      setEmailError(true);
+      setEmailError(true)
     } else {
-      setEmailError(false);
+      setEmailError(false)
     }
-  };
+  }
 
   const handlePasswordChange = (event) => {
-    const newPassword = event.target.value;
-    setPassword(newPassword);
+    const newPassword = event.target.value
+    setPassword(newPassword)
 
     // Validación de contraseña en tiempo real
     if (!isValidPassword(newPassword)) {
-      setPasswordError(true);
+      setPasswordError(true)
     } else {
-      setPasswordError(false);
+      setPasswordError(false)
     }
-  };
+  }
 
   useEffect(() => {
     // Mostrar el formulario con una pequeña demora para que la animación sea visible
     setTimeout(() => {
-      setFormVisible(true);
-    }, 200);
-  }, []);
+      setFormVisible(true)
+    }, 200)
+  }, [])
 
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
       <Grid
         item
@@ -106,13 +110,13 @@ function SignInSide() {
         md={7}
         sx={{
           backgroundImage: `url(${background})`,
-          backgroundRepeat: "no-repeat",
+          backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
-            t.palette.mode === "light"
+            t.palette.mode === 'light'
               ? t.palette.grey[50]
               : t.palette.grey[900],
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       />
       <Grid
@@ -131,14 +135,14 @@ function SignInSide() {
           sx={{
             my: 4,
             mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            transform: formVisible ? "translateY(0)" : "translateY(-100%)",
-            transition: "transform 0.5s ease-in-out",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            transform: formVisible ? 'translateY(0)' : 'translateY(-100%)',
+            transition: 'transform 0.5s ease-in-out',
           }}
         >
-          <div style={{ display: "flex", marginTop: "4vh" }}>
+          <div style={{ display: 'flex', marginTop: '4vh' }}>
             <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -146,7 +150,7 @@ function SignInSide() {
               component="h1"
               variant="h5"
               sx={{
-                color: "white",
+                color: 'white',
                 fontFamily: theme.typography.fontFamily,
                 fontSize: theme.typography.h2,
               }}
@@ -173,11 +177,11 @@ function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id={emailError ? "outlined-error-helper-text" : "email"}
-              label={emailError ? "Error" : "Email Address"}
+              id={emailError ? 'outlined-error-helper-text' : 'email'}
+              label={emailError ? 'Error' : 'Email Address'}
               name="email"
               autoComplete="none"
-              helperText={emailError ? "Invalid email format" : ""}
+              helperText={emailError ? 'Invalid email format' : ''}
               value={email}
             />
             <TextField
@@ -187,14 +191,14 @@ function SignInSide() {
               required
               fullWidth
               name="password"
-              label={passwordError ? "Error" : "Password"}
+              label={passwordError ? 'Error' : 'Password'}
               type="password"
               autoComplete="current-password"
-              id={passwordError ? "outlined-error-helper-text" : "password"}
+              id={passwordError ? 'outlined-error-helper-text' : 'password'}
               helperText={
                 passwordError
-                  ? "Password must be at least 8 characters, including an uppercase letter and a number"
-                  : ""
+                  ? 'Password must be at least 8 characters, including an uppercase letter and a number'
+                  : ''
               }
               value={password}
             />
@@ -227,7 +231,7 @@ function SignInSide() {
         </Box>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default SignInSide;
+export default SignInSide
