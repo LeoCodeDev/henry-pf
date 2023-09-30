@@ -15,7 +15,6 @@ import background from '../../assets/images/back_landing.jpg'
 import { useTheme } from '@mui/material/styles'
 import { isValidEmail, isValidPassword } from './validations'
 import { useAuthStore } from '../../store/authStore'
-// import axios from "axios";
 import { useNavigate } from 'react-router-dom'
 
 function SignInSide() {
@@ -42,18 +41,10 @@ function SignInSide() {
       return
     }
 
-    // Resto del código de manejo de inicio de sesión
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
-
     try {
       await authenticate({ email, password })
     } catch (error) {
       console.error('Error de autenticación:', error.message)
-      // Puedes manejar errores de autenticación aquí, como mostrar un mensaje de error al usuario.
     }
   }
 
@@ -73,7 +64,6 @@ function SignInSide() {
     const newEmail = event.target.value
     setEmail(newEmail)
 
-    // Validación de correo electrónico en tiempo real
     if (!isValidEmail(newEmail)) {
       setEmailError(true)
     } else {
@@ -85,7 +75,6 @@ function SignInSide() {
     const newPassword = event.target.value
     setPassword(newPassword)
 
-    // Validación de contraseña en tiempo real
     if (!isValidPassword(newPassword)) {
       setPasswordError(true)
     } else {
@@ -94,7 +83,6 @@ function SignInSide() {
   }
 
   useEffect(() => {
-    // Mostrar el formulario con una pequeña demora para que la animación sea visible
     setTimeout(() => {
       setFormVisible(true)
     }, 200)
