@@ -4,6 +4,7 @@ import ProductDetail from "./Product Detail/ProductDetail";
 import ProductList from "./Product List/ProductList";
 import Admin from "./Admin/Admin";
 import SignUp from "../components/LandingPage/SignUp";
+import ProductFormView from "./Product Form/productForm";
 
 const viewsData = [
   {
@@ -35,6 +36,11 @@ const viewsData = [
     path: "admin",
     element: <Admin />,
     title: "admin-view",
+  },
+  {
+    path: "product-creation",
+    element: <ProductFormView />,
+    title: "product-creation",
   },
 ];
 
