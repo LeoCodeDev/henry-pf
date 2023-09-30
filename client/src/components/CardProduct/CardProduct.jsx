@@ -64,10 +64,10 @@ export const CardProduct = ({ product }) => {
           title={data.name}
         />
         <CardContent className={style.card_txt}>
-          <Typography gutterBottom variant="p" component="div" sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>
+          <Typography className={style.name_product} gutterBottom variant="p" component="div" sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>
             {data.name}
           </Typography>
-          <Typography variant="p" component="div">
+          <Typography className={style.price_product} variant="p" component="div">
             $ {data.price}
           </Typography>
           <div className={style.icons}>
