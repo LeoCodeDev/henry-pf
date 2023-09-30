@@ -5,10 +5,11 @@ import styles from './styles/Products.module.css';
 
 const Products = () => {
   const fetchProducts = useProductsStore((state) => state.fetchProducts);
-  const products = useProductsStore((state) => state.products);
+  const products = useProductsStore((state) => state.getCurrentPageProducts());
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+  }, [fetchProducts]); 
+  console.log(products);
   return (
     <div className={styles.cardsContain}>
       {products.map((product) => (
