@@ -1,14 +1,16 @@
 import axios from 'axios'
 import { create } from 'zustand'
 
+const userGuest = {
+  username: 'Guest',
+  email: '',
+  role: 'guest',
+  avatar: '../assets/images/avatars/avatar10.jpg',
+  teamName: 'none',
+}
+
 const useAuthStore = create((set) => ({
-  user: {
-    username: 'Guest',
-    email: '',
-    role: 'guest',
-    avatar: '../assets/images/avatars/avatar10.jpg',
-    teamName: 'none',
-  },
+  user: userGuest,
   isLogged: false,
   login: (userData) => set({ user: userData, isLogged: true }),
   authenticate: async (credentials) => {
@@ -33,13 +35,7 @@ const useAuthStore = create((set) => ({
   },
   logout: () =>
     set({
-      user: {
-        username: 'Guest',
-        email: '',
-        role: 'guest',
-        avatar: '../assets/images/avatars/avatar10.jpg',
-        teamName: 'none',
-      },
+      user: userGuest,
       isLogged: false,
     }),
 }))
