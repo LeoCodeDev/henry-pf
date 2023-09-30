@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Avatar,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 import background from "../../assets/images/back_landing.jpg";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -18,15 +25,21 @@ import {
   isValidFirstName,
   isValidLastName,
   isMinimumAge,
+  isValidNickName,
 } from "./validations";
 import SelectLabels from "./DevOption";
 import toast, { Toaster } from "react-hot-toast";
 import AvatarSelection from "./AvatarSelection";
 import { avatars } from "./avatars";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function SignUp() {
   const [formVisible, setFormVisible] = useState(false);
   const theme = useTheme();
+  const [selectedRole, setSelectedRole] = useState("User");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -34,6 +47,7 @@ export default function SignUp() {
     email: "",
     password: "",
     birthday: "",
+    nickName: "",
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -42,6 +56,7 @@ export default function SignUp() {
     email: false,
     password: false,
     birthday: false,
+    nickName: false,
   });
 
   const [isDeveloper, setIsDeveloper] = useState("Yes");
@@ -64,6 +79,10 @@ export default function SignUp() {
     setSelectedAvatar(value);
   };
 
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     const newValue = value;
@@ -78,6 +97,12 @@ export default function SignUp() {
         setFormErrors({
           ...formErrors,
           firstName: !isValidFirstName(newValue),
+        });
+        break;
+      case "nickName":
+        setFormErrors({
+          ...formErrors,
+          nickName: !isValidNickName(newValue),
         });
         break;
       case "lastName":
@@ -103,7 +128,7 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!isValidFirstName(formData.firstName)) {
@@ -138,14 +163,33 @@ export default function SignUp() {
       return toast.error("Choose a avatar");
     }
 
-    toast.success("User created successfully!");
-    console.log(
-      formData,
-      formData.birthday,
-      isDeveloper,
-      developerType,
-      selectedAvatar
-    );
+    if (!isValidNickName(formData.nickName)) {
+      setFormErrors({ ...formErrors, nickName: true });
+      return;
+    }
+    try {
+      const dataToSend = {
+        username: formData.nickName,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        password: formData.password,
+        birth_date: formData.birthday,
+        email: formData.email,
+        avatar: selectedAvatar,
+        role: selectedRole,
+        team: developerType,
+      };
+      
+      const response = await axios.post("/postUser", dataToSend);
+      toast.success("User created successfully!");
+      setTimeout(() => {
+        navigate("/");
+      }, 500);
+      
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle errors
+    }
   };
 
   useEffect(() => {
@@ -314,11 +358,61 @@ export default function SignUp() {
                   onDeveloperTypeChange={handleDeveloperTypeChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  display: "flex",
+                  flexDirection: isDesktop ? "row" : "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <TextField
+                  style={{ width: "auto" }}
+                  error={formErrors.nickName}
+                  name="nickName"
+                  required
+                  fullWidth
+                  id={
+                    formErrors.nickName
+                      ? "outlined-error-helper-text"
+                      : "nickName"
+                  }
+                  label={formErrors.nickName ? "Error" : "Nick Name"}
+                  value={formData.nickName}
+                  onChange={handleChange}
+                  helperText={formErrors.nickName ? "Invalid nickName" : ""}
+                />
                 <AvatarSelection
+                  isDesktop={isDesktop}
                   avatars={avatars}
                   onChange={handleAvatarChange}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    Role
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={selectedRole}
+                    onChange={handleRoleChange}
+                    style={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <FormControlLabel
+                      value="User"
+                      control={<Radio />}
+                      label="User"
+                    />
+                    <FormControlLabel
+                      value="Trainer"
+                      control={<Radio />}
+                      label="Trainer"
+                    />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12}>

@@ -16,6 +16,10 @@ export function isValidLastName(lastName) {
   return lastName.length >= 2;
 }
 
+export function isValidNickName(lastName) {
+  return lastName.length >= 2;
+}
+
 export function isMinimumAge(birthday) {
   const currentDate = new Date();
   const minAgeDate = new Date();

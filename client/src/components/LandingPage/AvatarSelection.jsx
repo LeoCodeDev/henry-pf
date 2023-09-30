@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
 export default function AvatarSelection(props) {
-  const { avatars, onChange } = props;
+  const { avatars, onChange, isDesktop} = props;
   const [selectedValue, setSelectedValue] = useState("");
 
   const handleAvatarChange = (event) => {
@@ -15,14 +15,13 @@ export default function AvatarSelection(props) {
 
   return (
     <div>
-      <FormControl sx={{ minWidth: 120, justifyContent: "space-between" }}>
+      <FormControl sx={{ minWidth: isDesktop ? "30vh" : "22vh", marginTop: isDesktop ? "0" : "4vh" }}>
         <InputLabel id="avatar-label">Select Avatar</InputLabel>
         <Select
           labelId="avatar-label"
           value={selectedValue}
           label="Select Avatar"
           onChange={handleAvatarChange}
-          style={{ minWidth: "300px" }}
         >
           <MenuItem value="">
             <em>None</em>
