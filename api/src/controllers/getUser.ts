@@ -10,8 +10,8 @@ const getUser= async (req:Request, res:Response)=>{
             include: Team
         })
         res.status(200).json(userData)
-    } catch (error) {
-        res.status(500).json(error)
+    } catch (error:any) {
+        res.status(500).json({error:error.message})
     }
 }
 

@@ -26,21 +26,20 @@ const postUser= async (req: Request, res: Response) => {
         if (created) {
             console.log('user', user)
             if(role==="User"){
-            const [associatedTeam, _created]= await Team.findOrCreate({ where: { name: team } });
+            const associatedTeam= await Team.findOne({ where: { name: team } });
             if(associatedTeam){
                 await user.setTeam(associatedTeam)
             }}
-            res.status(200).json({ message: 'User created successfully', data: user});
+            res.status(200).json({ message: 'User created successfully'});
         } else {
-            res.status(200).json({ message: 'Email already registered', data: user });
+            res.status(200).json({ message: 'Email already registered'});
         }
     } else {
         res.status(400).json({ message: 'Missing data' });
     }
     }
-    catch (error) {
-        console.error('Error creating users:', error);
-        res.status(500).json(error);
+    catch (error:any) {
+        res.status(500).json({error:error.message});
     }
 }
 

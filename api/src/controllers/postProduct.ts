@@ -9,7 +9,6 @@ const postProduct = async (req: Request, res: Response) => {
             res.status(400).json({ message: "Missing or invalid data" });
             return;
         }
-
         const [product, created] = await Product.findOrCreate({
             where: { name },
             defaults: {
@@ -32,9 +31,8 @@ const postProduct = async (req: Request, res: Response) => {
         } else {
             res.status(200).json({ message: "Product is already registered", data: product });
         }
-    } catch (error) {
-        console.error('Error creating product:', error);
-        res.status(500).json({ message: "Internal server error" });
+    } catch (error:any) {
+        res.status(500).json({ error: error.message });
     }
 }
 
