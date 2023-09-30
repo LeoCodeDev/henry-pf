@@ -4,8 +4,10 @@ import {Request, Response} from "express";
 const postProduct = async (req: Request, res: Response) => {
     try {
         const { name, image, description, price, stock, rating, category } = req.body;
-        
-        if (!name || name === "" || !image || image === "" || !description || description === "" || isNaN(price) || isNaN(stock) || isNaN(rating) || !category || category === "") {
+        const parsedPrice = parseInt(price);
+        const parsedStock = parseInt(stock);
+        const parsedRating = parseInt(rating);
+        if (!name || name === "" || !image || image === "" || !description || description === "" || isNaN(parsedPrice) || isNaN(parsedStock) || isNaN(parsedRating) || !category || category === "") {
             res.status(400).json({ message: "Missing or invalid data" });
             return;
         }
@@ -27,9 +29,9 @@ const postProduct = async (req: Request, res: Response) => {
             if (associatedCategory) {
                 await product.setCategory(associatedCategory);
             }
-            res.status(201).json({ message: "Product created successfully", data: product });
+            res.status(200).json({status:200, message: "Product created successfully", data: product});
         } else {
-            res.status(200).json({ message: "Product is already registered", data: product });
+            res.status(400).json({message: "Product is already registered", data: product });
         }
     } catch (error:any) {
         res.status(500).json({ error: error.message });
