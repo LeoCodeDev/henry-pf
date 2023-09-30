@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import {
+  useMediaQuery,
+  Typography,
   Button,
   CssBaseline,
   TextField,
@@ -34,6 +34,7 @@ import { avatars } from "./avatars";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
+import title from "../../assets/images/title.png";
 
 export default function SignUp() {
   const [formVisible, setFormVisible] = useState(false);
@@ -185,7 +186,10 @@ export default function SignUp() {
       toast.success("User created successfully!");
 
       try {
-        await authenticate({ email: formData.email, password: formData.password });
+        await authenticate({
+          email: formData.email,
+          password: formData.password,
+        });
         console.log(isLogged);
       } catch (error) {
         console.error("Error:", error.message);
@@ -230,6 +234,17 @@ export default function SignUp() {
           backgroundPosition: "center",
         }}
       />
+      <img
+        src={title}
+        style={{
+          display: isDesktop ? "flex" : "none",
+          position: "absolute",
+          maxWidth: isDesktop ? "50vh" : "40vh",
+          top: "10%",
+          left: !isDesktop ? "50%" : "15%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />{" "}
       <Grid
         item
         xs={12}
@@ -244,7 +259,7 @@ export default function SignUp() {
       >
         <Box
           sx={{
-            my: 4,
+            my: 0,
             mx: 4,
             display: "flex",
             flexDirection: "column",
@@ -253,7 +268,7 @@ export default function SignUp() {
             transition: "transform 0.5s ease-in-out",
           }}
         >
-          <div style={{ display: "flex" }}>
+          {/* <div style={{ display: isDesktop ? "flex" : "none" }}>
             <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -268,7 +283,7 @@ export default function SignUp() {
             >
               Sign up
             </Typography>
-          </div>
+          </div> */}
           <Box
             component="form"
             noValidate
