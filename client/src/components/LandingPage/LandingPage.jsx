@@ -37,11 +37,10 @@ function SignInSide() {
       return;
     }
 
-    // Validación de contraseña
-    // if (!isValidPassword(password)) {
-    //   setPasswordError(true);
-    //   return;
-    // }
+    if (!isValidPassword(password)) {
+      setPasswordError(true);
+      return;
+    }
 
     // Resto del código de manejo de inicio de sesión
     const data = new FormData(event.currentTarget);
@@ -54,11 +53,9 @@ function SignInSide() {
       const response = await axios.post("/login", { email, password });
 
       if (response.status === 200) {
-        // Redirige al usuario a la página de inicio ("/home") después del inicio de sesión exitoso
         navigate("/home");
       } else {
         console.error('Error de autenticación:', response.statusText);
-        // Puedes manejar errores de autenticación aquí, como mostrar un mensaje de error al usuario.
       }
     } catch (error) {
       console.error('Error de autenticación:', error.message);
