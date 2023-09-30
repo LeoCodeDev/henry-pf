@@ -1,11 +1,10 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import axios from 'axios';
-///getTeams
+import axios from "axios";
 
 export default function SelectLabels(props) {
   const {
@@ -16,6 +15,8 @@ export default function SelectLabels(props) {
     isDesktop,
   } = props;
 
+  const [teams, setTeams] = useState([]);
+
   const handleIsDeveloperChange = (event) => {
     const value = event.target.value;
     onIsDeveloperChange(value);
@@ -25,6 +26,16 @@ export default function SelectLabels(props) {
     const value = event.target.value;
     onDeveloperTypeChange(value);
   };
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/getTeams")
+      .then((response) => {
+        setTeams(response.data);
+      })
+      .catch((error) => {
+        console.error("Error al realizar la solicitud GET:", error);
+      });
+  }, []); 
 
   return (
     <div>
@@ -44,7 +55,7 @@ export default function SelectLabels(props) {
       </FormControl>
 
       {isDeveloper === "Yes" && (
-        <FormControl sx={{ ml: isDesktop ? 2 : 0, minWidth: 120, mt: !isDesktop ? 2 : 0 }}>
+        <FormControl sx={{ ml: isDesktop ? 2 : 0, minWidth: 120 }}>
           <InputLabel id="developer-type-label">Team</InputLabel>
           <Select
             labelId="developer-type-label"
@@ -53,14 +64,11 @@ export default function SelectLabels(props) {
             label="Developer Type"
             onChange={handleDeveloperTypeChange}
           >
-            <MenuItem value="FullStack">FullStack</MenuItem>
-            <MenuItem value="BackEnd">BackEnd</MenuItem>
-            <MenuItem value="FrontEnd">FrontEnd</MenuItem>
-            <MenuItem value="DataScience">DataScience</MenuItem>
-            <MenuItem value="MobileApp">Mobile App Dev</MenuItem>
-            <MenuItem value="GameDev">Game Developer</MenuItem>
-            <MenuItem value="DevOps">DevOps Engineer</MenuItem>
-            <MenuItem value="AI">AI/ML Engineer</MenuItem>
+            {teams.map((team) => (
+              <MenuItem key={team.id_team} value={team.name}>
+                {team.name}
+              </MenuItem>
+            ))}
           </Select>
           <FormHelperText>Select your developer type</FormHelperText>
         </FormControl>
