@@ -1,8 +1,10 @@
 import { create } from 'zustand'
 import axios from 'axios'
 
-const useProductsStore = create((set) => ({
+const useProductsStore = create((set, get) => ({
   products: [],
+  itemsPerPage: 8,
+  currentPage: 0,
   filteredProducts: [],
   fetchProducts: async () => {
     try {
@@ -16,6 +18,28 @@ const useProductsStore = create((set) => ({
       throw new Error(error.message)
     }
   },
+  getCurrentPageProducts: () => {
+    const {products, itemsPerPage, currentPage} = get();
+    const firstPage = currentPage * itemsPerPage;
+    const lastPage = firstPage + itemsPerPage;
+    return products.slice(firstPage, lastPage)
+    
+  },
+  goNextPage: () => {
+    const {currentPage} = get();
+    set({currentPage: currentPage + 1})
+  } 
+,
+  goPrevPage: () => {
+    const {currentPage} = get();
+    if (currentPage > 0) {
+      set({currentPage: currentPage - 1})
+  }
+},
+  getTotalPages: () => {
+const {products, itemsPerPage} = get();
+return Math.ceil(products.length / itemsPerPage);
+},
   setProductsByName: async (name) => {
     if (typeof name !== 'string' || name.length < 1)
       throw new Error('Invalid name')
@@ -88,6 +112,7 @@ const useProductsStore = create((set) => ({
       return state
     })
   },
+
 }))
 
 export { useProductsStore }
