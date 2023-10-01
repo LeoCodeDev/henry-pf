@@ -1,6 +1,6 @@
 import Filter from './Filter';
 import Order from './Order';
-import Pagination from './Pagination';
+/* import Pagination from './Pagination'; */
 import styles from './styles/Bottom.module.css'
 
 
@@ -10,9 +10,9 @@ function Bottom() {
       <section>
         <Filter />
       </section>
-      <section>
+      {/* <section>
         <Pagination />
-      </section>
+      </section> */}
       <section>
         <Order />
       </section>

@@ -10,7 +10,7 @@ const useProductsStore = create((set) => ({
       if (!data) {
         throw new Error('No products found')
       } else {
-        set({products: data})
+        set({ products: data, filteredProducts: data })
       }
     } catch (error) {
       throw new Error(error.message)
@@ -25,19 +25,15 @@ const useProductsStore = create((set) => ({
       if (data.status !== 200) {
         throw new Error('No products found')
       } else {
-        set((state) => {
-          state.setProducts(data.selectedProduct)
+        set({
+          products: data,
+          filteredProducts: data,
         })
       }
     } catch (error) {
       throw new Error(error.message)
     }
   },
-  setProducts: (products) =>
-    set({
-      products,
-      filteredProducts: products,
-    }),
   applyFilters: (filters) =>
     set((state) => ({
       filteredProducts: state.products.filter((product) => {
