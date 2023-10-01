@@ -4,6 +4,19 @@ import axios from 'axios'
 const useProductsStore = create((set) => ({
   products: [],
   filteredProducts: [],
+  categories:[],
+  fetchCategories: async () => {
+    try {
+      const { data } = await axios.get('/categories')
+      if (!data) {
+        throw new Error('No categories found')
+      } else {
+        set({ categories: data })
+      }
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  },
   fetchProducts: async () => {
     try {
       const { data } = await axios.get('/products')
