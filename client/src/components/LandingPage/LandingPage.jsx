@@ -1,95 +1,100 @@
-import { useState, useEffect } from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
-import Paper from '@mui/material/Paper'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import background from '../../assets/images/back_landing.jpg'
-import { useTheme } from '@mui/material/styles'
-import { isValidEmail, isValidPassword } from './validations'
-import { useAuthStore } from '../../store/authStore'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import background from "../../assets/images/back_landing.jpg";
+import { useTheme } from "@mui/material/styles";
+import { isValidEmail, isValidPassword } from "./validations";
+import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router-dom";
+import title from "../../assets/images/title.png";
+import toast, { Toaster } from "react-hot-toast";
 
 function SignInSide() {
-  const [formVisible, setFormVisible] = useState(false)
-  const theme = useTheme()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [emailError, setEmailError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
-  const navigate = useNavigate()
-  const { isLogged, authenticate } = useAuthStore()
+  const [formVisible, setFormVisible] = useState(false);
+  const theme = useTheme();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const navigate = useNavigate();
+  const { isLogged, authenticate } = useAuthStore();
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    // Validación de correo electrónico
     if (!isValidEmail(email)) {
-      setEmailError(true)
-      return
+      setEmailError(true);
+      return;
     }
 
     if (!isValidPassword(password)) {
-      setPasswordError(true)
-      return
+      setPasswordError(true);
+      return;
     }
 
     try {
-      await authenticate({ email, password })
+      await authenticate({ email, password });
     } catch (error) {
-      console.error('Error de autenticación:', error.message)
+      toast.error("Error Authentication!");
+      console.error("Error de autenticación:", error.message);
     }
-  }
+  };
 
   const handleAuthentication = () => {
     if (isLogged) {
-      navigate('/home')
+      navigate("/home");
     }
-  }
+  };
 
   useEffect(() => {
     if (isLogged) {
-      handleAuthentication()
+      handleAuthentication();
     }
-  }, [isLogged])
+  }, [isLogged]);
 
   const handleEmailChange = (event) => {
-    const newEmail = event.target.value
-    setEmail(newEmail)
+    const newEmail = event.target.value;
+    setEmail(newEmail);
 
     if (!isValidEmail(newEmail)) {
-      setEmailError(true)
+      setEmailError(true);
     } else {
-      setEmailError(false)
+      setEmailError(false);
     }
-  }
+  };
 
   const handlePasswordChange = (event) => {
-    const newPassword = event.target.value
-    setPassword(newPassword)
+    const newPassword = event.target.value;
+    setPassword(newPassword);
 
     if (!isValidPassword(newPassword)) {
-      setPasswordError(true)
+      setPasswordError(true);
     } else {
-      setPasswordError(false)
+      setPasswordError(false);
     }
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {
-      setFormVisible(true)
-    }, 200)
-  }, [])
+      setFormVisible(true);
+    }, 200);
+  }, []);
+
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
       <Grid
         item
@@ -98,15 +103,25 @@ function SignInSide() {
         md={7}
         sx={{
           backgroundImage: `url(${background})`,
-          backgroundRepeat: 'no-repeat',
+          backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
-            t.palette.mode === 'light'
+            t.palette.mode === "light"
               ? t.palette.grey[50]
               : t.palette.grey[900],
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       />
+      <img
+        src={title}
+        style={{
+          position: "absolute",
+          maxWidth: isDesktop ? "50vh" : "40vh",
+          top: "10%",
+          left: !isDesktop ? "50%" : "15%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />{" "}
       <Grid
         item
         xs={12}
@@ -121,16 +136,16 @@ function SignInSide() {
       >
         <Box
           sx={{
-            my: 4,
+            my: 10,
             mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            transform: formVisible ? 'translateY(0)' : 'translateY(-100%)',
-            transition: 'transform 0.5s ease-in-out',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            transform: formVisible ? "translateY(0)" : "translateY(-100%)",
+            transition: "transform 0.5s ease-in-out",
           }}
         >
-          <div style={{ display: 'flex', marginTop: '4vh' }}>
+          <div style={{ display: "flex", marginTop: "4vh" }}>
             <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -138,7 +153,7 @@ function SignInSide() {
               component="h1"
               variant="h5"
               sx={{
-                color: 'white',
+                color: "white",
                 fontFamily: theme.typography.fontFamily,
                 fontSize: theme.typography.h2,
               }}
@@ -165,11 +180,11 @@ function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id={emailError ? 'outlined-error-helper-text' : 'email'}
-              label={emailError ? 'Error' : 'Email Address'}
+              id={emailError ? "outlined-error-helper-text" : "email"}
+              label={emailError ? "Error" : "Email Address"}
               name="email"
               autoComplete="none"
-              helperText={emailError ? 'Invalid email format' : ''}
+              helperText={emailError ? "Invalid email format" : ""}
               value={email}
             />
             <TextField
@@ -179,21 +194,16 @@ function SignInSide() {
               required
               fullWidth
               name="password"
-              label={passwordError ? 'Error' : 'Password'}
+              label={passwordError ? "Error" : "Password"}
               type="password"
               autoComplete="current-password"
-              id={passwordError ? 'outlined-error-helper-text' : 'password'}
+              id={passwordError ? "outlined-error-helper-text" : "password"}
               helperText={
                 passwordError
-                  ? 'Password must be at least 8 characters, including an uppercase letter and a number'
-                  : ''
+                  ? "Password must be at least 8 characters, including an uppercase letter and a number"
+                  : ""
               }
               value={password}
-            />
-
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"
@@ -218,8 +228,9 @@ function SignInSide() {
           </Box>
         </Box>
       </Grid>
+      <Toaster position="top-center" reverseOrder={false} />
     </Grid>
-  )
+  );
 }
 
-export default SignInSide
+export default SignInSide;
