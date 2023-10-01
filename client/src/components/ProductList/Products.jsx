@@ -69,7 +69,8 @@ const Products = () => {
   }, [filteredProducts])
 
   return (
-    <div className={styles.productsContain}>
+    <>
+      <div className={styles.productsContain}>
       <div className={styles.paginationContain}>
         <IconButton
           onClick={handlePrevPage}
@@ -78,7 +79,7 @@ const Products = () => {
         >
           <ArrowBackIosNew />
         </IconButton>
-        <span>
+        <span className={styles.pageNumber}>
           {currentPage + 1} / {totalPages}
         </span>
         <IconButton
@@ -96,6 +97,8 @@ const Products = () => {
         ))}
       </div>
     </div>
+    </>
+    
   )
 }
 
