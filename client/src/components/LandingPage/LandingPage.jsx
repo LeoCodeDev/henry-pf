@@ -4,8 +4,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Paper,
   Box,
@@ -20,6 +18,7 @@ import { isValidEmail, isValidPassword } from "./validations";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import title from "../../assets/images/title.png";
+import toast, { Toaster } from "react-hot-toast";
 
 function SignInSide() {
   const [formVisible, setFormVisible] = useState(false);
@@ -47,6 +46,7 @@ function SignInSide() {
     try {
       await authenticate({ email, password });
     } catch (error) {
+      toast.error("Error Authentication!");
       console.error("Error de autenticación:", error.message);
     }
   };
@@ -205,11 +205,6 @@ function SignInSide() {
               }
               value={password}
             />
-
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -233,6 +228,7 @@ function SignInSide() {
           </Box>
         </Box>
       </Grid>
+      <Toaster position="top-center" reverseOrder={false} />
     </Grid>
   );
 }
