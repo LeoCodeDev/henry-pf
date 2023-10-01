@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { useTheme } from "@mui/material/styles";
-import axios from "axios";
 import {useProductsStore} from "../../store/productsStore"
 import {validName, 
     validDescription, 
@@ -28,13 +27,10 @@ import {validName,
 
 export default function ProductForm(){
     const theme = useTheme();
-    const {addProduct} = useProductsStore()
-    const [categories, setCategories]=useState([])
+    const {categories, addProduct,fetchCategories} = useProductsStore()
     useEffect(()=>{
-        axios.get('/categories')
-        .then(res=>setCategories(res.data))
-        .catch(err=>{throw new Error(err)})
-    }, [])
+        fetchCategories()
+    }, [fetchCategories])
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
