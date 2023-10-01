@@ -29,21 +29,5 @@ select option {
   border: none;
 }
 
-/* Pagination */
 
-.paginationContain {
-  display: flex;
-  align-items: center;
-}
 
-@media (max-width: 599px) {
-  .paginationContain p {
-    font-size: 0.75rem;
-  }
-}
-
-@media (min-width: 600px) {
-  .paginationContain p {
-      font-size: 1rem;
-  }
-}

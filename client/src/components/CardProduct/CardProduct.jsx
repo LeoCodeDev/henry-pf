@@ -23,6 +23,7 @@ export const CardProduct = ({ product }) => {
         md: 900,
         lg: 1200,
         xl: 1440,
+        xxl: 1800,
       },
     },
   });
@@ -51,9 +52,9 @@ export const CardProduct = ({ product }) => {
       <Card
         sx={{
           bgcolor: "transparent",
-          width: {xs:"20rem", sm: "16.4rem", md: "17rem", lg:"17rem", xl: "15rem" },
-          margin: {xs:"0", sm:"1rem" , md: "4rem", lg:"0.5rem", xl: "1rem"},
-          marginTop: {xs: '2rem'}
+          width: {xs:"20rem", sm: "16.4rem", md: "16rem", lg:"17rem", xl: "17rem", xxl: '19rem' },
+          margin: {xs:"0", sm:"2rem" , md: "1rem", lg:"0.75rem", xl: "0.75rem", xxl: '0.75rem'},
+          marginTop: {xs: '1rem'}
         }}
       >
         <CardMedia
@@ -64,10 +65,10 @@ export const CardProduct = ({ product }) => {
           title={data.name}
         />
         <CardContent className={style.card_txt}>
-          <Typography gutterBottom variant="p" component="div" sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>
+          <Typography className={style.name_product} gutterBottom variant="p" component="div" sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>
             {data.name}
           </Typography>
-          <Typography variant="p" component="div">
+          <Typography className={style.price_product} variant="p" component="div">
             $ {data.price}
           </Typography>
           <div className={style.icons}>
