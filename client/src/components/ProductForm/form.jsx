@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import Typography from "@mui/material/Typography";
 import {
@@ -26,19 +26,46 @@ import {validName,
 } from "./validations"
 
 export default function ProductForm(){
+
+    const cloudinaryRef = useRef()
+    const widgetRef = useRef()
+
+    useEffect (() => {
+        cloudinaryRef.current = window.cloudinary
+        widgetRef.current = cloudinaryRef.current.createUploadWidget({
+            cloudName:"healthtech", //nuestra nube
+            uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
+            folder: 'healthtech/products', //folder products en el cual se subne las imagenes
+            multiple: false, //permite solo subir un archivo
+            maxImageFileSize: 2000000, //peso maximo: 2 megas,
+            maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
+            //cropping: true, //le permite recortar la imagen de ser necesario
+            clientAllowedFormats: ["jpg",'png','jpeg'],
+        },function(err,res){  
+        if (!err && res && res.event === "success") {
+            setFormData({
+                ...formData,
+                image: res.info.url,
+                })
+        } 
+    })
+    },[widgetRef.current, cloudinaryRef.current])
+
+
     const theme = useTheme();
     const {categories, addProduct,fetchCategories} = useProductsStore()
     useEffect(()=>{
         fetchCategories()
     }, [fetchCategories])
 
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imageUrl, setImageUrl] = useState(null);
-    useEffect(() => {
-        if (selectedImage) {
-        setImageUrl(URL.createObjectURL(selectedImage));
-        }
-        }, [selectedImage]);
+    //! ya no es necesario crear un objeto URL, te lo devuelve solo Cloudinary
+    // const [selectedImage, setSelectedImage] = useState(null);
+    // const [imageUrl, setImageUrl] = useState(null);
+    // useEffect(() => {
+    //     if (selectedImage) {
+    //     setImageUrl(URL.createObjectURL(selectedImage));
+    //     }
+    //     }, [selectedImage]);
 
     const[formData, setFormData]=useState({
         name:"",
@@ -47,7 +74,7 @@ export default function ProductForm(){
         stock:0,
         rating:0,
         category:"",
-        image:"https://grafgearboxes.com/productos/images/df.jpg"
+        image:""
     })
 
     const [errors, setErrors]=useState({
@@ -106,9 +133,10 @@ export default function ProductForm(){
     }
 }
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         console.log(formData)
         console.log(errors)
+        return
         if(allErrorsFalsy(errors)){
             try {
                 await addProduct(formData)
@@ -119,16 +147,16 @@ export default function ProductForm(){
                     stock:0,
                     rating:0,
                     category:"",
-                    image:"https://grafgearboxes.com/productos/images/df.jpg"    
+                    image:""    
                 })
                 setSelectedImage(null)
                 setImageUrl(null)
                 toast.success("Product added successfully!")
             } catch (error) {
-                return toast.error("Please check for eny errors")
+                return toast.error("Please check for any errors")
             }
         } else{
-            return toast.error("Please check for eny errors")
+            return toast.error("Please check for any errors")
         }
     }
 
@@ -288,7 +316,7 @@ export default function ProductForm(){
             />
             </Grid>
             <Grid item xs={12}>
-            <input
+            {/* <input //! este input ya no es necesario
                 accept="image/*"
                 type="file"
                 id="select-image"
@@ -303,7 +331,8 @@ export default function ProductForm(){
             {imageUrl && selectedImage && (
             <Box mt={1} textAlign="center">
             <img src={imageUrl} alt={selectedImage.name} width={200}/>
-            </Box>)}
+            </Box>)} */}
+            <input type="button" onClick={() => widgetRef.current.open()} value="Upload"/>
             </Grid>
             <Grid item xs={12}>
                 <Button
