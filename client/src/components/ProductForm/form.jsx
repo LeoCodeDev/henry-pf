@@ -34,6 +34,7 @@ export default function ProductForm(){
     const {categories, addProduct, deleteImage, fetchCategories} = useProductsStore()
 
     const [imageUrl, setImageUrl] = useState();
+    const [selectedImage, setSelectedImage] = useState()
 
     useEffect (() => {
         cloudinaryRef.current = window.cloudinary
@@ -49,11 +50,11 @@ export default function ProductForm(){
             clientAllowedFormats: ["jpg",'png','jpeg'],
         },function(err,res){
         if (!err && res && res.event === "success") {
-            console.log(imageUrl);
-            if(imageUrl){
-                deleteImage(imageUrl)
+            if(selectedImage){
+                deleteImage(selectedImage)
             }
-            setImageUrl(res.info.public_id)
+            setSelectedImage(res.info.public_id)
+            setImageUrl(res.info.url)
             setFormData({
                 ...formData,
                 image: res.info.url,
@@ -66,15 +67,6 @@ export default function ProductForm(){
     useEffect(()=>{
         fetchCategories()
     }, [fetchCategories])
-
-    //! ya no es necesario crear un objeto URL, te lo devuelve solo Cloudinary
-    // const [selectedImage, setSelectedImage] = useState(null);
-    // const [imageUrl, setImageUrl] = useState(null);
-    // useEffect(() => {
-    //     if (selectedImage) {
-    //     setImageUrl(URL.createObjectURL(selectedImage));
-    //     }
-    //     }, [selectedImage]);
 
     const[formData, setFormData]=useState({
         name:"",
@@ -143,9 +135,6 @@ export default function ProductForm(){
 }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData)
-        console.log(errors)
-        return
         if(allErrorsFalsy(errors)){
             try {
                 await addProduct(formData)
@@ -331,17 +320,17 @@ export default function ProductForm(){
                 id="select-image"
                 style={{ display: "none" }}
                 onChange={(e)=>setSelectedImage(e.target.files[0])}
-            />
+            />*/}
             <label htmlFor="select-image">
-                <Button variant="contained" color="primary" component="span" textAlign="center">
+                <Button variant="contained" color="primary" component="span" textAlign="center" onClick={() => widgetRef.current.open()}>
                 Upload Image
                 </Button>
             </label>
-            {imageUrl && selectedImage && (
+            {imageUrl && (
             <Box mt={1} textAlign="center">
-            <img src={imageUrl} alt={selectedImage.name} width={200}/>
-            </Box>)} */}
-            <input type="button" onClick={() => widgetRef.current.open()} value="Upload"/>
+            <img src={imageUrl} alt={imageUrl} width={200}/>
+            </Box>)}
+            
             </Grid>
             <Grid item xs={12}>
                 <Button
