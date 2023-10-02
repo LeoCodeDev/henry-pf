@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import viewsData from './viewsData';
-import React from "react";
 
 const Router = () => {
 

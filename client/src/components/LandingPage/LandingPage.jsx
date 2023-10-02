@@ -61,9 +61,6 @@ function SignInSide() {
   useEffect(() => {
     if (isLogged) {
       handleAuthentication();
-    } else {
-      setEmail("");
-      setPassword("");
     }
   }, [isLogged]);
 
