@@ -35,7 +35,7 @@ const useProductsStore = create((set) => ({
 
     try {
       const { data } = await axios(`/productByName?name=${name}`)
-      if (data.status !== 200) {
+      if (!data) {
         throw new Error('No products found')
       } else {
         set({

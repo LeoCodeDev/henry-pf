@@ -45,8 +45,6 @@ const Products = () => {
     fetchData()
   }, [fetchProducts])
 
-  console.log({ filteredProducts })
-
   const allProducts = filteredProducts.slice(
     currentPage * productsPerPage,
     (currentPage + 1) * productsPerPage
