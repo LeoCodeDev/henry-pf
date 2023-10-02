@@ -38,6 +38,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
   const { isLogged, authenticate } = useAuthStore();
 
   const [formData, setFormData] = useState({
+    email: email,
     firstName: firstName,
     lastName: lastName,
     password: "",
@@ -148,7 +149,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
     }
     try {
       const dataToSend = {
-        email: formData.email,
+        email: email,
         username: formData.nickName,
         first_name: formData.firstName,
         last_name: formData.lastName,
@@ -159,6 +160,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
         team: developerType,
       };
 
+      console.log(dataToSend)
       await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
 
@@ -250,7 +252,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
               name="email"
               value={email}
               disabled={true}
-              autoComplete="username"
+              autoComplete="off"
               sx={{
                 cursor: "not-allowed",
               }}
