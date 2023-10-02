@@ -24,19 +24,19 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#1976d2'
-    }
-  }
+      main: '#1976d2',
+    },
+  },
 })
 
 const pages = ['HOME', 'SHOP', 'EXERCISE']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
-export const NavBar = () => { 
+export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
   const { user, logout } = useAuthStore()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     logout()
@@ -63,7 +63,6 @@ export const NavBar = () => {
     setAnchorElUser(null)
   }
 
-
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar position="fixed">
@@ -71,7 +70,7 @@ export const NavBar = () => {
           <Toolbar disableGutters>
             <Typography
               variant="h6"
-              paddingLeft={"2rem"}
+              paddingLeft={'2rem'}
               noWrap
               component="a"
               href="/home"
@@ -81,8 +80,9 @@ export const NavBar = () => {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 color: 'inherit',
-                textDecoration: 'none'
-              }}>
+                textDecoration: 'none',
+              }}
+            >
               HealTech
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -92,7 +92,8 @@ export const NavBar = () => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                color="inherit">
+                color="inherit"
+              >
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -100,37 +101,41 @@ export const NavBar = () => {
                 anchorEl={anchorElNav}
                 anchorOrigin={{
                   vertical: 'bottom',
-                  horizontal: 'left'
+                  horizontal: 'left',
                 }}
                 keepMounted
                 transformOrigin={{
                   vertical: 'top',
-                  horizontal: 'left'
+                  horizontal: 'left',
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
                 sx={{
-                  display: { xs: 'block', md: 'none' }
-                }}>
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
                 <MenuItem
                   component="a"
                   href="/home"
                   key={'HOME'}
-                  onClick={handleCloseNavMenu}>
+                  onClick={handleCloseNavMenu}
+                >
                   <Typography>{'HOME'}</Typography>
                 </MenuItem>
                 <MenuItem
                   component="a"
                   href="/home"
                   key={'SHOP'}
-                  onClick={handleCloseNavMenu}>
+                  onClick={handleCloseNavMenu}
+                >
                   <Typography>{'SHOP'}</Typography>
                 </MenuItem>
                 <MenuItem
                   component="a"
                   href="/home"
                   key={'EXERCISE'}
-                  onClick={handleCloseNavMenu}>
+                  onClick={handleCloseNavMenu}
+                >
                   <Typography>{'EXERCISE'}</Typography>
                 </MenuItem>
               </Menu>
@@ -149,8 +154,9 @@ export const NavBar = () => {
                 fontFamily: 'monospace',
                 fontWeight: 500,
                 color: 'inherit',
-                textDecoration: 'none'
-              }}>
+                textDecoration: 'none',
+              }}
+            >
               HealTech
             </Typography>
 
@@ -159,8 +165,9 @@ export const NavBar = () => {
                 flexGrow: 1,
                 justifyContent: 'center',
                 gap: '3rem',
-                display: { xs: 'none', md: 'flex' }
-              }}>
+                display: { xs: 'none', md: 'flex' },
+              }}
+            >
               {pages.map((page) => (
                 <Button
                   key={page}
@@ -169,18 +176,17 @@ export const NavBar = () => {
                     my: 2,
                     fontWeight: 700,
                     color: 'white',
-                    display: 'block'
-                  }}>
+                    display: 'block',
+                  }}
+                >
                   {page}
                 </Button>
               ))}
             </Box>
 
             {/* Search Bar */}
-            <IconButton
-              size="large"
-              color="inherit">
-              <SearchIcon onClick={handleSearch} />
+            <IconButton size="large" color="inherit" onClick={handleSearch}>
+              <SearchIcon />
             </IconButton>
             {ifSearch && (
               <div
@@ -188,8 +194,9 @@ export const NavBar = () => {
                   position: 'absolute',
                   top: '100%',
                   left: '50%',
-                  zIndex: 100
-                }}>
+                  zIndex: 100,
+                }}
+              >
                 <SearchBar />
               </div>
             )}
@@ -198,7 +205,8 @@ export const NavBar = () => {
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit">
+              color="inherit"
+            >
               {/* Abajo de esta línea poner el estado de favoritos */}
               <Badge badgeContent={17} color="error">
                 <FavoriteBorderOutlinedIcon />
@@ -209,7 +217,8 @@ export const NavBar = () => {
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit">
+              color="inherit"
+            >
               {/* Abajo de esta línea poner el estado (.length) de carrito */}
               <Badge badgeContent={17} color="error">
                 <ShoppingCartOutlinedIcon />
@@ -217,7 +226,8 @@ export const NavBar = () => {
             </IconButton>
 
             <Box
-              sx={{ flexGrow: 0, paddingRight: '.8rem', paddingLeft: '.7rem' }}>
+              sx={{ flexGrow: 0, paddingRight: '.8rem', paddingLeft: '.7rem' }}
+            >
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt={user.username} src={user.avatar} />
@@ -230,21 +240,23 @@ export const NavBar = () => {
                 anchorEl={anchorElUser}
                 anchorOrigin={{
                   vertical: 'top',
-                  horizontal: 'right'
+                  horizontal: 'right',
                 }}
                 keepMounted
                 transformOrigin={{
                   vertical: 'top',
-                  horizontal: 'right'
+                  horizontal: 'right',
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}>
+                onClose={handleCloseUserMenu}
+              >
                 {settings.map((setting) => (
                   <MenuItem
                     key={setting}
                     onClick={
                       setting === 'Logout' ? handleLogout : handleCloseUserMenu
-                    }>
+                    }
+                  >
                     <Typography>{setting}</Typography>
                   </MenuItem>
                 ))}
