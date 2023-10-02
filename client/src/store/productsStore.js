@@ -75,6 +75,14 @@ const useProductsStore = create((set) => ({
       throw new Error(error.message)
     }
   },
+  deleteImage: async (image) =>{
+    try {
+      const res = await axios.post('/delImage',{image: image})
+      return res
+    } catch (error) {
+      throw new Error (error.message)
+    }
+  },
   applySort: (sort) => {
     const options = {
       abc: (a, b) => a.product_name.localeCompare(b.product_name),
