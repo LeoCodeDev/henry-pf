@@ -3,6 +3,8 @@ import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
 import Toolbar from '@mui/material/Toolbar'
 import Box from '@mui/material/Box'
+import { useProductsStore } from '../../store/productsStore'
+import { useState } from 'react'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -45,16 +47,51 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }))
 
 export const SearchBar = () => {
+  const setProductsByName = useProductsStore((state) => state.setProductsByName)
+  const fetchProducts = useProductsStore((state) => state.fetchProducts)
+
+  const [name, setName] = useState('')
+
+  const handleSearch = async (name) => {
+    try {
+      if (name === '') {
+        await fetchProducts()
+      } else {
+        await setProductsByName(name)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleChange = (event) => {
+    setName(event.target.value)
+    handleSearch(event.target.value)
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Toolbar>
-        <Search>
+        <Search
+          style={{
+            right: '100%',
+            backgroundBlendMode: 'multiply',
+            backgroundColor: '#0008',
+            border: 'solid 1px #fff',
+            transform: 'translateX(50%)',
+            top: '50%',
+            zIndex: '1',
+            width: '100%'
+          }}
+          sx={{ ml: 1, width: '100%' }}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
             placeholder="Search…"
             inputProps={{ 'aria-label': 'search' }}
+            value={name}
+            onChange={handleChange}
           />
         </Search>
       </Toolbar>
