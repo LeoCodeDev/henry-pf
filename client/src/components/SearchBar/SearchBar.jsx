@@ -11,15 +11,15 @@ const Search = styled('div')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25)
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
-    width: 'auto'
-  }
+    width: 'auto',
+  },
 }))
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -29,7 +29,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 }))
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -41,9 +41,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch'
-    }
-  }
+      width: '20ch',
+    },
+  },
 }))
 
 export const SearchBar = () => {
@@ -60,7 +60,7 @@ export const SearchBar = () => {
         await setProductsByName(name)
       }
     } catch (error) {
-      console.error(error)
+      throw new Error(error.message)
     }
   }
 
@@ -81,9 +81,10 @@ export const SearchBar = () => {
             transform: 'translateX(50%)',
             top: '50%',
             zIndex: '1',
-            width: '100%'
+            width: '100%',
           }}
-          sx={{ ml: 1, width: '100%' }}>
+          sx={{ ml: 1, width: '100%' }}
+        >
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
