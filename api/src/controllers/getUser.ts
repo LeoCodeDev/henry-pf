@@ -3,10 +3,10 @@ import { Request, Response } from "express";
 
 
 const getUser= async (req:Request, res:Response)=>{
-    const {username}=req.query
+    const {email}=req.query
     try {
         const userData= await User.findOne({
-            where:{username},
+            where:{email},
             include: Team
         })
         res.status(200).json(userData)
