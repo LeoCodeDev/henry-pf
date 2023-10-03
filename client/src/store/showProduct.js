@@ -4,12 +4,14 @@ import { create } from 'zustand'
 const useShowProductStore = create((set) => ({
   product: {},
   productById: async (id) => {
+    console.log(id);
     try {
       const { data } = await axios(`/products/${id}`)
-      if (data.status !== 200) {
+      console.log(data);
+      if (!data) {
         throw new Error(data.message)
       } else {
-        set({ product: data.product })
+        set({ product: data })
       }
     } catch (error) {
       throw new Error(error.message)
