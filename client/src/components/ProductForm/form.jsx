@@ -25,15 +25,18 @@ import {validName,
     validCategory,
 } from "./validations"
 
+
 export default function ProductForm(){
 
     const cloudinaryRef = useRef()
     const widgetRef = useRef()
+    const theme = useTheme();
+    const {categories, addProduct,fetchCategories ,deleteImage} = useProductsStore()
 
     const [imageUrl, setImageUrl] = useState();
     const [selectedImage, setSelectedImage] = useState()
 
-    useEffect (() => {
+    
         cloudinaryRef.current = window.cloudinary
         widgetRef.current = cloudinaryRef.current.createUploadWidget({
             cloudName:"healthtech", //nuestra nube
@@ -58,10 +61,8 @@ export default function ProductForm(){
                 })
         } 
     })
-    },[widgetRef.current, cloudinaryRef.current])
+    
 
-    const theme = useTheme();
-    const {categories, addProduct,fetchCategories ,deleteImage} = useProductsStore()
     useEffect(()=>{
         fetchCategories()
     }, [fetchCategories])
@@ -81,7 +82,7 @@ export default function ProductForm(){
         stock:0,
         rating:0,
         category:"",
-        image:"https://grafgearboxes.com/productos/images/df.jpg"
+        image:""
     })
 
     const [errors, setErrors]=useState({
@@ -153,7 +154,7 @@ export default function ProductForm(){
                     stock:0,
                     rating:0,
                     category:"",
-                    image:"https://grafgearboxes.com/productos/images/df.jpg"    
+                    image:""    
                 })
                 setSelectedImage(null)
                 setImageUrl(null)
