@@ -65,8 +65,9 @@ export const SearchBar = () => {
   }
 
   const handleChange = (event) => {
-    setName(event.target.value)
-    handleSearch(event.target.value)
+    const value = event.target.value
+    setName(value)
+    handleSearch(value)
   }
 
   return (

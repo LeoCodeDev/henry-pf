@@ -76,7 +76,7 @@ export const NavBar = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar position="fixed">
+      <AppBar position="stiky">
         <Container maxWidth="xl" style={{ padding: 0 }}>
           <Toolbar disableGutters>
             <Typography

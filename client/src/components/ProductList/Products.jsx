@@ -4,9 +4,12 @@ import { useProductsStore } from '../../store/productsStore'
 import { IconButton } from '@mui/material'
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material'
 import styles from './styles/Products.module.css'
+import { Link } from 'react-router-dom';
+import {useShowProductStore} from '../../store/showProduct'
 
 const Products = () => {
-  const { filteredProducts, fetchProducts, prefilterProducts } = useProductsStore()
+  const { filteredProducts, fetchProducts } = useProductsStore()
+  const { productById } = useShowProductStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
@@ -27,6 +30,10 @@ const Products = () => {
     (currentPage + 1) * productsPerPage
   )
 
+  const handleId = (id) => {
+    productById(id);
+  }
+
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1)
@@ -43,16 +50,13 @@ const Products = () => {
     setCurrentPage(0)
   }, [filteredProducts])
 
-  console.log({prefilterProducts});
-
   return (
     <div className={styles.productsContain}>
       <div className={styles.paginationContain}>
         <IconButton
           onClick={handlePrevPage}
           disabled={currentPage === 0}
-          sx={{ color: '#bfbfbf' }}
-        >
+          sx={{ color: '#bfbfbf' }}>
           <ArrowBackIosNew />
         </IconButton>
         <span>
@@ -61,15 +65,19 @@ const Products = () => {
         <IconButton
           onClick={handleNextPage}
           disabled={currentPage === totalPages - 1}
-          sx={{ color: '#539a07' }}
-        >
+          sx={{ color: '#539a07' }}>
           <ArrowForwardIos />
         </IconButton>
       </div>
 
       <div className={styles.cardsContain}>
         {allProducts.map((product) => (
-          <CardProduct product={product} key={product.id_product} />
+          <Link
+            to={'/product-detail'}
+            onClick={() => handleId(product.id_product)}
+            key={product.id_product}>
+            <CardProduct product={product} key={product.id_product} />
+          </Link>
         ))}
       </div>
     </div>
