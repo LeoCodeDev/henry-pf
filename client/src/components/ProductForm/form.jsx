@@ -39,9 +39,9 @@ export default function ProductForm(){
     
         cloudinaryRef.current = window.cloudinary
         widgetRef.current = cloudinaryRef.current.createUploadWidget({
-            cloudName:"healthtech", //nuestra nube
+            cloudName:"healtech", //nuestra nube
             uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
-            folder: 'healthtech/products', //folder products en el cual se subne las imagenes
+            folder: 'healtech/products', //folder products en el cual se subne las imagenes
             singleUploadAutoClose: false,
             multiple: false, //permite solo subir un archivo
             maxImageFileSize: 2000000, //peso maximo: 2 megas,

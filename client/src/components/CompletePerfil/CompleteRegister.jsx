@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import theme from "../../../theme";
 
-export default function CompleteRegister({ email, firstName, lastName }) {
+export default function CompleteRegister({ email, firstName, lastName, profilePic }) {
   const [selectedRole, setSelectedRole] = useState("User");
   const navigate = useNavigate();
   const { isLogged, authenticate } = useAuthStore();
@@ -41,6 +41,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
     email: email,
     firstName: firstName,
     lastName: lastName,
+    profilePic: profilePic,
     password: "",
     birthday: "",
     nickName: "",
@@ -56,7 +57,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
 
   const [isDeveloper, setIsDeveloper] = useState("Yes");
   const [developerType, setDeveloperType] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState(true); //momentaneo
 
   const handleIsDeveloperChange = (value) => {
     setIsDeveloper(value);
@@ -155,12 +156,11 @@ export default function CompleteRegister({ email, firstName, lastName }) {
         last_name: formData.lastName,
         password: formData.password,
         birth_date: formData.birthday,
-        avatar: selectedAvatar,
+        avatar: formData.profilePic,
         role: selectedRole,
         team: developerType,
       };
 
-      console.log(dataToSend)
       await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
 
@@ -361,11 +361,11 @@ export default function CompleteRegister({ email, firstName, lastName }) {
                 onChange={handleChange}
                 helperText={formErrors.nickName ? "Invalid nickName" : ""}
               />
-              <AvatarSelection
+              {/* <AvatarSelection
                 isDesktop={isDesktop}
                 avatars={avatars}
                 onChange={handleAvatarChange}
-              />
+              /> */}
             </Grid>
             <Grid item xs={12}>
               <FormControl component="fieldset">
