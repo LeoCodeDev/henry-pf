@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Error404.module.css";
 import HomeIcon from "@mui/icons-material/Home";

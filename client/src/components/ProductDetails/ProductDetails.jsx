@@ -9,7 +9,9 @@ import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import Button from '@mui/material/Button'
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
-
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import styles from '../Error404/Error404.module.css'
+import { useNavigate } from 'react-router-dom'
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -21,8 +23,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 
 export const ProductDetails = () => {
+  const navigate = useNavigate()
   const product = useShowProductStore((state) => state.product)
   console.log(product)
+
+  const handleHomeClick = () => {
+    navigate('/home')
+  }
 
   return (
     <div>
@@ -94,9 +101,10 @@ export const ProductDetails = () => {
           <Typography
             style={{ fontFamily: 'Poppins' }}
             variant="h5"
-            gutterBottom><h5 style={{margin:'.5rem'}}>Rating</h5>
-            <p style={{display: 'flex', justifyContent: 'center', margin: 0}}>
-            {product.rating}
+            gutterBottom>
+            <h5 style={{ margin: '.5rem' }}>Rating</h5>
+            <p style={{ display: 'flex', justifyContent: 'center', margin: 0 }}>
+              {product.rating}
             </p>
           </Typography>
         </div>
@@ -131,7 +139,7 @@ export const ProductDetails = () => {
               <Stack
                 direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}>
-                {product.Category.variants.map((size) => (
+                {product.Category?.variants?.map((size) => (
                   <Item
                     style={{ margin: '.5rem', color: '#24262E' }}
                     key={size}>
@@ -197,6 +205,33 @@ export const ProductDetails = () => {
               src={product.image}
               style={{ height: '5rem', background: 'transparent' }}></Item>
           </Stack>
+        </div>
+        <div
+          className={styles.mybutton}
+          onClick={handleHomeClick}
+          style={{
+            gridArea: '1 / 1 / 2 / 2',
+            display: 'flex',
+            position: 'absolute'
+          }}>
+          <Box
+            onClick={handleHomeClick}
+            style={{
+              marginLeft: '1rem',
+              display: 'flex',
+              position: 'absolute',
+              cursor: 'pointer'
+            }}
+            sx={{
+              backgroundColor: 'transparent',
+              color: 'white',
+              '&:hover': {
+                color: 'green'
+              }
+            }}>
+            <ArrowBackIosIcon />
+            <Typography component={'h3'}>Back</Typography>
+          </Box>
         </div>
       </main>
     </div>
