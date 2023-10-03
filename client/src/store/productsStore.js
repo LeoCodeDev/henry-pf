@@ -111,6 +111,14 @@ const useProductsStore = create((set) => ({
       return state;
     });
   },
+  deleteImage: async (image) =>{
+    try {
+      const res = await axios.post('/delImage',{image: image})
+      return res
+    } catch (error) {
+      throw new Error (error.message)
+    }
+  },
 }));
 
 export { useProductsStore };

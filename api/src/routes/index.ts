@@ -14,7 +14,7 @@ const getAllFavorites = require('../controllers/getAllFavorites');
 const postFavorite = require('../controllers/postFavorite');
 const delFavorite = require('../controllers/delFavorite');
 const getAllUsers= require('../controllers/getAllUsers')
-
+const delImage=require('../controllers/delImage')
 
 
 router.post('/postUser', postUser)
@@ -31,6 +31,7 @@ router.get('/getAllFavorites', getAllFavorites);
 router.post('/postFavorite', postFavorite);
 router.delete('/delFavorite', delFavorite);
 router.get('/allUsers', getAllUsers)
+router.post('/delImage', delImage);
 
 
 
