@@ -35,9 +35,9 @@ const useProductsStore = create((set) => ({
       throw new Error("Invalid name");
 
     try {
-      const { data } = await axios(`/productByName?name=${name}`);
-      if (data.status !== 200) {
-        throw new Error("No products found");
+      const { data } = await axios(`/productByName?name=${name}`)
+      if (!data) {
+        throw new Error('No products found')
       } else {
         set({
           products: data,
@@ -86,6 +86,14 @@ const useProductsStore = create((set) => ({
       }
     } catch (error) {
       throw new Error(error.message);
+    }
+  },
+  deleteImage: async (image) =>{
+    try {
+      const res = await axios.post('/delImage',{image: image})
+      return res
+    } catch (error) {
+      throw new Error (error.message)
     }
   },
   applySort: (sort) => {

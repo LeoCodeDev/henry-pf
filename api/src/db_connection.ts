@@ -1,16 +1,25 @@
 require("dotenv").config();
 import { Sequelize } from 'sequelize';
-const {DB_DEPLOY} = process.env;
+const {DB_DEPLOY,API_KEY_CLOUDINARY,API_SECRET_CLOUDINARY} = process.env;
 import {ProductModel} from './models/Product';
 import {CategoryModel} from './models/Category';
 import {UserModel} from './models/User';
 import {TeamModel} from './models/Team';
+import cloudinary from 'cloudinary';
 
 
 // const sequelize = new Sequelize(
 //     `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DBB}`,
 //     { logging: false, native: false }
 // )
+
+cloudinary.v2.config({
+    cloud_name: 'healthtech',
+    api_key: API_KEY_CLOUDINARY,
+    api_secret: API_SECRET_CLOUDINARY,
+    secure: true,
+    });
+
 if(!DB_DEPLOY){
     throw new Error("DB_DEPLOY is not defined")
 

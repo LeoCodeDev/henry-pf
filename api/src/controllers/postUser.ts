@@ -24,12 +24,10 @@ const postUser= async (req: Request, res: Response) => {
         } 
         );
         if (created) {
-            console.log('user', user)
-            if(role==="User"){
             const associatedTeam= await Team.findOne({ where: { name: team } });
             if(associatedTeam){
                 await user.setTeam(associatedTeam)
-            }}
+            }
             res.status(200).json({ message: 'User created successfully'});
         } else {
             res.status(200).json({ message: 'Email already registered'});

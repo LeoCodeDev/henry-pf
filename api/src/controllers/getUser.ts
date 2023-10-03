@@ -1,18 +1,25 @@
-const {User, Team}= require("../db_connection")
+const { User, Team } = require("../db_connection")
 import { Request, Response } from "express";
 
 
-const getUser= async (req:Request, res:Response)=>{
-    const {username}=req.query
+const getUser = async (req: Request, res: Response) => {
+    const { email } = req.query
     try {
-        const userData= await User.findOne({
-            where:{username},
+        const userData = await User.findOne({
+            where: { email },
             include: Team
         })
-        res.status(200).json(userData)
-    } catch (error:any) {
-        res.status(500).json({error:error.message})
+
+        if (!userData) {
+            return res.status(404).json({
+                "message": "User not found"
+            })
+        }
+
+       return res.status(200).json(userData)
+    } catch (error: any) {
+       return res.status(500).json({ error: error.message })
     }
 }
 
-module.exports=getUser;
+module.exports = getUser;

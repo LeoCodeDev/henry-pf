@@ -19,6 +19,7 @@ import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import title from "../../assets/images/title.png";
 import toast, { Toaster } from "react-hot-toast";
+import GoogleLogin from "../ThirdPartyAuth/GoogleLogin";
 
 function SignInSide() {
   const [formVisible, setFormVisible] = useState(false);
@@ -29,7 +30,7 @@ function SignInSide() {
   const [passwordError, setPasswordError] = useState(false);
   const navigate = useNavigate();
   const { isLogged, authenticate } = useAuthStore();
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -46,8 +47,8 @@ function SignInSide() {
     try {
       await authenticate({ email, password });
     } catch (error) {
-      toast.error("Error Authentication!");
-      console.error("Error de autenticación:", error.message);
+      toast.error("Authentication Error!");
+      console.error("Authentication Error:", error.message);
     }
   };
 
@@ -183,9 +184,9 @@ function SignInSide() {
               id={emailError ? "outlined-error-helper-text" : "email"}
               label={emailError ? "Error" : "Email Address"}
               name="email"
-              autoComplete="none"
+              autoComplete="off"
               helperText={emailError ? "Invalid email format" : ""}
-              value={email}
+              value={email || " "}
             />
             <TextField
               error={passwordError}
@@ -196,7 +197,7 @@ function SignInSide() {
               name="password"
               label={passwordError ? "Error" : "Password"}
               type="password"
-              autoComplete="current-password"
+              autoComplete="off"
               id={passwordError ? "outlined-error-helper-text" : "password"}
               helperText={
                 passwordError
@@ -218,6 +219,7 @@ function SignInSide() {
             >
               Sign In
             </Button>
+            <GoogleLogin></GoogleLogin>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signup" variant="body2">
