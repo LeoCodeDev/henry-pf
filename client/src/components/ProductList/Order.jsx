@@ -19,9 +19,8 @@ const Order = () => {
   };
   const { applySort } = useProductsStore();
 
-  const handleChange = (event) => {
-    console.log({event});
-    applySort(event.target.id);
+  const handleChange = (value) => {
+    applySort(value);
   };
 
   return (
@@ -65,32 +64,32 @@ const Order = () => {
         >
           <List>
             <ListItem>
-              <ListItemButton onClick={handleChange} id={`expensive`}>
+              <ListItemButton onClick={()=> handleChange('expensive')}>
                 <ListItemText primary="Higher Price 🡩"/>
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton onClick={handleChange}>
+              <ListItemButton onClick={()=>handleChange('cheap')}>
                 <ListItemText primary="Lower price 🡫"  />
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton onClick={handleChange}>
+              <ListItemButton onClick={()=>handleChange('abc')}>
                 <ListItemText primary="Alphabetical 🡩" />
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton onClick={handleChange}>
+              <ListItemButton onClick={()=>handleChange('zyx')}>
                 <ListItemText primary="Alphabetical 🡫"  />
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton onClick={handleChange}>
+              <ListItemButton onClick={()=>handleChange('mRated')}>
                 <ListItemText primary="Higher Rate 🡩"  />
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton onClick={handleChange}>
+              <ListItemButton onClick={()=>handleChange('lRated')}>
                 <ListItemText primary="Lower Rate 🡫"  />
               </ListItemButton>
             </ListItem>
