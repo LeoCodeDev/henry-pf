@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import theme from "../../../theme";
 
-export default function CompleteRegister({ email, firstName, lastName }) {
+export default function CompleteRegister({ email, firstName, lastName, profilePic }) {
   const [selectedRole, setSelectedRole] = useState("User");
   const navigate = useNavigate();
   const { isLogged, authenticate } = useAuthStore();
@@ -41,6 +41,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
     email: email,
     firstName: firstName,
     lastName: lastName,
+    profilePic: profilePic,
     password: "",
     birthday: "",
     nickName: "",
@@ -56,7 +57,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
 
   const [isDeveloper, setIsDeveloper] = useState("Yes");
   const [developerType, setDeveloperType] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState(true); //momentaneo
 
   const handleIsDeveloperChange = (value) => {
     setIsDeveloper(value);
@@ -155,12 +156,11 @@ export default function CompleteRegister({ email, firstName, lastName }) {
         last_name: formData.lastName,
         password: formData.password,
         birth_date: formData.birthday,
-        avatar: selectedAvatar,
+        avatar: formData.profilePic,
         role: selectedRole,
         team: developerType,
       };
 
-      console.log(dataToSend)
       await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
 
@@ -192,25 +192,15 @@ export default function CompleteRegister({ email, firstName, lastName }) {
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        maxHeight: "80vh",
-        backgroundColor: theme.palette.background.main,
-        padding: "2vh",
-      }}
-    >
       <Grid
         item
         xs={12}
         sm={8}
         md={5}
-        component={Paper}
-        elevation={6}
-        square
+
         sx={
           {
-            // backgroundColor: theme.palette.background.main,
+            padding: 8,
           }
         }
       >
@@ -220,14 +210,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
           onSubmit={handleSubmit}
           sx={{
             backgroundColor: theme.palette.background_ligth.main,
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: 4,
-            borderRadius: 6,
-            marginTop: 1,
-            minWidth: "90vh",
-            // width: isDessktop ? "40%" : "70%",
+            width: "100vh",
           }}
         >
           <Typography
@@ -255,6 +238,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
               autoComplete="off"
               sx={{
                 cursor: "not-allowed",
+                marginBlock: "2vh",
               }}
             />
           </Grid>
@@ -313,39 +297,10 @@ export default function CompleteRegister({ email, firstName, lastName }) {
                     : ""
                 }
               />
+              
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                id="date"
-                label="Birthday"
-                type="date"
-                name="birthday"
-                value={formData.birthday}
-                onChange={handleChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} mt={1}>
-              <SelectLabels
-                isDesktop={isDesktop}
-                isDeveloper={isDeveloper}
-                developerType={developerType}
-                onIsDeveloperChange={handleIsDeveloperChange}
-                onDeveloperTypeChange={handleDeveloperTypeChange}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              style={{
-                display: "flex",
-                flexDirection: isDesktop ? "row" : "column",
-                justifyContent: "space-around",
-              }}
-            >
-              <TextField
+            <TextField
                 style={{ width: "auto" }}
                 error={formErrors.nickName}
                 name="nickName"
@@ -361,14 +316,33 @@ export default function CompleteRegister({ email, firstName, lastName }) {
                 onChange={handleChange}
                 helperText={formErrors.nickName ? "Invalid nickName" : ""}
               />
-              <AvatarSelection
+              
+            </Grid>
+            <Grid item xs={12} sm={12} style={{display:"flex", justifyContent: "space-around"}}>
+              <TextField
+                id="date"
+                label="Birthday"
+                type="date"
+                name="birthday"
+                value={formData.birthday}
+                onChange={handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+                <SelectLabels
                 isDesktop={isDesktop}
-                avatars={avatars}
-                onChange={handleAvatarChange}
+                isDeveloper={isDeveloper}
+                developerType={developerType}
+                onIsDeveloperChange={handleIsDeveloperChange}
+                onDeveloperTypeChange={handleDeveloperTypeChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{display:"flex", flexDirection:"row-reverse", justifyContent:"center", gap:"20vh" }}>
+            <img src={profilePic} style={{borderRadius:"50%", border: `2px groove ${theme.palette.primary.main}`  }}></img>
+
               <FormControl component="fieldset">
+
                 <FormLabel id="demo-controlled-radio-buttons-group">
                   Role
                 </FormLabel>
@@ -407,8 +381,7 @@ export default function CompleteRegister({ email, firstName, lastName }) {
             </Link>
           </Grid>
         </Box>
-      </Grid>
       <Toaster position="top-center" reverseOrder={false} />
-    </div>
+      </Grid>
   );
 }

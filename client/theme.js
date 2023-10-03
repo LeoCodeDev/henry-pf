@@ -20,6 +20,12 @@ const theme = createTheme({
     background_ligth: {
         main: '#ffff', 
     },
+    background_dark: {
+      main: '#010402'
+    },
+    text: {
+      main: '#bfbfbf'
+    }
   },
   typography: {
     fontFamily: 'poppins, sans-serif',

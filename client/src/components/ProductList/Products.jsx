@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 import {useShowProductStore} from '../../store/showProduct';
 
 const Products = () => {
-  const { filteredProducts, fetchProducts } = useProductsStore();
-  const {productById} = useShowProductStore((state) => state)
+
+  const { filteredProducts, fetchProducts, productById } = useProductsStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)

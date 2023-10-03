@@ -43,34 +43,36 @@ export default function ProductForm() {
 
   const [imageUrl, setImageUrl] = useState()
   const [selectedImage, setSelectedImage] = useState()
+    
+        cloudinaryRef.current = window.cloudinary
+        widgetRef.current = cloudinaryRef.current.createUploadWidget({
+            cloudName:"healtech", //nuestra nube
+            uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
+            folder: 'healtech/products', //folder products en el cual se subne las imagenes
+            singleUploadAutoClose: false,
+            multiple: false, //permite solo subir un archivo
+            maxImageFileSize: 2000000, //peso maximo: 2 megas,
+            maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
+            cropping: true, //le permite recortar la imagen de ser necesario
+            clientAllowedFormats: ["jpg",'png','jpeg'],
+        },function(err,res){
+        if (!err && res && res.event === "success") {
+            if(selectedImage){
+                deleteImage(selectedImage)
+            }
+            setSelectedImage(res.info.public_id)
+            setImageUrl(res.info.url)
+            setFormData({
+                ...formData,
+                image: res.info.url,
+                })
+        } 
+    })
+    
 
-  cloudinaryRef.current = window.cloudinary
-  widgetRef.current = cloudinaryRef.current.createUploadWidget(
-    {
-      cloudName: 'healthtech', //nuestra nube
-      uploadPreset: 'otiod5ve', //preselector de subidas (incluye info de como se sube)
-      folder: 'healthtech/products', //folder products en el cual se subne las imagenes
-      singleUploadAutoClose: false,
-      multiple: false, //permite solo subir un archivo
-      maxImageFileSize: 2000000, //peso maximo: 2 megas,
-      maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
-      cropping: true, //le permite recortar la imagen de ser necesario
-      clientAllowedFormats: ['jpg', 'png', 'jpeg']
-    },
-    function (err, res) {
-      if (!err && res && res.event === 'success') {
-        if (selectedImage) {
-          deleteImage(selectedImage)
-        }
-        setSelectedImage(res.info.public_id)
-        setImageUrl(res.info.url)
-        setFormData({
-          ...formData,
-          image: res.info.url
-        })
-      }
-    }
-  )
+    useEffect(()=>{
+        fetchCategories()
+    }, [fetchCategories])
 
   useEffect(() => {
     fetchCategories()
