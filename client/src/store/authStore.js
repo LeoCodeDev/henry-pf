@@ -2,7 +2,7 @@ import axios from 'axios'
 import { create } from 'zustand'
 
 const userGuest = {
-  username: 'Guest',
+  username: '?',
   email: '',
   role: 'guest',
   avatar: '../assets/images/avatars/avatar10.jpg',

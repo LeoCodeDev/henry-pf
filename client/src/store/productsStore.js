@@ -42,6 +42,7 @@ const useProductsStore = create((set) => ({
         set({
           products: data,
           prefilterProducts: data,
+          filteredProducts: data
         });
       }
     } catch (error) {
