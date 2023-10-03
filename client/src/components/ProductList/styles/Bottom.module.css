@@ -1,8 +1,7 @@
 .containerMain {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
   margin-top: 5rem;
+  justify-content: center;
 }
 
 /*Filters and Orders*/
@@ -27,6 +26,51 @@
 select option {
   background-color: #010402;
   border: none;
+}
+
+/*Medias Querys*/
+  
+@media (max-width: 440px) {
+  .containerMain {
+    gap: 3%;
+  }
+}
+
+@media (min-width: 440px) {
+  .containerMain {
+    gap: 8%
+  }
+}
+@media (min-width: 871px) {
+  .containerMain {
+    gap: 34%
+  }
+}
+@media (min-width: 1000px) {
+  .containerMain {
+    gap: 55%
+  }
+}
+
+@media (min-width: 1200px) {
+  .containerMain {
+    gap: 48%
+  }
+}
+@media (min-width: 1400px) {
+  .containerMain{
+    gap:62%
+  }
+}
+@media (min-width: 1700px) {
+  .containerMain{
+    gap: 70%
+  }
+}
+@media (min-width: 1800px) {
+  .containerMain{
+    gap: 56%
+  }
 }
 
 
