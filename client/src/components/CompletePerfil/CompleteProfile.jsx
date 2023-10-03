@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { CircularProgress, Dialog, DialogTitle, Button } from "@mui/material";
 import CompleteRegister from "./CompleteRegister";
 
-function CompleteProfile({ email, firstName, lastName }) {
+function CompleteProfile({ email, firstName, lastName,profilePic }) {
   const { isLogged, authenticate } = useAuthStore();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -96,7 +96,7 @@ function CompleteProfile({ email, firstName, lastName }) {
             >
               Close
             </Button>
-            <CompleteRegister email={email} firstName={firstName} lastName={lastName} />
+            <CompleteRegister email={email} firstName={firstName} lastName={lastName} profilePic={profilePic} />
           </Dialog>
         </>
       )}

@@ -9,7 +9,7 @@ import {TeamModel} from './models/Team';
 import {v2 as cloudinary} from 'cloudinary';
 
 cloudinary.config({ 
-  cloud_name: 'healthtech', 
+  cloud_name: 'healtech', 
   api_key: API_KEY_CLOUDINARY, 
   api_secret: API_SECRET_CLOUDINARY 
 });

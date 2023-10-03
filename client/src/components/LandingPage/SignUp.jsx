@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   useMediaQuery,
@@ -35,6 +35,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import title from "../../assets/images/title.png";
+import { useProductsStore } from "../../store/productsStore";
+
 
 export default function SignUp() {
   const [formVisible, setFormVisible] = useState(false);
@@ -43,6 +45,38 @@ export default function SignUp() {
   const navigate = useNavigate();
   const { isLogged, authenticate } = useAuthStore();
 
+  const cloudinaryRef = useRef()
+  const widgetRef = useRef()
+  const {deleteImage} = useProductsStore()
+
+  const [imageUrl, setImageUrl] = useState();
+  const [selectedImage, setSelectedImage] = useState()
+
+      cloudinaryRef.current = window.cloudinary
+      widgetRef.current = cloudinaryRef.current.createUploadWidget({
+          cloudName:"healtech", //nuestra nube
+          uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
+          folder: 'healtech/products', //folder products en el cual se subne las imagenes
+          singleUploadAutoClose: false,
+          multiple: false, //permite solo subir un archivo
+          maxImageFileSize: 2000000, //peso maximo: 2 megas,
+          maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
+          cropping: true, //le permite recortar la imagen de ser necesario
+          clientAllowedFormats: ["jpg",'png','jpeg'],
+      },function(err,res){
+      if (!err && res && res.event === "success") {
+          if(selectedImage){
+              deleteImage(selectedImage)
+          }
+          setSelectedImage(res.info.public_id)
+          setImageUrl(res.info.url)
+          setFormData({
+              ...formData,
+              image: imageUrl,
+              })
+      } 
+  })
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -50,6 +84,7 @@ export default function SignUp() {
     password: "",
     birthday: "",
     nickName: "",
+    image:""
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -397,28 +432,23 @@ export default function SignUp() {
                   justifyContent: "space-between",
                 }}
               >
-                <TextField
-                  style={{ width: "auto" }}
-                  error={formErrors.nickName}
-                  name="nickName"
-                  required
-                  fullWidth
-                  id={
-                    formErrors.nickName
-                      ? "outlined-error-helper-text"
-                      : "nickName"
-                  }
-                  label={formErrors.nickName ? "Error" : "Nick Name"}
-                  value={formData.nickName}
-                  onChange={handleChange}
-                  helperText={formErrors.nickName ? "Invalid nickName" : ""}
-                />
+              </Grid >
+              <Grid item xs={12} sm={6}>
                 <AvatarSelection
                   isDesktop={isDesktop}
                   avatars={avatars}
                   onChange={handleAvatarChange}
-                />
+                />            
               </Grid>
+              {/* <Grid item xs={12} sm={6} l={12}>
+                    <Button variant="contained" color="primary" component="span" textAlign="center" onClick={() => widgetRef.current.open()}>
+                    Upload Image
+                    </Button>   
+                {imageUrl && (
+                  <Box mt={1} textAlign="center">
+                  <img src={imageUrl} alt={imageUrl} width={200}/>
+                    </Box>)}
+              </Grid> */}
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <FormLabel id="demo-controlled-radio-buttons-group">

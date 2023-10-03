@@ -45,7 +45,6 @@ function GoogleLogin() {
     });
   };
   
-
   // Manejar el inicio de sesión con Google
   const handleGoogleLogin = () => {
     const auth = getAuth();
@@ -103,6 +102,7 @@ function GoogleLogin() {
     email={userData.email}
     firstName={userData.firstName}
     lastName={userData.lastName}
+    profilePic={userData.photoURL} 
   />}
     </div>
   );

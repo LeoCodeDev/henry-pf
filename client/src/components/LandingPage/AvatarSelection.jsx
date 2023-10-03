@@ -28,7 +28,7 @@ export default function AvatarSelection(props) {
           </MenuItem>
           {avatars.map((avatar, index) => {
             return (
-              <MenuItem key={index} value={avatar.label}>
+              <MenuItem key={index} value={avatar.src}>
                 <div
                   style={{
                     display: "flex",
