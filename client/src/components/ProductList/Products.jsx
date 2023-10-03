@@ -3,10 +3,13 @@ import { CardProduct } from '../CardProduct/CardProduct'
 import { useProductsStore } from '../../store/productsStore'
 import { IconButton } from '@mui/material'
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material'
-import styles from './styles/Products.module.css'
+import styles from './styles/Products.module.css';
+import { Link } from 'react-router-dom';
+import {useShowProductStore} from '../../store/showProduct';
 
 const Products = () => {
-  const { filteredProducts, fetchProducts} = useProductsStore()
+
+  const { filteredProducts, fetchProducts, productById } = useProductsStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
@@ -26,6 +29,10 @@ const Products = () => {
     currentPage * productsPerPage,
     (currentPage + 1) * productsPerPage
   )
+
+  const handleProductId = (id) => {
+    productById(id)
+  }
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -49,8 +56,7 @@ const Products = () => {
         <IconButton
           onClick={handlePrevPage}
           disabled={currentPage === 0}
-          sx={{ color: '#bfbfbf' }}
-        >
+          sx={{ color: '#bfbfbf' }}>
           <ArrowBackIosNew />
         </IconButton>
         <span>
@@ -59,15 +65,16 @@ const Products = () => {
         <IconButton
           onClick={handleNextPage}
           disabled={currentPage === totalPages - 1}
-          sx={{ color: '#539a07' }}
-        >
+          sx={{ color: '#539a07' }}>
           <ArrowForwardIos />
         </IconButton>
       </div>
 
       <div className={styles.cardsContain}>
         {allProducts.map((product) => (
-          <CardProduct product={product} key={product.id_product} />
+          <Link onClick={() => handleProductId(product.id_product)} className={styles.card} to={'/product-detail'} key={product.id_product}>
+            <CardProduct product={product} key={product.id_product} />
+          </Link>
         ))}
       </div>
     </div>

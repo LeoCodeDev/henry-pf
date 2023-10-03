@@ -36,3 +36,8 @@
   :root {
     --background-color: #010402
   }
+
+  @font-face {
+    font-family: 'Poppins';
+    src: url('./assets/Fonts/Poppins/Poppins-Regular.ttf');
+  }

@@ -57,8 +57,6 @@ export const NavBar = () => {
 
   const handleMenu = (e) => {
     const value = e.target.innerText
-    console.log(value)
-
     if (value === 'HOME') navigate('/home');
     if (value === 'SHOP') navigate('/home');
     if (value === 'EXERCISE') navigate('/home')
@@ -218,7 +216,7 @@ export const NavBar = () => {
               aria-label="show 17 new notifications"
               color="inherit">
               {/* Abajo de esta línea poner el estado de favoritos */}
-              <Badge badgeContent={17} color="error">
+              <Badge color="error">
                 <FavoriteBorderOutlinedIcon />
               </Badge>
             </IconButton>
@@ -229,7 +227,7 @@ export const NavBar = () => {
               aria-label="show 17 new notifications"
               color="inherit">
               {/* Abajo de esta línea poner el estado (.length) de carrito */}
-              <Badge badgeContent={17} color="error">
+              <Badge color="error">
                 <ShoppingCartOutlinedIcon />
               </Badge>
             </IconButton>
