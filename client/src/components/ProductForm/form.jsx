@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import Typography from "@mui/material/Typography";
 import {
@@ -26,19 +26,53 @@ import {validName,
 } from "./validations"
 
 export default function ProductForm(){
+
+    const cloudinaryRef = useRef()
+    const widgetRef = useRef()
+
+    const [imageUrl, setImageUrl] = useState();
+    const [selectedImage, setSelectedImage] = useState()
+
+    useEffect (() => {
+        cloudinaryRef.current = window.cloudinary
+        widgetRef.current = cloudinaryRef.current.createUploadWidget({
+            cloudName:"healthtech", //nuestra nube
+            uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
+            folder: 'healthtech/products', //folder products en el cual se subne las imagenes
+            singleUploadAutoClose: false,
+            multiple: false, //permite solo subir un archivo
+            maxImageFileSize: 2000000, //peso maximo: 2 megas,
+            maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
+            cropping: true, //le permite recortar la imagen de ser necesario
+            clientAllowedFormats: ["jpg",'png','jpeg'],
+        },function(err,res){
+        if (!err && res && res.event === "success") {
+            if(selectedImage){
+                deleteImage(selectedImage)
+            }
+            setSelectedImage(res.info.public_id)
+            setImageUrl(res.info.url)
+            setFormData({
+                ...formData,
+                image: res.info.url,
+                })
+        } 
+    })
+    },[widgetRef.current, cloudinaryRef.current])
+
     const theme = useTheme();
-    const {categories, addProduct,fetchCategories} = useProductsStore()
+    const {categories, addProduct,fetchCategories ,deleteImage} = useProductsStore()
     useEffect(()=>{
         fetchCategories()
     }, [fetchCategories])
 
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imageUrl, setImageUrl] = useState(null);
-    useEffect(() => {
-        if (selectedImage) {
-        setImageUrl(URL.createObjectURL(selectedImage));
-        }
-        }, [selectedImage]);
+    // const [selectedImage, setSelectedImage] = useState(null);
+    // const [imageUrl, setImageUrl] = useState(null);
+    // useEffect(() => {
+    //     if (selectedImage) {
+    //     setImageUrl(URL.createObjectURL(selectedImage));
+    //     }
+    //     }, [selectedImage]);
 
     const[formData, setFormData]=useState({
         name:"",
@@ -288,21 +322,21 @@ export default function ProductForm(){
             />
             </Grid>
             <Grid item xs={12}>
-            <input
+            {/*<input
                 accept="image/*"
                 type="file"
                 id="select-image"
                 style={{ display: "none" }}
                 onChange={(e)=>setSelectedImage(e.target.files[0])}
-            />
+            />*/ }
             <label htmlFor="select-image">
-                <Button variant="contained" color="primary" component="span" textAlign="center">
+                <Button variant="contained" color="primary" component="span" textAlign="center" onClick={() => widgetRef.current.open()}>
                 Upload Image
                 </Button>
             </label>
-            {imageUrl && selectedImage && (
+            {imageUrl && (
             <Box mt={1} textAlign="center">
-            <img src={imageUrl} alt={selectedImage.name} width={200}/>
+            <img src={imageUrl} alt={imageUrl} width={200}/>
             </Box>)}
             </Grid>
             <Grid item xs={12}>
