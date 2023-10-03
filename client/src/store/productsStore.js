@@ -55,20 +55,14 @@ const useProductsStore = create((set) => ({
       return {prefilterProducts: [...prefiltered], filteredProducts: [...prefiltered]}
     });
   },
-  applyFilters: (filter) =>{
-    const filters = {
-      R1: (product)=> product.rating <= 1,
-      R2: (product)=> product.rating >= 2 && product.rating < 3,
-      R3: (product)=> product.rating >= 3 && product.rating < 4,
-      R4: (product)=> product.rating >= 4 && product.rating < 5,
-      R5: (product)=> product.rating === 5,
-      P1: (product)=> product.price < 50,
-      P2: (product)=> product.price < 100,
-      P3: (product)=> product.price < 200,
-      P4: (product)=> product.price < 500,
-    }
+  // @params = objectValues -> Objeto con Valores minimos y maximos
+  applyFilters: (objectValues) =>{
+    const {priceMin, priceMax, rateMin, rateMax} = objectValues
     set((state)=>({
-      filteredProducts: state.prefilterProducts.filter(filters[filter])
+      filteredProducts: state.prefilterProducts.filter(product=> (
+        (product.rating >= rateMin && product.rating <= rateMax) &&
+        (product.price >= priceMin && product.price <= priceMax)
+      ))
     }))
   },
   clearFilters: () =>

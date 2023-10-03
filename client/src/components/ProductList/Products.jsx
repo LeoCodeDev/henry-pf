@@ -6,7 +6,7 @@ import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material'
 import styles from './styles/Products.module.css'
 
 const Products = () => {
-  const { filteredProducts, fetchProducts, prefilterProducts } = useProductsStore()
+  const { filteredProducts, fetchProducts} = useProductsStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
@@ -42,8 +42,6 @@ const Products = () => {
   useEffect(() => {
     setCurrentPage(0)
   }, [filteredProducts])
-
-  console.log({prefilterProducts});
 
   return (
     <div className={styles.productsContain}>
