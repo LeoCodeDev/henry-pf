@@ -186,7 +186,7 @@ function SignInSide() {
               name="email"
               autoComplete="off"
               helperText={emailError ? "Invalid email format" : ""}
-              value={email || " "}
+              value={email || ""}
             />
             <TextField
               error={passwordError}
