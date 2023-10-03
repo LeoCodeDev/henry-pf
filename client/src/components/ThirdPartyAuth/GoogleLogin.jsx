@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
@@ -19,7 +19,7 @@ const firebaseConfig = {
 // Inicializa Firebase
 initializeApp(firebaseConfig);
 
-function GoogleLogin() {
+function GoogleLogin({setLoc}) {
   // Crear una instancia de GoogleAuthProvider
   const googleAuthProvider = new GoogleAuthProvider();
 
@@ -29,13 +29,15 @@ function GoogleLogin() {
   // Datos del usuario autenticado
   const [userData, setUserData] = useState(null);
 
+
+  
   // Función para obtener y establecer los datos del usuario
   const fetchUserData = (user) => {
     const displayName = user.displayName;
-    const nameParts = displayName.split(' '); // Dividir el nombre en partes por espacio
+    const nameParts = displayName.split(" "); // Dividir el nombre en partes por espacio
     const firstName = nameParts[0]; // Primer elemento
     const lastName = nameParts[nameParts.length - 1]; // Último elemento
-  
+
     setUserData({
       displayName: user.displayName,
       email: user.email,
@@ -44,7 +46,7 @@ function GoogleLogin() {
       lastName: lastName,
     });
   };
-  
+
   // Manejar el inicio de sesión con Google
   const handleGoogleLogin = () => {
     const auth = getAuth();
@@ -85,7 +87,7 @@ function GoogleLogin() {
           <img src={userData.photoURL} alt="Foto de perfil" />
           <p>Correo electrónico: {userData.email}</p> */}
           <Button variant="contained" color="primary" onClick={handleLogout}>
-            Cerrar sesión
+            Logout
           </Button>
         </div>
       ) : (
@@ -98,12 +100,15 @@ function GoogleLogin() {
           Sign in with Google
         </Button>
       )}
-      {isAuthenticated &&  <CompleteProfile
-    email={userData.email}
-    firstName={userData.firstName}
-    lastName={userData.lastName}
-    profilePic={userData.photoURL} 
-  />}
+      {isAuthenticated && (
+        <CompleteProfile
+          setLoc={setLoc}
+          email={userData.email}
+          firstName={userData.firstName}
+          lastName={userData.lastName}
+          profilePic={userData.photoURL}
+        />
+      )}
     </div>
   );
 }

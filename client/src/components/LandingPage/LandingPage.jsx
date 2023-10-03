@@ -30,7 +30,8 @@ function SignInSide() {
   const [passwordError, setPasswordError] = useState(false);
   const navigate = useNavigate();
   const { isLogged, authenticate } = useAuthStore();
-  
+  const [loc, setLoc] = useState("landing");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -59,7 +60,7 @@ function SignInSide() {
   };
 
   useEffect(() => {
-    if (isLogged) {
+    if (isLogged && loc === "landing" ) {
       handleAuthentication();
     }
   }, [isLogged]);
@@ -219,7 +220,7 @@ function SignInSide() {
             >
               Sign In
             </Button>
-            <GoogleLogin></GoogleLogin>
+            <GoogleLogin setLoc={setLoc}></GoogleLogin>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signup" variant="body2">
