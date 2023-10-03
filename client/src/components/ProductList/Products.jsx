@@ -1,26 +1,3 @@
-/* import { CardProduct } from "../CardProduct/CardProduct";
-import { useProductsStore } from "../../store/productsStore";
-import { useEffect } from "react";
-import styles from './styles/Products.module.css';
-
-const Products = () => {
-  const fetchProducts = useProductsStore((state) => state.fetchProducts);
-  const products = useProductsStore((state) => state.filteredProducts);
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]); 
-  console.log(products);
-  return (
-    <div className={styles.cardsContain}>
-      {products.map((product) => (
-        <CardProduct product={product} key={product.id_product} />
-      ))}
-    </div>
-  );
-};
-
-export default Products;
- */
 import { useState, useEffect } from 'react'
 import { CardProduct } from '../CardProduct/CardProduct'
 import { useProductsStore } from '../../store/productsStore'
@@ -29,7 +6,7 @@ import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material'
 import styles from './styles/Products.module.css'
 
 const Products = () => {
-  const { filteredProducts, fetchProducts } = useProductsStore()
+  const { filteredProducts, fetchProducts, prefilterProducts } = useProductsStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
@@ -66,9 +43,10 @@ const Products = () => {
     setCurrentPage(0)
   }, [filteredProducts])
 
+  console.log({prefilterProducts});
+
   return (
-    <>
-      <div className={styles.productsContain}>
+    <div className={styles.productsContain}>
       <div className={styles.paginationContain}>
         <IconButton
           onClick={handlePrevPage}
@@ -77,7 +55,7 @@ const Products = () => {
         >
           <ArrowBackIosNew />
         </IconButton>
-        <span className={styles.pageNumber}>
+        <span>
           {currentPage + 1} / {totalPages}
         </span>
         <IconButton
@@ -95,9 +73,8 @@ const Products = () => {
         ))}
       </div>
     </div>
-    </>
-    
   )
 }
 
 export default Products
+

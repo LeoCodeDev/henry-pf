@@ -20,6 +20,8 @@ const ProductList = () => {
       <section  style={{display: 'flex', justifyContent: 'center' , width:'90%' , margin :'0 auto'}}>
       <Products />
       </section>
+    
+     
     </div>
   );
 };

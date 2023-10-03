@@ -8,7 +8,7 @@ function Top() {
        <h1 className={styles.top}>TOP TRENDING</h1> 
     </div>
       <div>
-        <Categories />
+       <Categories />
       </div>
     </div>
   )
