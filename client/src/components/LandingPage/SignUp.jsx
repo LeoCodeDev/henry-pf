@@ -422,6 +422,7 @@ export default function SignUp({ setOption }) {
                   value="Trainer"
                   disabled={true}
                   control={<Radio />}
+                  sx={{ cursor: "pointer", marginLeft:"auto"}}
                   label="Trainer"
                 />
               </RadioGroup>
