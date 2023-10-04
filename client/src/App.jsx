@@ -4,6 +4,7 @@ import Router from './views/router';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8000';
+// axios.defaults.baseURL = 'healtech-backend-production.up.railway.app';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 
