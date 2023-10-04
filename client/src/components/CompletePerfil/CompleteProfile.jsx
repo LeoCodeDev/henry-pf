@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
-import { useNavigate } from "react-router-dom";
-import { CircularProgress, Dialog, DialogTitle, Button } from "@mui/material";
+import { CircularProgress, Dialog, Button } from "@mui/material";
 import CompleteRegister from "./CompleteRegister";
+import toast from "react-hot-toast";
 
-function CompleteProfile({ email, firstName, lastName, profilePic, setLoc }) {
-  const { isLogged, authenticate } = useAuthStore();
-  const navigate = useNavigate();
+function CompleteProfile({
+  email,
+  firstName,
+  lastName,
+  profilePic,
+  setPassword
+}) {
+  const { authenticate } = useAuthStore();
   const [user, setUser] = useState(null);
   const [progress, setProgress] = useState(false);
   const [register, setRegister] = useState(false);
-
-  useEffect(() => {
-    setLoc("google");
-  }, [])
 
   useEffect(() => {
     const handleGetUser = async () => {
@@ -36,16 +37,15 @@ function CompleteProfile({ email, firstName, lastName, profilePic, setLoc }) {
         }
       }
     };
-
+    
     handleGetUser();
   }, [email]);
-
+  
   const handleAuthenticate = async (email, password) => {
     try {
       await authenticate({ email, password });
     } catch (error) {
-      console.log(email, password);
-      console.log(error.message);
+      console.error("Authentication Error");
     }
   };
 
@@ -56,12 +56,6 @@ function CompleteProfile({ email, firstName, lastName, profilePic, setLoc }) {
       handleAuthenticate(email, password);
     }
   }, [user]);
-
-  useEffect(() => {
-    if (isLogged) {
-      navigate("/home");
-    }
-  }, [isLogged]);
 
   return (
     <div>
@@ -81,9 +75,7 @@ function CompleteProfile({ email, firstName, lastName, profilePic, setLoc }) {
         <>
           <Dialog
             open={true}
-            // fullWidth
             maxWidth="md"
-            // style={{ minHeight: "80vh" }}
           >
             <Button
               onClick={() => setRegister(false)}
@@ -100,7 +92,13 @@ function CompleteProfile({ email, firstName, lastName, profilePic, setLoc }) {
             >
               Close
             </Button>
-            <CompleteRegister email={email} firstName={firstName} lastName={lastName} profilePic={profilePic} />
+            <CompleteRegister
+              setPassword={setPassword}
+              email={email}
+              firstName={firstName}
+              lastName={lastName}
+              profilePic={profilePic}
+            />
           </Dialog>
         </>
       )}
