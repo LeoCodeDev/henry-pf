@@ -1,0 +1,44 @@
+.cardsContain {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Pagination */
+
+.paginationContain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    font-size: 0.75rem
+  }
+
+  .pageNumber{
+    font-family: var(--font-family-prompt);
+  }
+  
+  /*Medias Querys*/
+  
+  @media (min-width: 880px) {
+    .paginationContain span {
+        font-size: 1rem;
+    }
+  }
+  @media (min-width: 1200px) {
+      .paginationContain span {
+          font-size: 1rem;
+      }
+      .paginationContain {
+        margin-bottom: 1.5rem;
+      }
+  }
+  @media (min-width: 1700px) {
+    .paginationContain span {
+        font-size: 1rem;
+    }
+    .paginationContain {
+      margin-bottom: 2rem;
+    }
+  }

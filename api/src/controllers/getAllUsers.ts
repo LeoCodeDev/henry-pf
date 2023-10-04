@@ -9,8 +9,8 @@ try {
         res.status(200).json(allUsers)
     } else{
         res.status(404).json({message:"Users not found"})
-}} catch (error) {
-    res.status(500).json(error)
+    }} catch (error:any) {
+    res.status(500).json({error: error.message})
 }
 }
 

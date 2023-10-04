@@ -1,16 +1,17 @@
-import Home from "./Home/Home";
+// import Home from "./Home/Home";
 import Login from "./Login/Login";
 import ProductDetail from "./Product Detail/ProductDetail";
 import ProductList from "./Product List/ProductList";
 import Admin from "./Admin/Admin";
 import SignUp from "../components/LandingPage/SignUp";
+import ProductFormView from "./Product Form/productForm";
 
 const viewsData = [
-  {
-    path: "home",
-    element: <Home />,
-    title: "home",
-  },
+  // {
+  //   path: "home",
+  //   element: <Home />,
+  //   title: "home",
+  // },
   {
     path: "",
     element: <Login />,
@@ -27,7 +28,8 @@ const viewsData = [
     title: "product-detail",
   },
   {
-    path: "product-list",
+    // path: "product-list",
+    path: "/home",
     element: <ProductList />,
     title: "product-list",
   },
@@ -35,6 +37,11 @@ const viewsData = [
     path: "admin",
     element: <Admin />,
     title: "admin-view",
+  },
+  {
+    path: "product-creation",
+    element: <ProductFormView />,
+    title: "product-creation",
   },
 ];
 

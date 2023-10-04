@@ -1,0 +1,46 @@
+.container {
+  font-family: 'poppins, Courier New, Courier, monospace';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.error {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.myh1 {
+  margin-top: 16vh;
+  font-size: 72px;
+  color: #228d07;
+}
+
+.myh2 {
+  font-size: 36px;
+}
+
+.myp {
+  font-size: 18px;
+}
+
+.mybutton {
+  padding: 6px 10px;
+  cursor: pointer;
+  margin-top: 20px;
+  filter: brightness(90%);
+  transition: transform 0.5s ease, filter 0.8s ease;
+}
+
+.mybutton:hover {
+  color: #228d07;
+  filter: brightness(120%);
+}
+
+.mybutton:active {
+  transform: translateY(2px);
+}
+
+
+

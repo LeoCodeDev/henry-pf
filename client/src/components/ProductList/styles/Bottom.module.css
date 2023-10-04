@@ -1,0 +1,77 @@
+.containerMain {
+  display: flex;
+  margin-top: 5rem;
+  justify-content: center;
+}
+
+/*Filters and Orders*/
+
+.selectDropdown {
+  position: relative;
+  background-color: #010402;
+  border-radius: 1rem;
+}
+.selectDropdown select {
+  font-size: 1rem;
+  border-radius: 1rem;
+  font-weight: normal;
+  padding: 0.625rem 2.5rem 0.625rem 2.5rem;
+  background-color: #010402;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align: center;
+}
+
+select option {
+  background-color: #010402;
+  border: none;
+}
+
+/*Medias Querys*/
+  
+@media (max-width: 440px) {
+  .containerMain {
+    gap: 3%;
+  }
+}
+
+@media (min-width: 440px) {
+  .containerMain {
+    gap: 8%
+  }
+}
+@media (min-width: 871px) {
+  .containerMain {
+    gap: 34%
+  }
+}
+@media (min-width: 1000px) {
+  .containerMain {
+    gap: 55%
+  }
+}
+
+@media (min-width: 1200px) {
+  .containerMain {
+    gap: 48%
+  }
+}
+@media (min-width: 1400px) {
+  .containerMain{
+    gap:62%
+  }
+}
+@media (min-width: 1700px) {
+  .containerMain{
+    gap: 70%
+  }
+}
+@media (min-width: 1800px) {
+  .containerMain{
+    gap: 56%
+  }
+}
+
+
+

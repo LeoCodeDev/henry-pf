@@ -1,29 +1,55 @@
 import axios from 'axios'
 import { create } from 'zustand'
 
+const userGuest = {
+  username: '?',
+  email: '',
+  role: 'guest',
+  avatar: '../assets/images/avatars/avatar10.jpg',
+  teamName: 'none'
+}
+
+const initialState = {
+  user: userGuest,
+  isLogged: false
+}
+
+// Intenta cargar el estado desde Local Storage si existe
+const storedState = JSON.parse(localStorage.getItem('authState'))
+const initialStateWithStorage = storedState
+  ? { ...initialState, ...storedState }
+  : initialState
+
 const useAuthStore = create((set) => ({
-  user: {
-    first_name: 'Guest',
-    email: '',
-    role: 'guest',
-    avatar: '../assets/images/avatar_guest.png',
-    team: 'none',
+  ...initialStateWithStorage,
+
+  login: (userData) => {
+    set({ user: userData, isLogged: true })
+    // Guarda el estado actual en Local Storage
+    localStorage.setItem(
+      'authState',
+      JSON.stringify({ user: userData, isLogged: true })
+    )
   },
-  isLogged: false,
-  login: (userData) => set({ user: userData, isLogged: true }),
+
   authenticate: async (credentials) => {
     try {
       const { data } = await axios.post('/login', credentials)
-      const { first_name, email, role, avatar, team } = data
-      if (data && first_name && email && role && avatar && team) {
+      const { username, email, role, avatar, teamName, access } = data
+      if (data && username && email && role && avatar && teamName) {
         const userData = {
-          first_name,
+          username,
           email,
           role,
           avatar,
-          team,
+          teamName
         }
-        set({ user: userData, isLogged: true })
+        set({ user: userData, isLogged: access })
+        // Guarda el estado actual en Local Storage
+        localStorage.setItem(
+          'authState',
+          JSON.stringify({ user: userData, isLogged: access })
+        )
       } else {
         throw new Error('Invalid credentials')
       }
@@ -31,17 +57,15 @@ const useAuthStore = create((set) => ({
       throw new Error(error.message)
     }
   },
-  logout: () =>
+
+  logout: () => {
     set({
-      user: {
-        first_name: 'Guest',
-        email: '',
-        role: 'guest',
-        avatar: '../assets/images/avatar_guest.png',
-        team: 'none',
-      },
-      isLogged: false,
-    }),
+      user: userGuest,
+      isLogged: false
+    })
+    // Elimina el estado de Local Storage al cerrar sesión
+    localStorage.removeItem('authState')
+  }
 }))
 
 export { useAuthStore }
