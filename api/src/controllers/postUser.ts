@@ -1,8 +1,11 @@
 const {User, Team}= require("../db_connection")
 import { Request, Response } from "express";
+import geoLocation from './geolaction'
 
 
 const postUser= async (req: Request, res: Response) => {
+     const ip_location = await geoLocation()
+   console.log("nos esta llegando  " +ip_location)
     try {
         const { username, first_name, last_name, password, avatar, email, birth_date, role, team} = req.body;
         if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && team!== "" && role!== "") {
@@ -18,7 +21,8 @@ const postUser= async (req: Request, res: Response) => {
                 avatar,
                 email,
                 birth_date,
-                role 
+                role, 
+                ip_location
             },
             include:Team
         } 
@@ -28,7 +32,7 @@ const postUser= async (req: Request, res: Response) => {
             if(associatedTeam){
                 await user.setTeam(associatedTeam)
             }
-            res.status(200).json({ message: 'User created successfully'});
+            res.status(200).json({ message: 'User created successfully', });
         } else {
             res.status(200).json({ message: 'Email already registered'});
         }
