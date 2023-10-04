@@ -24,7 +24,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export const ProductDetails = () => {
   const navigate = useNavigate()
-  const product = useShowProductStore((state) => state.product)
+  const { product } = useShowProductStore()
   console.log(product)
 
   const handleHomeClick = () => {

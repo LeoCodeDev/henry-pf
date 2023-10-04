@@ -81,9 +81,9 @@ function CompleteProfile({ email, firstName, lastName, profilePic, setLoc }) {
         <>
           <Dialog
             open={true}
-            fullWidth
+            // fullWidth
             maxWidth="md"
-            style={{ minHeight: "80vh" }}
+            // style={{ minHeight: "80vh" }}
           >
             <Button
               onClick={() => setRegister(false)}
