@@ -61,7 +61,12 @@ export const ProductDetails = () => {
             <Box
               component={'img'}
               src={product.image}
-              sx={{ bgcolor: '#cfe8fc', width: '400px' }}
+              sx={{
+                width: 'auto', 
+                height: '55vh',
+                backgroundSize: 'cover',
+                padding: '1rem'
+                }}
             />
           </Container>
         </div>
