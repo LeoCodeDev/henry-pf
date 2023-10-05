@@ -46,8 +46,9 @@ export const NavBar = () => {
   const navigate = useNavigate()
 
   React.useEffect(() => {
-    const currency=user?.ip_location.currency
-    setCurrency(currency)
+    const currency = user?.ip_location?.currency;
+  if (currency) {
+    setCurrency(currency);}
   },[user,setCurrency])
 
   const handleLogout = () => {
