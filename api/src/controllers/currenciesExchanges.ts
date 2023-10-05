@@ -1,14 +1,13 @@
-// import { Request, Response } from "express";
-const CC = require('currency-converter-lt');
+ import exchange, {Currency} from 'node-currency-exchange-rates';
 
-const currenciesExchange = async (from:string, to:string, amount:string)=>{
+const currenciesExchange = async (from:Currency, to:Currency, amount:string)=>{
     const parsedAmount=parseInt(amount)
 try {
-    let currencyConverter = new CC({from:from, to:to, amount:parsedAmount})
-        const change = await currencyConverter.convert().then((result:any)=>{
-            return result
-        })
-        return change;
+
+      const convertedValue = await exchange.convert(from, parsedAmount, to);
+
+      return convertedValue
+
 } catch (error:any) {
     return {error: error.message}
 }}

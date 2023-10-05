@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import currenciesExchange  from "./currenciesExchanges";
+ import {Currency} from 'node-currency-exchange-rates';
 
 const { Product, Category} = require("../db_connection");
 
 const getProducts = async (req: Request, res: Response) => {
-  const {to}=req.query
-  const from= "USD"
+  const  to: Currency = req.query.to as Currency
+  const from : Currency= "USD"
   try {
     const allProducts = await Product.findAll({include:Category});
     if (typeof from === 'string' && typeof to === 'string'){
