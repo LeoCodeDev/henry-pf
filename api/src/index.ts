@@ -15,6 +15,7 @@ const port = process.env.PORT || 8000;
 app.use(morgan('dev'))
 app.use(cors())
 app.use(express.json())
+// app.use('/products', middleware, next)
 app.use('/', routes)
 
 // typescript para ignorar parámetros no usados debes agregarle

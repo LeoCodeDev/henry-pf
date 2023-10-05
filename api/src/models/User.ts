@@ -45,6 +45,16 @@ export const UserModel = (sequelize: Sequelize) => {
         active:{
             type:DataTypes.BOOLEAN,
             defaultValue: true
+        },
+        ip_location:{
+            type:DataTypes.JSON,
+            defaultValue: {
+                currency: "USD",
+                flag:"https://ipgeolocation.io/static/flags/us_64.png",
+                countryName:"United States", 
+                symbol:"$",
+                currencyName:"US Dollar"},
+            allowNull: false
         }
     },{ timestamps: false })
 }

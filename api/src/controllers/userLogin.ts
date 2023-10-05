@@ -22,6 +22,7 @@ const userLogin = async (req: Request, res: Response) => {
             role: userFound.role,
             TeamIdTeam: userFound.TeamIdTeam,
             teamName,
+            ip_location:userFound.ip_location,
             access: true,
           })
         } else {
