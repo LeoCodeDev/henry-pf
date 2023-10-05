@@ -7,7 +7,7 @@ import styles from './styles/Products.module.css';
 
 const Products = () => {
 
-  const { filteredProducts, fetchProducts } = useProductsStore()
+  const { filteredProducts, fetchProducts, actualCurrency} = useProductsStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
@@ -21,7 +21,7 @@ const Products = () => {
       }
     }
     fetchData()
-  }, [fetchProducts])
+  }, [fetchProducts, actualCurrency])
 
   const allProducts = filteredProducts.slice(
     currentPage * productsPerPage,

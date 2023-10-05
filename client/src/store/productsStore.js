@@ -7,9 +7,9 @@ const useProductsStore = create((set, get) => ({
   prefilterProducts: [],
   filteredProducts: [],
   categories: [],
-  actualCurrency:"USD",
-  setCurrency: (currency)=>{
-    set({actualCurrency:currency })
+  actualCurrency:null,
+  setCurrency: (currency )=>{
+    set({actualCurrency:currency || "USD" })
   },
   fetchCategories: async () => {
     try {

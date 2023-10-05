@@ -3,7 +3,6 @@ const CC = require('currency-converter-lt');
 
 const currenciesExchange = async (from:string, to:string, amount:string)=>{
     const parsedAmount=parseInt(amount)
-
 try {
     let currencyConverter = new CC({from:from, to:to, amount:parsedAmount})
         const change = await currencyConverter.convert().then((result:any)=>{
