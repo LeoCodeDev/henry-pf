@@ -37,7 +37,7 @@ const pages = ['HOME', 'SHOP', 'EXERCISE', 'ADD PRODUCT']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 export const NavBar = () => {
-  const {actualCurrency, setCurrency}=useProductsStore()
+  const {actualCurrency, setCurrency, fetchProducts}=useProductsStore()
 
   console.log(actualCurrency)
   const [anchorElNav, setAnchorElNav] = React.useState(null)
@@ -47,9 +47,9 @@ export const NavBar = () => {
 
   React.useEffect(() => {
     const currency = user?.ip_location?.currency;
-  if (currency) {
-    setCurrency(currency);}
-  },[user,setCurrency])
+    setCurrency(currency);
+    fetchProducts()
+  },[user,setCurrency,fetchProducts])
 
   const handleLogout = () => {
     logout()
@@ -87,6 +87,7 @@ export const NavBar = () => {
 
   const handleCurrencyChange=(e)=>{
     setCurrency(e.target.value)
+    fetchProducts()
     console.log('here', e.target.value)
   }
 
@@ -236,7 +237,7 @@ export const NavBar = () => {
                 onChange={handleCurrencyChange}
                 >
                   <MenuItem value="EUR"id="EUR">EUR</MenuItem>
-                  <MenuItem value={actualCurrency} id={actualCurrency}>{actualCurrency}</MenuItem> 
+                  <MenuItem value={user?.ip_location?.currency} id={user?.ip_location?.currency}>{user?.ip_location?.currency}</MenuItem> 
                   <MenuItem value="USD" id="USD">USD</MenuItem>
                 </Select>
             </FormControl>

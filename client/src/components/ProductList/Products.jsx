@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { CardProduct } from '../CardProduct/CardProduct'
 import { useProductsStore } from '../../store/productsStore'
+// import { useAuthStore } from '../../store/authStore'
 import { IconButton } from '@mui/material'
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material'
 import styles from './styles/Products.module.css';
 
 const Products = () => {
 
-  const { filteredProducts, fetchProducts, actualCurrency} = useProductsStore()
+  const { filteredProducts, fetchProducts} = useProductsStore()
+  // const {user}= useAuthStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
@@ -21,7 +23,7 @@ const Products = () => {
       }
     }
     fetchData()
-  }, [fetchProducts, actualCurrency])
+  }, [fetchProducts])
 
   const allProducts = filteredProducts.slice(
     currentPage * productsPerPage,
