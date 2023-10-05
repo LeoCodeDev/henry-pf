@@ -15,7 +15,7 @@ export const CardProductMiniCart = ({product}) => {
       <div className={styles.imageContainer}>
       <div className={styles.closeButtonContainer}>
       <button>
-        <CloseIcon sx={{width: '15px'}}/>
+        <CloseIcon sx={{width: '15px', cursor: 'pointer'}}/>
       </button>
       </div>
         <img src={image} alt={name} />

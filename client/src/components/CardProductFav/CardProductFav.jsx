@@ -41,9 +41,10 @@ export const CardProductFav = ({product}) => {
               <FavoriteBorderOutlinedIcon
                 fontSize="large"
                 onClick={handleFav}
+                sx={{cursor: 'pointer'}}
               />
             ) : (
-              <FavoriteOutlinedIcon fontSize="large" onClick={handleFav} />
+              <FavoriteOutlinedIcon fontSize="large" onClick={handleFav} sx={{cursor: 'pointer'}} />
             )}
       </section>
       </div>
