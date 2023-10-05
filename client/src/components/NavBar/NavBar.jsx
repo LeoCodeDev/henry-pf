@@ -19,6 +19,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
+import { Modal } from "../../components/Modal/Modal";
 
 const darkTheme = createTheme({
   palette: {
@@ -37,6 +38,8 @@ export const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null)
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
+  /* Logic modal */
+  const [modalOpen, setModalOpen] = React.useState({ anchor: "", open: false });
 
   const handleLogout = () => {
     logout()
@@ -214,23 +217,28 @@ export const NavBar = () => {
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit">
+              color="inherit"
+              onClick={() => setModalOpen({ anchor: "left", open: true })}>
               {/* Abajo de esta línea poner el estado de favoritos */}
               <Badge color="error">
                 <FavoriteBorderOutlinedIcon />
               </Badge>
             </IconButton>
+            <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} />
 
             {/* Icono de carrito */}
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit">
+              color="inherit"
+              onClick={() => setModalOpen({ anchor: "right", open: true })}>
+
               {/* Abajo de esta línea poner el estado (.length) de carrito */}
               <Badge color="error">
                 <ShoppingCartOutlinedIcon />
               </Badge>
             </IconButton>
+            <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} />
 
             <Box
               sx={{ flexGrow: 0, paddingRight: '.8rem', paddingLeft: '.7rem' }}>
