@@ -1,16 +1,17 @@
-import { Request, Response } from "express";
+// import { Request, Response } from "express";
 const CC = require('currency-converter-lt');
 
-const currenciesExchange = async (_req:Request, res:Response)=>{
-    const {from, to, amount} = _req.body; 
+const currenciesExchange = async (from:string, to:string, amount:string)=>{
+    const parsedAmount=parseInt(amount)
+
 try {
-      let currencyConverter = new CC({from:from, to:to, amount:amount})
+    let currencyConverter = new CC({from:from, to:to, amount:parsedAmount})
         const change = await currencyConverter.convert().then((result:any)=>{
             return result
         })
-        return res.status(200).json(change);
+        return change;
 } catch (error:any) {
-    return res.status(500).json({error: error.message})
+    return {error: error.message}
 }}
 
-module.exports = currenciesExchange;
+export default currenciesExchange;

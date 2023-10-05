@@ -5,7 +5,6 @@ import geoLocation from './geolaction'
 
 const postUser= async (req: Request, res: Response) => {
      const ip_location = await geoLocation()
-   console.log("nos esta llegando  " +ip_location)
     try {
         const { username, first_name, last_name, password, avatar, email, birth_date, role, team} = req.body;
         if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && team!== "" && role!== "") {

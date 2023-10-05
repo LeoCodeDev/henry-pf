@@ -7,9 +7,6 @@ const geoLocation = async () => {
   const {data} = await axios.get('https://api.ipgeolocation.io/getip')
   const {ip} = data
 
-
-
-  console.log("estamos dentro de la funcion" , ip)
  try {
     if (ip && isIPv6(ip)) {
       const { data } = await axios.get(
@@ -20,8 +17,6 @@ const geoLocation = async () => {
       const countryName = data.country_name;
       const symbol = data.currency.symbol;
       const currencyName = data.currency.name;
-
-      console.log( 'aqui esta el console log que tanto buscaste    ' + currency +flag +countryName + symbol + currencyName);
 
     //  const location = JSON.({ currency, flag, countryName, symbol, currencyName });
     return { currency, flag, countryName, symbol, currencyName }

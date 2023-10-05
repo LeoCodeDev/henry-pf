@@ -1,11 +1,16 @@
 import { create } from "zustand";
 import axios from "axios";
+// import {useAuthStore} from "./authStore";
 
-const useProductsStore = create((set) => ({
+const useProductsStore = create((set, get) => ({
   products: [],
   prefilterProducts: [],
   filteredProducts: [],
   categories: [],
+  actualCurrency:"USD",
+  setCurrency: (currency)=>{
+    set({actualCurrency:currency })
+  },
   fetchCategories: async () => {
     try {
       const { data } = await axios.get("/categories");
@@ -19,8 +24,9 @@ const useProductsStore = create((set) => ({
     }
   },
   fetchProducts: async () => {
+    const actualCurrency= get().actualCurrency
     try {
-      const { data } = await axios.get("/products");
+      const { data } = await axios.get(`/products?to=${actualCurrency}`);
       if (!data) {
         throw new Error("No products found");
       } else {

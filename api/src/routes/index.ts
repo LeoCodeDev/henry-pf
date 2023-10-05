@@ -15,7 +15,7 @@ const postFavorite = require('../controllers/postFavorite');
 const delFavorite = require('../controllers/delFavorite');
 const getAllUsers= require('../controllers/getAllUsers')
 const delImage=require('../controllers/delImage')
-const currenciesExchange = require('../controllers/currenciesExchanges')
+// const currenciesExchange = require('../controllers/currenciesExchanges')
 
 
 router.post('/postUser', postUser)
@@ -33,7 +33,7 @@ router.post('/postFavorite', postFavorite);
 router.delete('/delFavorite', delFavorite);
 router.get('/allUsers', getAllUsers)
 router.post('/delImage', delImage);
-router.post('/currenciesExchange', currenciesExchange)
+// router.post('/currenciesExchange', currenciesExchange)
 
 
 
