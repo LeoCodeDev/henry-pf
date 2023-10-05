@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import AddBusinessIcon from '@mui/icons-material/AddBusiness'
 import Typography from '@mui/material/Typography'
 import {
@@ -27,6 +27,7 @@ import {
 } from './validations'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { useNavigate } from 'react-router-dom'
+import { DropAndCrop } from './Dropzone'
 
 export default function ProductForm() {
   const navigate = useNavigate()
@@ -35,40 +36,12 @@ export default function ProductForm() {
     navigate('/home')
   }
 
-  const cloudinaryRef = useRef()
-  const widgetRef = useRef()
   const theme = useTheme()
-  const { categories, addProduct, fetchCategories, deleteImage } =
+  const { categories, addProduct, fetchCategories } =
     useProductsStore()
 
   const [imageUrl, setImageUrl] = useState()
-  const [selectedImage, setSelectedImage] = useState()
-    
-        cloudinaryRef.current = window.cloudinary
-        widgetRef.current = cloudinaryRef.current.createUploadWidget({
-            cloudName:"healtech", //nuestra nube
-            uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
-            folder: 'healtech/products', //folder products en el cual se subne las imagenes
-            singleUploadAutoClose: false,
-            multiple: false, //permite solo subir un archivo
-            maxImageFileSize: 2000000, //peso maximo: 2 megas,
-            maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
-            cropping: true, //le permite recortar la imagen de ser necesario
-            clientAllowedFormats: ["jpg",'png','jpeg'],
-        },function(err,res){
-        if (!err && res && res.event === "success") {
-            if(selectedImage){
-                deleteImage(selectedImage)
-            }
-            setSelectedImage(res.info.public_id)
-            setImageUrl(res.info.url)
-            setFormData({
-                ...formData,
-                image: res.info.url,
-                })
-        } 
-    })
-    
+  const [selectedImage, setSelectedImage] = useState()    
 
     useEffect(()=>{
         fetchCategories()
@@ -145,8 +118,7 @@ export default function ProductForm() {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData)
-    console.log(errors)
+
     if (allErrorsFalsy(errors)) {
       try {
         await addProduct(formData)
@@ -318,21 +290,19 @@ export default function ProductForm() {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                      {!selectedImage && (
+                        <DropAndCrop/>
+                      )}
                   <label htmlFor="select-image">
                     <Button
                       variant="contained"
                       color="primary"
                       component="span"
                       textAlign="center"
-                      onClick={() => widgetRef.current.open()}>
+                      onClick={()=> console.log(selectedImage)}>
                       Upload Image
                     </Button>
                   </label>
-                  {imageUrl && (
-                    <Box mt={1} textAlign="center">
-                      <img src={imageUrl} alt={imageUrl} width={200} />
-                    </Box>
-                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <Button
