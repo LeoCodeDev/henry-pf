@@ -47,6 +47,7 @@ export const NavBar = () => {
 
   React.useEffect(() => {
     const currency=user?.ip_location.currency
+    console.log('user', currency)
     setCurrency(currency)
   },[user,setCurrency])
 
@@ -86,6 +87,7 @@ export const NavBar = () => {
 
   const handleCurrencyChange=(e)=>{
     setCurrency(e.target.value)
+    console.log('here', e.target.value)
   }
 
   return (
@@ -228,13 +230,14 @@ export const NavBar = () => {
 
             
             <FormControl>
-              <InputLabel fullWidth item id="currencies" defaultValue= "USD">Currencies
+              <InputLabel fullWidth item id="currencies">Currencies
               </InputLabel>
                 <Select
-                onchange={handleCurrencyChange}
+                onChange={handleCurrencyChange}
                 >
-                  <MenuItem value="USD">USD</MenuItem>
-                  <MenuItem value={actualCurrency}>{actualCurrency}</MenuItem> 
+                  <MenuItem value="EUR"id="EUR">EUR</MenuItem>
+                  <MenuItem value={actualCurrency} id={actualCurrency}>{actualCurrency}</MenuItem> 
+                  <MenuItem value="USD" id="USD">USD</MenuItem>
                 </Select>
             </FormControl>
             
