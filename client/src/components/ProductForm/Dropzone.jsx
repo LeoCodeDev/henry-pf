@@ -1,11 +1,12 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Dropzone from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
 const DropAndCrop = ({ endpoint }) => {
   const [selectedFile, setSelectedFile] = useState(null)
+  const [image, setImage] = useState(null)
   const [imageUrl, setImageUrl] = useState(null)
   const [crop, setCrop] = useState({
     unit: '%',
@@ -15,15 +16,41 @@ const DropAndCrop = ({ endpoint }) => {
 
   const [croppedImage, setCroppedImage] = useState(null)
 
+  useEffect(() => {
+    if (selectedFile) {
+      const objectURL = URL.createObjectURL(selectedFile)
+      setImageUrl(objectURL)
+
+      const img = new Image()
+      img.src = objectURL
+      img.onload = () => {
+        setImage(img)
+      }
+    }
+  }, [selectedFile])
+
   const onDrop = (acceptedFiles) => {
-    return acceptedFiles.length === 1
-      ? (setSelectedFile(acceptedFiles[0]), setImageUrl(URL.createObjectURL(acceptedFiles[0])))
-      : setSelectedFile(null)
+    if (acceptedFiles.length !== 1) {
+      setSelectedFile(null)
+      return
+    }
+
+    const objectURL = URL.createObjectURL(acceptedFiles[0])
+    setImageUrl(objectURL)
+
+    const img = new Image()
+    img.src = objectURL
+    img.onload = () => {
+      setSelectedFile(acceptedFiles[0])
+      setImage(img)
+    }
   }
 
   const getCroppedImg = async (image, crop) => {
+    if (!image) return null
+
     const canvas = document.createElement('canvas')
-    const scaleX = image.naturalWith / image.width
+    const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
     canvas.width = crop.width
     canvas.height = crop.height
@@ -46,36 +73,44 @@ const DropAndCrop = ({ endpoint }) => {
         (blob) => {
           resolve(blob)
         },
-        'image/jpeg',
+        'Blob',
         1
       )
     })
   }
 
   const handleAcceptCrop = async () => {
-    if (!selectedFile) return
+    if (!selectedFile || !image) return
 
-    const croppedImageUrl = await getCroppedImg(selectedFile, crop)
+    const croppedBlob = await getCroppedImg(image, crop)
+
+    console.log(croppedBlob);
 
     try {
       const formData = new FormData()
-      formData.append('image', croppedImageUrl)
+      formData.append('image', selectedFile)
 
-      const response = await axios.post(endpoint, formData)
+      const response = await axios.post(endpoint, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
 
-      console.log({ response })
-
-      response.status === 200
-        ? (setSelectedFile(null), setCroppedImage(null))
-        : null
+      if (response.status === 200) {
+        setCroppedImage(URL.createObjectURL(croppedBlob))
+        setImage(null)
+      } else {
+        console.error({ response })
+      }
     } catch (error) {
       throw new Error(error.message)
     }
   }
 
   const handleCancelCrop = () => {
-    setSelectedFile(null)
     setCroppedImage(null)
+    setImage(null)
+    setImageUrl(null)
   }
 
   return (
@@ -84,26 +119,32 @@ const DropAndCrop = ({ endpoint }) => {
         <Dropzone onDrop={onDrop}>
           {({ getRootProps, getInputProps }) => (
             <div {...getRootProps()} className="dropzone">
-              <input {...getInputProps()} />
+              <input
+                {...getInputProps({ multiple: false, accept: 'image/*' })}
+              />
               <p>Drag and drop some files here, or click to select files</p>
             </div>
           )}
         </Dropzone>
       ) : !croppedImage ? (
         <>
-          <ReactCrop
-            crop={crop}
-            onChange={(newCrop) => setCrop(newCrop)}
-          >
+          <ReactCrop crop={crop} onChange={(newCrop) => setCrop(newCrop)}>
             <img src={imageUrl} />
-            </ReactCrop>
-          <button onClick={handleAcceptCrop}>Crop</button>
-          <button onClick={handleCancelCrop}>Reset</button>
+            <img src={croppedImage} alt="Image preview" />
+          </ReactCrop>
+          <button onClick={handleAcceptCrop} type="button">
+            Crop
+          </button>
+          <button onClick={handleCancelCrop} type="button">
+            Reset
+          </button>
         </>
       ) : (
         <>
           <img src={croppedImage} alt="Image preview" />
-          <button onClick={handleCancelCrop}>Reset</button>
+          <button onClick={handleCancelCrop} type="button">
+            Reset
+          </button>
         </>
       )}
     </div>
