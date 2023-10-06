@@ -14,11 +14,11 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import SearchIcon from '@mui/icons-material/Search'
 import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
+// import Select from '@mui/material/Select'
+// import InputLabel from '@mui/material/InputLabel'
+// import FormControl from '@mui/material/FormControl'
 import { useAuthStore } from '../../store/authStore'
-import {useProductsStore} from '../../store/productsStore'
+// import {useProductsStore} from '../../store/productsStore'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
@@ -37,22 +37,12 @@ const pages = ['HOME', 'SHOP', 'EXERCISE', 'ADD PRODUCT']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 export const NavBar = () => {
-  const {actualCurrency, setCurrency}=useProductsStore()
-  const [localCurrency, setLocalCurrency]= React.useState('')
-
-  console.log(actualCurrency)
+  // const {actualCurrency, setCurrency, fetchProducts}=useProductsStore()
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
 
-  React.useEffect(() => {
-    const currency = user?.ip_location?.currency;
-  if (currency) {
-    setCurrency(currency)
-    setLocalCurrency(currency)
-  }}
-  ,[user,setCurrency,setLocalCurrency])
 
   const handleLogout = () => {
     logout()
@@ -88,10 +78,6 @@ export const NavBar = () => {
     setAnchorElUser(null)
   }
 
-  const handleCurrencyChange=(e)=>{
-    setCurrency(e.target.value)
-    console.log('here', e.target.value)
-  }
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -232,17 +218,7 @@ export const NavBar = () => {
             )}
 
             
-            <FormControl>
-              <InputLabel fullWidth item id="currencies">Currencies
-              </InputLabel>
-                <Select
-                onChange={handleCurrencyChange}
-                >
-                  <MenuItem value="EUR"id="EUR">EUR</MenuItem>
-                  <MenuItem value={localCurrency} id={localCurrency}>{localCurrency}</MenuItem> 
-                  <MenuItem value="USD" id="USD">USD</MenuItem>
-                </Select>
-            </FormControl>
+
             
 
             {/* Icono de favoritos */}

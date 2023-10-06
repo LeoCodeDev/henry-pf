@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import axios from "axios";
-// import {useAuthStore} from "./authStore";
+import {useAuthStore} from "./authStore";
 
 const useProductsStore = create((set, get) => ({
   products: [],
   prefilterProducts: [],
   filteredProducts: [],
   categories: [],
-  actualCurrency:null,
+  actualCurrency:useAuthStore.getState().user?.ip_location.currency,
   setCurrency: (currency )=>{
     set({actualCurrency:currency || "USD" })
   },
@@ -39,9 +39,9 @@ const useProductsStore = create((set, get) => ({
   setProductsByName: async (name) => {
     if (typeof name !== "string" || name.length < 1)
       throw new Error("Invalid name");
-
     try {
-      const { data } = await axios(`/productByName?name=${name}`)
+      const actualCurrency= get().actualCurrency
+      const { data } = await axios(`/productByName?name=${name}&to=${actualCurrency}`)
       if (!data) {
         throw new Error('No products found')
       } else {

@@ -25,7 +25,7 @@ router.post('/postProduct', postProduct);
 router.get("/products", getProducts);
 router.get("/categories",getCategories );
 router.get("/productByName",getProductByName );
-router.get("/products/:id", getProductsById);
+router.get("/productsById", getProductsById);
 router.put("/newPassword/:id", putNewPasswordUser);
 router.get("/getTeams", getTeams )
 router.get('/getAllFavorites', getAllFavorites);

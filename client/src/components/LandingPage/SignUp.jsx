@@ -1,13 +1,10 @@
-import React, { useState, useEffect,useRef } from "react";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import React, { useState, useEffect } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Typography from "@mui/material/Typography";
 import {
-  useMediaQuery,
-  Typography,
   Button,
-  CssBaseline,
   TextField,
   Link,
-  Paper,
   Box,
   Grid,
   Avatar,
@@ -17,7 +14,6 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import background from "../../assets/images/back_landing.jpg";
 import { useTheme } from "@mui/material/styles";
 import {
   isValidEmail,
@@ -34,48 +30,13 @@ import { avatars } from "./avatars";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
-import title from "../../assets/images/title.png";
-import { useProductsStore } from "../../store/productsStore";
 
-
-export default function SignUp() {
+export default function SignUp({ setOption }) {
   const [formVisible, setFormVisible] = useState(false);
   const theme = useTheme();
   const [selectedRole, setSelectedRole] = useState("User");
   const navigate = useNavigate();
-  const { isLogged, authenticate } = useAuthStore();
-
-  const cloudinaryRef = useRef()
-  const widgetRef = useRef()
-  const {deleteImage} = useProductsStore()
-
-  const [imageUrl, setImageUrl] = useState();
-  const [selectedImage, setSelectedImage] = useState()
-
-      cloudinaryRef.current = window.cloudinary
-      widgetRef.current = cloudinaryRef.current.createUploadWidget({
-          cloudName:"healtech", //nuestra nube
-          uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
-          folder: 'healtech/products', //folder products en el cual se subne las imagenes
-          singleUploadAutoClose: false,
-          multiple: false, //permite solo subir un archivo
-          maxImageFileSize: 2000000, //peso maximo: 2 megas,
-          maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
-          cropping: true, //le permite recortar la imagen de ser necesario
-          clientAllowedFormats: ["jpg",'png','jpeg'],
-      },function(err,res){
-      if (!err && res && res.event === "success") {
-          if(selectedImage){
-              deleteImage(selectedImage)
-          }
-          setSelectedImage(res.info.public_id)
-          setImageUrl(res.info.url)
-          setFormData({
-              ...formData,
-              image: imageUrl,
-              })
-      } 
-  })
+  const { authenticate } = useAuthStore();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -84,9 +45,7 @@ export default function SignUp() {
     password: "",
     birthday: "",
     nickName: "",
-    image:""
   });
-
   const [formErrors, setFormErrors] = useState({
     firstName: false,
     lastName: false,
@@ -170,22 +129,22 @@ export default function SignUp() {
 
     if (!isValidFirstName(formData.firstName)) {
       setFormErrors({ ...formErrors, firstName: true });
-      return;
+      return toast.error("Choose a valid FirstName");
     }
 
     if (!isValidLastName(formData.lastName)) {
       setFormErrors({ ...formErrors, lastName: true });
-      return;
+      return toast.error("Choose a valid LastName");
     }
 
     if (!isValidEmail(formData.email)) {
       setFormErrors({ ...formErrors, email: true });
-      return;
+      return toast.error("Choose a valid email");
     }
 
     if (!isValidPassword(formData.password)) {
       setFormErrors({ ...formErrors, password: true });
-      return;
+      return toast.error("Choose a valid password");
     }
 
     if (!isMinimumAge(formData.birthday)) {
@@ -202,8 +161,9 @@ export default function SignUp() {
 
     if (!isValidNickName(formData.nickName)) {
       setFormErrors({ ...formErrors, nickName: true });
-      return;
+      return toast.error("Choose a valid Nick");
     }
+
     try {
       const dataToSend = {
         username: formData.nickName,
@@ -219,32 +179,30 @@ export default function SignUp() {
 
       await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
-
       try {
         await authenticate({
           email: formData.email,
           password: formData.password,
         });
-        console.log(isLogged);
       } catch (error) {
-        console.error("Error:", error.message);
+        toast.error("Authentication Error!");
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      toast.error("Authentication Error!");
     }
   };
 
-  const handleAuthentication = () => {
-    if (isLogged) {
-      navigate("/home");
-    }
-  };
+  // const handleAuthentication = () => {
+  //   if (isLogged) {
+  //     // navigate("/home");
+  //   }
+  // };
 
-  useEffect(() => {
-    if (isLogged) {
-      handleAuthentication();
-    }
-  }, [isLogged]);
+  // useEffect(() => {
+  //   if (isLogged) {
+  //     // handleAuthentication();
+  //   }
+  // }, [isLogged]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -255,243 +213,241 @@ export default function SignUp() {
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline />
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-          backgroundImage: `url(${background})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      <img
-        src={title}
-        style={{
-          display: isDesktop ? "flex" : "none",
-          position: "absolute",
-          maxWidth: isDesktop ? "50vh" : "40vh",
-          top: "10%",
-          left: !isDesktop ? "50%" : "15%",
-          transform: "translate(-50%, -50%)",
-        }}
-      />{" "}
-      <Grid
-        item
-        xs={12}
-        sm={8}
-        md={5}
-        component={Paper}
-        elevation={6}
-        square
-        sx={{
-          backgroundColor: theme.palette.background.main,
-        }}
-      >
-        <Box
+    // <Grid
+    //   container
+    //   component="main"
+    //   sx={{ height: "100vh", display: "flex", flexDirection: "row-reverse" }}
+    // >
+    //   <CssBaseline />
+    // <Grid
+    //   item
+    //   xs={12}
+    //   sm={8}
+    //   md={5}
+    //   component={Paper}
+    //   elevation={6}
+    //   square
+    //   sx={{
+    //     backgroundColor: theme.palette.background.main,
+    //   }}
+    // >
+    <Box
+      sx={{
+        // my: 0,
+        mx: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        transform: formVisible ? "translateY(0)" : "translateY(-100%)",
+        transition: "transform 0.5s ease-in-out",
+      }}
+    >
+      <div style={{ display: "flex", padding: "1vh" }}>
+        <Avatar
           sx={{
-            my: 0,
-            mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            transform: formVisible ? "translateY(0)" : "translateY(-100%)",
-            transition: "transform 0.5s ease-in-out",
+            bgcolor: theme.palette.primary.main,
+            mr: 2,
+            width: 30,
+            height: 30,
+          }}
+        ></Avatar>
+        <Typography
+          component="h5"
+          variant="h5"
+          sx={{
+            color: "white",
+            fontFamily: theme.typography.fontFamily,
+            fontSize: theme.typography.h3,
           }}
         >
-          {/* <div style={{ display: isDesktop ? "flex" : "none" }}>
-            <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography
-              component="h1"
-              variant="h5"
-              sx={{
-                color: "white",
-                fontFamily: theme.typography.fontFamily,
-                fontSize: theme.typography.h2,
+          Sign up
+        </Typography>
+      </div>
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit}
+        sx={{
+          backgroundColor: theme.palette.background_ligth.main,
+          padding: 2,
+          borderRadius: 6,
+        }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              error={formErrors.firstName}
+              autoComplete="given-name"
+              name="firstName"
+              required
+              fullWidth
+              id={
+                formErrors.firstName
+                  ? "outlined-error-helper-text"
+                  : "firstName"
+              }
+              label={formErrors.firstName ? "Error" : "First Name"}
+              value={formData.firstName}
+              onChange={handleChange}
+              helperText={
+                formErrors.firstName
+                  ? "Must be at least two characters without numbers"
+                  : ""
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              fullWidth
+              id={
+                formErrors.lastName ? "outlined-error-helper-text" : "lastName"
+              }
+              label={formErrors.lastName ? "Error" : "Last Name"}
+              name="lastName"
+              autoComplete="family-name"
+              value={formData.lastName}
+              onChange={handleChange}
+              error={formErrors.lastName}
+              helperText={
+                formErrors.lastName
+                  ? "Must be at least two characters without numbers"
+                  : ""
+              }
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={formErrors.email}
+              onChange={handleChange}
+              margin="normal"
+              required
+              fullWidth
+              id={formErrors.email ? "outlined-error-helper-text" : "email"}
+              label={formErrors.email ? "Error" : "Email Address"}
+              name="email"
+              autoComplete="email"
+              helperText={formErrors.email ? "Invalid email format" : ""}
+              value={formData.email}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label={formErrors.password ? "Error" : "Password"}
+              type="password"
+              id="password"
+              autoComplete="new-password"
+              value={formData.password}
+              onChange={handleChange}
+              error={formErrors.password}
+              helperText={
+                formErrors.password
+                  ? "Password must be at least 8 characters, including an uppercase letter and a number"
+                  : ""
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="date"
+              label="Birthday"
+              type="date"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleChange}
+              InputLabelProps={{
+                shrink: true,
               }}
-            >
-              Sign up
-            </Typography>
-          </div> */}
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{
-              backgroundColor: theme.palette.background_ligth.main,
-              padding: 4,
-              borderRadius: 6,
-              marginTop: 4,
+            />
+          </Grid>
+          <Grid item xs={12} mt={1}>
+            <SelectLabels
+              isDesktop={isDesktop}
+              isDeveloper={isDeveloper}
+              developerType={developerType}
+              onIsDeveloperChange={handleIsDeveloperChange}
+              onDeveloperTypeChange={handleDeveloperTypeChange}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              flexDirection: isDesktop ? "row" : "column",
+              justifyContent: "space-between",
             }}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  error={formErrors.firstName}
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id={
-                    formErrors.firstName
-                      ? "outlined-error-helper-text"
-                      : "firstName"
-                  }
-                  label={formErrors.firstName ? "Error" : "First Name"}
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  helperText={formErrors.firstName ? "Invalid first name" : ""}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id={
-                    formErrors.lastName
-                      ? "outlined-error-helper-text"
-                      : "lastName"
-                  }
-                  label={formErrors.lastName ? "Error" : "Last Name"}
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  error={formErrors.lastName}
-                  helperText={formErrors.lastName ? "Invalid last name" : ""}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  error={formErrors.email}
-                  onChange={handleChange}
-                  margin="normal"
-                  required
-                  fullWidth
-                  id={formErrors.email ? "outlined-error-helper-text" : "email"}
-                  label={formErrors.email ? "Error" : "Email Address"}
-                  name="email"
-                  autoComplete="email"
-                  helperText={formErrors.email ? "Invalid email format" : ""}
-                  value={formData.email}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label={formErrors.password ? "Error" : "Password"}
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  error={formErrors.password}
-                  helperText={
-                    formErrors.password
-                      ? "Password must be at least 8 characters, including an uppercase letter and a number"
-                      : ""
-                  }
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="date"
-                  label="Birthday"
-                  type="date"
-                  name="birthday"
-                  value={formData.birthday}
-                  onChange={handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} mt={1}>
-                <SelectLabels
-                  isDesktop={isDesktop}
-                  isDeveloper={isDeveloper}
-                  developerType={developerType}
-                  onIsDeveloperChange={handleIsDeveloperChange}
-                  onDeveloperTypeChange={handleDeveloperTypeChange}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{
-                  display: "flex",
-                  flexDirection: isDesktop ? "row" : "column",
-                  justifyContent: "space-between",
-                }}
+            <TextField
+              style={{ width: "auto" }}
+              error={formErrors.nickName}
+              name="nickName"
+              required
+              fullWidth
+              id={
+                formErrors.nickName ? "outlined-error-helper-text" : "nickName"
+              }
+              label={formErrors.nickName ? "Error" : "Nick Name"}
+              value={formData.nickName}
+              onChange={handleChange}
+              helperText={formErrors.nickName ? "Invalid nickName" : ""}
+            />
+            <AvatarSelection
+              isDesktop={isDesktop}
+              avatars={avatars}
+              onChange={handleAvatarChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl component="fieldset">
+              <FormLabel id="demo-controlled-radio-buttons-group">
+                Role
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                value={selectedRole}
+                onChange={handleRoleChange}
+                style={{ display: "flex", flexDirection: "row" }}
               >
-              </Grid >
-              <Grid item xs={12} sm={6}>
-                <AvatarSelection
-                  isDesktop={isDesktop}
-                  avatars={avatars}
-                  onChange={handleAvatarChange}
-                />            
-              </Grid>
-              {/* <Grid item xs={12} sm={6} l={12}>
-                    <Button variant="contained" color="primary" component="span" textAlign="center" onClick={() => widgetRef.current.open()}>
-                    Upload Image
-                    </Button>   
-                {imageUrl && (
-                  <Box mt={1} textAlign="center">
-                  <img src={imageUrl} alt={imageUrl} width={200}/>
-                    </Box>)}
-              </Grid> */}
-              <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  <FormLabel id="demo-controlled-radio-buttons-group">
-                    Role
-                  </FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={selectedRole}
-                    onChange={handleRoleChange}
-                    style={{ display: "flex", flexDirection: "row" }}
-                  >
-                    <FormControlLabel
-                      value="User"
-                      control={<Radio />}
-                      label="User"
-                    />
-                    <FormControlLabel
-                      value="Trainer"
-                      control={<Radio />}
-                      label="Trainer"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign Up
-                </Button>
-              </Grid>
-              <Link href="/" variant="body2" style={{ marginLeft: "auto" }}>
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Box>
-        </Box>
-      </Grid>
-      <Toaster position="top-center" reverseOrder={false} />
-    </Grid>
+                <FormControlLabel
+                  value="User"
+                  control={<Radio />}
+                  label="User"
+                />
+                <FormControlLabel
+                  value="Trainer"
+                  disabled={true}
+                  control={<Radio />}
+                  sx={{ cursor: "pointer", marginLeft:"auto"}}
+                  label="Trainer"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+          </Grid>
+
+          <Link
+            onClick={() => setOption("signin")}
+            sx={{ cursor: "pointer" }}
+            variant="body2"
+          >
+            {"Already have an account? Sign in"}
+          </Link>
+        </Grid>
+      </Box>
+    </Box>
   );
 }

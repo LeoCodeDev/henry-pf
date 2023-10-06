@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { create } from 'zustand'
+import { useProductsStore } from './productsStore'
 
 const useShowProductStore = create((set) => ({
   product: {},
   productById: async (id) => {
     try {
-      const { data } = await axios(`/products/${id}`)
+      const to= useProductsStore.getState().actualCurrency
+      const { data } = await axios(`/productsById?id=${id}&to=${to}`)
       if (!data) {
         throw new Error(data.message)
       } else {
