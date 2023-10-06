@@ -20,18 +20,30 @@
 
 
 .infoContainer {
-    line-height: 0.344rem;
+    width: 84px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
 }
 .title{
     font-family: var(--font-family-poppins);
     margin: 0.3rem;
     line-height: 1;
     font-size: 1rem;
+    font-weight: 900;
+}
+.title h2 {
+    margin: 0;
 }
 .description{
     font-family: var(--font-family-poppins);
     font-size: 0.6rem;
     padding: 5px; 
+    line-height: 15px;
+    margin: 0;
+}
+.description p {
+    margin: 0;
 }
 .priceContainer {
     display: flex;

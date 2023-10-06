@@ -1,16 +1,18 @@
 .container{
     height: 100vh;
-    width: 500px;
+    width: 100%;
     background-color: #bfbfbf;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 }
 
 .title{
     font-family: var(--font-family-poppins);
     font-weight: 800;
     font-size: 2rem;
+    margin: 0.75rem;
 }
 
 
@@ -30,3 +32,11 @@
     justify-content: center;
     object-fit: contain;
 }
+
+/* Media Querys*/
+
+@media (min-width: 640px) {
+    .container {
+        width: 500px;
+    }
+  }

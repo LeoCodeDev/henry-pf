@@ -34,17 +34,17 @@ export const CardProductMiniCart = ({product}) => {
       <div className={styles.unitsContainer}>
       <section className={styles.sectionButtons}>
         <Button
-        sx={{minWidth: '20px', padding: '0', borderRadius: '0.3rem'}}
+        sx={{minWidth:'20px', height: '1.2rem', padding: '0', borderRadius: '0.3rem'}}
         variant='contained'
         >
-            <RemoveIcon />
+            <RemoveIcon sx={{width: '15px'}}/>
          </Button>
          <input type='text'/>
         <Button
-        sx={{minWidth: '20px', padding: '0', borderRadius: '0.3rem'}}
+        sx={{minWidth:'20px', height: '1.2rem', padding: '0', borderRadius: '0.3rem'}}
         variant='contained'
         >
-            <AddIcon />
+            <AddIcon sx={{width: '15px'}}/>
         </Button>
       </section>
       </div>
