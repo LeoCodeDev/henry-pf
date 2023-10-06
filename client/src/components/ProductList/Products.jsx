@@ -13,16 +13,19 @@ const Products = () => {
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+  const [allProducts, setAllProducts] = useState([])
 
 
   useEffect(() => {
-    fetchProducts()
-  },[fetchProducts, actualCurrency])
+    fetchProducts().then((newProduct)=>{
+      setAllProducts(newProduct.slice(
+        currentPage * productsPerPage,
+        (currentPage + 1) * productsPerPage
+      ))
+      
+    })
+  },[fetchProducts, actualCurrency,currentPage,setCurrency])
 
-  const allProducts = filteredProducts.slice(
-    currentPage * productsPerPage,
-    (currentPage + 1) * productsPerPage
-  )
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -42,9 +45,17 @@ const Products = () => {
 
   const handleCurrencyChange=async(e)=>{
     await setCurrency(e.target.value)
-    await fetchProducts()
-    console.log('here', e.target.value)
   }
+
+  useEffect(() => {
+    setCurrentPage(0)
+    fetchProducts().then((newProducts) => {
+      setAllProducts(newProducts.slice(
+        currentPage * productsPerPage,
+        (currentPage + 1) * productsPerPage
+      ));
+    });
+  }, [filteredProducts, actualCurrency, currentPage, setCurrency,fetchProducts])
 
   return (
     <div className={styles.productsContain}>
@@ -89,4 +100,3 @@ const Products = () => {
 }
 
 export default Products
-

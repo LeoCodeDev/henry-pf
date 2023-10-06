@@ -4,6 +4,7 @@ import geoLocation from './geolaction'
 
 
 const postUser= async (req: Request, res: Response) => {
+    
      const ip_location = await geoLocation()
     try {
         const { username, first_name, last_name, password, avatar, email, birth_date, role, team} = req.body;

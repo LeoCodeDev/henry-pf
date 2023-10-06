@@ -19,6 +19,7 @@ const useProductsStore = create((set, get) => ({
       } else {
         set({ categories: data });
       }
+      return data
     } catch (error) {
       throw new Error(error.message);
     }
@@ -30,7 +31,10 @@ const useProductsStore = create((set, get) => ({
       if (!data) {
         throw new Error("No products found");
       } else {
-        set({ products: data, prefilterProducts: data });
+        set({ products: data,
+           prefilterProducts: data,
+        });
+        return data
       }
     } catch (error) {
       throw new Error(error.message);
@@ -50,6 +54,7 @@ const useProductsStore = create((set, get) => ({
           prefilterProducts: data,
           filteredProducts: data
         });
+        return data
       }
     } catch (error) {
       throw new Error(error.message);
@@ -95,8 +100,8 @@ const useProductsStore = create((set, get) => ({
       zyx: (a, b) => b.name.localeCompare(a.name),
       mRated: (a, b) => b.rating - a.rating,
       lRated: (a, b) => a.rating - b.rating,
-      cheap: (a, b) => a.price - b.price,
-      expensive: (a, b) => b.price - a.price,
+      cheap: (a, b) => {Number(a.price) - Number(b.price)},
+      expensive: (a, b) => { Number(b.price) - Number(a.price)},
     };
 
     set((state) => {

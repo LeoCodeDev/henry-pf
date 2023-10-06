@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 const routes = require('./routes/index')
 const { sequelize } = require('./db_connection') 
+// const {ip} = require('express-ip');
 
 
 

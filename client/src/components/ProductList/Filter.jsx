@@ -7,8 +7,26 @@ import theme from '../../../theme'
 
 const Filter = () => {
 
-  const {/* clearFilters */ applyFilters} = useProductsStore()
+  const {/* clearFilters */ applyFilters,products} = useProductsStore()
   const [anchor, setAnchor] = useState(null);
+
+  const lowerPrice = products.reduce((min,product) => {
+    return min > product.price ? product.price : min;
+  },products[0]?.price)
+  const higherPrice = products.reduce((max,product) => {
+    return max < product.price ? product.price : max;
+  },0)
+
+  console.log({lowerPrice,higherPrice})
+
+  const stepPerCurrency =  (higherPrice) => {
+      if(higherPrice < 1000) {return 10}
+      else if(higherPrice > 1000000) {return 250000}
+      else if(higherPrice > 1000 && higherPrice < 1000000) {return 100000}
+    }
+    
+  
+
 
   const popoverOpen = (event) => {
     setAnchor(event.currentTarget);
@@ -60,8 +78,8 @@ const Filter = () => {
   ];
 
   const [rangeValues, setRangeValues] = useState({
-    priceMin: 10,
-    priceMax: 500,
+    priceMin: lowerPrice,
+    priceMax: higherPrice,
     rateMin: 1,
     rateMax: 5
   })
@@ -138,11 +156,11 @@ const Filter = () => {
           </Typography>
           <Slider
           aria-label="Small"
-            min={10}
-            max={500}
+            min={lowerPrice}
+            max={higherPrice}
             value={value}
-            defaultValue={[10, 500]}
-            step={10}
+            defaultValue={[lowerPrice, higherPrice]}
+            step={stepPerCurrency(higherPrice)}
             marks={customMarksPrice}
             valueLabelDisplay="auto"
             onChange={handleChange}
