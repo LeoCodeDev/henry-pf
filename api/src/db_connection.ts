@@ -7,6 +7,7 @@ import {UserModel} from './models/User';
 import {TeamModel} from './models/Team';
 import { ExcerciseModel } from './models/Excercise';
 import { RoutineModel } from './models/Routine';
+import { SaleModel } from './models/Sale';
 
 import {v2 as cloudinary} from 'cloudinary';
 
@@ -38,8 +39,9 @@ UserModel(sequelize)
 TeamModel(sequelize)
 ExcerciseModel(sequelize)
 RoutineModel(sequelize)
+SaleModel(sequelize)
 
-const { Product,Category,User,Team,Excercise,Routine} = sequelize.models
+const { Product,Category,User,Team,Excercise,Routine,Sale} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -56,6 +58,12 @@ Routine.belongsToMany(Excercise,{through: 'routines_excercises'})
 Routine.belongsToMany(User,{through: 'routines_users'})
 User.belongsToMany(Routine,{through: 'routines_users'})
 
+//Falta la relacion users_products
+// pero no se muy bien como establecerla 
+// o si deberia ser products_sales. 
+
+User.hasMany(Sale)
+
 module.exports = {
     Product,
     Category,
@@ -63,5 +71,6 @@ module.exports = {
     Team,
     Excercise,
     Routine,
+    Sale,
     sequelize
 }
