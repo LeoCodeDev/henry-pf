@@ -38,6 +38,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 export const NavBar = () => {
   const {actualCurrency, setCurrency}=useProductsStore()
+  const [localCurrency, setLocalCurrency]= React.useState('')
 
   console.log(actualCurrency)
   const [anchorElNav, setAnchorElNav] = React.useState(null)
@@ -48,8 +49,10 @@ export const NavBar = () => {
   React.useEffect(() => {
     const currency = user?.ip_location?.currency;
   if (currency) {
-    setCurrency(currency);}
-  },[user,setCurrency])
+    setCurrency(currency)
+    setLocalCurrency(currency)
+  }}
+  ,[user,setCurrency,setLocalCurrency])
 
   const handleLogout = () => {
     logout()
@@ -236,7 +239,7 @@ export const NavBar = () => {
                 onChange={handleCurrencyChange}
                 >
                   <MenuItem value="EUR"id="EUR">EUR</MenuItem>
-                  <MenuItem value={actualCurrency} id={actualCurrency}>{actualCurrency}</MenuItem> 
+                  <MenuItem value={localCurrency} id={localCurrency}>{localCurrency}</MenuItem> 
                   <MenuItem value="USD" id="USD">USD</MenuItem>
                 </Select>
             </FormControl>

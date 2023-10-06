@@ -24,7 +24,7 @@ const useProductsStore = create((set, get) => ({
     }
   },
   fetchProducts: async () => {
-    const actualCurrency= get().actualCurrency
+    const actualCurrency= get().actualCurrency;
     try {
       const { data } = await axios.get(`/products?to=${actualCurrency}`);
       if (!data) {
