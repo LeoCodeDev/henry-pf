@@ -39,11 +39,7 @@ export default function ProductForm() {
   const theme = useTheme()
   const { categories, addProduct, fetchCategories } = useProductsStore()
 
-  const [selectedImage, setSelectedImage] = useState()
-
-  useEffect(() => {
-    fetchCategories()
-  }, [fetchCategories])
+  const [productImageURL, setProductImageURL] = useState(null)
 
   useEffect(() => {
     fetchCategories()
@@ -58,6 +54,15 @@ export default function ProductForm() {
     category: '',
     image: '',
   })
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      image: productImageURL,
+    })
+  }, [productImageURL])
+
+  console.log({formData});
 
   const [errors, setErrors] = useState({
     name: false,
@@ -129,7 +134,6 @@ export default function ProductForm() {
           category: '',
           image: '',
         })
-        setSelectedImage(null)
         toast.success('Product added successfully!')
       } catch (error) {
         return toast.error('Please check for eny errors')
@@ -293,20 +297,10 @@ export default function ProductForm() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-
-                  <DropAndCrop endpoint={'/postImage'} />
-                  
-                  <label htmlFor="select-image">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      component="span"
-                      textAlign="center"
-                      onClick={() => console.log(selectedImage)}
-                    >
-                      Upload Image
-                    </Button>
-                  </label>
+                  <DropAndCrop
+                    endpoint={'/postImage'}
+                    setProductImageURL={setProductImageURL}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Button

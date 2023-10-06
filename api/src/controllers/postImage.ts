@@ -9,8 +9,9 @@ const processImage = async (req: Request, res: Response) => {
   if(!req.file){
     return res.status(400).json({error: 'No image provided'})
   }
+  const url = 'url de cloudinary'
   const imageBuffer = req.file.buffer
-  return res.status(200).json({message: 'Image processed', imageBuffer})
+  return res.status(200).json({message: 'Image processed', url, imageBuffer})
 }
 
 console.log(postImage);

@@ -1,38 +1,39 @@
-import { create } from "zustand";
-import axios from "axios";
+import { create } from 'zustand'
+import axios from 'axios'
 
 const useProductsStore = create((set) => ({
   products: [],
   prefilterProducts: [],
   filteredProducts: [],
   categories: [],
+  processedImage: '',
   fetchCategories: async () => {
     try {
-      const { data } = await axios.get("/categories");
+      const { data } = await axios.get('/categories')
       if (!data) {
-        throw new Error("No categories found");
+        throw new Error('No categories found')
       } else {
-        set({ categories: data });
+        set({ categories: data })
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   fetchProducts: async () => {
     try {
-      const { data } = await axios.get("/products");
+      const { data } = await axios.get('/products')
       if (!data) {
-        throw new Error("No products found");
+        throw new Error('No products found')
       } else {
-        set({ products: data, prefilterProducts: data });
+        set({ products: data, prefilterProducts: data })
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   setProductsByName: async (name) => {
-    if (typeof name !== "string" || name.length < 1)
-      throw new Error("Invalid name");
+    if (typeof name !== 'string' || name.length < 1)
+      throw new Error('Invalid name')
 
     try {
       const { data } = await axios(`/productByName?name=${name}`)
@@ -42,27 +43,37 @@ const useProductsStore = create((set) => ({
         set({
           products: data,
           prefilterProducts: data,
-          filteredProducts: data
-        });
+          filteredProducts: data,
+        })
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   setProductsFiltered: (category) => {
     set((state) => {
-      const prefiltered = category ? state.products.filter(product => product?.Category?.name == category.name) : state.products
-      return {prefilterProducts: [...prefiltered], filteredProducts: [...prefiltered]}
-    });
+      const prefiltered = category
+        ? state.products.filter(
+            (product) => product?.Category?.name == category.name
+          )
+        : state.products
+      return {
+        prefilterProducts: [...prefiltered],
+        filteredProducts: [...prefiltered],
+      }
+    })
   },
   // @params = objectValues -> Objeto con Valores minimos y maximos
-  applyFilters: (objectValues) =>{
-    const {priceMin, priceMax, rateMin, rateMax} = objectValues
-    set((state)=>({
-      filteredProducts: state.prefilterProducts.filter(product=> (
-        (product.rating >= rateMin && product.rating <= rateMax) &&
-        (product.price >= priceMin && product.price <= priceMax)
-      ))
+  applyFilters: (objectValues) => {
+    const { priceMin, priceMax, rateMin, rateMax } = objectValues
+    set((state) => ({
+      filteredProducts: state.prefilterProducts.filter(
+        (product) =>
+          product.rating >= rateMin &&
+          product.rating <= rateMax &&
+          product.price >= priceMin &&
+          product.price <= priceMax
+      ),
     }))
   },
   clearFilters: () =>
@@ -71,16 +82,16 @@ const useProductsStore = create((set) => ({
     })),
   addProduct: async (product) => {
     try {
-      const { data } = await axios.post("/postProduct", product);
+      const { data } = await axios.post('/postProduct', product)
       if (data.status !== 200) {
-        throw new Error("Error adding product");
+        throw new Error('Error adding product')
       } else {
         set((state) => ({
           products: [...state.products, product],
-        }));
+        }))
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   applySort: (sort) => {
@@ -91,28 +102,47 @@ const useProductsStore = create((set) => ({
       lRated: (a, b) => a.rating - b.rating,
       cheap: (a, b) => a.price - b.price,
       expensive: (a, b) => b.price - a.price,
-    };
+    }
 
     set((state) => {
       if (options[sort]) {
-        const sortedProducts = [...state.filteredProducts];
-        sortedProducts.sort(options[sort]);
-        return {...state, filteredProducts: [...sortedProducts] };
-      } else if (sort === "all") {
-        return { filteredProducts: [...state.filteredProducts] };
+        const sortedProducts = [...state.filteredProducts]
+        sortedProducts.sort(options[sort])
+        return { ...state, filteredProducts: [...sortedProducts] }
+      } else if (sort === 'all') {
+        return { filteredProducts: [...state.filteredProducts] }
       }
 
-      return state;
-    });
+      return state
+    })
   },
-  deleteImage: async (image) =>{
+  // postImage: async (endpoint, image) => {
+  //   try {
+  //     const response = await axios.post(endpoint, image, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     })
+
+  //     if (response.status === 200) {
+  //       set({ processedImage: response.data.url })
+  //       console.log(response)
+  //       return response
+  //     } else {
+  //       throw new Error('Error posting image')
+  //     }
+  //   } catch (error) {
+  //     throw new Error(error.message)
+  //   }
+  // },
+  deleteImage: async (image) => {
     try {
-      const res = await axios.post('/delImage',{image: image})
+      const res = await axios.post('/delImage', { image: image })
       return res
     } catch (error) {
-      throw new Error (error.message)
+      throw new Error(error.message)
     }
   },
-}));
+}))
 
-export { useProductsStore };
+export { useProductsStore }

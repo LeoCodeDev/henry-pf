@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react'
 import Dropzone from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
+import { Button } from '@mui/material'
 
-const DropAndCrop = ({ endpoint }) => {
+const DropAndCrop = ({ endpoint, setProductImageURL }) => {
   const [selectedFile, setSelectedFile] = useState(null)
   const [image, setImage] = useState(null)
   const [imageUrl, setImageUrl] = useState(null)
@@ -84,8 +85,6 @@ const DropAndCrop = ({ endpoint }) => {
 
     const croppedBlob = await getCroppedImg(image, crop)
 
-    console.log(croppedBlob);
-
     try {
       const formData = new FormData()
       formData.append('image', selectedFile)
@@ -99,6 +98,7 @@ const DropAndCrop = ({ endpoint }) => {
       if (response.status === 200) {
         setCroppedImage(URL.createObjectURL(croppedBlob))
         setImage(null)
+        setProductImageURL(response.data.url)
       } else {
         console.error({ response })
       }
@@ -111,6 +111,7 @@ const DropAndCrop = ({ endpoint }) => {
     setCroppedImage(null)
     setImage(null)
     setImageUrl(null)
+    setSelectedFile(null)
   }
 
   return (
@@ -130,21 +131,38 @@ const DropAndCrop = ({ endpoint }) => {
         <>
           <ReactCrop crop={crop} onChange={(newCrop) => setCrop(newCrop)}>
             <img src={imageUrl} />
-            <img src={croppedImage} alt="Image preview" />
           </ReactCrop>
-          <button onClick={handleAcceptCrop} type="button">
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            onClick={handleAcceptCrop}
+            sx={{ mt: 3, mb: 2 }}
+          >
             Crop
-          </button>
-          <button onClick={handleCancelCrop} type="button">
+          </Button>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            onClick={handleCancelCrop}
+            sx={{ mt: 3, mb: 2 }}
+          >
             Reset
-          </button>
+          </Button>
         </>
       ) : (
         <>
           <img src={croppedImage} alt="Image preview" />
-          <button onClick={handleCancelCrop} type="button">
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            onClick={handleCancelCrop}
+            sx={{ mt: 3, mb: 2 }}
+          >
             Reset
-          </button>
+          </Button>
         </>
       )}
     </div>
