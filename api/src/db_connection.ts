@@ -5,6 +5,8 @@ import {ProductModel} from './models/Product';
 import {CategoryModel} from './models/Category';
 import {UserModel} from './models/User';
 import {TeamModel} from './models/Team';
+import { ExcerciseModel } from './models/Excercise';
+import { RoutineModel } from './models/Routine';
 
 import {v2 as cloudinary} from 'cloudinary';
 
@@ -34,8 +36,10 @@ ProductModel(sequelize)
 CategoryModel(sequelize)
 UserModel(sequelize)
 TeamModel(sequelize)
+ExcerciseModel(sequelize)
+RoutineModel(sequelize)
 
-const { Product,Category,User,Team} = sequelize.models
+const { Product,Category,User,Team,Excercise,Routine} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -46,10 +50,18 @@ Team.hasMany(User)
 Product.belongsToMany(User,{through: 'fav_users_products'})
 User.belongsToMany(Product,{through: 'fav_users_products'})
 
+Excercise.belongsToMany(Routine,{through: 'routines_excercises'})
+Routine.belongsToMany(Excercise,{through: 'routines_excercises'})
+
+Routine.belongsToMany(User,{through: 'routines_users'})
+User.belongsToMany(Routine,{through: 'routines_users'})
+
 module.exports = {
     Product,
     Category,
     User,
     Team,
+    Excercise,
+    Routine,
     sequelize
 }

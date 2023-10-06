@@ -15,7 +15,9 @@ const postFavorite = require('../controllers/postFavorite');
 const delFavorite = require('../controllers/delFavorite');
 const getAllUsers= require('../controllers/getAllUsers')
 const delImage=require('../controllers/delImage')
-
+const updateProductStock= require('../controllers/stockUpdate')
+const addExercisesFromAPI= require('../controllers/postExcercise')
+const getExcercises  = require("../controllers/getExcercises");
 
 router.post('/postUser', postUser)
 router.post('/login', userLogin)
@@ -32,7 +34,9 @@ router.post('/postFavorite', postFavorite);
 router.delete('/delFavorite', delFavorite);
 router.get('/allUsers', getAllUsers)
 router.post('/delImage', delImage);
-
+router.put('/stockUpdate', updateProductStock);
+router.get('/postExcercise', addExercisesFromAPI);
+router.get('/getExcercises', getExcercises);
 
 
 
