@@ -10,7 +10,11 @@ import {
   Grid,
   Typography,
   useMediaQuery,
+  InputAdornment,
+  IconButton 
 } from "@mui/material";
+import {Visibility, VisibilityOff }  from "@mui/icons-material";
+
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import background from "../../assets/images/back_landing.jpg";
 import { useTheme } from "@mui/material/styles";
@@ -29,6 +33,8 @@ function SignInSide() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
   const { isLogged, authenticate } = useAuthStore();
   const [option, setOption] = useState("signin");
@@ -90,12 +96,19 @@ function SignInSide() {
     }
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     setTimeout(() => {
       setFormLoginVisible(true);
     }, 200);
   }, []);
-  
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
@@ -148,7 +161,9 @@ function SignInSide() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              transform: formLoginVisible ? "translateY(0)" : "translateY(-100%)",
+              transform: formLoginVisible
+                ? "translateY(0)"
+                : "translateY(-100%)",
               transition: "transform 0.5s ease-in-out",
             }}
           >
@@ -206,15 +221,29 @@ function SignInSide() {
                 fullWidth
                 name="password"
                 label={passwordError ? "Error" : "Password"}
-                type="password"
+                type={showPassword ? "text" : "password"}
+                id="password"
                 autoComplete="on"
-                id={"password"}
                 helperText={
                   passwordError
                     ? "Password must be at least 8 characters, including an uppercase letter and a number"
                     : ""
                 }
                 value={password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <Button
                 type="submit"
@@ -229,7 +258,10 @@ function SignInSide() {
               >
                 Sign In
               </Button>
-              <GoogleLogin setEmail={setEmail} setPassword={setPassword} ></GoogleLogin>
+              <GoogleLogin
+                setEmail={setEmail}
+                setPassword={setPassword}
+              ></GoogleLogin>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link
@@ -244,7 +276,7 @@ function SignInSide() {
             </Box>
           </Box>
         ) : (
-          <SignUp setOption={setOption}/>
+          <SignUp setOption={setOption} />
         )}
       </Grid>
       <Toaster position="top-center" reverseOrder={false} />
