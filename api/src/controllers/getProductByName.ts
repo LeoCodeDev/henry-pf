@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 const { Product, Category } = require("../db_connection");
 const { Op } = require("sequelize");
+import currenciesExchange  from "./currenciesExchanges";
+import {Currency} from 'node-currency-exchange-rates';
 
 const getProductByName= async (req:Request,res:Response)=>{
     const {name}=req.query
-
+    const  to: Currency = req.query.to as Currency
+    const from : Currency= "USD"
     try {
         if(typeof name === 'string' && name.length > 0){
         const searchTerms = name.split(' ');
@@ -19,7 +22,19 @@ const getProductByName= async (req:Request,res:Response)=>{
         if (!selectedProduct.length) {
             return res.status(404).json({ message: 'Product not found' });
             } 
-            else return res.status(200).json(selectedProduct);
+            else{
+            const rateResult = await currenciesExchange(from, to, "1")     
+            if (typeof rateResult !== 'number') {
+                return res.status(400).json({ error: rateResult.error });
+            }
+            const rate = rateResult;
+            const newPricedProducts = selectedProduct.map( (product: any) => {
+                const newPrice = product.price * rate;
+                return { ...product.dataValues, price: newPrice.toLocaleString() };
+                });
+            return res.status(200).json(newPricedProducts);
+            } 
+
         } else {
             return res.status(400).json({ message: 'Did not receive any search term' });}
         } catch (error:any) {
