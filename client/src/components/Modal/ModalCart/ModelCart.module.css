@@ -1,6 +1,6 @@
 .container{
     height: 100vh;
-    width: 500px;
+    width: 100%;
     background-color: #bfbfbf;
     display: flex;
     flex-direction: column;
@@ -11,10 +11,13 @@
     font-family: var(--font-family-poppins);
     font-weight: 800;
     font-size: 2rem;
+    margin: 0.75rem;
 }
+
 
 .subtitle{
     font-family: var(--font-family-poppins);
+    margin: 0;
 }
 .cardProductContain {
     width: 90%;
@@ -32,3 +35,11 @@
     justify-content: center;
     object-fit: contain;
 }
+
+/* Media Querys*/
+
+@media (min-width: 640px) {
+    .container {
+        width: 500px;
+    }
+  }

@@ -2,7 +2,8 @@ import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import { ModalCart } from "./ModalCart/ModalCart";
 import { ModalFav } from "./ModalFav/ModalFav";
-
+import theme from "../../../theme";
+import { ThemeProvider } from "@emotion/react";
 
 /* Productos harcodeados: aca logica de capturacion de datos de ambos estados globales productsFav=[] y productsShoppingCart=[] */
 const products = [
@@ -102,6 +103,8 @@ const products = [
   },
 ];
 
+
+
 export const Modal = ({ modalOpen, setModalOpen }) => {
   let { anchor, open } = modalOpen;
 
@@ -131,10 +134,10 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
 
   return (
     <div>
+    <ThemeProvider theme={theme}>
       {["left", "right"].map((anchor) => (
         <section key={anchor}>
           <Drawer
-            sx={{ width: "30%" }}
             anchor={anchor}
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
@@ -146,7 +149,8 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
             )}
           </Drawer>
         </section>
-      ))}
+      ))} 
+      </ThemeProvider>
     </div>
   );
 };
