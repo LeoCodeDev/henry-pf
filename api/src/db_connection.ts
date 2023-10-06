@@ -61,7 +61,7 @@ User.belongsToMany(Routine,{through: 'routines_users'})
 //Falta la relacion users_products
 // pero no se muy bien como establecerla 
 // o si deberia ser products_sales. 
-
+Sale.belongsTo(User)
 User.hasMany(Sale)
 
 module.exports = {
