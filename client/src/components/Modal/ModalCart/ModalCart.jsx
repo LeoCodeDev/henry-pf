@@ -3,8 +3,12 @@ import { CardProductMiniCart } from "../../CardProductMiniCart/CardProductMiniCa
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { isMobile } from 'react-device-detect';
+import { useCartStore } from "../../../store/shoppingCartStore";
 
-export const ModalCart = ({products, toggleDrawer}) => {
+export const ModalCart = ({toggleDrawer}) => {
+
+  const {shoppingCart} = useCartStore()
+
   return (
     <>
       <div className={styles.container}>
@@ -16,7 +20,7 @@ export const ModalCart = ({products, toggleDrawer}) => {
       <p className={styles.subtitle}>Total: $0.00</p>
       
       <section className={styles.cardProductContain}>
-        {products.map((product) => (
+        {shoppingCart.map((product) => (
           <div key={product.id_product} className={styles.main}>
              <CardProductMiniCart  product={product} />
           </div>

@@ -2,7 +2,23 @@ import axios from 'axios'
 import { create } from 'zustand'
 
 const favoriteStore = create((set) => ({
-  favorites: [],
+  favorites: [{
+    id_product: 11,
+    name: "sweat pants",
+    image:
+      "https://apparel.goldsgym.com/media/image/ef/0e/46/VorschauXqHgHJZcGoTz4.jpg",
+    description: "comfortable and durable",
+    price: "100.00",
+    stock: 10,
+    rating: 2,
+    active: true,
+    CategoryIdCategory: 1,
+    Category: {
+      id_category: 1,
+      name: "clothes",
+      variants: ["XS", "S", "M", "L", "XL"],
+    },
+  },],
   getAllFavorites: async (username) => {
     try {
       const { data } = await axios(`/getAllFavorites?username=${username}`)

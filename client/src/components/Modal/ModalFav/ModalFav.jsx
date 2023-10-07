@@ -4,7 +4,7 @@ import styles from "./ModalFav.module.css";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-export const ModalFav = ({ products, toggleDrawer }) => {
+export const ModalFav = ({ favorites, toggleDrawer }) => {
   return (
     <>
       <div className={styles.container}>
@@ -21,7 +21,7 @@ export const ModalFav = ({ products, toggleDrawer }) => {
         <h1 className={styles.title}>Your favorites</h1>
 
         <section className={styles.cardProductContain}>
-          {products.map((product) => (
+          {favorites.map((product) => (
             <div key={product.id_product} className={styles.main}>
               <CardProductFav product={product} />
             </div>
