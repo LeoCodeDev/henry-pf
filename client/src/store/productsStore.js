@@ -33,6 +33,7 @@ const useProductsStore = create((set, get) => ({
       } else {
         set({ products: data,
            prefilterProducts: data,
+           filteredProducts: data
         });
         return data
       }

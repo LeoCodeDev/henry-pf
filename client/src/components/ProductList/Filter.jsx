@@ -7,7 +7,7 @@ import theme from '../../../theme'
 
 const Filter = () => {
 
-  const {/* clearFilters */ applyFilters,products} = useProductsStore()
+  const {/* clearFilters */ applyFilters,products,actualCurrency} = useProductsStore()
   const [anchor, setAnchor] = useState(null);
 
   const lowerPrice = products.reduce((min,product) => {
@@ -106,6 +106,16 @@ const Filter = () => {
 
     setValue2(newValue);
   };
+
+  useEffect(()=>{
+
+    setRangeValues({
+    priceMin: lowerPrice,
+    priceMax: higherPrice,
+    rateMin: 1,
+    rateMax: 5
+  })
+  },[actualCurrency])
 
   useEffect(()=>{
     applyFilters(rangeValues)

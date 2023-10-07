@@ -8,7 +8,7 @@ import styles from './styles/Products.module.css';
 
 const Products = () => {
 
-  const { filteredProducts, fetchProducts,setCurrency, actualCurrency} = useProductsStore()
+  const { filteredProducts, fetchProducts,setCurrency, actualCurrency } = useProductsStore()
   const {user}= useAuthStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
@@ -17,15 +17,18 @@ const Products = () => {
 
 
   useEffect(() => {
-    fetchProducts().then((newProduct)=>{
-      setAllProducts(newProduct.slice(
-        currentPage * productsPerPage,
-        (currentPage + 1) * productsPerPage
-      ))
-      
-    })
-  },[fetchProducts, actualCurrency,currentPage,setCurrency])
+    
+    setAllProducts(filteredProducts.slice(
+      currentPage * productsPerPage,
+      (currentPage + 1) * productsPerPage
+    ))
+    console.log( 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',filteredProducts)
+  
+  },[actualCurrency,currentPage,setCurrency, filteredProducts])
 
+  useEffect(() => {
+    fetchProducts()
+  },[fetchProducts, actualCurrency,setCurrency])
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -45,17 +48,9 @@ const Products = () => {
 
   const handleCurrencyChange=async(e)=>{
     await setCurrency(e.target.value)
+    await fetchProducts()
+    console.log('here', e.target.value)
   }
-
-  useEffect(() => {
-    setCurrentPage(0)
-    fetchProducts().then((newProducts) => {
-      setAllProducts(newProducts.slice(
-        currentPage * productsPerPage,
-        (currentPage + 1) * productsPerPage
-      ));
-    });
-  }, [filteredProducts, actualCurrency, currentPage, setCurrency,fetchProducts])
 
   return (
     <div className={styles.productsContain}>
@@ -100,3 +95,4 @@ const Products = () => {
 }
 
 export default Products
+
