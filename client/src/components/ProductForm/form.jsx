@@ -62,7 +62,7 @@ export default function ProductForm() {
     })
   }, [productImageURL])
 
-  console.log({formData});
+  console.log({ formData })
 
   const [errors, setErrors] = useState({
     name: false,

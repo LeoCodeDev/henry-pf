@@ -6,7 +6,6 @@ const useProductsStore = create((set) => ({
   prefilterProducts: [],
   filteredProducts: [],
   categories: [],
-  processedImage: '',
   fetchCategories: async () => {
     try {
       const { data } = await axios.get('/categories')
@@ -116,25 +115,6 @@ const useProductsStore = create((set) => ({
       return state
     })
   },
-  // postImage: async (endpoint, image) => {
-  //   try {
-  //     const response = await axios.post(endpoint, image, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     })
-
-  //     if (response.status === 200) {
-  //       set({ processedImage: response.data.url })
-  //       console.log(response)
-  //       return response
-  //     } else {
-  //       throw new Error('Error posting image')
-  //     }
-  //   } catch (error) {
-  //     throw new Error(error.message)
-  //   }
-  // },
   deleteImage: async (image) => {
     try {
       const res = await axios.post('/delImage', { image: image })
