@@ -4,14 +4,14 @@ import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
-import CompleteProfile from "../CompletePerfil/CompleteProfile";
+import CompleteProfile from "../CompleteProfile/CompleteProfile";
 
 // Tu configuración de Firebase
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "login-d4c6e.firebaseapp.com",
   projectId: "login-d4c6e",
-  storageBucket: "Healthech/home",
+  storageBucket: "login-d4c6e.appspot.com",
   messagingSenderId: "455379913119",
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
@@ -86,7 +86,7 @@ function GoogleLogin({setEmail, setPassword}) {
           <img src={userData.photoURL} alt="Foto de perfil" />
           <p>Correo electrónico: {userData.email}</p> */}
           <Button variant="contained" color="primary" onClick={handleLogout}>
-            Logout
+            Logout Google
           </Button>
         </div>
       ) : (
