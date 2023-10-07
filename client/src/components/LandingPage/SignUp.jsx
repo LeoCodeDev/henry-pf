@@ -29,6 +29,7 @@ import AvatarSelection from "./AvatarSelection";
 import { avatars } from "./avatars";
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
+import emailSender from "../SendMail/SendMail";
 
 export default function SignUp({ setOption }) {
   const [formVisible, setFormVisible] = useState(false);
@@ -174,9 +175,12 @@ export default function SignUp({ setOption }) {
         role: selectedRole,
         team: developerType,
       };
-
       await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
+      
+      const title = 'Thank you for signing up for Healthech!';
+      const message = "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
+      emailSender(formData.email, title, message);
       try {
         await authenticate({
           email: formData.email,
@@ -190,18 +194,6 @@ export default function SignUp({ setOption }) {
     }
   };
 
-  // const handleAuthentication = () => {
-  //   if (isLogged) {
-  //     // navigate("/home");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (isLogged) {
-  //     // handleAuthentication();
-  //   }
-  // }, [isLogged]);
-
   useEffect(() => {
     setTimeout(() => {
       setFormVisible(true);
@@ -211,27 +203,8 @@ export default function SignUp({ setOption }) {
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
-    // <Grid
-    //   container
-    //   component="main"
-    //   sx={{ height: "100vh", display: "flex", flexDirection: "row-reverse" }}
-    // >
-    //   <CssBaseline />
-    // <Grid
-    //   item
-    //   xs={12}
-    //   sm={8}
-    //   md={5}
-    //   component={Paper}
-    //   elevation={6}
-    //   square
-    //   sx={{
-    //     backgroundColor: theme.palette.background.main,
-    //   }}
-    // >
     <Box
       sx={{
-        // my: 0,
         mx: 4,
         mt: 2,
         display: "flex",
