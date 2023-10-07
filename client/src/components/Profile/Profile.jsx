@@ -43,7 +43,7 @@ export default function Profile() {
     first_name: "",
     last_name: "",
     username: "",
-    avatar: null, // Para almacenar la imagen seleccionada
+    avatar: null,
   });
   const [teams, setTeams] = useState([]);
   const [imageURL, setImageURL] = useState(null);
