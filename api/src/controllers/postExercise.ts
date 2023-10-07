@@ -1,14 +1,14 @@
 const axios = require('axios');
-const { Excercise } = require('../db_connection');
+const { Exercise } = require('../db_connection');
 import { Request, Response } from 'express';
-const {API_KEY_EXCERCISES}= process.env
+const {API_KEY_EXERCISES}= process.env
 
 const addExercisesFromAPI = async (req:Request, res:Response) => {
     try {
     const { muscle } = req.query;
     const exercisesResponse = await axios.get(`https://api.api-ninjas.com/v1/exercises?muscle=${muscle}`, {
         headers: {
-        'X-Api-Key': API_KEY_EXCERCISES,
+        'X-Api-Key': API_KEY_EXERCISES,
         'Content-Type': 'application/json'
         }
     });
@@ -17,7 +17,7 @@ const addExercisesFromAPI = async (req:Request, res:Response) => {
     if (!exercisesData || exercisesData.length === 0) {
         return res.status(404).json({ error: 'No exercises found for the given parameters' });
     }
-    interface Excercise {
+    interface Exercise {
         name: string;
         type: string;
         muscle: string;
@@ -25,26 +25,26 @@ const addExercisesFromAPI = async (req:Request, res:Response) => {
         instructions: string;
         image: string;
         }
-    const excercisesToCreate: Excercise[]=exercisesData.slice(0, 10).map((excercise:Excercise) => {
+    const exercisesToCreate: Exercise[]=exercisesData.slice(0, 10).map((exercise:Exercise) => {
         return {
-        name: excercise.name,
-        type: excercise.type,
-        muscle: excercise.muscle,
-        difficulty: excercise.difficulty,
-        description: excercise.instructions,
+        name: exercise.name,
+        type: exercise.type,
+        muscle: exercise.muscle,
+        difficulty: exercise.difficulty,
+        description: exercise.instructions,
         };
     });
-    const existingExcercises = await Excercise.findAll({
+    const existingExercises = await Exercise.findAll({
         where: {
-        name: excercisesToCreate.map(excercise => excercise.name)
+        name: exercisesToCreate.map(exercise => exercise.name)
         }
     });
-    console.log({existingExcercises})
-    const excercisesToInsert = excercisesToCreate.filter(excercise => {
-        return !existingExcercises.some((existingExcercise:Excercise) => existingExcercise.name === excercise.name);
+    console.log({existingExercises})
+    const exercisesToInsert = exercisesToCreate.filter(exercise => {
+        return !existingExercises.some((existingExercise:Exercise) => existingExercise.name === exercise.name);
     });
-    console.log(excercisesToInsert)
-    const createdExercises = await Excercise.bulkCreate(excercisesToInsert);
+    console.log(exercisesToInsert)
+    const createdExercises = await Exercise.bulkCreate(exercisesToInsert);
     return res.status(201).json({message:'Excercises added succesfully', data:createdExercises});
     } catch (error:any) {
     return res.status(500).json({ error: error.message });

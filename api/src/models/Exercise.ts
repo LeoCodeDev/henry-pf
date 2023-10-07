@@ -1,9 +1,9 @@
 import DataTypes from 'sequelize';
 import { Sequelize } from 'sequelize';
 
-export const ExcerciseModel = (sequelize: Sequelize) => {
-    sequelize.define('Excercise',{
-        id_excercise:{
+export const ExerciseModel = (sequelize: Sequelize) => {
+    sequelize.define('Exercise',{
+        id_exercise:{
             type: DataTypes.INTEGER,
             autoIncrement: true,
             allowNull: false,

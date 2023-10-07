@@ -5,7 +5,7 @@ import {ProductModel} from './models/Product';
 import {CategoryModel} from './models/Category';
 import {UserModel} from './models/User';
 import {TeamModel} from './models/Team';
-import { ExcerciseModel } from './models/Excercise';
+import { ExerciseModel } from './models/Exercise';
 import { RoutineModel } from './models/Routine';
 import { SaleModel } from './models/Sale';
 
@@ -37,11 +37,11 @@ ProductModel(sequelize)
 CategoryModel(sequelize)
 UserModel(sequelize)
 TeamModel(sequelize)
-ExcerciseModel(sequelize)
+ExerciseModel(sequelize)
 RoutineModel(sequelize)
 SaleModel(sequelize)
 
-const { Product,Category,User,Team,Excercise,Routine,Sale} = sequelize.models
+const { Product,Category,User,Team,Exercise,Routine,Sale} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -52,24 +52,24 @@ Team.hasMany(User)
 Product.belongsToMany(User,{through: 'fav_users_products'})
 User.belongsToMany(Product,{through: 'fav_users_products'})
 
-Excercise.belongsToMany(Routine,{through: 'routines_excercises'})
-Routine.belongsToMany(Excercise,{through: 'routines_excercises'})
+Exercise.belongsToMany(Routine,{through: 'routines_exercises'})
+Routine.belongsToMany(Exercise,{through: 'routines_exercises'})
 
 Routine.belongsToMany(User,{through: 'routines_users'})
 User.belongsToMany(Routine,{through: 'routines_users'})
 
-//Falta la relacion users_products
-// pero no se muy bien como establecerla 
-// o si deberia ser products_sales. 
 Sale.belongsTo(User)
 User.hasMany(Sale)
+
+Product.belongsToMany(Sale,{through: 'sales_products'})
+Sale.belongsToMany(Product,{through: 'sales_products'})
 
 module.exports = {
     Product,
     Category,
     User,
     Team,
-    Excercise,
+    Exercise,
     Routine,
     Sale,
     sequelize
