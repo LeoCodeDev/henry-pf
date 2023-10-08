@@ -17,4 +17,8 @@ export const RoutineModel = (sequelize: Sequelize) => {
             type: DataTypes.FLOAT,
             allowNull: false,
         },
+        active:{
+            type:DataTypes.BOOLEAN,
+            defaultValue: true
+        }
     },{ timestamps: false })}

@@ -25,13 +25,10 @@ const getAllRoutines= require('../controllers/getAllRoutines')
 const addUserRoutine = require('../controllers/addUserRoutine')
 const postSale= require('../controllers/postSale')
 const getSale= require('../controllers/getSale')
-const sendMail = require("../controllers/postMail");
+const putActiveRoutine= require('../controllers/putDeletRutine')
+const putChangesInRoutine = require('../controllers/putChangesInRoutine')
+const deleteSavedRutine = require('../controllers/deleteSavedRutine')
 
-
-
-
-
-router.post("/send-email", sendMail);
 router.post('/postUser', postUser)
 router.post('/login', userLogin)
 router.get('/getUser', getUser)
@@ -57,6 +54,9 @@ router.get('/getAllRoutines', getAllRoutines);
 router.post('/addUserRoutine', addUserRoutine);
 router.post('/postSale', postSale);
 router.get('/getSale', getSale);
+router.put('/putDeletRutine', putActiveRoutine);
+router.put('/putChangesInRoutine', putChangesInRoutine);
+router.delete('/deleteSavedRutine', deleteSavedRutine);
 
 
 
