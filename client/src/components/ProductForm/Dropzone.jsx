@@ -12,7 +12,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
   const [crop, setCrop] = useState({
     unit: '%',
     width: 100,
-    aspect: 1,
+    height: 100,
   })
 
   const [croppedImage, setCroppedImage] = useState(null)
@@ -51,22 +51,22 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
     if (!image) return null
 
     const canvas = document.createElement('canvas')
-    const scaleX = image.naturalWidth / image.width
-    const scaleY = image.naturalHeight / image.height
-    canvas.width = crop.width
-    canvas.height = crop.height
+    const scaleX = (x) => (x * image.naturalWidth) / 100
+    const scaleY = (y) => (y * image.naturalHeight) / 100
+    canvas.width = scaleX(crop.width)
+    canvas.height = scaleY(crop.height)
     const ctx = canvas.getContext('2d')
 
     ctx.drawImage(
       image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
+      scaleX(crop.x),
+      scaleY(crop.y),
+      scaleX(crop.width),
+      scaleY(crop.height),
       0,
       0,
-      crop.width,
-      crop.height
+      scaleX(crop.width),
+      scaleY(crop.height)
     )
 
     return new Promise((resolve) => {
@@ -114,6 +114,28 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
     setSelectedFile(null)
   }
 
+  // function onImageLoad(e) {
+  //   const { naturalWidth: width, naturalHeight: height } = e.currentTarget
+
+  //   const crop = centerCrop(
+  //     makeAspectCrop(
+  //       {
+  //         // You don't need to pass a complete crop into
+  //         // makeAspectCrop or centerCrop.
+  //         unit: '%',
+  //         width: 90,
+  //       },
+  //       16 / 9,
+  //       width,
+  //       height
+  //     ),
+  //     width,
+  //     height
+  //   )
+
+  //   setCrop(crop)
+  // }
+
   return (
     <div>
       {!selectedFile ? (
@@ -129,7 +151,12 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
         </Dropzone>
       ) : !croppedImage ? (
         <>
-          <ReactCrop crop={crop} onChange={(newCrop) => setCrop(newCrop)}>
+          <ReactCrop
+            crop={crop}
+            onChange={(_, percentCrop) => {
+              setCrop(percentCrop)
+            }}
+          >
             <img src={imageUrl} />
           </ReactCrop>
           <Button
