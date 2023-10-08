@@ -5,10 +5,9 @@ import styles from './CardProductMiniCart.module.css';
 import Button from '@mui/material/Button';
 import { useCartStore } from "../../store/shoppingCartStore";
 
-export const CardProductMiniCart = ({product}) => {
+export const CardProductMiniCart = ({ product }) => {
     const { name, image, description, price } = product
     const { deleteProductFromCart, oneMore, oneLess } = useCartStore();
-    
   return (
     <>
       <section className={styles.container}>
@@ -33,16 +32,16 @@ export const CardProductMiniCart = ({product}) => {
       <div className={styles.stockContain}>
       <div className={styles.unitsContainer}>
       <section className={styles.sectionButtons}>
-        <Button
-        onClick={()=>oneLess(product)}
+              <Button
+                onClick={() => { product.quantity > 1 ? oneLess(product) : null}}
         sx={{minWidth:'20px', height: '1.2rem', padding: '0', borderRadius: '0.3rem'}}
         variant='contained'
         >
         {/*Aca leo dice que si queremos usar un icon un renderizado condicional para poner la misma logica del onClick para borrar ese producto cuando llegue a 0 la quantity*/}
             <RemoveIcon sx={{width: '15px'}}/>
-         </Button>
-         {/* aca si es necesario quitar el input todo bien, puedes hacerlo, tipo solo renderizar un p o un h1 */}
-         <input type='text'/>
+        </Button>
+        {/* aca si es necesario quitar el input todo bien, puedes hacerlo, tipo solo renderizar un p o un h1 */}
+        <input type='text' value={product.quantity}/>
         <Button onClick={()=>oneMore(product)}
         sx={{minWidth:'20px', height: '1.2rem', padding: '0', borderRadius: '0.3rem'}}
         variant='contained'
@@ -54,7 +53,7 @@ export const CardProductMiniCart = ({product}) => {
         
       </div>
       </section>
-    </>
+    </> 
   )
 }
 

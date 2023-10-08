@@ -12,12 +12,17 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useShowProductStore } from "../../store/showProduct";
+import { useAuthStore } from '../../store/authStore'
+import { favoriteStore } from "../../store/favoriteStore";
 import { useCartStore } from "../../store/shoppingCartStore";
 import { Link } from "react-router-dom";
 
 export const CardProduct = ({ product }) => {
   const { productById } = useShowProductStore();
-  const { addProductToCart, deleteProductFromCart , shoppingCart } = useCartStore();
+  const { addProductToCart, deleteProductFromCart, shoppingCart, total } = useCartStore();
+  const { /*favorites,*/ addFavorite, removeFavorite } = favoriteStore();
+  const initialState = useAuthStore((state) => state.user)
+  
   const theme = createTheme({
     breakpoints: {
       values: {
@@ -36,11 +41,20 @@ export const CardProduct = ({ product }) => {
 
   useEffect(() => {
     setCart(shoppingCart.find( element => element.id_product === product.id_product) ? true : false);
-  }, [shoppingCart, product]);
+    // setFav(
+    //   favorites.find((element) => element.id_product === product.id_product)
+    //     ? true
+    //     : false
+    // )
+    total()
+  }, [shoppingCart, product, total]);
 
-  const handleFav = () => {
-    setFav(!isFav);
-    // Aquí puedes implementar la lógica para agregar/quitar favoritos si es necesario
+  const handleFav = (id) => {
+    if (isFav) {
+      removeFavorite(initialState.username,id)
+    } else {
+      addFavorite(initialState.username,id)
+    }
   };
 
   const handleProductId = (id) => {
@@ -116,12 +130,12 @@ export const CardProduct = ({ product }) => {
           </Typography>
           <div className={style.icons}>
             {isFav ? (
-              <FavoriteOutlinedIcon fontSize="large" onClick={handleFav} />
+              <FavoriteOutlinedIcon fontSize="large" onClick={() =>handleFav(product.id_product)} />
             ) : (
               <FavoriteBorderOutlinedIcon
                 fontSize="large"
-                onClick={handleFav}
-              />
+                onClick={() =>handleFav(product.id_product)}
+                />
             )}
             <div className={style.cart}>
               {cart ? (

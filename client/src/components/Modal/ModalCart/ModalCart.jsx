@@ -7,22 +7,21 @@ import { useCartStore } from "../../../store/shoppingCartStore";
 
 export const ModalCart = ({toggleDrawer}) => {
 
-  const {shoppingCart} = useCartStore()
-
+  const {shoppingCart, totalToPay} = useCartStore()
   return (
     <>
       <div className={styles.container}>
       {isMobile ? <Button variant='contained' sx={{margin: '1rem'}} onClick={toggleDrawer}>
       <ArrowBackIcon sx={{width: '15px'}} />
-       back
+      back
       </Button> : null}
       <h1 className={styles.title}>Your cart</h1>
-      <p className={styles.subtitle}>Total: $0.00</p>
+        <p className={styles.subtitle}>Total: ${totalToPay}</p>
       
       <section className={styles.cardProductContain}>
         {shoppingCart.map((product) => (
           <div key={product.id_product} className={styles.main}>
-             <CardProductMiniCart  product={product} />
+            <CardProductMiniCart  product={product} />
           </div>
         ))}
       </section>
