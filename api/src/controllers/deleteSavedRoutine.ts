@@ -9,7 +9,7 @@ const deleteSavedRutine = async (req:Request, res:Response) => {
         if (!user || !routine) {
             return res.status(404).json({ message: "User or routine not foud" });
         }
-        await user.removeProduct(routine);
+        await user.removeRoutine(routine);
         return res.status(201).json({message: "saved routine has been deleted"})
     } catch (error: any) {
         return res.status(500).json({error: error.message});
