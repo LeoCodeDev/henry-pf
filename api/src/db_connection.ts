@@ -8,8 +8,10 @@ import {TeamModel} from './models/Team';
 import { ExerciseModel } from './models/Exercise';
 import { RoutineModel } from './models/Routine';
 import { SaleModel } from './models/Sale';
-
+import { TokenModel } from './models/Token';
 import {v2 as cloudinary} from 'cloudinary';
+
+
 
 cloudinary.config({ 
   cloud_name: 'healtech', 
@@ -40,8 +42,10 @@ TeamModel(sequelize)
 ExerciseModel(sequelize)
 RoutineModel(sequelize)
 SaleModel(sequelize)
+TokenModel(sequelize)
 
-const { Product,Category,User,Team,Exercise,Routine,Sale} = sequelize.models
+
+const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -64,6 +68,8 @@ User.hasMany(Sale)
 Product.belongsToMany(Sale,{through: 'sales_products'})
 Sale.belongsToMany(Product,{through: 'sales_products'})
 
+User.hasMany(RefreshToken, { onDelete: 'CASCADE' });
+
 module.exports = {
     Product,
     Category,
@@ -72,5 +78,6 @@ module.exports = {
     Exercise,
     Routine,
     Sale,
+    RefreshToken,
     sequelize
 }

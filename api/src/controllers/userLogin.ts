@@ -1,5 +1,7 @@
-const { User, Team } = require('../db_connection')
+const { User, Team} = require('../db_connection')
 import { Request, Response } from 'express'
+const {generateAccessToken}= require ('./JWT')
+
 
 const userLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body
@@ -14,6 +16,15 @@ const userLogin = async (req: Request, res: Response) => {
             where: { id_team: userFound.TeamIdTeam },
           })
           const teamName = team.name
+          const accessToken= generateAccessToken({username:userFound.username,id_user:userFound.id_user })
+          // const refreshToken = generateRefreshToken({username:userFound.username,id_user:userFound.id_user }); 
+          // const expiresAt = new Date();
+          // expiresAt.setDate(expiresAt.getDate() + 15); 
+          // const newRefreshToken = await RefreshToken.create({
+          //   token: refreshToken,
+          //   expiresAt: expiresAt,
+          //   UserId: userFound.id_user, // Assuming userFound is the authenticated user
+          // });
           res.status(200).json({
             username: userFound.username,
             first_name: userFound.first_name,
@@ -24,6 +35,7 @@ const userLogin = async (req: Request, res: Response) => {
             active:userFound.active,
             teamName,
             access: true,
+            accessToken
           })
         } else {
           res.status(401).json({ message: 'Wrong password' })
