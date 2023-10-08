@@ -80,7 +80,7 @@ const Filter = () => {
   const [rangeValues, setRangeValues] = useState({
     priceMin: lowerPrice,
     priceMax: higherPrice,
-    rateMin: 1,
+    rateMin: 0,
     rateMax: 5
   })
   const [value, setValue] = useState();
@@ -112,10 +112,10 @@ const Filter = () => {
     setRangeValues({
     priceMin: lowerPrice,
     priceMax: higherPrice,
-    rateMin: 1,
+    rateMin: 0,
     rateMax: 5
   })
-  },[actualCurrency])
+  },[actualCurrency ])
 
   useEffect(()=>{
     applyFilters(rangeValues)
