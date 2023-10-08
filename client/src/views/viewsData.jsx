@@ -3,8 +3,8 @@ import Login from "./Login/Login";
 import ProductDetail from "./Product Detail/ProductDetail";
 import ProductList from "./Product List/ProductList";
 import Admin from "./Admin/Admin";
-import SignUp from "../components/LandingPage/SignUp";
 import ProductFormView from "./Product Form/productForm";
+import ProfileMain from "./Profile/Profile";
 
 const viewsData = [
   // {
@@ -18,9 +18,9 @@ const viewsData = [
     title: "login",
   },
   {
-    path: "/signup",
-    element: <SignUp />,
-    title: "signup",
+    path: "/profile",
+    element: <ProfileMain />,
+    title: "profile",
   },
   {
     path: "product-detail",

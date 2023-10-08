@@ -10,7 +10,11 @@ import {
   Grid,
   Typography,
   useMediaQuery,
+  InputAdornment,
+  IconButton 
 } from "@mui/material";
+import {Visibility, VisibilityOff }  from "@mui/icons-material";
+
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import background from "../../assets/images/back_landing.jpg";
 import { useTheme } from "@mui/material/styles";
@@ -20,47 +24,52 @@ import { useNavigate } from "react-router-dom";
 import title from "../../assets/images/title.png";
 import toast, { Toaster } from "react-hot-toast";
 import GoogleLogin from "../ThirdPartyAuth/GoogleLogin";
+import SignUp from "./SignUp";
 
 function SignInSide() {
-  const [formVisible, setFormVisible] = useState(false);
+  const [formLoginVisible, setFormLoginVisible] = useState(false);
   const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
   const { isLogged, authenticate } = useAuthStore();
-  const [loc, setLoc] = useState("landing");
+  const [option, setOption] = useState("signin");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!isValidEmail(email)) {
       setEmailError(true);
-      return;
+      return toast.error("Email invalid!");
     }
 
     if (!isValidPassword(password)) {
       setPasswordError(true);
-      return;
+      return toast.error("Password invalid!");
     }
 
     try {
       await authenticate({ email, password });
     } catch (error) {
-      toast.error("Authentication Error!");
-      console.error("Authentication Error:", error.message);
+      option === "signin" && toast.error("Authentication Error!");
     }
   };
 
   const handleAuthentication = () => {
     if (isLogged) {
-      navigate("/home");
+      toast.success("Logged in successfully!");
+      setTimeout(() => {
+        navigate("/home");
+      }, 2000);
     }
   };
 
   useEffect(() => {
-    if (isLogged && loc === "landing" ) {
+    if (isLogged) {
       handleAuthentication();
     }
   }, [isLogged]);
@@ -87,9 +96,17 @@ function SignInSide() {
     }
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     setTimeout(() => {
-      setFormVisible(true);
+      setFormLoginVisible(true);
     }, 200);
   }, []);
 
@@ -123,7 +140,7 @@ function SignInSide() {
           left: !isDesktop ? "50%" : "15%",
           transform: "translate(-50%, -50%)",
         }}
-      />{" "}
+      />
       <Grid
         item
         xs={12}
@@ -136,100 +153,131 @@ function SignInSide() {
           backgroundColor: theme.palette.background.main,
         }}
       >
-        <Box
-          sx={{
-            my: 10,
-            mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            transform: formVisible ? "translateY(0)" : "translateY(-100%)",
-            transition: "transform 0.5s ease-in-out",
-          }}
-        >
-          <div style={{ display: "flex", marginTop: "4vh" }}>
-            <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography
-              component="h1"
-              variant="h5"
-              sx={{
-                color: "white",
-                fontFamily: theme.typography.fontFamily,
-                fontSize: theme.typography.h2,
-              }}
-            >
-              Sign in
-            </Typography>
-          </div>
-
+        {option === "signin" ? (
           <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
             sx={{
-              mt: 1,
-              backgroundColor: theme.palette.background_ligth.main,
-              padding: 4,
-              borderRadius: 6,
-              marginTop: 4,
+              my: 10,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              transform: formLoginVisible
+                ? "translateY(0)"
+                : "translateY(-100%)",
+              transition: "transform 0.5s ease-in-out",
             }}
           >
-            <TextField
-              error={emailError}
-              onChange={handleEmailChange}
-              margin="normal"
-              required
-              fullWidth
-              id={emailError ? "outlined-error-helper-text" : "email"}
-              label={emailError ? "Error" : "Email Address"}
-              name="email"
-              autoComplete="off"
-              helperText={emailError ? "Invalid email format" : ""}
-              value={email || ""}
-            />
-            <TextField
-              error={passwordError}
-              onChange={handlePasswordChange}
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label={passwordError ? "Error" : "Password"}
-              type="password"
-              autoComplete="off"
-              id={passwordError ? "outlined-error-helper-text" : "password"}
-              helperText={
-                passwordError
-                  ? "Password must be at least 8 characters, including an uppercase letter and a number"
-                  : ""
-              }
-              value={password}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                backgroundColor: theme.palette.primary.main,
-                color: theme.palette.common.white,
+            <div
+              style={{
+                display: "flex",
+                marginTop: "4vh",
+                alignItems: "center",
               }}
             >
-              Sign In
-            </Button>
-            <GoogleLogin setLoc={setLoc}></GoogleLogin>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+              <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
+                <LockOutlinedIcon sx={{ height: "50%", width: "50%" }} />
+              </Avatar>
+              <Typography
+                sx={{
+                  color: "white",
+                  fontFamily: theme.typography.fontFamily,
+                  fontSize: theme.typography.h3,
+                }}
+              >
+                Sign in
+              </Typography>
+            </div>
+
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{
+                mt: 1,
+                backgroundColor: theme.palette.background_ligth.main,
+                padding: 4,
+                borderRadius: 6,
+                marginTop: 4,
+              }}
+            >
+              <TextField
+                error={emailError}
+                onChange={handleEmailChange}
+                margin="normal"
+                required
+                fullWidth
+                id={emailError ? "outlined-error-helper-text" : "email"}
+                label={emailError ? "Error" : "Email Address"}
+                name="email"
+                autoComplete="on"
+                helperText={emailError ? "Invalid email format" : ""}
+                value={email}
+              />
+              <TextField
+                error={passwordError}
+                onChange={handlePasswordChange}
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label={passwordError ? "Error" : "Password"}
+                type={showPassword ? "text" : "password"}
+                id="password"
+                autoComplete="on"
+                helperText={
+                  passwordError
+                    ? "Password must be at least 8 characters, including an uppercase letter and a number"
+                    : ""
+                }
+                value={password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.common.white,
+                }}
+              >
+                Sign In
+              </Button>
+              <GoogleLogin
+                setEmail={setEmail}
+                setPassword={setPassword}
+              ></GoogleLogin>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link
+                    onClick={() => setOption("signup")}
+                    sx={{ cursor: "pointer" }}
+                    variant="body2"
+                  >
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
+        ) : (
+          <SignUp setOption={setOption} />
+        )}
       </Grid>
       <Toaster position="top-center" reverseOrder={false} />
     </Grid>
