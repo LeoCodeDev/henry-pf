@@ -14,8 +14,8 @@ export default function AvatarSelection(props) {
   };
 
   return (
-    <div>
-      <FormControl sx={{ minWidth: isDesktop ? "30vh" : "22vh", marginTop: isDesktop ? "0" : "4vh" }}>
+    <div style={{marginRight:"auto", marginLeft: isDesktop ? "1rem" : "0"}}>
+      <FormControl sx={{ minWidth: isDesktop ? "15vw" : "60vw", marginTop: isDesktop ? "0" : "4vh" }}>
         <InputLabel id="avatar-label">Select Avatar</InputLabel>
         <Select
           labelId="avatar-label"

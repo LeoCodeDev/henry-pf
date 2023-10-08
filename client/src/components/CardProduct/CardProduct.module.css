@@ -23,6 +23,7 @@
     color: var(--color-text-light);
     display: flex;
     position: absolute;
+    cursor: pointer;
     gap: 1rem;
     align-self: center;
     justify-self: center;

@@ -10,10 +10,14 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useState } from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import {useShowProductStore} from '../../store/showProduct';
+import { Link } from 'react-router-dom';
 
 export const CardProduct = ({ product }) => {
   const data = product;
+  const { productById } = useShowProductStore()
+
 
   const theme = createTheme({
     breakpoints: {
@@ -43,6 +47,10 @@ export const CardProduct = ({ product }) => {
     // }
   };
 
+  const handleProductId = (id) => {
+    productById(id)
+  }
+
   const handleCart = () => {
     setCart(!cart);
   };
@@ -51,24 +59,54 @@ export const CardProduct = ({ product }) => {
     <ThemeProvider theme={theme}>
       <Card
         sx={{
-          bgcolor: "transparent",
-          width: {xs:"20rem", sm: "16.4rem", md: "16rem", lg:"17rem", xl: "17rem", xxl: '19rem' },
-          margin: {xs:"0", sm:"2rem" , md: "1rem", lg:"0.75rem", xl: "0.75rem", xxl: '0.75rem'},
-          marginTop: {xs: '1rem'}
-        }}
-      >
-        <CardMedia
-          sx={{
-            height: 300,
-          }}
-          image={data.image}
-          title={data.name}
-        />
+          bgcolor: 'transparent',
+          width: {
+            xs: '20rem',
+            sm: '16.4rem',
+            md: '16rem',
+            lg: '17rem',
+            xl: '17rem',
+            xxl: '19rem'
+          },
+          margin: {
+            xs: '0',
+            sm: '2rem',
+            md: '1rem',
+            lg: '0.75rem',
+            xl: '0.75rem',
+            xxl: '0.75rem'
+          },
+          marginTop: { xs: '1rem' }
+        }}>
+        <Link
+          onClick={() => handleProductId(data.id_product)}
+          to={'/product-detail'}>
+          <CardMedia
+            sx={{
+              height: 300
+            }}
+            image={data.image}
+            title={data.name}
+          />
+        </Link>
         <CardContent className={style.card_txt}>
-          <Typography className={style.name_product} gutterBottom variant="p" component="div" sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>
-            {data.name}
-          </Typography>
-          <Typography className={style.price_product} variant="p" component="div">
+          <Link
+            style={{ textDecoration: 'none', color: '#bfbfbf' }}
+            onClick={() => handleProductId(data.id_product)}
+            to={'/product-detail'}>
+            <Typography
+              className={style.name_product}
+              gutterBottom
+              variant="p"
+              component="div"
+              sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+              {data.name}
+            </Typography>
+          </Link>
+          <Typography
+            className={style.price_product}
+            variant="p"
+            component="div">
             $ {data.price}
           </Typography>
           <div className={style.icons}>
@@ -101,5 +139,5 @@ export const CardProduct = ({ product }) => {
         </CardContent>
       </Card>
     </ThemeProvider>
-  );
+  )
 };

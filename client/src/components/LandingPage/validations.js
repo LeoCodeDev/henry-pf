@@ -9,15 +9,15 @@ export function isValidPassword(password) {
 }
 
 export function isValidFirstName(firstName) {
-  return firstName.length >= 2;
+  return /^[^0-9]+$/.test(firstName) && firstName.length >= 2;
 }
 
 export function isValidLastName(lastName) {
-  return lastName.length >= 2;
+  return /^[^0-9]+$/.test(lastName) && lastName.length >= 2;
 }
 
-export function isValidNickName(lastName) {
-  return lastName.length >= 2;
+export function isValidNickName(nickName) {
+  return nickName.length >= 2;
 }
 
 export function isMinimumAge(birthday) {
