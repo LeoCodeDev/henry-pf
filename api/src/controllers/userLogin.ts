@@ -21,6 +21,7 @@ const userLogin = async (req: Request, res: Response) => {
             avatar: userFound.avatar,
             role: userFound.role,
             TeamIdTeam: userFound.TeamIdTeam,
+            active:userFound.active,
             teamName,
             access: true,
           })
