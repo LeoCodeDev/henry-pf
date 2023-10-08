@@ -4,9 +4,10 @@ import {Request, Response} from "express";
 
 const postFavorite = async (req: Request, res: Response)=> {
     const { username, id_product} = req.body;
+    const parsedIdProduct = parseInt(id_product);
     try {
         const user = await User.findOne({ where: { username } });
-        const product = await Product.findOne({ where: { id_product } });
+        const product = await Product.findOne({ where: { id_product:parsedIdProduct } });
         if (!user || !product) {
             return res.status(404).json({ message: "User or product not foud" });
         }
