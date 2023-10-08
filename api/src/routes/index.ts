@@ -27,7 +27,7 @@ const postSale= require('../controllers/postSale')
 const getSale= require('../controllers/getSale')
 const putActiveRoutine= require('../controllers/putDeletRutine')
 const putChangesInRoutine = require('../controllers/putChangesInRoutine')
-const deleteSavedRutine = require('../controllers/deleteSavedRutine')
+const deleteSavedRutine = require('../controllers/deleteSavedRoutine')
 const { processImage, postImage } = require('../controllers/postImage')
 
 router.post('/postUser', postUser)
