@@ -25,7 +25,13 @@ const getAllRoutines= require('../controllers/getAllRoutines')
 const addUserRoutine = require('../controllers/addUserRoutine')
 const postSale= require('../controllers/postSale')
 const getSale= require('../controllers/getSale')
+const sendMail = require("../controllers/postMail");
 
+
+
+
+
+router.post("/send-email", sendMail);
 router.post('/postUser', postUser)
 router.post('/login', userLogin)
 router.get('/getUser', getUser)

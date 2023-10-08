@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import theme from "../../../theme";
+import emailSender from "../SendMail/SendMail";
 
 export default function CompleteRegister({
   email,
@@ -165,6 +166,9 @@ export default function CompleteRegister({
 
     try {
       await axios.post("/postUser", dataToSend);
+      const title = 'Thank you for signing up for Healthech!';
+      const message = "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
+      emailSender(email, title, message);
       toast.success("User created successfully!");
       setRegistered(true);
     } catch (error) {
@@ -184,6 +188,7 @@ export default function CompleteRegister({
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
+    <div>
     <Grid
       sx={{
         display: "flex",
@@ -384,5 +389,6 @@ export default function CompleteRegister({
         </Grid>
       </Box>
     </Grid>
+    </div>
   );
 }

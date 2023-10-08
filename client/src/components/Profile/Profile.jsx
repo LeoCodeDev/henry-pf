@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Paper,
@@ -15,20 +16,45 @@ import { ThemeProvider } from "@mui/system";
 import theme from "../../../theme";
 import { useAuthStore } from "../../store/authStore";
 
+// Firebase
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+// Importa react-hot-toast
+import toast, { Toaster } from "react-hot-toast";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: "login-d4c6e.firebaseapp.com",
+  projectId: "login-d4c6e",
+  storageBucket: "login-d4c6e.appspot.com",
+  messagingSenderId: "455379913119",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+
 export default function Profile() {
   const { user } = useAuthStore();
   const [isEditing, setIsEditing] = useState(false);
   const [imagen, setImagen] = useState(user.avatar);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    nickName: "",
+    first_name: "",
+    last_name: "",
+    username: "",
+    avatar: null,
   });
   const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState(""); // Estado para almacenar el equipo seleccionado
+  const [imageURL, setImageURL] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
+  const navigate = useNavigate();
+  let downloadURL = "";
 
   const handleTeamChange = (event) => {
     setSelectedTeam(event.target.value); // Actualiza el estado con el equipo seleccionado
+    setHasChanges(true); // bandera para saber que si hubo cambio
   };
 
   useEffect(() => {
@@ -38,7 +64,7 @@ export default function Profile() {
         setTeams(response.data);
       })
       .catch((error) => {
-        console.error("Error al realizar la solicitud GET:", error);
+        console.error("Error when making GET request:", error);
       });
   }, []);
 
@@ -53,9 +79,9 @@ export default function Profile() {
         const userData = response.data;
 
         setFormData({
-          firstName: userData.first_name || "",
-          lastName: userData.last_name || "",
-          nickName: userData.username || "",
+          first_name: userData.first_name || "",
+          last_name: userData.last_name || "",
+          username: userData.username || "",
           team: userData.Team?.name || "",
           avatar: userData.avatar,
         });
@@ -65,7 +91,7 @@ export default function Profile() {
     };
 
     handleGetUser();
-  }, []);
+  }, [user.email]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -73,6 +99,8 @@ export default function Profile() {
       ...formData,
       [name]: value,
     });
+
+    setHasChanges(true);
   };
 
   const handleImageUpload = (event) => {
@@ -80,16 +108,72 @@ export default function Profile() {
       const originalFileName = event.target.files[0].name;
       const fileNameWithUnderscores = originalFileName.replace(/ /g, "_");
       setImagen(fileNameWithUnderscores);
+
+      // Almacena la imagen seleccionada en el estado formData
+      setFormData({
+        ...formData,
+        avatar: event.target.files[0],
+      });
+
+      setHasChanges(true); // bandera para saber que si hubo cambio
+
+      // Actualiza la imagen en tiempo real en el elemento img. Almaceno la imagen en el buffer
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImageURL(e.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
-    // Resto del manejo de la carga de la imagen aquí
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // handleImageUpload();
-    formData.avatar = imagen;
-    formData.team = selectedTeam;
-    console.log("Datos a enviar al backend:", formData);
+  const handlePostData = async () => {
+    try {
+      if (!hasChanges) {
+        // Muestra una alerta en lugar de enviar el formulario
+        toast("You haven't made any changes", {
+          icon: "🤔",
+        });
+        return;
+      }
+
+      // Verifica si hay una imagen seleccionada y si es diferente de "undefined"
+      if (formData.avatar && formData.avatar.name !== undefined) {
+        const storageRef = ref(
+          storage,
+          `images/profile/${user.username}/${formData.avatar.name}`
+        );
+        await uploadBytes(storageRef, formData.avatar);
+
+        // Obtiene la URL de la imagen cargada
+        downloadURL = await getDownloadURL(storageRef);
+
+        formData.avatar = downloadURL;
+      } else {
+        // Si no hay una imagen seleccionada o es "undefined", conserva la imagen existente
+        formData.avatar = user.avatar;
+      }
+
+      formData.email = user.email;
+      formData.team = selectedTeam;
+
+      // Realiza la solicitud al servidor para actualizar los datos del usuario
+      await axios.put("/putUser", formData);
+
+      // Muestra una notificación de éxito
+      toast.success("User updated successfully");
+      formData.avatar && (user.avatar = formData.avatar);
+      setTimeout(() => {
+        navigate("/home");
+      }, 2000);
+    } catch (error) {
+      if (error.response.status === 400) {
+        // Muestra una notificación de error
+        toast.error("Username already exists");
+        formData.avatar = imagen;
+        return;
+      }
+      console.error("Error in sending data:", error);
+    }
   };
 
   return (
@@ -121,44 +205,40 @@ export default function Profile() {
             }
             label={isEditing ? "Edit on" : "Edit off"}
           />
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
+          <form style={{ display: "flex", flexDirection: "column" }}>
             <TextField
               type="text"
-              name="firstName"
+              name="first_name"
               label="First Name"
               variant="outlined"
               size="small"
-              value={formData.firstName}
+              value={formData.first_name}
               onChange={handleInputChange}
               disabled={!isEditing}
               sx={{ marginBottom: "16px" }}
             />
             <TextField
               type="text"
-              name="lastName"
+              name="last_name"
               label="Last Name"
               variant="outlined"
               size="small"
-              value={formData.lastName}
+              value={formData.last_name}
               onChange={handleInputChange}
               disabled={!isEditing}
               sx={{ marginBottom: "16px" }}
             />
             <TextField
               type="text"
-              name="nickName"
-              label="Nick Name"
+              name="username"
+              label="Username"
               variant="outlined"
               size="small"
-              value={formData.nickName}
+              value={formData.username}
               onChange={handleInputChange}
               disabled={!isEditing}
               sx={{ marginBottom: "16px" }}
             />
-            {/* <div> */}
             <Select
               label="Team"
               variant="standard"
@@ -180,17 +260,18 @@ export default function Profile() {
                 display: "flex",
                 alignItems: "center",
                 textAlign: "center",
-                flexDirection:"column",
-                // marginBlock: "0.5rem",
+                flexDirection: "column",
               }}
             >
               <img
-                src={formData.avatar || user.avatar}
+                src={imageURL ? imageURL : user.avatar}
                 style={{
                   minWidth: "150px",
+                  maxWidth: "150px",
+                  height: "auto",
                   border: `2px solid ${theme.palette.primary.main}`,
                   filter: !isEditing ? "grayscale(100%)" : "grayscale(0%)",
-                  marginBottom: "0.5rem"
+                  marginBottom: "0.2rem",
                 }}
                 alt="Avatar"
               />
@@ -210,11 +291,10 @@ export default function Profile() {
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     color: "white",
-                    padding: "4px 8px", 
                     cursor: "pointer",
                     borderRadius: "4px",
                     fontSize: "12px",
-                    marginBottom: "0.5rem"
+                    marginBottom: "1rem",
                   }}
                   disabled={!isEditing}
                 >
@@ -224,20 +304,23 @@ export default function Profile() {
             </div>
             {isEditing && (
               <>
-              <hr style={{border:"solid 1px lightgray", margin:"0.1rem"}}></hr>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
+                <hr
+                  style={{ border: "solid 1px lightgray", margin: "0.1rem" }}
+                />
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  onClick={handlePostData} // Envia los datos al servidor
                 >
-                Submit
-              </Button>
-            </>
+                  Submit
+                </Button>
+              </>
             )}
           </form>
         </Paper>
-        </Container>
-        </ThemeProvider>
-        );
+      </Container>
+      <Toaster position="top-center" reverseOrder={false} />
+    </ThemeProvider>
+  );
 }
