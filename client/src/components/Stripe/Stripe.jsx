@@ -22,7 +22,7 @@ export default function Stripe() {
         theme: 'night',
         labels: 'floating'
       }
-
+    
     useEffect(() => {
         const getPaymentIntent = async() => {
             const { data } = await axios.post('/paymentIntent',{amount:totalToPay,currency:'usd'})
