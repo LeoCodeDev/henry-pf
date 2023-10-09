@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 const {SECRET_ACCESS_TOKEN}=process.env
 
 const validateAccessToken = (req:Request, res:Response) => {
-const accessToken = req.cookies.accessToken;
+const {accessToken} = req.body;
 try {
     interface Decoded{
         userId: number;

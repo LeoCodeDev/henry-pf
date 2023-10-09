@@ -61,7 +61,7 @@ router.get('/getSale', getSale);
 router.put('/putDeletRutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
 router.delete('/deleteSavedRutine', deleteSavedRutine);
-router.get('/tokenValidation', tokenValidation);
+router.post('/tokenValidation', tokenValidation);
 router.get('/refreshToken', refreshToken);
 router.delete('/deleteToken', deleteToken);
 router.get('/resetPasswordToken', resetPasswordToken);
