@@ -15,6 +15,8 @@ const postFavorite = require('../controllers/postFavorite');
 const delFavorite = require('../controllers/delFavorite');
 const getAllUsers= require('../controllers/getAllUsers')
 const delImage=require('../controllers/delImage')
+const activeDesactiveproduct = require("../controllers/putProduct");
+const getAllProductsAdmin = require('../controllers/getAllproducts');
 
 
 router.post('/postUser', postUser)
@@ -32,6 +34,8 @@ router.post('/postFavorite', postFavorite);
 router.delete('/delFavorite', delFavorite);
 router.get('/allUsers', getAllUsers)
 router.post('/delImage', delImage);
+router.put("/prod/:id", activeDesactiveproduct);
+router.get("/allProducts", getAllProductsAdmin);
 
 
 
