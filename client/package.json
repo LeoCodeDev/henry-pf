@@ -12,7 +12,6 @@
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
     "@cloudinary/url-gen": "^1.11.2",
-    "@esbuild/win32-x64": "^0.19.4",
     "@mui/icons-material": "^5.14.11",
     "axios": "^1.5.1",
     "cloudinary": "^1.41.0",
