@@ -42,6 +42,9 @@ export const NavBar = () => {
     logout()
     navigate('/')
   }
+  const handleProfile = () => {
+    navigate('/profile')
+  }
 
   const [ifSearch, setIfSearch] = React.useState(false)
   const handleSearch = () => {
@@ -258,9 +261,8 @@ export const NavBar = () => {
                 {settings.map((setting) => (
                   <MenuItem
                     key={setting}
-                    onClick={
-                      setting === 'Logout' ? handleLogout : handleCloseUserMenu
-                    }>
+                    onClick={setting === 'Logout' ? handleLogout : setting === 'Profile' ? handleProfile : handleCloseUserMenu}
+                    >
                     <Typography>{setting}</Typography>
                   </MenuItem>
                 ))}

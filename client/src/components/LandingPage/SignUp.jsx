@@ -24,18 +24,17 @@ import {
   isValidNickName,
 } from "./validations";
 import SelectLabels from "./DevOption";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import AvatarSelection from "./AvatarSelection";
 import { avatars } from "./avatars";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
+import emailSender from "../SendMail/SendMail";
 
 export default function SignUp({ setOption }) {
   const [formVisible, setFormVisible] = useState(false);
   const theme = useTheme();
   const [selectedRole, setSelectedRole] = useState("User");
-  const navigate = useNavigate();
   const { authenticate } = useAuthStore();
 
   const [formData, setFormData] = useState({
@@ -176,9 +175,12 @@ export default function SignUp({ setOption }) {
         role: selectedRole,
         team: developerType,
       };
-
       await axios.post("/postUser", dataToSend);
       toast.success("User created successfully!");
+      
+      const title = 'Thank you for signing up for Healthech!';
+      const message = "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
+      emailSender(formData.email, title, message);
       try {
         await authenticate({
           email: formData.email,
@@ -192,18 +194,6 @@ export default function SignUp({ setOption }) {
     }
   };
 
-  // const handleAuthentication = () => {
-  //   if (isLogged) {
-  //     // navigate("/home");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (isLogged) {
-  //     // handleAuthentication();
-  //   }
-  // }, [isLogged]);
-
   useEffect(() => {
     setTimeout(() => {
       setFormVisible(true);
@@ -213,36 +203,19 @@ export default function SignUp({ setOption }) {
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
-    // <Grid
-    //   container
-    //   component="main"
-    //   sx={{ height: "100vh", display: "flex", flexDirection: "row-reverse" }}
-    // >
-    //   <CssBaseline />
-    // <Grid
-    //   item
-    //   xs={12}
-    //   sm={8}
-    //   md={5}
-    //   component={Paper}
-    //   elevation={6}
-    //   square
-    //   sx={{
-    //     backgroundColor: theme.palette.background.main,
-    //   }}
-    // >
     <Box
       sx={{
-        // my: 0,
         mx: 4,
+        mt: 2,
         display: "flex",
         flexDirection: "column",
+        justifyContent:"center",
         alignItems: "center",
         transform: formVisible ? "translateY(0)" : "translateY(-100%)",
         transition: "transform 0.5s ease-in-out",
       }}
     >
-      <div style={{ display: "flex", padding: "1vh" }}>
+      <div style={{ display: "flex", padding: "1rem" }}>
         <Avatar
           sx={{
             bgcolor: theme.palette.primary.main,
@@ -269,7 +242,7 @@ export default function SignUp({ setOption }) {
         onSubmit={handleSubmit}
         sx={{
           backgroundColor: theme.palette.background_ligth.main,
-          padding: 2,
+          padding: 4,
           borderRadius: 6,
         }}
       >
@@ -401,9 +374,9 @@ export default function SignUp({ setOption }) {
               onChange={handleAvatarChange}
             />
           </Grid>
-          <Grid item xs={12}>
-            <FormControl component="fieldset">
-              <FormLabel id="demo-controlled-radio-buttons-group">
+          <Grid item xs={12}  >
+            <FormControl component="fieldset" sx={{ display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center", gap:"2vw"}}>
+              <FormLabel id="demo-controlled-radio-buttons-group" >
                 Role
               </FormLabel>
               <RadioGroup
@@ -411,7 +384,7 @@ export default function SignUp({ setOption }) {
                 name="controlled-radio-buttons-group"
                 value={selectedRole}
                 onChange={handleRoleChange}
-                style={{ display: "flex", flexDirection: "row" }}
+                sx={{display:"flex", flexDirection:"row"}}
               >
                 <FormControlLabel
                   value="User"
@@ -422,7 +395,6 @@ export default function SignUp({ setOption }) {
                   value="Trainer"
                   disabled={true}
                   control={<Radio />}
-                  sx={{ cursor: "pointer", marginLeft:"auto"}}
                   label="Trainer"
                 />
               </RadioGroup>
@@ -433,7 +405,7 @@ export default function SignUp({ setOption }) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mb: 2 }}
             >
               Sign Up
             </Button>
@@ -441,7 +413,7 @@ export default function SignUp({ setOption }) {
 
           <Link
             onClick={() => setOption("signin")}
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer", ml: "auto" }}
             variant="body2"
           >
             {"Already have an account? Sign in"}
