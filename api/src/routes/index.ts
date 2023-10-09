@@ -15,6 +15,8 @@ const postFavorite = require('../controllers/postFavorite');
 const delFavorite = require('../controllers/delFavorite');
 const getAllUsers= require('../controllers/getAllUsers')
 const delImage=require('../controllers/delImage')
+const activeDesactiveproduct = require("../controllers/putProduct");
+const getAllProductsAdmin = require('../controllers/getAllproducts');
 const updateProductStock= require('../controllers/stockUpdate')
 const addExercisesFromAPI= require('../controllers/postExercise')
 const getExercises  = require("../controllers/getExercises");
@@ -28,7 +30,8 @@ const getSale= require('../controllers/getSale')
 const putActiveRoutine= require('../controllers/putDeletRoutine')
 const putChangesInRoutine = require('../controllers/putChangesInRoutine')
 const postMail= require("../controllers/postMail");
-const deleteSavedRutine = require('../controllers/deleteSavedRoutine')
+const deleteSavedRoutine = require('../controllers/deleteSavedRoutine')
+
 
 
 router.post('/postUser', postUser) 
@@ -46,6 +49,8 @@ router.post('/postFavorite', postFavorite);
 router.delete('/delFavorite', delFavorite); 
 router.get('/allUsers', getAllUsers) 
 router.post('/delImage', delImage);
+router.put("/prod/:id", activeDesactiveproduct);
+router.get("/allProducts", getAllProductsAdmin);
 router.put('/stockUpdate', updateProductStock); 
 router.get('/postExercise', addExercisesFromAPI);
 router.get('/getExercises', getExercises);
@@ -59,7 +64,8 @@ router.post("/send-email", postMail);
 router.get('/getSale', getSale);
 router.put('/putDeletRutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
-router.delete('/deleteSavedRutine', deleteSavedRutine);
+router.delete('/deleteSavedRoutine', deleteSavedRoutine);
+
 
 
 

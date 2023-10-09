@@ -4,6 +4,7 @@ import ProductDetail from "./Product Detail/ProductDetail";
 import ProductList from "./Product List/ProductList";
 import Admin from "./Admin/Admin";
 import ProductFormView from "./Product Form/productForm";
+import ProductUpdate from "./Product Update/ProductUpdate";
 import ProfileMain from "./Profile/Profile";
 
 const viewsData = [
@@ -42,6 +43,11 @@ const viewsData = [
     path: "product-creation",
     element: <ProductFormView />,
     title: "product-creation",
+  },
+  {
+    path: "update",
+    element: <ProductUpdate />,
+    title: "product-update",
   },
 ];
 
