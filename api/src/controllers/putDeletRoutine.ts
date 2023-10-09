@@ -7,7 +7,7 @@ const putActiveRoutine = async (req : Request, res : Response)=>{
         const routine = await Routine.findOne({where:{id:id}});
         routine.active = routine.active ? false : true;
         await routine.save();
-        return res.status(200).json({message:"Routine updated successfully", routine});
+        return res.status(200).json({message:"Routine state change successfully", routine});
     } catch (error: any) {
         return res.status(500).json({ error: error.message });
     }
