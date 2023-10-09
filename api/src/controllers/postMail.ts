@@ -1,7 +1,9 @@
 const nodemailer = require('nodemailer');
 const { PASS_MAIL, DIR_MAIL } = process.env;
+import {Request, Response} from "express";
 
-const postMail = async (req: any, res: any) => {
+
+const postMail = async (req: Request, res: Response) => {
   const { email, title, message } = req.body;
 
   const transporter = nodemailer.createTransport({

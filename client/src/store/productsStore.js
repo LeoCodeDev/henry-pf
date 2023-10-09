@@ -7,10 +7,12 @@ const useProductsStore = create((set, get) => ({
   prefilterProducts: [],
   filteredProducts: [],
   categories: [],
+
   actualCurrency:useAuthStore.getState().user?.ip_location.currency,
   setCurrency: (currency )=>{
     set({actualCurrency:currency || "USD" })
   },
+
   fetchCategories: async () => {
     try {
       const { data } = await axios.get("/categories");
@@ -35,6 +37,18 @@ const useProductsStore = create((set, get) => ({
            prefilterProducts: data,
         });
         return data
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  fetchActiveDesactiveProducts: async () => {
+    try {
+      const { data } = await axios.get("/allProducts");
+      if (!data) {
+        throw new Error("No products found");
+      } else {
+        set({activeDesactiveProducts: data });
       }
     } catch (error) {
       throw new Error(error.message);

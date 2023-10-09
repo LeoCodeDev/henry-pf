@@ -9,7 +9,13 @@ const getProducts = async (req: Request, res: Response) => {
   const from: Currency = "USD";
   
   try {
-    const allProducts = await Product.findAll({ include: Category });
+
+    const allProducts = await await Product.findAll({
+      where: {
+        active: true
+      },
+      include: Category
+    });
     
     if (typeof from === 'string' && typeof to === 'string') {
       const rateResult = await currenciesExchange(from, to, "1")     
@@ -31,4 +37,8 @@ const getProducts = async (req: Request, res: Response) => {
 };
 
 
+
 module.exports = getProducts;
+
+
+
