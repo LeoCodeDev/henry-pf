@@ -35,7 +35,7 @@ const tokenValidation= require('../controllers/tokenValidation')
 const refreshToken= require('../controllers/refreshToken')
 const deleteToken= require('../controllers/deleteToken')
 const resetPasswordToken= require('../controllers/resetPasswordToken')
-
+const paymentIntent = require('../controllers/paymentIntent')
 
 
 router.post('/postUser', postUser) 
@@ -69,9 +69,7 @@ router.get('/getSale', getSale);
 router.put('/putDeletRutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
 router.delete('/deleteSavedRoutine', deleteSavedRoutine);
-
-
-
+router.post('/paymentIntent',paymentIntent)
 
 
 
