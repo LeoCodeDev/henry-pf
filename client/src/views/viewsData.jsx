@@ -5,6 +5,7 @@ import ProductList from "./Product List/ProductList";
 import Admin from "./Admin/Admin";
 import ProductFormView from "./Product Form/productForm";
 import ProfileMain from "./Profile/Profile";
+import OrderPlaced from "./OrderPlaced/OrderPlaced";
 
 const viewsData = [
   // {
@@ -43,6 +44,11 @@ const viewsData = [
     element: <ProductFormView />,
     title: "product-creation",
   },
+  {
+    path: "order-placed",
+    element: <OrderPlaced />,
+    title: "order-placed",
+  }
 ];
 
 export default viewsData;
