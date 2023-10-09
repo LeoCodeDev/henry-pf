@@ -13,6 +13,8 @@
     "@cloudinary/react": "^1.11.2",
     "@cloudinary/url-gen": "^1.11.2",
     "@mui/icons-material": "^5.14.11",
+    "@stripe/react-stripe-js": "^2.3.1",
+    "@stripe/stripe-js": "^2.1.7",
     "axios": "^1.5.1",
     "cloudinary": "^1.41.0",
     "dotenv": "^16.3.1",

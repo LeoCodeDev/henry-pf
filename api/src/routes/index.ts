@@ -31,7 +31,7 @@ const putActiveRoutine= require('../controllers/putDeletRoutine')
 const putChangesInRoutine = require('../controllers/putChangesInRoutine')
 const postMail= require("../controllers/postMail");
 const deleteSavedRoutine = require('../controllers/deleteSavedRoutine')
-
+const paymentIntent = require('../controllers/paymentIntent')
 
 
 router.post('/postUser', postUser) 
@@ -65,10 +65,7 @@ router.get('/getSale', getSale);
 router.put('/putDeletRutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
 router.delete('/deleteSavedRoutine', deleteSavedRoutine);
-
-
-
-
+router.post('/paymentIntent',paymentIntent)
 
 
 
