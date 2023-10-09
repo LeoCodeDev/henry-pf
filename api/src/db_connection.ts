@@ -69,6 +69,7 @@ Product.belongsToMany(Sale,{through: 'sales_products'})
 Sale.belongsToMany(Product,{through: 'sales_products'})
 
 User.hasMany(RefreshToken, { onDelete: 'CASCADE' });
+RefreshToken.belongsTo(User);
 
 module.exports = {
     Product,
