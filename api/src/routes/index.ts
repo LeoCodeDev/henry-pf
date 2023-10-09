@@ -25,42 +25,45 @@ const getAllRoutines= require('../controllers/getAllRoutines')
 const addUserRoutine = require('../controllers/addUserRoutine')
 const postSale= require('../controllers/postSale')
 const getSale= require('../controllers/getSale')
-const putActiveRoutine= require('../controllers/putDeletRutine')
+const putActiveRoutine= require('../controllers/putDeletRoutine')
 const putChangesInRoutine = require('../controllers/putChangesInRoutine')
-const deleteSavedRutine = require('../controllers/deleteSavedRoutine')
+const postMail= require("../controllers/postMail");
+const deleteSavedRoutine = require('../controllers/deleteSavedRoutine')
 const tokenValidation= require('../controllers/tokenValidation')
 const refreshToken= require('../controllers/refreshToken')
 const deleteToken= require('../controllers/deleteToken')
 const resetPasswordToken= require('../controllers/resetPasswordToken')
 
-router.post('/postUser', postUser)
-router.post('/login', userLogin)
-router.get('/getUser', getUser)
-router.post('/postProduct', postProduct);
-router.get("/products", getProducts);
+
+router.post('/postUser', postUser) 
+router.post('/login', userLogin) 
+router.get('/getUser', getUser) 
+router.post('/postProduct', postProduct); 
+router.get("/products", getProducts); 
 router.get("/categories",getCategories );
 router.get("/productByName",getProductByName );
 router.get("/products/:id", getProductsById);
-router.put("/newPassword/:id", putNewPasswordUser);
+router.put("/newPassword/:id", putNewPasswordUser); 
 router.get("/getTeams", getTeams )
-router.get('/getAllFavorites', getAllFavorites);
-router.post('/postFavorite', postFavorite);
-router.delete('/delFavorite', delFavorite);
-router.get('/allUsers', getAllUsers)
+router.get('/getAllFavorites', getAllFavorites); 
+router.post('/postFavorite', postFavorite); 
+router.delete('/delFavorite', delFavorite); 
+router.get('/allUsers', getAllUsers) 
 router.post('/delImage', delImage);
-router.put('/stockUpdate', updateProductStock);
+router.put('/stockUpdate', updateProductStock); 
 router.get('/postExercise', addExercisesFromAPI);
 router.get('/getExercises', getExercises);
-router.put('/putUser', putUser);
-router.post('/postRoutine', postRoutine);
+router.put('/putUser', putUser); 
+router.post('/postRoutine', postRoutine); 
 router.get('/getUserRoutines', getUserRoutines);
 router.get('/getAllRoutines', getAllRoutines);
 router.post('/addUserRoutine', addUserRoutine);
 router.post('/postSale', postSale);
+router.post("/send-email", postMail);
 router.get('/getSale', getSale);
 router.put('/putDeletRutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
-router.delete('/deleteSavedRutine', deleteSavedRutine);
+router.delete('/deleteSavedRoutine', deleteSavedRoutine);
 router.post('/tokenValidation', tokenValidation);
 router.get('/refreshToken', refreshToken);
 router.delete('/deleteToken', deleteToken);
