@@ -13,7 +13,13 @@ function generateAccessToken(user:Object) {
 
 function generateRefreshToken(user:Object) {
     return sign(user, false)
-    
 }
 
-module.exports = {generateAccessToken, generateRefreshToken}
+function generateResetToken(user:Object){
+    return jwt.sign(user, SECRET_ACCESS_TOKEN,{
+        algorithm: 'HS256',
+        expiresIn: '1h'
+    })
+}
+
+module.exports = {generateAccessToken, generateRefreshToken, generateResetToken}

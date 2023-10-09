@@ -1,6 +1,6 @@
-const { User, Team} = require('../db_connection')
+const { User, Team, RefreshToken} = require('../db_connection')
 import { Request, Response } from 'express'
-const {generateAccessToken}= require ('./JWT')
+const {generateAccessToken, generateRefreshToken}= require ('./JWT')
 
 
 const userLogin = async (req: Request, res: Response) => {
@@ -17,14 +17,16 @@ const userLogin = async (req: Request, res: Response) => {
           })
           const teamName = team.name
           const accessToken= generateAccessToken({username:userFound.username,id_user:userFound.id_user })
-          // const refreshToken = generateRefreshToken({username:userFound.username,id_user:userFound.id_user }); 
-          // const expiresAt = new Date();
-          // expiresAt.setDate(expiresAt.getDate() + 15); 
-          // const newRefreshToken = await RefreshToken.create({
-          //   token: refreshToken,
-          //   expiresAt: expiresAt,
-          //   UserId: userFound.id_user, // Assuming userFound is the authenticated user
-          // });
+          const refreshToken = generateRefreshToken({username:userFound.username,id_user:userFound.id_user }); 
+          const expiresAt = new Date();
+          expiresAt.setDate(expiresAt.getDate() + 15); 
+          const newRefreshToken = await RefreshToken.create({
+            token: refreshToken,
+            expiresAt: expiresAt,
+          });
+          await newRefreshToken.setUser(userFound.id_user);
+          res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000 })
+          res.cookie('refreshToken', newRefreshToken.token, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000 })
           res.status(200).json({
             username: userFound.username,
             first_name: userFound.first_name,
@@ -35,7 +37,6 @@ const userLogin = async (req: Request, res: Response) => {
             active:userFound.active,
             teamName,
             access: true,
-            accessToken
           })
         } else {
           res.status(401).json({ message: 'Wrong password' })

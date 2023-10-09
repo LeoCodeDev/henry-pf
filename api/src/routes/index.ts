@@ -4,8 +4,8 @@ const postUser= require('../controllers/postUser')
 const userLogin= require('../controllers/userLogin')
 const getUser= require('../controllers/getUser')
 const postProduct = require('../controllers/postProduct');
-const  getProducts  = require("../controllers/getProducts");
-const  getCategories  = require("../controllers/getCategories");
+const getProducts  = require("../controllers/getProducts");
+const getCategories  = require("../controllers/getCategories");
 const getProductByName= require('../controllers/getProductByName')
 const getProductsById = require("../controllers/getProductById");
 const putNewPasswordUser = require("../controllers/putNewPasswordUser");
@@ -27,7 +27,11 @@ const postSale= require('../controllers/postSale')
 const getSale= require('../controllers/getSale')
 const putActiveRoutine= require('../controllers/putDeletRutine')
 const putChangesInRoutine = require('../controllers/putChangesInRoutine')
-const deleteSavedRutine = require('../controllers/deleteSavedRutine')
+const deleteSavedRutine = require('../controllers/deleteSavedRoutine')
+const tokenValidation= require('../controllers/tokenValidation')
+const refreshToken= require('../controllers/refreshToken')
+const deleteToken= require('../controllers/deleteToken')
+const resetPasswordToken= require('../controllers/resetPasswordToken')
 
 router.post('/postUser', postUser)
 router.post('/login', userLogin)
@@ -57,7 +61,10 @@ router.get('/getSale', getSale);
 router.put('/putDeletRutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
 router.delete('/deleteSavedRutine', deleteSavedRutine);
-
+router.get('/tokenValidation', tokenValidation);
+router.get('/refreshToken', refreshToken);
+router.delete('/deleteToken', deleteToken);
+router.get('/resetPasswordToken', resetPasswordToken);
 
 
 
