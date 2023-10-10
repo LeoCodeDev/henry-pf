@@ -9,7 +9,7 @@ const Router = () => {
 
   return (
     <Routes>
-      {pageRoutes}s
+      {pageRoutes}
     </Routes>
   );
 };
