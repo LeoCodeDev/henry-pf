@@ -85,11 +85,11 @@ const Products = () => {
   return (
     <div className={styles.productsContain}>
       <div className={styles.paginationContain}>
-      <InputLabel className={styles.currency}>Currencies</InputLabel>
+      <InputLabel sx={{ color: '#bfbfbf', margin: '5px' }}>Currencies</InputLabel>
           <Select
                 name="Currency"
                 onChange={handleCurrencyChange}
-                sx={{ color: '#bfbfbf' }}
+                sx={{ color: '#1E1E1E', backgroundColor: '#bfbfbf', fontSize: '5px'}}
           >
                 <MenuItem value="EUR"id="EUR" >EUR</MenuItem>
                 <MenuItem value={user?.ip_location?.currency} id={user?.ip_location?.currency} >{user?.ip_location?.currency}</MenuItem> 
