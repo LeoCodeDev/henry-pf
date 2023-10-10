@@ -13,7 +13,6 @@ import {useCartStore} from "../../store/shoppingCartStore"
 const stripePromise = loadStripe('pk_test_51NxWZcLXoKZYYBLlqdLbDjkjkwYKPcM41zGJ4q3Sd0k3Fq0vo7Y0MROPgCP09i5a4xP9MdrkJpcQoEP1iT6kvQ52005i9Ru5cN');
 
 export default function Stripe() {
-    
     const [clientSecretKey,setClientSecretKey] = useState('')
     const [isLoading,setIsLoading] = useState(true)
     const {totalToPay} = useCartStore()
@@ -21,14 +20,15 @@ export default function Stripe() {
     const themeDesign = {
         theme: 'night',
         labels: 'floating'
-      }
-    
+        }
+
+
     useEffect(() => {
         const getPaymentIntent = async() => {
-            const { data } = await axios.post('/paymentIntent',{amount:totalToPay,currency:'usd'})
-            const client_secret = data.client_secret
-            setClientSecretKey(client_secret);
-            setIsLoading(false)
+        const { data } = await axios.post('/paymentIntent',{amount:totalToPay,currency:'usd'})
+        const client_secret = data.client_secret
+        setClientSecretKey(client_secret);
+        setIsLoading(false)
         }
         return () => getPaymentIntent()
     },[])
@@ -37,15 +37,15 @@ export default function Stripe() {
         clientSecret:clientSecretKey,
         // Fully customizable with appearance API.
         appearance: themeDesign,
-      };
+        };
     
 
-      return (
+    return (
         isLoading ? <Loader />:
         <div>
             <Elements stripe={stripePromise} options={options}>
                 <CheckoutForm />
             </Elements>
         </div>
-      );
-};
+        );
+}
