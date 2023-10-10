@@ -1,58 +1,222 @@
-
-import {useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';                     
-import toast, { Toaster } from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
+import {
+  Button,
+  Paper,
+  Container,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import { useCartStore } from "../../store/shoppingCartStore";
+import { useNavigate } from "react-router-dom";
 
 
 const CheckoutForm = () => {
-
   const stripe = useStripe();
   const elements = useElements();
+  const [countryCode, setCountryCode] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [countryCodes, setCountryCodes] = useState([]);
+  const { shoppingCart, totalToPay, clearCart } = useCartStore()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // Hacer una solicitud GET a la API de Rest Countries para obtener la lista de códigos de país
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        // Extraer los códigos de país, nombres y banderas de la respuesta de la API
+        const codes = response.data.map((country) => ({
+          label: `(${country.cca3})`,
+          cod: `${country.idd.root}`,
+          suf:
+            Array.isArray(country.idd.suffixes) &&
+            country.idd.suffixes.length === 1
+              ? country.idd.suffixes[0]
+              : "",
+          value:
+            `${country.idd.root}` +
+            `${
+              Array.isArray(country.idd.suffixes) &&
+              country.idd.suffixes.length === 1
+                ? country.idd.suffixes[0]
+                : ""
+            }`,
+          flag: country.flags.png, // Obtener la bandera del país
+        }));
+
+        // Ordenar los países alfabéticamente por su código de tres letras (cca3)
+        codes.sort((a, b) => a.label.localeCompare(b.label));
+
+        setCountryCodes(codes); // Actualizar el estado con los códigos de país y banderas ordenados
+
+        // Establecer el primer código de área como valor predeterminado
+        if (codes.length > 0) {
+          setCountryCode(codes[0].value);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching country codes:", error);
+      });
+  }, []);
 
   const handleSubmit = async (event) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
-    const {error} = await stripe.confirmPayment({
-      //`Elements` instance that was used to create the Payment Element
+    if (!address || !countryCode || !phoneNumber) {
+      toast.error("Please complete all the required fields.");
+      return;
+    }
+
+    const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+    const phoneNumberPattern = /^\d{5,10}$/;
+
+    if (!phoneNumberPattern.test(phoneNumber)) {
+      toast.error("Phone number must be between 5 and 10 digits.");
+      return;
+    }
+
+    if (address.length < 10) {
+      toast.error("Address should be at least 10 characters.");
+      return;
+    }
+
+
+    const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:5173/order-placed',
+        return_url: "http://localhost:5173/order-placed",
       },
+      redirect: 'if_required'
     });
 
-
     if (error) {
-      // This point will only be reached if there is an immediate error when
-      // confirming the payment. Show error to your customer (for example, payment
-      // details incomplete)
-      toast.error(`${error.message}`)
-      
+      toast.error(`${error.message}`);
     } else {
-        
-        toast.success('Payment Success!')
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
+        const getEmailFromLs = JSON.parse(localStorage.getItem('authState')).user.email
+        await axios.post('/postSale',{
+            total: totalToPay,
+            address: address,
+            phone_number: fullPhoneNumber,
+            products: shoppingCart,
+            email: getEmailFromLs,
+        })
+        clearCart()
+        navigate('/order-placed')
     }
   };
 
   return (
-    <div>
+    <Container maxWidth="md" style={{ textAlign: "center" }}>
+      <Paper elevation={3} style={{ padding: "20px", marginTop: "10vh" }}>
+        <Typography variant="h4" component="h1" color="primary" gutterBottom>
+          Payment Form
+        </Typography>
         <form onSubmit={handleSubmit}>
-            <PaymentElement />
-            <button disabled={!stripe}>Submit</button>
+          <div
+            style={{
+              marginBottom: "16px",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: window.innerWidth >= 768 ? "row" : "column",
+              gap: "1vw",
+            }}
+          >
+            <TextField
+              label="Address"
+              variant="outlined"
+              fullWidth
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+
+            <Select
+              size="small"
+              label="Country Code"
+              variant="outlined"
+              value={countryCode}
+              style={{ maxHeight: "6vh" }}
+              onChange={(e) => setCountryCode(e.target.value)}
+            >
+              {countryCodes?.map(
+                (code, key) =>
+                  code.value != "undefined" ? (
+                    <MenuItem
+                      key={key}
+                      value={code.value}
+                      style={{
+                        textAlign: "center",
+                        alignItems: "center",
+                        minWidth: "4vw",
+                      }}
+                    >
+                      <img
+                        src={code.flag}
+                        alt={`Flag for ${code.label}`}
+                        style={{
+                          width: "20px",
+                          height: "auto",
+                          marginRight: "2px",
+                        }}
+                      />
+                      {`${code.label}`} {code.value}
+                    </MenuItem>
+                  ) : null // Puedes usar null en lugar de una cadena vacía ""
+              )}
+            </Select>
+
+            <TextField
+              label="Phone Number"
+              variant="outlined"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              style={{ minWidth: "12vw" }}
+              inputProps={{
+                maxLength: 10,
+              }}
+            />
+          </div>
+          <PaymentElement />
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            type="submit"
+            fullWidth
+            disabled={!stripe}
+            style={{ marginTop: "20px" }}
+          >
+            Confirm Payment
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            type="button"
+            fullWidth
+            style={{ marginTop: "20px" }}
+            onClick={()=> navigate('/home')}
+          >
+            Cancel
+          </Button>
         </form>
-        <Toaster position="top-center" reverseOrder={false} />
-    </div>
-    
-  )
+      </Paper>
+      <Toaster position="top-center" reverseOrder={false} />
+    </Container>
+  );
 };
 
 export default CheckoutForm;
