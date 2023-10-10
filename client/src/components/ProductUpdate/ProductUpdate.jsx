@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Grid } from '@mui/material';
 import { useProductsStore } from '../../store/productsStore';
 import style from './ProductUpdate.module.css';
 import axios from 'axios';
 
 export const Update = () => {
   const { activeDesactiveProducts, fetchActiveDesactiveProducts } = useProductsStore();
-  const [sortOrder, setSortOrder] = useState('asc'); // Estado para el orden, por defecto ascendente
-  const [activeFilter, setActiveFilter] = useState('all'); // Estado para el filtro, por defecto muestra todos los productos
+  const [sortOrder, setSortOrder] = useState({
+    id_product: 'asc',
+    name: 'asc',
+    description: 'asc',
+    price: 'asc',
+    stock: 'asc',
+    rating: 'asc',
+  });
+  const [activeFilter, setActiveFilter] = useState('all');
 
   const eraseproduct = async (productId) => {
     try {
@@ -38,30 +45,25 @@ export const Update = () => {
   };
 
   const handleSort = (column) => {
-    // Cambiar el orden según el estado actual
-    if (sortOrder === 'asc') {
-      setSortOrder('desc');
-      activeDesactiveProducts.sort((a, b) => {
-        if (column === 'price') {
-          const priceA = parseFloat(a[column]);
-          const priceB = parseFloat(b[column]);
-          return priceA > priceB ? -1 : 1;
-        } else {
-          return a[column].localeCompare(b[column]);
+    setSortOrder((prevSortOrder) => ({
+      ...prevSortOrder,
+      [column]: prevSortOrder[column] === 'asc' ? 'desc' : 'asc',
+    }));
+
+    activeDesactiveProducts.sort((a, b) => {
+      if (column === 'price' || column === 'rating' || column === 'id_product' || column === 'stock') {
+        const valueA = parseFloat(a[column]);
+        const valueB = parseFloat(b[column]);
+        if (column === 'id_product' || column === 'stock') {
+          return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA;
         }
-      });
-    } else {
-      setSortOrder('asc');
-      activeDesactiveProducts.sort((a, b) => {
-        if (column === 'price') {
-          const priceA = parseFloat(a[column]);
-          const priceB = parseFloat(b[column]);
-          return priceA > priceB ? 1 : -1;
-        } else {
-          return b[column].localeCompare(a[column]);
-        }
-      });
-    }
+        return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA;
+      } else {
+        return sortOrder[column] === 'asc'
+          ? a[column].localeCompare(b[column])
+          : b[column].localeCompare(a[column]);
+      }
+    });
   };
 
   const handleFilter = (filter) => {
@@ -70,7 +72,7 @@ export const Update = () => {
 
   const filteredProducts = activeDesactiveProducts.filter((product) => {
     if (activeFilter === 'all') {
-      return true; // Mostrar todos los productos
+      return true;
     } else if (activeFilter === 'active') {
       return product.active;
     } else {
@@ -79,9 +81,9 @@ export const Update = () => {
   });
 
   return (
-    <Container className={style.container}>
+    <Container className={style.container} style={{ marginTop:"15vh", textAlign:"center", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap"}}>
       <div>
-        <Typography variant="h6">Admin Products</Typography>
+        <Typography variant="h6" color="primary">Admin Products</Typography>
         <Button variant="contained" color="primary" onClick={listProducts}>
           Refresh list
         </Button>
@@ -94,16 +96,48 @@ export const Update = () => {
         <Button variant="contained" color="primary" onClick={() => handleFilter('inactive')}>
           Show Inactive
         </Button>
-        <Table>
+        <Grid>
+
+        <Table  size="small">
           <TableHead>
             <TableRow>
-              <TableCell className={style.tableHeaderCell} onClick={() => handleSort('id_product')}>Id</TableCell>
-              <TableCell className={style.tableHeaderCell} onClick={() => handleSort('name')}>Name</TableCell>
-              <TableCell className={style.tableHeaderCell} onClick={() => handleSort('description')}>Description</TableCell>
-              <TableCell className={style.tableHeaderCell} onClick={() => handleSort('price')}>Price</TableCell>
-              <TableCell className={style.tableHeaderCell} onClick={() => handleSort('stock')}>Stock</TableCell>
-              <TableCell className={style.tableHeaderCell} onClick={() => handleSort('rating')}>Rating</TableCell>
-              <TableCell >Active</TableCell>
+              <TableCell
+                className={`${style.tableHeaderCell} ${sortOrder.id_product === 'asc' ? style.sortedAsc : style.sortedDesc}`}
+                onClick={() => handleSort('id_product')}
+              >
+                Id
+              </TableCell>
+              <TableCell
+                className={`${style.tableHeaderCell} ${sortOrder.name === 'asc' ? style.sortedAsc : style.sortedDesc}`}
+                onClick={() => handleSort('name')}
+              >
+                Name
+              </TableCell>
+              <TableCell
+                className={`${style.tableHeaderCell} ${sortOrder.description === 'asc' ? style.sortedAsc : style.sortedDesc}`}
+                onClick={() => handleSort('description')}
+              >
+                Description
+              </TableCell>
+              <TableCell
+                className={`${style.tableHeaderCell} ${sortOrder.price === 'asc' ? style.sortedAsc : style.sortedDesc}`}
+                onClick={() => handleSort('price')}
+              >
+                Price
+              </TableCell>
+              <TableCell
+                className={`${style.tableHeaderCell} ${sortOrder.stock === 'asc' ? style.sortedAsc : style.sortedDesc}`}
+                onClick={() => handleSort('stock')}
+              >
+                Stock
+              </TableCell>
+              <TableCell
+                className={`${style.tableHeaderCell} ${sortOrder.rating === 'asc' ? style.sortedAsc : style.sortedDesc}`}
+                onClick={() => handleSort('rating')}
+              >
+                Rating
+              </TableCell>
+              <TableCell>Active</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -128,6 +162,7 @@ export const Update = () => {
             ))}
           </TableBody>
         </Table>
+        </Grid>
       </div>
     </Container>
   );

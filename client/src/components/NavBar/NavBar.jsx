@@ -52,6 +52,9 @@ export const NavBar = () => {
   const handleProfile = () => {
     navigate('/profile')
   }
+  const handleDashboard = () => {
+    navigate('/update')
+  }
 
   const [ifSearch, setIfSearch] = React.useState(false);
   const handleSearch = () => {
@@ -279,6 +282,8 @@ export const NavBar = () => {
                         ? handleLogout
                         : setting === 'Profile'
                         ? handleProfile
+                        : setting === 'Dashboard'
+                        ? handleDashboard
                         : handleCloseUserMenu
                     }>
                     <Typography>{setting}</Typography>
