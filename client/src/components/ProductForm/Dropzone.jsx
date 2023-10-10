@@ -9,6 +9,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
   const [selectedFile, setSelectedFile] = useState(null)
   const [image, setImage] = useState(null)
   const [imageUrl, setImageUrl] = useState(null)
+  const [formData, setFormData] = useState(null)
   const [crop, setCrop] = useState({
     unit: '%',
     width: 100,
@@ -36,7 +37,6 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
       return
     }
 
-    
     const objectURL = URL.createObjectURL(acceptedFiles[0])
     setImageUrl(objectURL)
 
@@ -86,11 +86,14 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
 
     const croppedBlob = await getCroppedImg(image, crop)
 
-    try {
-      const formData = new FormData()
-      formData.append('image', croppedBlob)
-      
+    const formData = new FormData()
+    formData.append('image', croppedBlob)
+    setCroppedImage(URL.createObjectURL(croppedBlob))
+    setFormData(formData)
+  }
 
+  const acceptCrop = async () => {
+    try {
       const response = await axios.post(endpoint, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -98,9 +101,13 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
       })
 
       if (response.status === 200) {
-        setCroppedImage(URL.createObjectURL(croppedBlob))
         setImage(null)
+        console.log(response.data.url)
         setProductImageURL(response.data.url)
+        setCroppedImage(null)
+        setImage(null)
+        setImageUrl(null)
+        setSelectedFile(null)
       } else {
         console.error({ response })
       }
@@ -169,6 +176,15 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             sx={{ mt: 3, mb: 2 }}
           >
             Reset
+          </Button>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            onClick={acceptCrop}
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Accept
           </Button>
         </>
       )}

@@ -81,7 +81,7 @@ const useProductsStore = create((set) => ({
     })),
   addProduct: async (product) => {
     try {
-      const { data } = await axios.post('/postProduct', product)
+      const data  = await axios.post('/postProduct', product)
       if (data.status !== 200) {
         throw new Error('Error adding product')
       } else {
