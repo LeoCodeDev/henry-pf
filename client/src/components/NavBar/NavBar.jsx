@@ -282,7 +282,7 @@ export const NavBar = () => {
                         ? handleLogout
                         : setting === 'Profile'
                         ? handleProfile
-                        : setting === "Dashboard"
+                        : setting === 'Dashboard'
                         ? handleDashboard
                         : handleCloseUserMenu
                     }>
