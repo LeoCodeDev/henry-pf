@@ -14,6 +14,7 @@ import {
   FormControl,
   MenuItem,
   Select,
+  useMediaQuery,
 } from '@mui/material'
 import toast, { Toaster } from 'react-hot-toast'
 import { useTheme } from '@mui/material/styles'
@@ -140,6 +141,7 @@ export default function ProductForm() {
       return toast.error('Please check for eny errors')
     }
   }
+  const isMobile = useMediaQuery("(max-width: 840px)");
 
   return (
     <div>
@@ -192,7 +194,7 @@ export default function ProductForm() {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              width={0.7}
+              width= {isMobile ? '100%' : '60%'}
               sx={{
                 backgroundColor: theme.palette.background_ligth.main,
                 padding: 4,
@@ -322,7 +324,7 @@ export default function ProductForm() {
             marginLeft: '1rem',
             display: 'flex',
             position: 'absolute',
-            marginTop: '3rem',
+            marginTop: isMobile ? '1rem': '3rem',
             cursor: 'pointer',
           }}
           sx={{
@@ -333,8 +335,11 @@ export default function ProductForm() {
             },
           }}
         >
-          <ArrowBackIosIcon />
-          <Typography component={'h3'}>Back</Typography>
+          <ArrowBackIosIcon sx={{width: isMobile ? '12px' : '1rem'}} />
+          <Typography 
+        fontSize={isMobile ? '10px' : '1rem'}
+        lineHeight={isMobile ? '2.5' : '1.5'}
+          component={'h3'}>Back</Typography>
         </Box>
       </Grid>
     </div>
