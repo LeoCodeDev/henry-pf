@@ -52,7 +52,7 @@ const Products = () => {
   return (
     <div className={styles.productsContain}>
       <div className={styles.paginationContain}>
-      <InputLabel id="currencies">Currencies</InputLabel>
+      <InputLabel className={styles.currency}>Currencies</InputLabel>
           <Select
                 name="Currency"
                 onChange={handleCurrencyChange}
