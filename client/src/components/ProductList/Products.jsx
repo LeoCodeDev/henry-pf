@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { CardProduct } from '../CardProduct/CardProduct'
 import { useProductsStore } from '../../store/productsStore'
 import { useAuthStore } from '../../store/authStore'
@@ -19,6 +20,27 @@ const Products = () => {
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+
+
+  useEffect(() => {
+    const checkTokenExpiration = async() => {
+      try{
+        const {data} = await axios.get('/getAccessTokenExpiration', 
+        {withCredentials: true}
+        )
+        const remainingTime = data.expirationTime - Date.now() / 1000;
+        if (remainingTime < 60) {
+          await axios.get('/refreshToken', 
+          {withCredentials: true}
+          )
+        }
+      } catch {
+        console.log('error')
+      }
+    };
+    const timer = setInterval(checkTokenExpiration, 60000*1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     getAllFavorites(initialState.username);
