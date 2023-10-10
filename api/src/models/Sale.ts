@@ -12,6 +12,7 @@ export const SaleModel = (sequelize: Sequelize) => {
         date:{
             type:DataTypes.DATE,
             allowNull: false,
+            defaultValue: DataTypes.NOW,
         },       
         total:{
             type: DataTypes.FLOAT,
