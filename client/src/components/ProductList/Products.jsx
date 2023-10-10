@@ -5,14 +5,24 @@ import { useAuthStore } from '../../store/authStore'
 import { IconButton, InputLabel, MenuItem, Select  } from '@mui/material'
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material'
 import styles from './styles/Products.module.css';
+import { favoriteStore } from '../../store/favoriteStore';
+
 
 const Products = () => {
+
+  const initialState = useAuthStore((state) => state.user)
+
+  const { getAllFavorites } = favoriteStore();
 
   const { filteredProducts, fetchProducts,setCurrency, actualCurrency,setProductsFiltered } = useProductsStore()
   const {user}= useAuthStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+
+  useEffect(() => {
+    getAllFavorites(initialState.username);
+  },[getAllFavorites, initialState.username])
   const [allProducts, setAllProducts] = useState([])
 
 

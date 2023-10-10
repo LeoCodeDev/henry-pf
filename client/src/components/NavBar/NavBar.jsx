@@ -1,86 +1,85 @@
-import * as React from 'react'
+import * as React from "react";
 import { SearchBar } from '../SearchBar/SearchBar'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import Menu from '@mui/material/Menu'
-import MenuIcon from '@mui/icons-material/Menu'
-import Container from '@mui/material/Container'
-import Badge from '@mui/material/Badge'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
-import SearchIcon from '@mui/icons-material/Search'
-import MenuItem from '@mui/material/MenuItem'
-// import Select from '@mui/material/Select'
-// import InputLabel from '@mui/material/InputLabel'
-// import FormControl from '@mui/material/FormControl'
-import { useAuthStore } from '../../store/authStore'
-// import {useProductsStore} from '../../store/productsStore'
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import { useNavigate } from 'react-router-dom'
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Badge from "@mui/material/Badge";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import SearchIcon from "@mui/icons-material/Search";
+import MenuItem from "@mui/material/MenuItem";
+import { useAuthStore } from "../../store/authStore";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { Modal } from "../../components/Modal/Modal";
+import { useCartStore } from "../../store/shoppingCartStore";
+import { favoriteStore } from "../../store/favoriteStore";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#1976d2',
+      main: "#1976d2",
     },
   },
-})
+});
 
-const pages = ['HOME', 'SHOP', 'EXERCISE', 'ADD PRODUCT']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const pages = ["HOME", "SHOP", "EXERCISE", "ADD PRODUCT"];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const NavBar = () => {
-  // const {actualCurrency, setCurrency, fetchProducts}=useProductsStore()
-  const [anchorElNav, setAnchorElNav] = React.useState(null)
-  const [anchorElUser, setAnchorElUser] = React.useState(null)
-  const { user, logout } = useAuthStore()
-  const navigate = useNavigate()
-
+  const {favorites} = favoriteStore()
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { user, logout } = useAuthStore();
+  const { shoppingCart } = useCartStore();
+  const navigate = useNavigate();
+  /* Logic modal */
+  const [modalOpen, setModalOpen] = React.useState({ anchor: "", open: false });
 
   const handleLogout = () => {
-    logout()
-    navigate('/')
-  }
+    logout();
+    navigate("/");
+  };
   const handleProfile = () => {
     navigate('/profile')
   }
 
-  const [ifSearch, setIfSearch] = React.useState(false)
+  const [ifSearch, setIfSearch] = React.useState(false);
   const handleSearch = () => {
-    setIfSearch(!ifSearch)
-  }
+    setIfSearch(!ifSearch);
+  };
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget)
-  }
+    setAnchorElNav(event.currentTarget);
+  };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget)
-  }
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handleMenu = (e) => {
-    const value = e.target.innerText
-    if (value === 'HOME') navigate('/home');
-    if (value === 'SHOP') navigate('/home');
-    if (value === 'EXERCISE') navigate('/home')
-    if (value === 'ADD PRODUCT') navigate('/product-creation')
-  }
+    const value = e.target.innerText;
+    if (value === "HOME") navigate("/home");
+    if (value === "SHOP") navigate("/home");
+    if (value === "EXERCISE") navigate("/home");
+    if (value === "ADD PRODUCT") navigate("/product-creation");
+  };
 
-
-  const handleCloseNavMenu = () => { 
-    setAnchorElNav(null)
-  }
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
-
+    setAnchorElUser(null);
+  };
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -228,9 +227,10 @@ export const NavBar = () => {
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit">
+              color="inherit"
+              onClick={() => setModalOpen({ anchor: 'left', open: true })}>
               {/* Abajo de esta línea poner el estado de favoritos */}
-              <Badge color="error">
+              <Badge badgeContent={favorites.length} color="error">
                 <FavoriteBorderOutlinedIcon />
               </Badge>
             </IconButton>
@@ -239,13 +239,15 @@ export const NavBar = () => {
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit">
+              color="inherit"
+              onClick={() => setModalOpen({ anchor: 'right', open: true })}>
               {/* Abajo de esta línea poner el estado (.length) de carrito */}
-              <Badge color="error">
+              <Badge badgeContent={shoppingCart.length} color="error">
                 <ShoppingCartOutlinedIcon />
               </Badge>
             </IconButton>
 
+            <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} />
             <Box
               sx={{ flexGrow: 0, paddingRight: '.8rem', paddingLeft: '.7rem' }}>
               <Tooltip title="Open settings">
@@ -272,8 +274,13 @@ export const NavBar = () => {
                 {settings.map((setting) => (
                   <MenuItem
                     key={setting}
-                    onClick={setting === 'Logout' ? handleLogout : setting === 'Profile' ? handleProfile : handleCloseUserMenu}
-                    >
+                    onClick={
+                      setting === 'Logout'
+                        ? handleLogout
+                        : setting === 'Profile'
+                        ? handleProfile
+                        : handleCloseUserMenu
+                    }>
                     <Typography>{setting}</Typography>
                   </MenuItem>
                 ))}
