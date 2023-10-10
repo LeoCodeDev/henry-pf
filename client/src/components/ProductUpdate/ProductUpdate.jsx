@@ -38,37 +38,32 @@ export const Update = () => {
   };
 
   const handleSort = (column) => {
-    // Cambiar el orden según el estado actual
-    if (sortOrder === 'asc') {
-      setSortOrder('desc');
-      activeDesactiveProducts.sort((a, b) => {
-        if (column === 'price') {
-          const priceA = parseFloat(a[column]);
-          const priceB = parseFloat(b[column]);
-          return priceA > priceB ? -1 : 1;
-        } else {
-          return a[column].localeCompare(b[column]);
+    setSortOrder((prevSortOrder) => ({
+      ...prevSortOrder,
+      [column]: prevSortOrder[column] === 'asc' ? 'desc' : 'asc',
+    }));
+
+    activeDesactiveProducts.sort((a, b) => {
+      if (column === 'price' || column === 'rating' || column === 'id_product' || column === 'stock') {
+        const valueA = parseFloat(a[column]);
+        const valueB = parseFloat(b[column]);
+        if (column === 'id_product' || column === 'stock') {
+          return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA;
         }
-      });
-    } else {
-      setSortOrder('asc');
-      activeDesactiveProducts.sort((a, b) => {
-        if (column === 'price') {
-          const priceA = parseFloat(a[column]);
-          const priceB = parseFloat(b[column]);
-          return priceA > priceB ? 1 : -1;
-        } else {
-          return b[column].localeCompare(a[column]);
-        }
-      });
-    }
+        return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA;
+      } else {
+        return sortOrder[column] === 'asc'
+          ? a[column].localeCompare(b[column])
+          : b[column].localeCompare(a[column]);
+      }
+    });
   };
 
   const handleFilter = (filter) => {
     setActiveFilter(filter);
   };
 
-  const filteredProducts = activeDesactiveProducts.filter((product) => {
+  const filteredProducts = activeDesactiveProducts?.filter((product) => {
     if (activeFilter === 'all') {
       return true; // Mostrar todos los productos
     } else if (activeFilter === 'active') {
@@ -107,7 +102,7 @@ export const Update = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProducts.map((product, index) => (
+            {filteredProducts && filteredProducts.map((product, index) => (
               <TableRow key={index}>
                 <TableCell>{product.id_product}</TableCell>
                 <TableCell>{product.name}</TableCell>
