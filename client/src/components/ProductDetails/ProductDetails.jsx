@@ -1,4 +1,5 @@
 import { NavBar } from '../NavBar/NavBar'
+import { useState, useEffect } from 'react'
 import { useShowProductStore } from '../../store/showProduct'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
@@ -8,11 +9,14 @@ import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import Button from '@mui/material/Button'
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import styles from '../Error404/Error404.module.css'
 import { useNavigate } from 'react-router-dom'
-
+import { useCartStore } from '../../store/shoppingCartStore'
+import { useAuthStore } from '../../store/authStore'
+import { favoriteStore } from '../../store/favoriteStore'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#B0B0B0' : '#fff',
@@ -23,11 +27,48 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 
 export const ProductDetails = () => {
+  const [isFav, setFav] = useState(false)
+  const [cart, setCart] = useState(false)
   const navigate = useNavigate()
   const { product } = useShowProductStore()
-
+  const {addProductToCart, deleteProductFromCart, shoppingCart}=useCartStore()
+  const {user}=useAuthStore()
+  const{favorites,addFavorite, deleteFavorite}=favoriteStore()
   const handleHomeClick = () => {
     navigate('/home')
+  }
+
+  useEffect(() => {
+    setCart(
+      shoppingCart.find((element) => element.id_product === product.id_product)
+        ? true
+        : false
+    ),
+    setFav(
+      favorites.find((element) => element.id_product === product.id_product)
+        ? true
+        : false
+    )
+  }, [shoppingCart, product, favorites])
+
+  const handleFav = (id) => {
+    if (isFav) {
+      deleteFavorite(user.username, id)
+      setFav(false)
+    } else {
+      addFavorite(user.username, id)
+      setFav(true)
+    }
+  }
+
+  const handleCart = () => {
+    if(cart){
+      deleteProductFromCart(product)
+      setCart(false)
+    }else{
+      addProductToCart(product)
+      setCart(true)
+    }
   }
 
   return (
@@ -170,8 +211,10 @@ export const ProductDetails = () => {
                 background: '#B0B0B0',
                 color: '#24262E'
               }}
-              variant="contained">
-              ADD TO CART
+              variant="contained"
+              onClick={() =>handleCart()}
+              >
+                {cart ? 'REMOVE FROM CART' : 'ADD TO CART'}
             </Button>
             <Button
               style={{
@@ -179,10 +222,19 @@ export const ProductDetails = () => {
                 borderRadius: '10px',
                 border: '3px solid #B0B0B0'
               }}
-              variant="outlined">
+              variant="outlined"
+              onClick={() => handleFav(product.id_product)}>
+            {isFav ? (
               <FavoriteOutlinedIcon
-                style={{ color: '#539A07', fontSize: '30px' }}
+                fontSize="large"
+                onClick={() => handleFav(product.id_product)}
               />
+            ) : (
+              <FavoriteBorderOutlinedIcon
+                fontSize="large"
+                onClick={() => handleFav()}
+              />
+            )}
             </Button>
           </Stack>
         </div>
