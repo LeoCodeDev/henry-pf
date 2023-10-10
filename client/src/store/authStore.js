@@ -69,19 +69,20 @@ const useAuthStore = create((set) => ({
   },
 
   logout: async() => {
-    const userId= useAuthStore.getState().user.id_user
+    const currentUser= useAuthStore.getState().user
     set({
       user: userGuest,
       isLogged: false
     })
+    if(currentUser.role!='guest'){
     try {
-      await axios.delete(`/deleteToken?id_user=${userId}`,
+      await axios.delete(`/deleteToken?id_user=${currentUser.id_user}`,
       {
         withCredentials: true}
       )
     } catch (error) {
       console.log(error)
-    }
+    }}
     // Elimina el estado de Local Storage al cerrar sesión
     localStorage.removeItem('authState')
   }

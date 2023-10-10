@@ -36,6 +36,7 @@ const refreshToken= require('../controllers/refreshToken')
 const deleteToken= require('../controllers/deleteToken')
 const resetPasswordToken= require('../controllers/resetPasswordToken')
 const paymentIntent = require('../controllers/paymentIntent')
+const getAccessTokenExpiration= require('../controllers/validateTokenExpiration')
 
 
 router.post('/postUser', postUser) 
@@ -45,7 +46,7 @@ router.post('/postProduct', postProduct);
 router.get("/products", getProducts); 
 router.get("/categories",getCategories );
 router.get("/productByName",getProductByName );
-router.get("/products/:id", getProductsById);
+router.get("/productsById", getProductsById);
 router.put("/newPassword/:id", putNewPasswordUser); 
 router.get("/getTeams", getTeams )
 router.get('/getAllFavorites', getAllFavorites); 
@@ -70,10 +71,11 @@ router.put('/putDeleteRoutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
 router.delete('/deleteSavedRoutine', deleteSavedRoutine);
 router.post('/paymentIntent',paymentIntent)
-router.post('/tokenValidation',tokenValidation)
+router.get('/tokenValidation',tokenValidation)
 router.get('/refreshToken',refreshToken)
 router.delete('/deleteToken',deleteToken)
 router.get('/resetPasswordToken',resetPasswordToken)
+router.get('/getAccessTokenExpiration',getAccessTokenExpiration)
 
 
 

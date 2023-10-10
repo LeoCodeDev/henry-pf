@@ -1,12 +1,39 @@
 import styles from '../ModalCart/ModelCart.module.css'
 import { CardProductMiniCart } from '../../CardProductMiniCart/CardProductMiniCart'
 import Button from '@mui/material/Button'
+import axios from 'axios'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { isMobile } from 'react-device-detect'
 import { useCartStore } from '../../../store/shoppingCartStore'
+import { useAuthStore } from '../../../store/authStore'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 export const ModalCart = ({ toggleDrawer }) => {
   const { shoppingCart, totalToPay } = useCartStore()
+  const {user, logout}= useAuthStore()
+  const navigate= useNavigate()
+
+  const validateTokenUser= async()=>{
+    try {
+      if(user.role==='guest'){
+        toast.error('You need to login to continue') //toast is not working
+        logout()
+        navigate('/')
+      } else{
+        const {data}=await axios.get('/tokenValidation',{
+          withCredentials: true
+        })
+        if(data.valid) navigate('/payment')
+        else{
+          return toast.error('Invalid or expired token')
+        }
+      }
+    } catch (error) {
+      console.log(console.error())
+    }
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -32,7 +59,9 @@ export const ModalCart = ({ toggleDrawer }) => {
         <section>
           <Button
             variant="contained"
-            sx={{ margin: '1rem', size: 'large', backgroundColor: '#010402' }}>
+            sx={{ margin: '1rem', size: 'large', backgroundColor: '#010402' }}
+            onClick={()=>validateTokenUser()}
+            >
             GO TO PAY
           </Button>
         </section>
