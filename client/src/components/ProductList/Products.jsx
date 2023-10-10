@@ -9,12 +9,13 @@ import styles from './styles/Products.module.css';
 import { favoriteStore } from '../../store/favoriteStore';
 
 
+
+
 const Products = () => {
 
   const initialState = useAuthStore((state) => state.user)
 
   const { getAllFavorites } = favoriteStore();
-
   const { filteredProducts, fetchProducts,setCurrency, actualCurrency,setProductsFiltered } = useProductsStore()
   const {user}= useAuthStore()
   const productsPerPage = 8

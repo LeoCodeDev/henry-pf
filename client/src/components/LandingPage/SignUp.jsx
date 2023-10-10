@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Typography from "@mui/material/Typography";
 import {
@@ -241,7 +241,7 @@ export default function SignUp({ setOption }) {
         noValidate
         onSubmit={handleSubmit}
         sx={{
-          backgroundColor: theme.palette.background_ligth.main,
+          backgroundColor: theme.palette.background_ligth?.main,
           padding: 4,
           borderRadius: 6,
         }}
