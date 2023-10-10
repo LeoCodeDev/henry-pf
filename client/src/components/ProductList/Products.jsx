@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { CardProduct } from '../CardProduct/CardProduct'
 import { useProductsStore } from '../../store/productsStore'
-import { IconButton } from '@mui/material'
+import { useAuthStore } from '../../store/authStore'
+import { IconButton, InputLabel, MenuItem, Select  } from '@mui/material'
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material'
 import styles from './styles/Products.module.css';
 import { favoriteStore } from '../../store/favoriteStore';
-import { useAuthStore } from '../../store/authStore'
 
 
 const Products = () => {
@@ -14,7 +14,8 @@ const Products = () => {
 
   const { getAllFavorites } = favoriteStore();
 
-  const { filteredProducts, fetchProducts } = useProductsStore()
+  const { filteredProducts, fetchProducts,setCurrency, actualCurrency,setProductsFiltered } = useProductsStore()
+  const {user}= useAuthStore()
   const productsPerPage = 8
   const [currentPage, setCurrentPage] = useState(0)
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
@@ -22,22 +23,19 @@ const Products = () => {
   useEffect(() => {
     getAllFavorites(initialState.username);
   },[getAllFavorites, initialState.username])
+  const [allProducts, setAllProducts] = useState([])
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchProducts()
-      } catch (error) {
-        throw new Error(error.message)
-      }
-    }
-    fetchData()
-  }, [fetchProducts])
+    setAllProducts(filteredProducts.slice(
+      currentPage * productsPerPage,
+      (currentPage + 1) * productsPerPage
+    ))
+  },[actualCurrency,currentPage,setCurrency, filteredProducts])
 
-  const allProducts = filteredProducts.slice(
-    currentPage * productsPerPage,
-    (currentPage + 1) * productsPerPage
-  )
+  useEffect(() => {
+    fetchProducts()
+  },[fetchProducts, actualCurrency,setCurrency])
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -55,9 +53,25 @@ const Products = () => {
     setCurrentPage(0)
   }, [filteredProducts])
 
+  const handleCurrencyChange=async(e)=>{
+    await setCurrency(e.target.value)
+    await fetchProducts()
+    setProductsFiltered()
+  }
+
   return (
     <div className={styles.productsContain}>
       <div className={styles.paginationContain}>
+      <InputLabel className={styles.currency}>Currencies</InputLabel>
+          <Select
+                name="Currency"
+                onChange={handleCurrencyChange}
+                sx={{ color: '#bfbfbf' }}
+          >
+                <MenuItem value="EUR"id="EUR" >EUR</MenuItem>
+                <MenuItem value={user?.ip_location?.currency} id={user?.ip_location?.currency} >{user?.ip_location?.currency}</MenuItem> 
+                <MenuItem value="USD" id="USD" >USD</MenuItem>
+          </Select>
         <IconButton
           onClick={handlePrevPage}
           disabled={currentPage === 0}
