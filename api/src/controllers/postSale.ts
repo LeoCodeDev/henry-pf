@@ -3,17 +3,17 @@ import { Request, Response } from "express";
 //Pending variants handling
 
 const createSale = async (req:Request, res:Response) => {
-    const { date, total, address, phone_number, products, email } = req.body;
+    const {  total, address, phone_number, products, email } = req.body;
     const parsedTotal=parseFloat(total)
     try {
-        if(!date || !total || !address || !phone_number || !products || !email)
+        if(!total || !address || !phone_number || !products || !email)
         {res.status(400).json({ message: "Missing required fields" })}
         const user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
         const sale = await Sale.create({
-            date,
+            
             total:parsedTotal,
             address,
             phone_number
