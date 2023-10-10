@@ -70,7 +70,7 @@ export const Update = () => {
     setActiveFilter(filter);
   };
 
-  const filteredProducts = activeDesactiveProducts.filter((product) => {
+  const filteredProducts = activeDesactiveProducts?.filter((product) => {
     if (activeFilter === 'all') {
       return true;
     } else if (activeFilter === 'active') {
@@ -141,7 +141,7 @@ export const Update = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProducts.map((product, index) => (
+            {filteredProducts && filteredProducts.map((product, index) => (
               <TableRow key={index}>
                 <TableCell>{product.id_product}</TableCell>
                 <TableCell>{product.name}</TableCell>
