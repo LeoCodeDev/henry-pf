@@ -6,6 +6,7 @@ const useProductsStore = create((set) => ({
   prefilterProducts: [],
   filteredProducts: [],
   categories: [],
+  activeDesactiveProducts: [],
   fetchCategories: async () => {
     try {
       const { data } = await axios.get("/categories");
@@ -25,6 +26,18 @@ const useProductsStore = create((set) => ({
         throw new Error("No products found");
       } else {
         set({ products: data, prefilterProducts: data });
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  fetchActiveDesactiveProducts: async () => {
+    try {
+      const { data } = await axios.get("/allProducts");
+      if (!data) {
+        throw new Error("No products found");
+      } else {
+        set({activeDesactiveProducts: data });
       }
     } catch (error) {
       throw new Error(error.message);
