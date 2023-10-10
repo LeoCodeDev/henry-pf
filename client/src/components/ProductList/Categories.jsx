@@ -69,6 +69,7 @@ export default function CustomizedTabs() {
   
   useEffect(() => {
     const category = categories?.find((category) => category.name === value);
+    console.log(category);
     
     setProductsFiltered(category);
   }, [categories ,value, setProductsFiltered]);

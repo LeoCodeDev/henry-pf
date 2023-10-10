@@ -1,66 +1,80 @@
 import { create } from 'zustand'
 
 const useCartStore = create((set) => ({
-  shoppingCart: [],
+  shoppingCart: JSON.parse(localStorage.getItem('cart')) || [],
   totalToPay: 0,
   addProductToCart: (product) => {
-    set((state) => ({
-      shoppingCart: [
-        ...state.shoppingCart,
-        {
-          ...product,
-          quantity: 0,
-          total: 0,
-        },
-      ],
-    }))
+    product.quantity = 1
+    product.total = product.price
+    set((state) => {
+      const newCart = [...state.shoppingCart, product]
+      localStorage.setItem('cart', JSON.stringify(newCart))
+      return { shoppingCart: newCart }
+    })
   },
   deleteProductFromCart: (product) => {
-    set((state) => ({
-      shoppingCart: state.shoppingCart.filter((item) => item.id !== product.id),
-    }))
+    set((state) => {
+      const newCart = state.shoppingCart.filter(
+        (item) => item.id_product !== product.id_product
+      )
+      localStorage.setItem('cart', JSON.stringify(newCart))
+      return { shoppingCart: newCart }
+    })
   },
   updateProductQuantity: (product, quantity) => {
-    set((state) => ({
-      shoppingCart: state.shoppingCart.map((item) =>
-        item.id === product.id ? (item.quantity = quantity) : item
-      ),
-    }))
+    set((state) => {
+      const newCart = state.shoppingCart.map((item) =>
+        item.id_product === product.id_product ? { ...item, quantity } : item
+      )
+      localStorage.setItem('cart', JSON.stringify(newCart))
+      return { shoppingCart: newCart }
+    })
   },
   clearCart: () => {
-    // eslint-disable-next-line no-unused-vars
-    set((state) => ({
-      shoppingCart: [],
-    }))
+    set({ shoppingCart: [] })
+    localStorage.removeItem('cart')
   },
   oneMore: (product) => {
-    set((state) => ({
-      shoppingCart: state.shoppingCart.map((item) => {
-        product.id === item.id ? item.quantity++ : item
-      }),
-    }))
+    set((state) => {
+      const newCart = state.shoppingCart.map((item) =>
+        item.id_product === product.id_product
+          ? {
+              ...item,
+              quantity: item.quantity + 1,
+              total: Number(item.price * item.quantity + Number(item.price))
+            }
+          : item
+      )
+      localStorage.setItem('cart', JSON.stringify(newCart))
+      return { shoppingCart: newCart }
+    })
   },
   oneLess: (product) => {
-    set((state) => ({
-      shoppingCart: state.shoppingCart.map((item) => {
-        product.id === item.id ? item.quantity-- : item
-      }),
-    }))
-  },
-  totalByProduct: (product) => {
-    set((state) => ({
-      shoppingCart: state.shoppingCart.map((item) => {
-        product.id === item.id
-          ? (item.total = item.price * item.quantity)
+    set((state) => {
+      const newCart = state.shoppingCart.map((item) =>
+        item.id_product === product.id_product
+          ? {
+              ...item,
+              quantity: Math.max(item.quantity - 1, 1),
+              total: Math.max(
+                Number(item.price * item.quantity - Number(item.price)),
+                0
+              )
+            }
           : item
-      }),
-    }))
+      )
+      localStorage.setItem('cart', JSON.stringify(newCart))
+      return { shoppingCart: newCart }
+    })
   },
   total: () => {
     set((state) => ({
-      totalToPay: state.shoppingCart.reduce((acc, item) => acc + item.total, 0),
+      totalToPay: state.shoppingCart.reduce(
+        (acc, item) => acc + parseInt(item.total),
+        0
+      )
     }))
-  },
+  }
 }))
 
 export { useCartStore }

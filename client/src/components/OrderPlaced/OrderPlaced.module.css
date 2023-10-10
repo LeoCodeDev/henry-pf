@@ -1,0 +1,98 @@
+.containerMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.imgContain{
+    width: 80%;
+}
+.titleContain {
+    display: flex;
+    flex-direction: column;
+}
+.titleContain  h1 {
+    font-family: var(--font-family-poppins);
+    margin: 5px 0px;
+    font-size: 24px;
+}
+.textContain {
+    display: flex;
+    font-family: var(--font-family-poppins);
+    flex-direction: column;
+    align-items: flex-start;
+}
+.textContain h2{
+    margin: 10px 0px 10px 15px;
+    font-size: 16px;
+}
+
+.textContain h3 {
+    text-align: start;
+    margin: 10px 0px 10px 15px;
+    font-size: 15px;
+    line-height: 18px;
+}
+.btnContain {
+    display: flex;
+}
+
+@media (min-width: 640px) {
+    .containerMain{
+        flex-direction: row;
+    }
+    .imgContain{
+        width: 100%;
+    }
+    .titleContain  h1 {
+        margin-left: 15px;
+        font-size: 20px;
+        text-align: start;
+    }
+    .textContain h2{
+        margin: 0px 0px 0px 15px;
+        font-size: 16px;
+    }
+
+    .textContain h3 {
+        font-size: 12px;
+        margin: 5px 0px 5px 15px;
+        line-height: 18px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .containerMain{
+        flex-direction: row;
+    }
+    .titleContain  h1 {
+        margin-left: 15px;
+        font-size: 26px;
+    }
+    .textContain h2{
+        font-size: 20px;
+    }
+    .textContain h3 {
+        font-size: 18px;
+        margin: 10px 15px;
+        line-height: 18px;
+    }
+}
+@media (min-width: 1400px) {
+    .containerMain{
+        flex-direction: row;
+    }
+    .imgContain{
+        width: 70%;
+    }
+    .titleContain  h1 {
+        margin-left: 20px;
+        font-size: 30px;
+    }
+    .textContain h2{
+        font-size: 20px;
+    }
+    .textContain h3 {
+        font-size: 16px;
+        margin: 10px 15px 10px 15px;
+    }
+}
