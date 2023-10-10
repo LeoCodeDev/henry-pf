@@ -41,7 +41,7 @@ export const Update = () => {
     // Cambiar el orden según el estado actual
     if (sortOrder === 'asc') {
       setSortOrder('desc');
-      activeDesactiveProducts.sort((a, b) => {
+      activeDesactiveProducts?.sort((a, b) => {
         if (column === 'price') {
           const priceA = parseFloat(a[column]);
           const priceB = parseFloat(b[column]);
@@ -52,7 +52,7 @@ export const Update = () => {
       });
     } else {
       setSortOrder('asc');
-      activeDesactiveProducts.sort((a, b) => {
+      activeDesactiveProducts?.sort((a, b) => {
         if (column === 'price') {
           const priceA = parseFloat(a[column]);
           const priceB = parseFloat(b[column]);
@@ -68,7 +68,7 @@ export const Update = () => {
     setActiveFilter(filter);
   };
 
-  const filteredProducts = activeDesactiveProducts.filter((product) => {
+  const filteredProducts = activeDesactiveProducts?.filter((product) => {
     if (activeFilter === 'all') {
       return true; // Mostrar todos los productos
     } else if (activeFilter === 'active') {
@@ -107,7 +107,7 @@ export const Update = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProducts.map((product, index) => (
+            {filteredProducts && filteredProducts.map((product, index) => (
               <TableRow key={index}>
                 <TableCell>{product.id_product}</TableCell>
                 <TableCell>{product.name}</TableCell>
