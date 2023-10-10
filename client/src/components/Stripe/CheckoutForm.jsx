@@ -16,6 +16,8 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useCartStore } from "../../store/shoppingCartStore";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -25,7 +27,7 @@ const CheckoutForm = () => {
   const [address, setAddress] = useState("");
   const [countryCodes, setCountryCodes] = useState([]);
   const { shoppingCart, totalToPay } = useCartStore()
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     // Hacer una solicitud GET a la API de Rest Countries para obtener la lista de códigos de país
@@ -92,13 +94,13 @@ const CheckoutForm = () => {
       return;
     }
 
-    console.log(fullPhoneNumber, address);
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: "http://localhost:5173/order-placed",
       },
+      redirect: 'if_required'
     });
 
     if (error) {
@@ -106,13 +108,13 @@ const CheckoutForm = () => {
     } else {
         const getEmailFromLs = JSON.parse(localStorage.getItem('authState')).user.email
         await axios.post('/postSale',{
-            total: totalToPay,
+            total: totalToPay || 2000,
             address: address,
             phone_number: fullPhoneNumber,
-            products: shoppingCart,
+            products: shoppingCart || [{id_product: 1}],
             email: getEmailFromLs,
         })
-      toast.success("Payment Success!");
+        navigate('/order-placed')
     }
   };
 
