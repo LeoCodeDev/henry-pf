@@ -1,15 +1,18 @@
 import axios from 'axios'
 import { create } from 'zustand'
 
-const favoriteStore = create((set) => ({
+const favoriteStore = create((set, get) => ({
   favorites: [],
-  getAllFavorites: async (username) => {
+  getAllFavorites: async (username, force = true) => {
     try {
-      const { data } = await axios(`/getAllFavorites?username=${username}`)
-      if (data.status !== 200) {
+      const response = await axios(`/getAllFavorites?username=${username}`)
+      if (response.status !== 200) {
         throw new Error('Something went wrong, try again')
       } else {
-        set({ favorites: [...data.allFavorites] })
+        const { data } = response
+        if (force || !get().favorites.length) {
+          set({ favorites: [...data] })
+        }
       }
     } catch (error) {
       throw new Error(error.message)
@@ -17,15 +20,14 @@ const favoriteStore = create((set) => ({
   },
   addFavorite: async (username, id_product) => {
     try {
-      const { data } = await axios.post('/postFavorite', {
+      const data = await axios.post('/postFavorite', {
         username,
         id_product,
       })
-      if (data.status !== 200) {
+      if (data.status !== 201) {
         throw new Error('Something went wrong, try again')
       } else {
-        const { product } = data
-        set((state) => ({ favorites: [...state.favorites, product] }))
+        await get().getAllFavorites(username, true)
       }
     } catch (error) {
       throw new Error(error.message)
@@ -33,10 +35,8 @@ const favoriteStore = create((set) => ({
   },
   deleteFavorite: async (username, id_product) => {
     try {
-      const { data } = await axios.delete('/delFavorite', {
-        username,
-        id_product,
-      })
+      const data = await axios.delete(`/delFavorite?username=${username}&id_product=${id_product}`)
+
       if (data.status !== 201) {
         return data.message
       } else {

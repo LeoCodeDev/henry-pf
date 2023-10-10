@@ -25,7 +25,6 @@ const Item = styled(Paper)(({ theme }) => ({
 export const ProductDetails = () => {
   const navigate = useNavigate()
   const { product } = useShowProductStore()
-  console.log(product)
 
   const handleHomeClick = () => {
     navigate('/home')

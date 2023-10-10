@@ -6,6 +6,7 @@ import Admin from "./Admin/Admin";
 import ProductFormView from "./Product Form/productForm";
 import ProductUpdate from "./Product Update/ProductUpdate";
 import ProfileMain from "./Profile/Profile";
+import OrderPlaced from "./OrderPlaced/OrderPlaced";
 import Stripe from "../components/Stripe/Stripe";
 
 
@@ -50,6 +51,11 @@ const viewsData = [
     path: "update",
     element: <ProductUpdate />,
     title: "product-update",
+  },
+  {
+    path: "order-placed",
+    element: <OrderPlaced />,
+    title: "order-placed",
   },
   {
     path: "payment",

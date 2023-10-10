@@ -21,6 +21,7 @@
     "firebase": "^10.4.0",
     "nodemailer": "^6.9.5",
     "react": "^18.2.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-material-ui-carousel": "^3.4.2",
     "react-router-dom": "^6.16.0",
