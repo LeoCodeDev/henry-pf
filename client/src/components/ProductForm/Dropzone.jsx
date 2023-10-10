@@ -36,6 +36,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
       return
     }
 
+    
     const objectURL = URL.createObjectURL(acceptedFiles[0])
     setImageUrl(objectURL)
 
@@ -87,7 +88,8 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
 
     try {
       const formData = new FormData()
-      formData.append('image', selectedFile)
+      formData.append('image', croppedBlob)
+      
 
       const response = await axios.post(endpoint, formData, {
         headers: {
@@ -113,28 +115,6 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
     setImageUrl(null)
     setSelectedFile(null)
   }
-
-  // function onImageLoad(e) {
-  //   const { naturalWidth: width, naturalHeight: height } = e.currentTarget
-
-  //   const crop = centerCrop(
-  //     makeAspectCrop(
-  //       {
-  //         // You don't need to pass a complete crop into
-  //         // makeAspectCrop or centerCrop.
-  //         unit: '%',
-  //         width: 90,
-  //       },
-  //       16 / 9,
-  //       width,
-  //       height
-  //     ),
-  //     width,
-  //     height
-  //   )
-
-  //   setCrop(crop)
-  // }
 
   return (
     <div>
