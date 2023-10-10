@@ -60,8 +60,7 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
             )}
           </Drawer>
         </section>
-      ))} 
-      </ThemeProvider>
+      ))}
     </div>
   )
 };
