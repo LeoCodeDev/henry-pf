@@ -1,3 +1,4 @@
+
 import styles from '../ModalCart/ModelCart.module.css'
 import { CardProductMiniCart } from '../../CardProductMiniCart/CardProductMiniCart'
 import Button from '@mui/material/Button'
@@ -11,15 +12,17 @@ import toast from 'react-hot-toast'
 
 export const ModalCart = ({ toggleDrawer }) => {
   const { shoppingCart, totalToPay } = useCartStore()
-  const {user, logout}= useAuthStore()
+
+  const {user, setShowRegister}= useAuthStore()
   const navigate= useNavigate()
 
   const validateTokenUser= async()=>{
+    console.log('function')
+    console.log(user)
     try {
       if(user.role==='guest'){
-        toast.error('You need to login to continue') //toast is not working
-        logout()
-        navigate('/')
+        toggleDrawer('right', false)
+        setShowRegister()
       } else{
         const {data}=await axios.get('/tokenValidation',{
           withCredentials: true
@@ -30,7 +33,7 @@ export const ModalCart = ({ toggleDrawer }) => {
         }
       }
     } catch (error) {
-      console.log(console.error())
+      console.log(error)
     }
   }
 

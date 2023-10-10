@@ -28,6 +28,7 @@ const initialStateWithStorage = storedState
 
 const useAuthStore = create((set) => ({
   ...initialStateWithStorage,
+  showRegisterModal:false,
 
   login: (userData) => {
     set({ user: userData, isLogged: true })
@@ -54,7 +55,7 @@ const useAuthStore = create((set) => ({
           teamName,
           ip_location
         }
-        set({ user: userData, isLogged: access })
+        set({ user: userData, isLogged: access,showRegisterModal:false })
         // Guarda el estado actual en Local Storage
         localStorage.setItem(
           'authState',
@@ -85,7 +86,13 @@ const useAuthStore = create((set) => ({
     }}
     // Elimina el estado de Local Storage al cerrar sesión
     localStorage.removeItem('authState')
+  },
+  setShowRegister: ()=>{
+    set((state)=>{
+      return {showRegisterModal: !state.showRegisterModal}
+      })
   }
+
 }))
 
 export { useAuthStore }
