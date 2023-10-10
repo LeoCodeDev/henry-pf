@@ -16,7 +16,7 @@ import style from "./ProductUpdate.module.css";
 import axios from "axios";
 
 export const Update = () => {
-  const { activeDesactiveProducts, fetchActiveDesactiveProducts } =
+  const { activeDesactiveProducts, fetchActiveDesactiveProducts, setProductsFiltered } =
     useProductsStore();
   const [sortOrder, setSortOrder] = useState({
     id_product: "asc",
@@ -28,33 +28,35 @@ export const Update = () => {
   });
   const [activeFilter, setActiveFilter] = useState("all");
 
-  const eraseproduct = async (productId) => {
-    try {
-      await axios.put(`/prod/${productId}`);
-      listProducts();
-    } catch (error) {
-      console.error("Error al cambiar el estado del producto:", error);
-    }
-  };
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         await fetchActiveDesactiveProducts();
+        await setProductsFiltered()
       } catch (error) {
         throw new Error(error.message);
       }
     };
     fetchData();
   }, [fetchActiveDesactiveProducts]);
-
+  
   const listProducts = async () => {
     try {
       await fetchActiveDesactiveProducts();
+      await setProductsFiltered()
     } catch (error) {
       throw new Error(error.message);
     }
   };
+      const eraseproduct = async (productId) => {
+        try {
+          await axios.put(`/prod/${productId}`);
+          listProducts();
+        } catch (error) {
+          console.error("Error al cambiar el estado del producto:", error);
+        }
+      };
 
   const handleSort = (column) => {
     setSortOrder((prevSortOrder) => ({

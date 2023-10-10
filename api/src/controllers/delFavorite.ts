@@ -3,7 +3,7 @@ import {Request, Response} from "express";
 
 
 const delFavorite = async (req: Request, res: Response)=> {
-    const { username, id_product} = req.body;
+    const { username, id_product} = req.query;
     try {
         const user = await User.findOne({ where: { username } });
         const product = await Product.findOne({ where: { id_product } });
