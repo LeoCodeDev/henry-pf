@@ -13,6 +13,7 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
 
   let { anchor, open } = modalOpen;
 
+
   const [state, setState] = React.useState({
     left: false,
     right: false,
@@ -59,7 +60,8 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
             )}
           </Drawer>
         </section>
-      ))}
+      ))} 
+      </ThemeProvider>
     </div>
   )
 };

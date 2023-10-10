@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SearchBar } from "../SearchBar/SearchBar";
+import { SearchBar } from '../SearchBar/SearchBar'
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -287,4 +287,4 @@ export const NavBar = () => {
       </AppBar>
     </ThemeProvider>
   )
-};
+}

@@ -63,6 +63,6 @@ export const CardProductMiniCart = ({ product }) => {
           </div>
         </div>
       </section>
-    </>
+    </> 
   )
 }
