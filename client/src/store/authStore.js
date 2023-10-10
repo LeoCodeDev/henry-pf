@@ -6,7 +6,13 @@ const userGuest = {
   email: '',
   role: 'guest',
   avatar: '../assets/images/avatars/avatar10.jpg',
-  teamName: 'none'
+  teamName: 'none',
+  ip_location:{
+    currency: "USD",
+    flag:"https://ipgeolocation.io/static/flags/us_64.png",
+    countryName:"United States", 
+    symbol:"$",
+    currencyName:"US Dollar"}
 }
 
 const initialState = {
@@ -35,14 +41,15 @@ const useAuthStore = create((set) => ({
   authenticate: async (credentials) => {
     try {
       const { data } = await axios.post('/login', credentials)
-      const { username, email, role, avatar, teamName, access } = data
+      const { username, email, role, avatar, teamName, access, ip_location } = data
       if (data && username && email && role && avatar && teamName) {
         const userData = {
           username,
           email,
           role,
           avatar,
-          teamName
+          teamName,
+          ip_location
         }
         set({ user: userData, isLogged: access })
         // Guarda el estado actual en Local Storage

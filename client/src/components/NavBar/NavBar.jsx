@@ -219,6 +219,10 @@ export const NavBar = () => {
               </div>
             )}
 
+            
+
+            
+
             {/* Icono de favoritos */}
             <IconButton
               size="large"
