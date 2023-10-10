@@ -30,7 +30,7 @@ const getSale= require('../controllers/getSale')
 const putActiveRoutine= require('../controllers/putDeleteRutine')
 const putChangesInRoutine = require('../controllers/putChangesInRoutine')
 const postMail= require("../controllers/postMail");
-const deleteSavedRoutine = require('../controllers/deleteSavedRooutine')
+const deleteSavedRoutine = require('../controllers/deleteSavedRoutine')
 
 
 const { processImage, postImage } = require('../controllers/postImage')
