@@ -16,7 +16,7 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useCartStore } from "../../store/shoppingCartStore";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const CheckoutForm = () => {
@@ -26,7 +26,7 @@ const CheckoutForm = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [countryCodes, setCountryCodes] = useState([]);
-  const { shoppingCart, totalToPay } = useCartStore()
+  const { shoppingCart, totalToPay, clearCart } = useCartStore()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -114,6 +114,7 @@ const CheckoutForm = () => {
             products: shoppingCart || [{id_product: 1}],
             email: getEmailFromLs,
         })
+        clearCart()
         navigate('/order-placed')
     }
   };
@@ -199,6 +200,17 @@ const CheckoutForm = () => {
             style={{ marginTop: "20px" }}
           >
             Confirm Payment
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            type="button"
+            fullWidth
+            style={{ marginTop: "20px" }}
+            onClick={()=> navigate('/home')}
+          >
+            Cancel
           </Button>
         </form>
       </Paper>

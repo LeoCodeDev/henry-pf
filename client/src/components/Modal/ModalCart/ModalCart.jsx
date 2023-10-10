@@ -4,9 +4,11 @@ import Button from '@mui/material/Button'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { isMobile } from 'react-device-detect'
 import { useCartStore } from '../../../store/shoppingCartStore'
+import { useNavigate } from 'react-router-dom'
 
 export const ModalCart = ({ toggleDrawer }) => {
   const { shoppingCart, totalToPay } = useCartStore()
+  const navigate = useNavigate()
   return (
     <>
       <div className={styles.container}>
@@ -32,7 +34,8 @@ export const ModalCart = ({ toggleDrawer }) => {
         <section>
           <Button
             variant="contained"
-            sx={{ margin: '1rem', size: 'large', backgroundColor: '#010402' }}>
+            sx={{ margin: '1rem', size: 'large', backgroundColor: '#010402' }}
+            onClick={()=>navigate('/payment') }>
             GO TO PAY
           </Button>
         </section>
