@@ -10,7 +10,7 @@ const getProducts = async (req: Request, res: Response) => {
   
   try {
 
-    const allProducts =await Product.findAll({
+    const allProducts = await Product.findAll({
       where: {
         active: true
       },
