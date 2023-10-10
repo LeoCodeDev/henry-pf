@@ -8,7 +8,7 @@ const useProductsStore = create((set, get) => ({
   filteredProducts: [],
   categories: [],
 
-  actualCurrency:useAuthStore.getState().user?.ip_location.currency,
+  actualCurrency:useAuthStore.getState().user?.ip_location?.currency,
   setCurrency: (currency )=>{
     set({actualCurrency:currency || "USD" })
   },

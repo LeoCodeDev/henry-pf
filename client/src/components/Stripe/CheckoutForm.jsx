@@ -108,10 +108,10 @@ const CheckoutForm = () => {
     } else {
         const getEmailFromLs = JSON.parse(localStorage.getItem('authState')).user.email
         await axios.post('/postSale',{
-            total: totalToPay || 2000,
+            total: totalToPay,
             address: address,
             phone_number: fullPhoneNumber,
-            products: shoppingCart || [{id_product: 1}],
+            products: shoppingCart,
             email: getEmailFromLs,
         })
         clearCart()
