@@ -28,6 +28,7 @@ const initialStateWithStorage = storedState
 
 const useAuthStore = create((set) => ({
   ...initialStateWithStorage,
+  showRegisterModal:false,
 
   login: (userData) => {
     set({ user: userData, isLogged: true })
@@ -40,10 +41,13 @@ const useAuthStore = create((set) => ({
 
   authenticate: async (credentials) => {
     try {
-      const { data } = await axios.post('/login', credentials)
-      const { username, email, role, avatar, teamName, access, ip_location } = data
+      const { data } = await axios.post('/login', credentials,
+      { withCredentials: true }
+      )
+      const { id_user,username, email, role, avatar, teamName, access, ip_location } = data
       if (data && username && email && role && avatar && teamName) {
         const userData = {
+          id_user,
           username,
           email,
           role,
@@ -51,7 +55,7 @@ const useAuthStore = create((set) => ({
           teamName,
           ip_location
         }
-        set({ user: userData, isLogged: access })
+        set({ user: userData, isLogged: access,showRegisterModal:false })
         // Guarda el estado actual en Local Storage
         localStorage.setItem(
           'authState',
@@ -65,14 +69,30 @@ const useAuthStore = create((set) => ({
     }
   },
 
-  logout: () => {
+  logout: async() => {
+    const currentUser= useAuthStore.getState().user
     set({
       user: userGuest,
       isLogged: false
     })
+    if(currentUser.role!='guest'){
+    try {
+      await axios.delete(`/deleteToken?id_user=${currentUser.id_user}`,
+      {
+        withCredentials: true}
+      )
+    } catch (error) {
+      console.log(error)
+    }}
     // Elimina el estado de Local Storage al cerrar sesión
     localStorage.removeItem('authState')
+  },
+  setShowRegister: ()=>{
+    set((state)=>{
+      return {showRegisterModal: !state.showRegisterModal}
+      })
   }
+
 }))
 
 export { useAuthStore }
