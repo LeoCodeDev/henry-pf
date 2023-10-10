@@ -5,6 +5,7 @@ import cors from 'cors';
 const cookieParser = require('cookie-parser')
 const routes = require('./routes/index')
 const { sequelize } = require('./db_connection') 
+// const {ip} = require('express-ip');
 
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(cookieParser())
 //   }
 // })
 app.use(express.json())
+// app.use('/products', middleware, next)
 app.use('/', routes)
 
 // typescript para ignorar parámetros no usados debes agregarle
