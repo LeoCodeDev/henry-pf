@@ -4,6 +4,8 @@ import Dropzone from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { Button } from '@mui/material'
+import styles from './Dropzone.module.css'
+import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 
 const DropAndCrop = ({ endpoint, setProductImageURL }) => {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -128,11 +130,17 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
       {!selectedFile ? (
         <Dropzone onDrop={onDrop}>
           {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps()} className="dropzone">
+            <div {...getRootProps()} className={styles.dropzoneContainer}>
+            <section>
               <input
                 {...getInputProps({ multiple: false, accept: 'image/*' })}
               />
-              <p>Drag and drop some files here, or click to select files</p>
+              <PanToolAltIcon fontSize='large'/>
+            </section>
+              <section>
+                <p>Drag and drop some files here, or click to select files</p>
+              </section>
+              
             </div>
           )}
         </Dropzone>
@@ -166,8 +174,11 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
           </Button>
         </>
       ) : (
-        <>
+        <section style={{ display: 'flex', flexDirection: 'column' , alignItems: 'center' , justifyContent: 'center'}}>
+        <div className={styles.imageContainer}>
           <img src={croppedImage} alt="Image preview" />
+        </div>
+          
           <Button
             type="button"
             fullWidth
@@ -186,7 +197,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
           >
             Accept
           </Button>
-        </>
+        </section>
       )}
     </div>
   )

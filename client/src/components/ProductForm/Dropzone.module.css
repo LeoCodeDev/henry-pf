@@ -1,0 +1,23 @@
+.dropzoneContainer {
+    color: #3b3b3b4f;
+    width: 100%;
+    border: 3px dashed #228d07;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.dropzoneContainer p {
+    text-align: center;
+}
+
+.imageContainer {
+    width: 50%;
+    border: 3px dashed #228d07;
+}
+
+.imageContainer img {
+    width: 100%;
+}
