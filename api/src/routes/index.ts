@@ -31,13 +31,13 @@ const putActiveRoutine= require('../controllers/putDeleteRutine')
 const putChangesInRoutine = require('../controllers/putChangesInRoutine')
 const postMail= require("../controllers/postMail");
 const deleteSavedRoutine = require('../controllers/deleteSavedRoutine')
-const tokenValidation= require('../controllers/tokenValidation')
-const refreshToken= require('../controllers/refreshToken')
-const deleteToken= require('../controllers/deleteToken')
-const resetPasswordToken= require('../controllers/resetPasswordToken')
 const paymentIntent = require('../controllers/paymentIntent')
-const getAccessTokenExpiration= require('../controllers/validateTokenExpiration')
-
+const tokenValidation = require('../controllers/tokenValidation')
+const refreshToken = require('../controllers/refreshToken')
+const deleteToken = require('../controllers/deleteToken')
+const resetPasswordToken = require('../controllers/resetPasswordToken')
+const getAccessTokenExpiration = require('../controllers/validateTokenExpiration')
+const { processImage, postImage } = require('../controllers/postImage')
 
 router.post('/postUser', postUser) 
 router.post('/login', userLogin) 
@@ -76,9 +76,9 @@ router.get('/refreshToken',refreshToken)
 router.delete('/deleteToken',deleteToken)
 router.get('/resetPasswordToken',resetPasswordToken)
 router.get('/getAccessTokenExpiration',getAccessTokenExpiration)
-
-
-
+router.post('/delImage', delImage)
+router.post('/postImage', postImage, processImage)
 
 module.exports= router
+
 

@@ -5,6 +5,7 @@
     ],
     "css.lint.unknownAtRules": "ignore",
     "cSpell.words": [
+        "cloudinary",
         "zustand"
     ]
 }

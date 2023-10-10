@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import AddBusinessIcon from '@mui/icons-material/AddBusiness'
 import Typography from '@mui/material/Typography'
 import {
@@ -13,7 +13,8 @@ import {
   Avatar,
   FormControl,
   MenuItem,
-  Select
+  Select,
+  useMediaQuery,
 } from '@mui/material'
 import toast, { Toaster } from 'react-hot-toast'
 import { useTheme } from '@mui/material/styles'
@@ -23,10 +24,11 @@ import {
   validDescription,
   validPrice,
   validStock,
-  validCategory
+  validCategory,
 } from './validations'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { useNavigate } from 'react-router-dom'
+import { DropAndCrop } from './Dropzone'
 
 export default function ProductForm() {
   const navigate = useNavigate()
@@ -35,44 +37,10 @@ export default function ProductForm() {
     navigate('/home')
   }
 
-  const cloudinaryRef = useRef()
-  const widgetRef = useRef()
   const theme = useTheme()
-  const { categories, addProduct, fetchCategories, deleteImage } =
-    useProductsStore()
+  const { categories, addProduct, fetchCategories } = useProductsStore()
 
-  const [imageUrl, setImageUrl] = useState()
-  const [selectedImage, setSelectedImage] = useState()
-    
-        cloudinaryRef.current = window.cloudinary
-        widgetRef.current = cloudinaryRef.current.createUploadWidget({
-            cloudName:"healtech", //nuestra nube
-            uploadPreset: "otiod5ve", //preselector de subidas (incluye info de como se sube)
-            folder: 'healtech/products', //folder products en el cual se subne las imagenes
-            singleUploadAutoClose: false,
-            multiple: false, //permite solo subir un archivo
-            maxImageFileSize: 2000000, //peso maximo: 2 megas,
-            maxImageWidth: 2000, //reescala la imagen a 2000px , si es muy grande
-            cropping: true, //le permite recortar la imagen de ser necesario
-            clientAllowedFormats: ["jpg",'png','jpeg'],
-        },function(err,res){
-        if (!err && res && res.event === "success") {
-            if(selectedImage){
-                deleteImage(selectedImage)
-            }
-            setSelectedImage(res.info.public_id)
-            setImageUrl(res.info.url)
-            setFormData({
-                ...formData,
-                image: res.info.url,
-                })
-        } 
-    })
-    
-
-    useEffect(()=>{
-        fetchCategories()
-    }, [fetchCategories])
+  const [productImageURL, setProductImageURL] = useState(null)
 
   useEffect(() => {
     fetchCategories()
@@ -85,8 +53,15 @@ export default function ProductForm() {
     stock: 0,
     rating: 0,
     category: '',
-    image: ''
+    image: '',
   })
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      image: productImageURL,
+    })
+  }, [productImageURL, formData])
 
   const [errors, setErrors] = useState({
     name: false,
@@ -94,7 +69,7 @@ export default function ProductForm() {
     price: false,
     stock: false,
     category: false,
-    image: false
+    image: false,
   })
 
   const allErrorsFalsy = (errors) => {
@@ -105,38 +80,38 @@ export default function ProductForm() {
     const { name, value } = event.target
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     })
 
     switch (name) {
       case 'name':
         setErrors({
           ...errors,
-          name: !validName(value)
+          name: !validName(value),
         })
         break
       case 'description':
         setErrors({
           ...errors,
-          description: !validDescription(value)
+          description: !validDescription(value),
         })
         break
       case 'price':
         setErrors({
           ...errors,
-          price: !validPrice(value)
+          price: !validPrice(value),
         })
         break
       case 'stock':
         setErrors({
           ...errors,
-          stock: !validStock(value)
+          stock: !validStock(value),
         })
         break
       case 'category':
         setErrors({
           ...errors,
-          category: !validCategory(value)
+          category: !validCategory(value),
         })
         break
       default:
@@ -145,8 +120,7 @@ export default function ProductForm() {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData)
-    console.log(errors)
+
     if (allErrorsFalsy(errors)) {
       try {
         await addProduct(formData)
@@ -157,10 +131,8 @@ export default function ProductForm() {
           stock: 0,
           rating: 0,
           category: '',
-          image: ''
+          image: '',
         })
-        setSelectedImage(null)
-        setImageUrl(null)
         toast.success('Product added successfully!')
       } catch (error) {
         return toast.error('Please check for eny errors')
@@ -169,13 +141,15 @@ export default function ProductForm() {
       return toast.error('Please check for eny errors')
     }
   }
+  const isMobile = useMediaQuery("(max-width: 840px)");
 
   return (
     <div>
       <Grid
         container
         component="main"
-        sx={{ height: '100vh', paddingTop: '45px' }}>
+        sx={{ height: '100vh', paddingTop: '45px' }}
+      >
         <CssBaseline />
         <Grid item xs={false} />
         <Grid
@@ -188,16 +162,18 @@ export default function ProductForm() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            backgroundColor: theme.palette.background.main
-          }}>
+            backgroundColor: theme.palette.background.main,
+          }}
+        >
           <Box
             sx={{
               my: 5,
               mx: 5,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center'
-            }}>
+              alignItems: 'center',
+            }}
+          >
             <div style={{ display: 'flex' }}>
               <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
                 <AddBusinessIcon />
@@ -208,8 +184,9 @@ export default function ProductForm() {
                 sx={{
                   color: 'white',
                   fontFamily: theme.typography.fontFamily,
-                  fontSize: theme.typography.h2
-                }}>
+                  fontSize: theme.typography.h2,
+                }}
+              >
                 Add a Product
               </Typography>
             </div>
@@ -217,13 +194,14 @@ export default function ProductForm() {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              width={0.7}
+              width= {isMobile ? '100%' : '60%'}
               sx={{
                 backgroundColor: theme.palette.background_ligth.main,
                 padding: 4,
                 borderRadius: 6,
-                marginTop: 4
-              }}>
+                marginTop: 4,
+              }}
+            >
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={4}>
                   <TextField
@@ -251,7 +229,7 @@ export default function ProductForm() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>
-                      )
+                      ),
                     }}
                     name="price"
                     autoComplete="price"
@@ -289,7 +267,8 @@ export default function ProductForm() {
                         errors.category
                           ? 'Must select at least one category'
                           : ''
-                      }>
+                      }
+                    >
                       {categories.map((category) => (
                         <MenuItem key={category.id} value={category.name}>
                           {category.name}
@@ -318,21 +297,10 @@ export default function ProductForm() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <label htmlFor="select-image">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      component="span"
-                      textAlign="center"
-                      onClick={() => widgetRef.current.open()}>
-                      Upload Image
-                    </Button>
-                  </label>
-                  {imageUrl && (
-                    <Box mt={1} textAlign="center">
-                      <img src={imageUrl} alt={imageUrl} width={200} />
-                    </Box>
-                  )}
+                  <DropAndCrop
+                    endpoint={'/postImage'}
+                    setProductImageURL={setProductImageURL}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Button
@@ -340,7 +308,8 @@ export default function ProductForm() {
                     fullWidth
                     variant="contained"
                     onClick={handleSubmit}
-                    sx={{ mt: 3, mb: 2 }}>
+                    sx={{ mt: 3, mb: 2 }}
+                  >
                     Create product
                   </Button>
                 </Grid>
@@ -355,23 +324,22 @@ export default function ProductForm() {
             marginLeft: '1rem',
             display: 'flex',
             position: 'absolute',
-            marginTop: '3rem',
+            marginTop: isMobile ? '1rem': '3rem',
             cursor: 'pointer',
           }}
           sx={{
             backgroundColor: 'transparent',
             color: 'white',
             '&:hover': {
-              color: 'green'
-            }
-          }}>
-          <ArrowBackIosIcon
-          />
-          <Typography
-            component={'h3'}
-            >
-            Back
-          </Typography>
+              color: 'green',
+            },
+          }}
+        >
+          <ArrowBackIosIcon sx={{width: isMobile ? '12px' : '1rem'}} />
+          <Typography 
+        fontSize={isMobile ? '10px' : '1rem'}
+        lineHeight={isMobile ? '2.5' : '1.5'}
+          component={'h3'}>Back</Typography>
         </Box>
       </Grid>
     </div>

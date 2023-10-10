@@ -15,15 +15,15 @@ const useProductsStore = create((set, get) => ({
 
   fetchCategories: async () => {
     try {
-      const { data } = await axios.get("/categories");
+      const { data } = await axios.get('/categories')
       if (!data) {
-        throw new Error("No categories found");
+        throw new Error('No categories found')
       } else {
-        set({ categories: data });
+        set({ categories: data })
       }
       return data
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   fetchProducts: async () => {
@@ -46,17 +46,18 @@ const useProductsStore = create((set, get) => ({
     try {
       const { data } = await axios.get("/allProducts");
       if (!data) {
-        throw new Error("No products found");
+        throw new Error('No products found')
       } else {
         set({activeDesactiveProducts: data });
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   setProductsByName: async (name) => {
-    if (typeof name !== "string" || name.length < 1)
-      throw new Error("Invalid name");
+    if (typeof name !== 'string' || name.length < 1)
+      throw new Error('Invalid name')
+
     try {
       const actualCurrency= get().actualCurrency
       const { data } = await axios(`/productByName?name=${name}&to=${actualCurrency}`)
@@ -71,7 +72,7 @@ const useProductsStore = create((set, get) => ({
         return data
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   setProductsFiltered: (category) => {
@@ -82,13 +83,16 @@ const useProductsStore = create((set, get) => ({
     
   },
   // @params = objectValues -> Objeto con Valores minimos y maximos
-  applyFilters: (objectValues) =>{
-    const {priceMin, priceMax, rateMin, rateMax} = objectValues
-    set((state)=>({
-      filteredProducts: state.prefilterProducts.filter(product=> (
-        (product.rating >= rateMin && product.rating <= rateMax) &&
-        (product.price >= priceMin && product.price <= priceMax)
-      ))
+  applyFilters: (objectValues) => {
+    const { priceMin, priceMax, rateMin, rateMax } = objectValues
+    set((state) => ({
+      filteredProducts: state.prefilterProducts.filter(
+        (product) =>
+          product.rating >= rateMin &&
+          product.rating <= rateMax &&
+          product.price >= priceMin &&
+          product.price <= priceMax
+      ),
     }))
   },
   clearFilters: () =>
@@ -97,16 +101,16 @@ const useProductsStore = create((set, get) => ({
     })),
   addProduct: async (product) => {
     try {
-      const { data } = await axios.post("/postProduct", product);
+      const data  = await axios.post('/postProduct', product)
       if (data.status !== 200) {
-        throw new Error("Error adding product");
+        throw new Error('Error adding product')
       } else {
         set((state) => ({
           products: [...state.products, product],
-        }));
+        }))
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   applySort: (sort) => {
@@ -121,24 +125,24 @@ const useProductsStore = create((set, get) => ({
 
     set((state) => {
       if (options[sort]) {
-        const sortedProducts = [...state.filteredProducts];
-        sortedProducts.sort(options[sort]);
-        return {...state, filteredProducts: [...sortedProducts] };
-      } else if (sort === "all") {
-        return { filteredProducts: [...state.filteredProducts] };
+        const sortedProducts = [...state.filteredProducts]
+        sortedProducts.sort(options[sort])
+        return { ...state, filteredProducts: [...sortedProducts] }
+      } else if (sort === 'all') {
+        return { filteredProducts: [...state.filteredProducts] }
       }
 
-      return state;
-    });
+      return state
+    })
   },
-  deleteImage: async (image) =>{
+  deleteImage: async (image) => {
     try {
-      const res = await axios.post('/delImage',{image: image})
+      const res = await axios.post('/delImage', { image: image })
       return res
     } catch (error) {
-      throw new Error (error.message)
+      throw new Error(error.message)
     }
   },
-}));
+}))
 
-export { useProductsStore };
+export { useProductsStore }
