@@ -70,6 +70,10 @@ router.put('/putDeletRutine', putActiveRoutine);
 router.put('/putChangesInRoutine', putChangesInRoutine);
 router.delete('/deleteSavedRoutine', deleteSavedRoutine);
 router.post('/paymentIntent',paymentIntent)
+router.post('/tokenValidation',tokenValidation)
+router.get('/refreshToken',refreshToken)
+router.delete('/deleteToken',deleteToken)
+router.get('/resetPasswordToken',resetPasswordToken)
 
 
 

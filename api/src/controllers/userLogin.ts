@@ -25,9 +25,12 @@ const userLogin = async (req: Request, res: Response) => {
             expiresAt: expiresAt,
           });
           await newRefreshToken.setUser(userFound.id_user);
-          res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000 })
-          res.cookie('refreshToken', newRefreshToken.token, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000 })
+          // res.status(200).cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000, sameSite: 'lax' })
+          // res.status(200).cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000, sameSite: 'lax' })
+          res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000, sameSite:'lax' })
+          res.cookie('refreshToken', newRefreshToken.token, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000, sameSite:'lax' })
           res.status(200).json({
+            id_user: userFound.id_user,
             username: userFound.username,
             first_name: userFound.first_name,
             email: userFound.email,

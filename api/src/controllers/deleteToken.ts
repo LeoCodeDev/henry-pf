@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 const deleteRefreshToken = async (req: Request, res: Response) => {
     const { id_user } = req.query;
     const refreshToken = req.cookies.refreshToken;
-
+    console.log(req)
     try {
         const token = await RefreshToken.findOne({ where: { UserIdUser: id_user, token: refreshToken } });
 
