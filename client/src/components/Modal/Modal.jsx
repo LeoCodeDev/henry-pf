@@ -39,30 +39,31 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
 
   return (
     <div>
-      <ThemeProvider theme={theme}>
-        {['left', 'right'].map((anchor) => (
-          <section key={anchor}>
-            <Drawer
-              sx={{ width: '30%' }}
-              anchor={anchor}
-              open={state[anchor]}
-              onClose={toggleDrawer(anchor, false)}
-            >
-              {anchor === 'right' ? (
-                <ModalCart
-                  products={productsCart}
-                  toggleDrawer={toggleDrawer(anchor, false)}
-                />
-              ) : (
-                <ModalFav
-                  products={favorites}
-                  toggleDrawer={toggleDrawer(anchor, false)}
-                />
-              )}
-            </Drawer>
-          </section>
-        ))}
-      </ThemeProvider>
+    
+    <ThemeProvider theme={theme}>
+      {['left', 'right'].map((anchor) => (
+        <section key={anchor}>
+          <Drawer
+            sx={{ width: '30%' }}
+            anchor={anchor}
+            open={state[anchor]}
+            onClose={toggleDrawer(anchor, false)}>
+            {anchor === 'right' ? (
+              <ModalCart
+                products={productsCart}
+                toggleDrawer={toggleDrawer(anchor, false)}
+              />
+            ) : (
+              <ModalFav
+                products={favorites}
+                toggleDrawer={toggleDrawer(anchor, false)}
+              />
+            )}
+          </Drawer>
+        </section>
+      ))}
+    </ThemeProvider>
+      
     </div>
   )
 }
