@@ -15,11 +15,11 @@ const port = process.env.PORT || 8000;
 
 app.use(morgan('dev'))
 // app.use(cors())
-// app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
-app.use(cors({ credentials: true, origin: "https://healtech.tech" }));
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+//app.use(cors({ credentials: true, origin: "https://healtech.tech" }));
 app.use(cookieParser())
 // app.use((_req, res, next)=>{
-//   // res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+//res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
 //   res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS, PUT');
 //   res.header('Access-Control-Max-Age', '86400');
 //   res.header('Access-Control-Allow-Credentials', 'true');

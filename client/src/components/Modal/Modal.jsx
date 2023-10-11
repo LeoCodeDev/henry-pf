@@ -4,6 +4,8 @@ import { ModalCart } from "./ModalCart/ModalCart";
 import { ModalFav } from "./ModalFav/ModalFav";
 import { favoriteStore } from "../../store/favoriteStore";
 import {useCartStore} from "../../store/shoppingCartStore"
+import { ThemeProvider } from "@emotion/react";
+import theme from '../../../theme';
 
 export const Modal = ({ modalOpen, setModalOpen }) => {
 
@@ -40,6 +42,8 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
 
   return (
     <div>
+    
+    <ThemeProvider theme={theme}>
       {['left', 'right'].map((anchor) => (
         <section key={anchor}>
           <Drawer
@@ -61,6 +65,8 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
           </Drawer>
         </section>
       ))}
+    </ThemeProvider>
+      
     </div>
   )
 };
