@@ -1,45 +1,46 @@
-import * as React from "react";
-import Drawer from "@mui/material/Drawer";
-import { ModalCart } from "./ModalCart/ModalCart";
-import { ModalFav } from "./ModalFav/ModalFav";
-import { favoriteStore } from "../../store/favoriteStore";
-import {useCartStore} from "../../store/shoppingCartStore"
+import * as React from 'react'
+import Drawer from '@mui/material/Drawer'
+import { ModalCart } from './ModalCart/ModalCart'
+import { ModalFav } from './ModalFav/ModalFav'
+import { favoriteStore } from '../../store/favoriteStore'
+import { useCartStore } from '../../store/shoppingCartStore'
+import { ThemeProvider } from '@emotion/react'
+import theme from '../../../theme'
 
 export const Modal = ({ modalOpen, setModalOpen }) => {
-
   const { favorites } = favoriteStore()
-  const productsCart = useCartStore((state) => state.products);
-  
+  const productsCart = useCartStore((state) => state.products)
 
-  let { anchor, open } = modalOpen;
-
+  let { anchor, open } = modalOpen
 
   const [state, setState] = React.useState({
     left: false,
     right: false,
-  });
+  })
 
   React.useEffect(() => {
     if (anchor.length) {
-      setState({ ...state, [anchor]: open });
+      setState({ ...state, [anchor]: open })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [anchor]);
+  }, [anchor])
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
     ) {
-      return;
+      return
     }
 
-    setState({ ...state, [anchor]: open });
-    setModalOpen({ anchor: "", open: false });
-  };
+    setState({ ...state, [anchor]: open })
+    setModalOpen({ anchor: '', open: false })
+  }
 
   return (
     <div>
+    
+    <ThemeProvider theme={theme}>
       {['left', 'right'].map((anchor) => (
         <section key={anchor}>
           <Drawer
@@ -61,6 +62,8 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
           </Drawer>
         </section>
       ))}
+    </ThemeProvider>
+      
     </div>
   )
-};
+}
