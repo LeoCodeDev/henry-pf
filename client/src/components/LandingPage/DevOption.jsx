@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -28,7 +28,7 @@ export default function SelectLabels(props) {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:8000/getTeams")
+    axios.get("/getTeams")
       .then((response) => {
         setTeams(response.data);
       })
