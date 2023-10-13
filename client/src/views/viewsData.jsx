@@ -21,11 +21,11 @@ const viewsData = [
     element: <Login />,
     title: "login",
   },
-  {
-    path: "/profile",
-    element: <ProfileMain />,
-    title: "profile",
-  },
+  // {
+  //   path: "/profile",
+  //   element: <ProfileMain />,
+  //   title: "profile",
+  // },
   {
     path: "product-detail",
     element: <ProductDetail />,

@@ -185,7 +185,7 @@ export default function Profile() {
           alignItems: "center",
           textAlign: "center",
           justifyContent: "center",
-          marginTop: "12vh",
+          // marginTop: "12vh",
         }}
       >
         <Paper
