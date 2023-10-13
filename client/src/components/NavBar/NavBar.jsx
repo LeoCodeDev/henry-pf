@@ -1,19 +1,19 @@
 import * as React from "react";
 import { SearchBar } from '../SearchBar/SearchBar'
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Badge from "@mui/material/Badge";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+import {AppBar, Box, Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Badge,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem
+
+} from "@mui/material";
+import MenuIcon from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import MenuItem from "@mui/material/MenuItem";
 import { useAuthStore } from "../../store/authStore";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal/Modal";
 import { useCartStore } from "../../store/shoppingCartStore";
 import { favoriteStore } from "../../store/favoriteStore";
+import ProfileMain from "../../views/Profile/Profile";
 
 const darkTheme = createTheme({
   palette: {
@@ -44,13 +45,16 @@ export const NavBar = () => {
   const navigate = useNavigate();
   /* Logic modal */
   const [modalOpen, setModalOpen] = React.useState({ anchor: "", open: false });
+  const [prof, setProf] = React.useState(false)
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
+
   const handleProfile = () => {
-    navigate('/profile')
+    setAnchorElUser(null);
+    setProf(!prof)
   }
   const handleDashboard = () => {
     navigate('/update')
@@ -64,6 +68,7 @@ export const NavBar = () => {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+  
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -281,7 +286,7 @@ export const NavBar = () => {
                       setting === 'Logout'
                         ? handleLogout
                         : setting === 'Profile'
-                        ? handleProfile
+                        ? handleProfile 
                         : setting === 'Dashboard'
                         ? handleDashboard
                         : handleCloseUserMenu
@@ -290,6 +295,7 @@ export const NavBar = () => {
                   </MenuItem>
                 ))}
               </Menu>
+              {prof && <ProfileMain />}
             </Box>
           </Toolbar>
         </Container>
