@@ -57,7 +57,6 @@ export default function CompleteRegister({
 
   const [isDeveloper, setIsDeveloper] = useState("Yes");
   const [developerType, setDeveloperType] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState(profilePic);
   const [registered, setRegistered] = useState(false);
 
   const handleIsDeveloperChange = (value) => {
@@ -165,7 +164,7 @@ export default function CompleteRegister({
     };
 
     try {
-      await axios.post("/postUser", dataToSend);
+      await axios.post("/users/postUser", dataToSend);
       const title = 'Thank you for signing up for Healthech!';
       const message = "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
       emailSender(email, title, message);

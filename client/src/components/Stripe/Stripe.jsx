@@ -25,7 +25,7 @@ export default function Stripe() {
 
     useEffect(() => {
         const getPaymentIntent = async() => {
-        const { data } = await axios.post('/paymentIntent',{amount:totalToPay,currency:'usd'})
+        const { data } = await axios.post('/sales/paymentIntent',{amount:totalToPay,currency:'usd'})
         const client_secret = data.client_secret
         setClientSecretKey(client_secret);
         setIsLoading(false)

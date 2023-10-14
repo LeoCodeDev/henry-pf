@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { CircularProgress, Dialog, Button } from "@mui/material";
 import CompleteRegister from "./CompleteRegister";
-import toast from "react-hot-toast";
 
 function CompleteProfile({
   email,
@@ -20,7 +19,7 @@ function CompleteProfile({
   useEffect(() => {
     const handleGetUser = async () => {
       try {
-        const response = await axios.get("/getUser", {
+        const response = await axios.get("/users/getUser", {
           params: {
             email: email,
           },

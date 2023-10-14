@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import axios from "axios";
-import {useAuthStore} from "./authStore";
+import { create } from 'zustand'
+import axios from 'axios'
+import { useAuthStore } from './authStore'
 
 const useProductsStore = create((set, get) => ({
   products: [],
@@ -8,14 +8,14 @@ const useProductsStore = create((set, get) => ({
   filteredProducts: [],
   categories: [],
 
-  actualCurrency:useAuthStore.getState().user?.ip_location?.currency,
-  setCurrency: (currency )=>{
-    set({actualCurrency:currency || "USD" })
+  actualCurrency: useAuthStore.getState().user?.ip_location?.currency,
+  setCurrency: (currency) => {
+    set({ actualCurrency: currency || 'USD' })
   },
 
   fetchCategories: async () => {
     try {
-      const { data } = await axios.get('/categories')
+      const { data } = await axios.get('/products/categories')
       if (!data) {
         throw new Error('No categories found')
       } else {
@@ -27,28 +27,28 @@ const useProductsStore = create((set, get) => ({
     }
   },
   fetchProducts: async () => {
-    const actualCurrency= get().actualCurrency;
+    const actualCurrency = get().actualCurrency
     try {
-      const { data } = await axios.get(`/products?to=${actualCurrency}`);
+      const { data } = await axios.get(
+        `/products/products?to=${actualCurrency}`
+      )
       if (!data) {
-        throw new Error("No products found");
+        throw new Error('No products found')
       } else {
-        set({ products: data,
-           prefilterProducts: data,
-        });
+        set({ products: data, prefilterProducts: data })
         return data
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
   fetchActiveDesactiveProducts: async () => {
     try {
-      const { data } = await axios.get("/allProducts");
+      const { data } = await axios.get('/products/allProducts')
       if (!data) {
         throw new Error('No products found')
       } else {
-        set({activeDesactiveProducts: data });
+        set({ activeDesactiveProducts: data })
       }
     } catch (error) {
       throw new Error(error.message)
@@ -59,16 +59,18 @@ const useProductsStore = create((set, get) => ({
       throw new Error('Invalid name')
 
     try {
-      const actualCurrency= get().actualCurrency
-      const { data } = await axios(`/productByName?name=${name}&to=${actualCurrency}`)
+      const actualCurrency = get().actualCurrency
+      const { data } = await axios(
+        `/products/productByName?name=${name}&to=${actualCurrency}`
+      )
       if (!data) {
         throw new Error('No products found')
       } else {
         set({
           products: data,
           prefilterProducts: data,
-          filteredProducts: data
-        });
+          filteredProducts: data,
+        })
         return data
       }
     } catch (error) {
@@ -77,10 +79,16 @@ const useProductsStore = create((set, get) => ({
   },
   setProductsFiltered: (category) => {
     set((state) => {
-      const prefiltered = category ? state.products.filter(product => product?.Category?.name == category.name) : state.products
-      return {prefilterProducts: [...prefiltered], filteredProducts: [...prefiltered]}
-    });
-    
+      const prefiltered = category
+        ? state.products.filter(
+            (product) => product?.Category?.name == category.name
+          )
+        : state.products
+      return {
+        prefilterProducts: [...prefiltered],
+        filteredProducts: [...prefiltered],
+      }
+    })
   },
   // @params = objectValues -> Objeto con Valores minimos y maximos
   applyFilters: (objectValues) => {
@@ -101,7 +109,7 @@ const useProductsStore = create((set, get) => ({
     })),
   addProduct: async (product) => {
     try {
-      const data  = await axios.post('/postProduct', product)
+      const data = await axios.post('/products/postProduct', product)
       if (data.status !== 200) {
         throw new Error('Error adding product')
       } else {
@@ -119,9 +127,13 @@ const useProductsStore = create((set, get) => ({
       zyx: (a, b) => b.name.localeCompare(a.name),
       mRated: (a, b) => b.rating - a.rating,
       lRated: (a, b) => a.rating - b.rating,
-      cheap: (a, b) => {Number(a.price) - Number(b.price)},
-      expensive: (a, b) => { Number(b.price) - Number(a.price)},
-    };
+      cheap: (a, b) => {
+        Number(a.price) - Number(b.price)
+      },
+      expensive: (a, b) => {
+        Number(b.price) - Number(a.price)
+      },
+    }
 
     set((state) => {
       if (options[sort]) {
@@ -137,7 +149,7 @@ const useProductsStore = create((set, get) => ({
   },
   deleteImage: async (image) => {
     try {
-      const res = await axios.post('/delImage', { image: image })
+      const res = await axios.post('/users/delImage', { image: image })
       return res
     } catch (error) {
       throw new Error(error.message)

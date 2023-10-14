@@ -51,7 +51,7 @@ export const Update = () => {
   };
       const eraseproduct = async (productId) => {
         try {
-          await axios.put(`/prod/${productId}`);
+          await axios.put(`/products/prod/${productId}`);
           listProducts();
         } catch (error) {
           console.error("Error al cambiar el estado del producto:", error);
