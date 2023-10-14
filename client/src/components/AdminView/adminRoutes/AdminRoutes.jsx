@@ -1,12 +1,18 @@
 import { Dashboard } from "../scenes/Dashboard/Dashboard";
-import { Graphics } from "../scenes/Graphics/Graphics";
 import { TableSales } from "../scenes/Tables/TableSales";
 import { TableUpdate } from "../scenes/Tables/TableUpdate";
 import { TableUsers } from "../scenes/Tables/TableUsers";
+import { Line } from "../scenes/Graphics/Line";
+import { Bar } from "../scenes/Graphics/Bar";
+import { Pie } from "../scenes/Graphics/Pie";
+import { Geography } from "../scenes/Graphics/Geography";
+
+
+
 
 export const AdminRoutes = [
   {
-    path: "/admin/dashboard",
+    path: "/admin/",
     element: <Dashboard />,
     title: "dashboard",
   },
@@ -26,8 +32,23 @@ export const AdminRoutes = [
     title: "table users",
   },
   {
-    path: "/admin/graphics",
-    element: <Graphics />,
-    title: "graphics",
+    path: "/admin/line",
+    element: <Line />,
+    title: "line graphics",
+  },
+  {
+    path: "/admin/bar",
+    element: <Bar />,
+    title: "line graphics",
+  },
+  {
+    path: "/admin/pie",
+    element: <Pie />,
+    title: "line graphics",
+  },
+  {
+    path: "/admin/geography",
+    element: <Geography />,
+    title: "geography graphics",
   },
 ];
