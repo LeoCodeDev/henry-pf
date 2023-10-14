@@ -59,7 +59,7 @@ export default function Profile() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/getTeams")
+      .get("/users/getTeams")
       .then((response) => {
         setTeams(response.data);
       })
@@ -71,7 +71,7 @@ export default function Profile() {
   useEffect(() => {
     const handleGetUser = async () => {
       try {
-        const response = await axios.get("/getUser", {
+        const response = await axios.get("/users/getUser", {
           params: {
             email: user.email,
           },
@@ -157,7 +157,7 @@ export default function Profile() {
       formData.team = selectedTeam;
 
       // Realiza la solicitud al servidor para actualizar los datos del usuario
-      await axios.put("/putUser", formData);
+      await axios.put("/users/putUser", formData);
 
       // Muestra una notificación de éxito
       toast.success("User updated successfully");

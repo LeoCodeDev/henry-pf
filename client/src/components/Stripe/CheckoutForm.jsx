@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   useStripe,
   useElements,
@@ -107,7 +107,7 @@ const CheckoutForm = () => {
       toast.error(`${error.message}`);
     } else {
         const getEmailFromLs = JSON.parse(localStorage.getItem('authState')).user.email
-        await axios.post('/postSale',{
+        await axios.post('/sales/postSale',{
             total: totalToPay,
             address: address,
             phone_number: fullPhoneNumber,

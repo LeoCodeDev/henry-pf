@@ -41,7 +41,7 @@ const useAuthStore = create((set) => ({
 
   authenticate: async (credentials) => {
     try {
-      const { data } = await axios.post('/login', credentials,
+      const { data } = await axios.post('/users/login', credentials,
       { withCredentials: true }
       )
       const { id_user,username, email, role, avatar, teamName, access, ip_location } = data
@@ -77,7 +77,7 @@ const useAuthStore = create((set) => ({
     })
     if(currentUser.role!='guest'){
     try {
-      await axios.delete(`/deleteToken?id_user=${currentUser.id_user}`,
+      await axios.delete(`/users/deleteToken?id_user=${currentUser.id_user}`,
       {
         withCredentials: true}
       )

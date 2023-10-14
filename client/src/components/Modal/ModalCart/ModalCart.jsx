@@ -24,7 +24,7 @@ export const ModalCart = ({ toggleDrawer }) => {
         toggleDrawer('right', false)
         setShowRegister()
       } else{
-        const {data}=await axios.get('/tokenValidation',{
+        const {data}=await axios.get('/users/tokenValidation',{
           withCredentials: true
         })
         if(data.valid) navigate('/payment')
