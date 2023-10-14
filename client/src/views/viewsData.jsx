@@ -5,7 +5,6 @@ import ProductList from "./Product List/ProductList";
 import Admin from "./Admin/Admin";
 import ProductFormView from "./Product Form/productForm";
 import ProductUpdate from "./Product Update/ProductUpdate";
-import ProfileMain from "./Profile/Profile";
 import OrderPlaced from "./OrderPlaced/OrderPlaced";
 import Stripe from "../components/Stripe/Stripe";
 
@@ -21,11 +20,6 @@ const viewsData = [
     element: <Login />,
     title: "login",
   },
-  // {
-  //   path: "/profile",
-  //   element: <ProfileMain />,
-  //   title: "profile",
-  // },
   {
     path: "product-detail",
     element: <ProductDetail />,
