@@ -1,6 +1,6 @@
 const {User, Team}= require("../db_connection")
 import { Request, Response } from "express";
-import geoLocation from './geolaction'
+import geoLocation from './geolocation'
 
 
 const postUser= async (req: Request, res: Response) => {
