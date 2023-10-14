@@ -1,6 +1,6 @@
 .container{
     height: 100vh;
-    width: 100%;
+    width: 370px;
     background-color: #bfbfbf;
     display: flex;
     flex-direction: column;
@@ -17,6 +17,7 @@
 
 
 .cardProductContain {
+    
     width: 90%;
     height: 90%;
     background-color: #c9c9c9;
