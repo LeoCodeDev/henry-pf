@@ -1,9 +1,10 @@
-
+import { useState } from 'react'
 import styles from '../ModalCart/ModelCart.module.css'
 import { CardProductMiniCart } from '../../CardProductMiniCart/CardProductMiniCart'
 import Button from '@mui/material/Button'
 import axios from 'axios'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { TextField } from '@mui/material'
 import { isMobile } from 'react-device-detect'
 import { useCartStore } from '../../../store/shoppingCartStore'
 import { useAuthStore } from '../../../store/authStore'
@@ -11,8 +12,9 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 export const ModalCart = ({ toggleDrawer }) => {
-  const { shoppingCart, totalToPay } = useCartStore()
-
+  const { shoppingCart, totalToPay ,setTotalToPay} = useCartStore()
+  const [coupon, setCoupon] = useState("");
+  const [cuponUsed, setCuponUsed] = useState(false);
   const {user, setShowRegister}= useAuthStore()
   const navigate= useNavigate()
 
@@ -34,6 +36,19 @@ export const ModalCart = ({ toggleDrawer }) => {
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const setCouponDiscount=async(coupon)=>{
+    if(coupon){
+      const { data } = await axios.get(`/dashboard/validateCoupon?email=${user.email}&code=${coupon}`)
+      console.log(data)
+      if(data.message !='Coupon is valid'){
+          toast.error("Invalid or expired coupon!")
+      }
+      setTotalToPay(totalToPay-data.discount)
+      setCuponUsed(true)
+      toast.success("Coupon applied successfully!")
     }
   }
 
@@ -59,6 +74,26 @@ export const ModalCart = ({ toggleDrawer }) => {
             </div>
           ))}
         </section>
+        {cuponUsed?<p className={styles.subtitle}>Coupon applied successfully!</p>:
+        <section>
+        <TextField
+              label="Discount Coupon"
+              variant="outlined"
+              value={coupon}
+              onChange={(e) => setCoupon(e.target.value)}
+              style={{ minWidth: "12vw" }}
+              inputProps={{
+                maxLength: 20,
+              }}
+            />
+            <Button
+            variant="contained"
+            sx={{size: 'large', backgroundColor: '#010402' }}
+            onClick={()=>setCouponDiscount(coupon)}
+            >
+            APPLY DISCOUNT
+          </Button>
+        </section>}
         <section>
           <Button
             variant="contained"

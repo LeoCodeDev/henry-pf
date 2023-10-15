@@ -24,9 +24,10 @@ const CheckoutForm = () => {
   const elements = useElements();
   const [countryCode, setCountryCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
   const [address, setAddress] = useState("");
   const [countryCodes, setCountryCodes] = useState([]);
-  const { shoppingCart, totalToPay, clearCart } = useCartStore()
+  const { shoppingCart, totalToPay, clearCart} = useCartStore()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -112,7 +113,7 @@ const CheckoutForm = () => {
             address: address,
             phone_number: fullPhoneNumber,
             products: shoppingCart,
-            email: getEmailFromLs,
+            email: getEmailFromLs
         })
         clearCart()
         navigate('/order-placed')

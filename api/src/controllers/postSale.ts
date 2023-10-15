@@ -1,9 +1,9 @@
-const { Sale, Product, User } = require('../db_connection');
+const { Sale, Product, User, Coupon } = require('../db_connection');
 import { Request, Response } from "express";
 //Pending variants handling
 
 const createSale = async (req:Request, res:Response) => {
-    const {  total, address, phone_number, products, email } = req.body;
+    const {  total, address, phone_number, products, email, coupon } = req.body;
     const parsedTotal=parseFloat(total)
     try {
         if(!total || !address || !phone_number || !products || !email)
@@ -19,6 +19,13 @@ const createSale = async (req:Request, res:Response) => {
             phone_number
         });
         await sale.setUser(user);
+        if(coupon){
+            const couponFound = await Coupon.findOne({ where: { code: coupon } });
+            if (!couponFound) {
+                return res.status(404).json({ message: "Cupon not found" });
+            }
+            await user.setCupon(couponFound);
+        }
         interface Product{
             id_product: number;
             name: string;
