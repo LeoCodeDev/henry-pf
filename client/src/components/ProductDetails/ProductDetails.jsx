@@ -51,15 +51,15 @@ export const ProductDetails = () => {
       );
   }, [shoppingCart, product, favorites]);
 
-  const handleFav = () => {
+  const handleFav = (id) => {
     if (isFav) {
-      deleteFavorite(user.username, product.id_product);
-      setFav(false);
+      deleteFavorite(user.username, id)
+      setFav(false)
     } else {
-      addFavorite(user.username, product.id_product);
-      setFav(true);
+      addFavorite(user.username, id)
+      setFav(true)
     }
-  };
+  }
 
   const handleCart = () => {
     if (cart) {
@@ -292,24 +292,26 @@ export const ProductDetails = () => {
                 )}
               </Button>
               <Button
-                style={{
-                  color: theme.palette.primary.main,
-                  width: "70px",
-                  borderRadius: "10px",
-                  border: "3px solid #B0B0B0",
-                }}
-                variant="outlined"
-                onClick={handleFav}
-              >
-                {isFav ? (
-                  <FavoriteOutlinedIcon fontSize="large" onClick={handleFav} />
-                ) : (
-                  <FavoriteBorderOutlinedIcon
-                    fontSize="large"
-                    onClick={handleFav}
-                  />
-                )}
-              </Button>
+              style={{
+                color: theme.palette.primary.main,
+                width: '70px',
+                borderRadius: '10px',
+                border: '3px solid #B0B0B0'
+              }}
+              variant="outlined"
+              onClick={() => handleFav(product.id_product)}>
+            {isFav ? (
+              <FavoriteOutlinedIcon
+                fontSize="large"
+                onClick={() => handleFav(product.id_product)}
+              />
+            ) : (
+              <FavoriteBorderOutlinedIcon
+                fontSize="large"
+                onClick={() => handleFav()}
+              />
+            )}
+            </Button>
             </div>
           </div>
         </div>
