@@ -16,8 +16,8 @@ const userLogin = async (req: Request, res: Response) => {
             where: { id_team: userFound.TeamIdTeam },
           })
           const teamName = team.name
-          const accessToken= generateAccessToken({username:userFound.username,id_user:userFound.id_user })
-          const refreshToken = generateRefreshToken({username:userFound.username,id_user:userFound.id_user }); 
+          const accessToken= generateAccessToken({username:userFound.username,id_user:userFound.id_user, role : userFound.role })
+          const refreshToken = generateRefreshToken({username:userFound.username,id_user:userFound.id_user, role : userFound.role }); 
           const expiresAt = new Date();
           expiresAt.setDate(expiresAt.getDate() + 15); 
           const newRefreshToken = await RefreshToken.create({
@@ -41,6 +41,8 @@ const userLogin = async (req: Request, res: Response) => {
             teamName,
             ip_location:userFound.ip_location,
             access: true,
+            accessToken : accessToken,
+            refreshToken : refreshToken
           })
         } else {
           res.status(401).json({ message: 'Wrong password' })
