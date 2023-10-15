@@ -16,6 +16,8 @@ const refreshToken = require('../controllers/refreshToken')
 const deleteToken = require('../controllers/deleteToken')
 const resetPasswordToken = require('../controllers/resetPasswordToken')
 const getAccessTokenExpiration = require('../controllers/validateTokenExpiration')
+// const checkToken = require('../middlewares/authentications')
+// const checkRole = require('../middlewares/checkRole')
 
 const usersRoutes = Router()
 
