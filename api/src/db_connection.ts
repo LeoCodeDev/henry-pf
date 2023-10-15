@@ -9,6 +9,7 @@ import { ExerciseModel } from './models/Exercise';
 import { RoutineModel } from './models/Routine';
 import { SaleModel } from './models/Sale';
 import { TokenModel } from './models/Token';
+import { CouponModel } from './models/Coupon';
 import {v2 as cloudinary} from 'cloudinary';
 
 
@@ -43,9 +44,10 @@ ExerciseModel(sequelize)
 RoutineModel(sequelize)
 SaleModel(sequelize)
 TokenModel(sequelize)
+CouponModel(sequelize)
 
 
-const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken} = sequelize.models
+const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken,Coupon} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -71,6 +73,9 @@ Sale.belongsToMany(Product,{through: 'sales_products'})
 User.hasMany(RefreshToken, { onDelete: 'CASCADE' });
 RefreshToken.belongsTo(User);
 
+User.belongsToMany(Coupon,{through: 'cupons_users'})
+Coupon.belongsToMany(User,{through: 'cupons_users'})
+
 module.exports = {
     Product,
     Category,
@@ -80,5 +85,6 @@ module.exports = {
     Routine,
     Sale,
     RefreshToken,
+    Coupon,
     sequelize
 }

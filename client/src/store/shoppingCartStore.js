@@ -74,6 +74,11 @@ const useCartStore = create((set) => ({
         0
       )
     }))
+  },
+  setTotalToPay: (amount) => {
+    set(() => ({
+      totalToPay: amount
+    }))
   }
 }))
 
