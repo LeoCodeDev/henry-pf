@@ -11,9 +11,9 @@ import {
   Typography,
   useMediaQuery,
   InputAdornment,
-  IconButton 
+  IconButton,
 } from "@mui/material";
-import {Visibility, VisibilityOff }  from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import background from "../../assets/images/back_landing.jpg";
@@ -258,10 +258,19 @@ function SignInSide() {
               >
                 Sign In
               </Button>
+              <div style={{display: "flex", flexDirection: isDesktop ? "row" : "column", justifyContent:"center", gap:"1rem", marginBottom:"1rem"}}>
               <GoogleLogin
                 setEmail={setEmail}
                 setPassword={setPassword}
-              ></GoogleLogin>
+                ></GoogleLogin>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate("/home")}
+                >
+                Login Guest User
+              </Button>
+                </div>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link

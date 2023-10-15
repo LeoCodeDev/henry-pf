@@ -8,7 +8,7 @@ import ProductUpdate from "./Product Update/ProductUpdate";
 import ProfileMain from "./Profile/Profile";
 import OrderPlaced from "./OrderPlaced/OrderPlaced";
 import Stripe from "../components/Stripe/Stripe";
-
+import Reviews from "../components/Comments/Reviews"
 
 const viewsData = [
   // {
@@ -57,6 +57,11 @@ const viewsData = [
     element: <OrderPlaced />,
     title: "order-placed",
   },
+  // {
+  //   path: "reviews",
+  //   element: <Reviews />,
+  //   title: "reviews",
+  // },
   {
     path: "payment",
     element: <Stripe />,
