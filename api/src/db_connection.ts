@@ -11,6 +11,8 @@ import { SaleModel } from './models/Sale';
 import { TokenModel } from './models/Token';
 import { CouponModel } from './models/Coupon';
 import {v2 as cloudinary} from 'cloudinary';
+import { RatingModel } from './models/Rating';
+
 
 
 
@@ -45,9 +47,9 @@ RoutineModel(sequelize)
 SaleModel(sequelize)
 TokenModel(sequelize)
 CouponModel(sequelize)
+RatingModel(sequelize)
 
-
-const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken,Coupon} = sequelize.models
+const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken,Coupon,Rating} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -75,6 +77,10 @@ RefreshToken.belongsTo(User);
 
 User.belongsToMany(Coupon,{through: 'cupons_users'})
 Coupon.belongsToMany(User,{through: 'cupons_users'})
+
+Rating.belongsTo(User, { foreignKey: 'userId' }); // Un Rating pertenece a un User
+Rating.belongsTo(Product, { foreignKey: 'productId' }); // Un Rating pertenece a un Product
+
 
 module.exports = {
     Product,
