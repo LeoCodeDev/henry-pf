@@ -9,16 +9,14 @@ const getDetail = async (id : number) => {
 //TODO: ['user','admin']
 const checkRole = (roles :  string | string[])  => async (req :Request, res : Response, next : NextFunction) => {
     try {
-        const authorizationHeader = req.headers && req.headers.authorization;
-        let token: string = '';
-        if (authorizationHeader) token = authorizationHeader.split(' ').pop() || ''; // TODO: ['Bearer','TOKEN']
-
-        const verifySinc = verifyToken(token);
-        if (!verifySinc) {
+        const accessToken = req.cookies.accessToken || req.cookies.refreshToken
+        console.log({aviso : 'aqui estan las cookies' ,req :req.cookies})
+        const verifysing = verifyToken(accessToken);
+        if (!verifysing) {
             res.status(409)
             res.send({ error: 'Token invalid' , lugar : 'checkRole'  })
         } else  {
-            const user = await getDetail(verifySinc.id_user); // Cambio de 'role' a 'user'
+            const user = await getDetail(verifysing.id_user);
             if (user) {
                  if (Array.isArray(roles) && roles.includes(user.role)) {
                     next();
