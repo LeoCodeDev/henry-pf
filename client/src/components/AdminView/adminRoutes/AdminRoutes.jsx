@@ -6,49 +6,55 @@ import { Line } from "../scenes/Graphics/Line";
 import { Bar } from "../scenes/Graphics/Bar";
 import { Pie } from "../scenes/Graphics/Pie";
 import { Geography } from "../scenes/Graphics/Geography";
+import { Update } from '../scenes/ProductUpdate/ProductUpdate'
 
 
 
 
 export const AdminRoutes = [
   {
-    path: "/admin/",
+    path: '/admin/',
     element: <Dashboard />,
-    title: "dashboard",
+    title: 'dashboard'
   },
   {
-    path: "/admin/table-sales",
+    path: '/admin/table-sales',
     element: <TableSales />,
-    title: "table sales",
+    title: 'table sales'
   },
   {
-    path: "/admin/table-update",
+    path: 'admin/update',
+    element: <Update />,
+    title: 'product update'
+  },
+  {
+    path: '/admin/table-update',
     element: <TableUpdate />,
-    title: "table update",
+    title: 'table update'
   },
   {
-    path: "/admin/table-users",
+    path: '/admin/table-users',
     element: <TableUsers />,
-    title: "table users",
+    title: 'table users'
   },
   {
-    path: "/admin/line",
+    path: '/admin/line',
     element: <Line />,
-    title: "line graphics",
+    title: 'line graphics'
   },
   {
-    path: "/admin/bar",
+    path: '/admin/bar',
     element: <Bar />,
-    title: "line graphics",
+    title: 'line graphics'
   },
   {
-    path: "/admin/pie",
+    path: '/admin/pie',
     element: <Pie />,
-    title: "line graphics",
+    title: 'line graphics'
   },
   {
-    path: "/admin/geography",
+    path: '/admin/geography',
     element: <Geography />,
-    title: "geography graphics",
-  },
-];
+    title: 'geography graphics'
+  }
+]

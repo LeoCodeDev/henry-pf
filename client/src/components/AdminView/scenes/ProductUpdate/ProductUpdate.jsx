@@ -11,7 +11,7 @@ import {
   Grid,
   useMediaQuery,
 } from "@mui/material";
-import { useProductsStore } from "../../store/productsStore";
+import { useProductsStore } from "../../../../store/productsStore";
 import style from "./ProductUpdate.module.css";
 import axios from "axios";
 

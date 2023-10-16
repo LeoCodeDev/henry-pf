@@ -41,6 +41,7 @@ export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { user, logout } = useAuthStore();
+  console.log(user);
   const { shoppingCart } = useCartStore();
   const navigate = useNavigate();
   /* Logic modal */
@@ -57,7 +58,8 @@ export const NavBar = () => {
     setProf(!prof)
   }
   const handleDashboard = () => {
-    navigate('/update')
+    if (user.role === 'User') navigate('/admin')
+    else alert('No tienes permisos para acceder a esta seccion')
   }
 
   const [ifSearch, setIfSearch] = React.useState(false);
