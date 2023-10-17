@@ -18,7 +18,7 @@ const checkRole = require('../middlewares/checkRole')
 const productsRoutes = Router()
 
 productsRoutes.post('/postProduct',checkToken,checkRole(["Trainer", "Admin"]),postProduct); 
-productsRoutes.get("/products",checkToken,checkRole(["Trainer", "Admin"]),  getProducts);
+productsRoutes.get("/products", getProducts);
 productsRoutes.get("/categories",getCategories );
 productsRoutes.get("/productByName",getProductByName );
 productsRoutes.get("/productsById", getProductsById);
