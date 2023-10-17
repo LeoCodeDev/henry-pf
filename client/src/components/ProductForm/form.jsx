@@ -1,23 +1,19 @@
 import { useEffect, useState } from 'react'
-import AddBusinessIcon from '@mui/icons-material/AddBusiness'
-import Typography from '@mui/material/Typography'
 import {
   InputAdornment,
   Button,
-  CssBaseline,
   TextField,
   InputLabel,
-  Paper,
   Box,
   Grid,
-  Avatar,
   FormControl,
   MenuItem,
   Select,
   useMediaQuery,
+  ThemeProvider
 } from '@mui/material'
 import toast, { Toaster } from 'react-hot-toast'
-import { useTheme } from '@mui/material/styles'
+import theme from '../../../theme'
 import { useProductsStore } from '../../store/productsStore'
 import {
   validName,
@@ -25,19 +21,10 @@ import {
   validPrice,
   validStock,
   validCategory,
-} from './validations'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { useNavigate } from 'react-router-dom'
+} from './validations';
 import { DropAndCrop } from './Dropzone'
 
 export default function ProductForm() {
-  const navigate = useNavigate()
-
-  const handleHomeClick = () => {
-    navigate('/home')
-  }
-
-  const theme = useTheme()
   const { categories, addProduct, fetchCategories } = useProductsStore()
 
   const [productImageURL, setProductImageURL] = useState(null)
@@ -145,61 +132,35 @@ export default function ProductForm() {
 
   return (
     <div>
-      <Grid
-        container
-        component="main"
-        sx={{ height: '100vh', paddingTop: '45px' }}
-      >
-        <CssBaseline />
-        <Grid item xs={false} />
+      <ThemeProvider theme={theme}>
         <Grid
           item
           xs={12}
-          component={Paper}
-          elevation={6}
           square
           sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            backgroundColor: theme.palette.background.main,
           }}
         >
           <Box
             sx={{
-              my: 5,
-              mx: 5,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <div style={{ display: 'flex' }}>
-              <Avatar sx={{ bgcolor: theme.palette.primary.main, mr: 2 }}>
-                <AddBusinessIcon />
-              </Avatar>
-              <Typography
-                component="h1"
-                variant="h5"
-                sx={{
-                  color: 'white',
-                  fontFamily: theme.typography.fontFamily,
-                  fontSize: theme.typography.h2,
-                }}
-              >
-                Add a Product
-              </Typography>
-            </div>
+            
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              width= {isMobile ? '100%' : '60%'}
+              width= {isMobile ? '80%' : '70%'}
               sx={{
-                backgroundColor: theme.palette.background_ligth.main,
-                padding: 4,
+                backgroundColor: theme.palette.background.paper,
+                padding: 3,
                 borderRadius: 6,
-                marginTop: 4,
+                marginTop: 2,
               }}
             >
               <Grid container spacing={3}>
@@ -308,7 +269,7 @@ export default function ProductForm() {
                     fullWidth
                     variant="contained"
                     onClick={handleSubmit}
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mb: 1 }}
                   >
                     Create product
                   </Button>
@@ -318,30 +279,9 @@ export default function ProductForm() {
           </Box>
         </Grid>
         <Toaster position="top-center" reverseOrder={false} />
-        <Box
-          onClick={handleHomeClick}
-          style={{
-            marginLeft: '1rem',
-            display: 'flex',
-            position: 'absolute',
-            marginTop: isMobile ? '1rem': '3rem',
-            cursor: 'pointer',
-          }}
-          sx={{
-            backgroundColor: 'transparent',
-            color: 'white',
-            '&:hover': {
-              color: 'green',
-            },
-          }}
-        >
-          <ArrowBackIosIcon sx={{width: isMobile ? '12px' : '1rem'}} />
-          <Typography 
-        fontSize={isMobile ? '10px' : '1rem'}
-        lineHeight={isMobile ? '2.5' : '1.5'}
-          component={'h3'}>Back</Typography>
-        </Box>
-      </Grid>
+      </ThemeProvider>
+        
+      
     </div>
   )
 }

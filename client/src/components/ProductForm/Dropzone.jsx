@@ -159,7 +159,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             fullWidth
             variant="contained"
             onClick={handleAcceptCrop}
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 1, mb: 1 }}
           >
             Crop
           </Button>
@@ -168,7 +168,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             fullWidth
             variant="contained"
             onClick={handleCancelCrop}
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 1, mb: 1 }}
           >
             Reset
           </Button>
@@ -184,7 +184,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             fullWidth
             variant="contained"
             onClick={handleCancelCrop}
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 2, mb: 1 }}
           >
             Reset
           </Button>
