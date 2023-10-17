@@ -17,7 +17,7 @@ const deleteToken = require('../controllers/deleteToken')
 const resetPasswordToken = require('../controllers/resetPasswordToken')
 const getAccessTokenExpiration = require('../controllers/validateTokenExpiration')
 const checkToken = require('../middlewares/authentications')
-const checkRole = require('../middlewares/checkRole')
+// const checkRole = require('../middlewares/checkRole')
 
 const usersRoutes = Router()
 
@@ -31,7 +31,7 @@ usersRoutes.delete('/delFavorite', delFavorite);
 usersRoutes.post('/delImage', delImage);
 usersRoutes.put('/putUser',checkToken, putUser); 
 usersRoutes.get("/getTeams", getTeams )
-usersRoutes.get('/allUsers', checkToken, checkRole(["Admin"]),getAllUsers) 
+usersRoutes.get('/allUsers',getAllUsers) 
 usersRoutes.post("/send-email", postMail);
 usersRoutes.get('/tokenValidation',tokenValidation)
 usersRoutes.get('/refreshToken',refreshToken)

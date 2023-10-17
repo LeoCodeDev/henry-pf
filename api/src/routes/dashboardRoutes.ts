@@ -9,8 +9,8 @@ const checkRole = require('../middlewares/checkRole')
 const dashboardRoutes = Router()
 
 dashboardRoutes.post('/addCoupon',checkToken, checkRole(["Admin"]) ,addCoupon)
-dashboardRoutes.put('/updateCoupon', updateCoupon)
+dashboardRoutes.put('/updateCoupon',checkToken, checkRole(["Admin"]) ,updateCoupon)
 dashboardRoutes.get('/validateCoupon', validateCoupon)
-dashboardRoutes.get('/getCoupons', getCoupons)
+dashboardRoutes.get('/getCoupons',checkToken, checkRole(["Admin","Trainer"]) , getCoupons)
 
 export default dashboardRoutes

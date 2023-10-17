@@ -10,7 +10,7 @@ const getDetail = async (id : number) => {
 const checkRole = (roles :  string | string[])  => async (req :Request, res : Response, next : NextFunction) => {
     try {
         const accessToken = req.cookies.accessToken || req.cookies.refreshToken
-        console.log({aviso : 'aqui estan las cookies' ,req :req.cookies})
+        // console.log({aviso : 'aqui estan las cookies' ,req :req.cookies})
         const verifysing = verifyToken(accessToken);
         if (!verifysing) {
             res.status(409)
@@ -21,14 +21,14 @@ const checkRole = (roles :  string | string[])  => async (req :Request, res : Re
                  if (Array.isArray(roles) && roles.includes(user.role)) {
                     next();
                 } else {
-                    console.log(user)
-                    console.log(user.role)
+                    // console.log(user)
+                    // console.log(user.role)
 
-                    res.status(409);
+                    res.status(401);
                     res.send({ error: 'No tienes permisos' });
                 }
             }else {
-                res.status(409)
+                res.status(401)
                 res.send({ error: 'No tienes permisos' })
             }
         }
