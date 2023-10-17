@@ -58,11 +58,11 @@ export const NavBar = () => {
 
   /* Admin Validation */
   let settings = ['Profile', 'Account', 'Dashboard', 'Logout']
-  if (user.role !== 'User')
+  if (user.role !== 'Admin'|| user.role !== 'Trainer')
     settings = settings.filter((item) => item !== 'Dashboard')
 
   const handleDashboard = () => {
-    if (user.role === 'User') navigate('/admin')
+    if (user.role === 'Admin' || user.role === 'Trainer') navigate('/admin')
   }
 
   const [ifSearch, setIfSearch] = React.useState(false);
