@@ -1,10 +1,9 @@
+import ProductForm from "../../../ProductForm/form"
 
 
 export const TableCreate = () => {
   return (
-    <div>
-      
-    </div>
+    <ProductForm/>
   )
 }
 

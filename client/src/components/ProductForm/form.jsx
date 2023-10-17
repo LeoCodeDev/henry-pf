@@ -298,7 +298,7 @@ export default function ProductForm() {
                 </Grid>
                 <Grid item xs={12}>
                   <DropAndCrop
-                    endpoint={'/postImage'}
+                    endpoint={'/products/postImage'}
                     setProductImageURL={setProductImageURL}
                   />
                 </Grid>
