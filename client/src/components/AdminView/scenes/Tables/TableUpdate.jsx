@@ -1,4 +1,4 @@
-import {Update} from '../ProductUpdate/ProductUpdate'
+import { Update } from "../../../ProductUpdate/ProductUpdate"
 
 export const TableUpdate = () => {
     return (
