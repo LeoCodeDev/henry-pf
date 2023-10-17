@@ -57,9 +57,9 @@ export const NavBar = () => {
   }
 
   /* Admin Validation */
-  let settings = ['Profile', 'Account', 'Dashboard', 'Logout']
-  if (user.role !== 'Admin'|| user.role !== 'Trainer')
-    settings = settings.filter((item) => item !== 'Dashboard')
+  let settings = ['Profile', 'Account', 'Logout']
+  if (user.role === 'Admin' || user.role === 'Trainer')
+    settings.splice(2,0,'Dashboard')
 
   const handleDashboard = () => {
     if (user.role === 'Admin' || user.role === 'Trainer') navigate('/admin')
