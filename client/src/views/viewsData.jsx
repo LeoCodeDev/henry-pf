@@ -4,10 +4,10 @@ import ProductDetail from "./Product Detail/ProductDetail";
 import ProductList from "./Product List/ProductList";
 import Admin from "./Admin/Admin";
 import ProductFormView from "./Product Form/productForm";
-import ProductUpdate from "./Product Update/ProductUpdate";
+// import ProductUpdate from "./Product Update/ProductUpdate";
 import OrderPlaced from "./OrderPlaced/OrderPlaced";
 import Stripe from "../components/Stripe/Stripe";
-import Reviews from "../components/Comments/Reviews"
+// import Reviews from "../components/Comments/Reviews"
 
 const viewsData = [
   // {
@@ -41,11 +41,11 @@ const viewsData = [
     element: <ProductFormView />,
     title: "product-creation",
   },
-  {
-    path: "update",
-    element: <ProductUpdate />,
-    title: "product-update",
-  },
+  // {
+  //   path: "update",
+  //   element: <ProductUpdate />,
+  //   title: "product-update",
+  // },
   {
     path: "order-placed",
     element: <OrderPlaced />,

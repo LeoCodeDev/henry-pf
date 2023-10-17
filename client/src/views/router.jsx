@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import viewsData from './viewsData';
 import { AdminRoutes } from '../components/AdminView/adminRoutes/AdminRoutes'
 import { AdminView } from '../components/AdminView/AdminView';
+import { AuthGuard } from '../Guards/Auth-guard';
 
 const Router = () => {
 
@@ -17,7 +18,9 @@ const Router = () => {
   return (
     <Routes>
       {pageRoutes}
+      <Route element={<AuthGuard/>}>
       {pageAdminRoutes}
+      </Route>
     </Routes>
   );
 };
