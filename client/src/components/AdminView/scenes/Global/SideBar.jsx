@@ -8,14 +8,15 @@ import { tokens } from "../../themeAdmin.js";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-/* import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined"; */
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+//import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -52,7 +53,7 @@ export const SideBar = () => {
           backgroundColor: "transparent !important",
         },
         "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
+          padding: "2px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
           color: "#228d07 !important",
@@ -69,7 +70,7 @@ export const SideBar = () => {
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
-              margin: "10px 0 20px 0",
+              margin: "5px 0 10px 0",
               color: colors.grey[100],
             }}
           >
@@ -114,16 +115,37 @@ export const SideBar = () => {
               setSelected={setSelected}
             />
             <Item
+              title="Create Products"
+              to="/admin/table-create"
+              icon={<AddCircleOutlineOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Stocks Products"
+              to="/admin/table-stocks"
+              icon={<InventoryOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Users Information"
               to="/admin/table-users"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Sales
+            </Typography>
             <Item
               title="Sales"
-              to="/admin/table-sales"
-              icon={<ReceiptOutlinedIcon />}
+              to="/admin/sales"
+              icon={<AttachMoneyOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -133,22 +155,15 @@ export const SideBar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Email
+              Marketing
             </Typography>
             <Item
-              title="Profile Form"
-              icon={<PersonOutlinedIcon />}
+              title="Coupon"
+              to="/admin/coupon"
+              icon={<StorefrontOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
-              title="Calendar"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-            
             <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -170,20 +185,7 @@ export const SideBar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Line Chart"
-              to="/admin/line"
-              icon={<TimelineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Geography Chart"
-              to="/admin/geography"
-              icon={<MapOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+           
           </Box>
         </Menu>
       </ProSidebar>
