@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import { useProductsStore } from "../../store/productsStore";
+import Rating from "@mui/material/Rating";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -47,16 +49,24 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   fontWeight: 'normal'
 }));
 
-export default function CustomizedAccordions() {
-  const comments = [
-    { user: 'User #1', content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores dolor, modi velit sed corporis veniam neque recusandae voluptas vitae quas eum animi, quisquam magnam, eligendi odio suscipit porro harum accusantium.' },
-    { user: 'User #2', content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores dolor, modi velit sed corporis veniam neque recusandae voluptas vitae quas eum animi, quisquam magnam, eligendi odio suscipit porro harum accusantium.' },
-    { user: 'User #3', content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores dolor, modi velit sed corporis veniam neque recusandae voluptas vitae quas eum animi, quisquam magnam, eligendi odio suscipit porro harum accusantium.' },
-    { user: 'User #4', content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores dolor, modi velit sed corporis veniam neque recusandae voluptas vitae quas eum animi, quisquam magnam, eligendi odio suscipit porro harum accusantium.' },
-    { user: 'User #5', content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores dolor, modi velit sed corporis veniam neque recusandae voluptas vitae quas eum animi, quisquam magnam, eligendi odio suscipit porro harum accusantium.' },
-    { user: 'User #6', content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores dolor, modi velit sed corporis veniam neque recusandae voluptas vitae quas eum animi, quisquam magnam, eligendi odio suscipit porro harum accusantium.' },
-    // Add more comments here
-  ];
+export default function CustomizedAccordions(props) {
+  const productStore = useProductsStore();
+  const productid = props.idProduct;
+  const [comments, setComments] = useState([]);
+  
+  
+  useEffect(() => {
+    // Realizar la llamada asincrónica y actualizar el estado cuando esté completo
+    productStore
+      .fetchProductReviews(productid)
+      .then((reviews) => {
+        setComments(reviews);
+      })
+      .catch((error) => {
+        console.error("Error fetching product reviews:", error);
+      });
+  }, [productid]); // El efecto se ejecutará cada vez que cambie productid
+  
 
   const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,11 +91,18 @@ export default function CustomizedAccordions() {
         onChange={handleChange(`panel${startIndex + index + 1}`)}
       >
         <AccordionSummary aria-controls={`panel${startIndex + index + 1}d-content`} id={`panel${startIndex + index + 1}d-header`}>
-          <Typography color={"#1c7805"}>{comment.user}</Typography>
-          <Typography sx={{ marginLeft: 4 }}>Title + Date + Qualification</Typography>
+          <Typography color={"#1c7805"}>{comment.userId}</Typography>
+          <Rating
+            sx={{ marginLeft: 4 }}
+            name="product-rating"
+            value={comment.rating}
+            precision={0.5}
+            style={{ pointerEvents: "none" }}
+          />
+          <Typography sx={{ marginLeft: 4 }}> {comment.createdAt.substring(0, 10)} </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{comment.content}</Typography>
+          <Typography>{comment.comment}</Typography>
         </AccordionDetails>
       </Accordion>
     ));

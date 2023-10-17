@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextareaDecorators from "./TextareaDecorators";
 import Stars from "./Stars";
 import theme from "../../../theme";
+import { useAuthStore } from "../../store/authStore";
+import { useProductsStore } from "../../store/productsStore";
 
-const Reviews = () => {
+const Reviews = (props) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(3.5);
+  const { user } = useAuthStore();
+  const userId = user.id_user;
+  const productId = props.idProduct;
+  const productStore = useProductsStore();
 
   const handleRatingChange = (event, newValue) => {
     setRating(newValue);
@@ -16,8 +22,13 @@ const Reviews = () => {
   const handleSubmitReview = () => {
     console.log("Rating:", rating);
     console.log("Comment:", comment);
+    console.log("Idproducto",productId)
+    console.log("UserId", userId);
     // Puedes enviar la información a tu backend o realizar otras acciones necesarias
+    productStore.submitReview(productId, comment, rating, userId);
     setComment("");
+
+    
   };
 
   return (
