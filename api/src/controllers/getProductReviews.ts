@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-const { Product, Rating} = require( "../db_connection");
+const { Product, Rating, User} = require( "../db_connection");
 
 const getProductReviews = async (req: Request, res: Response) => {
   const productId = req.params.productId; 
@@ -14,8 +14,13 @@ const getProductReviews = async (req: Request, res: Response) => {
       where: {
         productId: productId,
       },
+      include: [
+        {
+          model: User, attributes: ["username"]
+      }
+    ]
     });
-
+    
     return res.json(comments);
   } catch (error) {
     console.error(error);

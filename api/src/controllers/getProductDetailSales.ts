@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 const { Product, Category,Sale,User} = require( "../db_connection");
 
 const productDetailSales = async(req: Request, res: Response) => {
-    const { product }  = req.body
+    const { product }  = req.query
     try {
         const detailForProduct = await Product.findOne({
             where: {
