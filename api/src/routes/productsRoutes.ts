@@ -1,4 +1,5 @@
 import {Router} from 'express'
+import productDetailSales from '../controllers/getProductDetailSales';
 const postProduct = require('../controllers/postProduct');
 const getProducts  = require("../controllers/getProducts");
 const getCategories  = require("../controllers/getCategories");
@@ -8,6 +9,7 @@ const activeDesactiveproduct = require("../controllers/putProduct");
 const getAllProductsAdmin = require('../controllers/getAllproducts');
 const updateProductStock= require('../controllers/stockUpdate')
 const { processImage, postImage } = require('../controllers/postImage')
+
 // const checkToken = require('../middlewares/authentications')
 // const checkRole = require('../middlewares/checkRole')
 
@@ -23,6 +25,7 @@ productsRoutes.get("/allProducts", getAllProductsAdmin);
 productsRoutes.put("/prod/:id", activeDesactiveproduct);
 productsRoutes.put('/stockUpdate', updateProductStock); 
 productsRoutes.post('/postImage', postImage, processImage)
+productsRoutes.get('/getProductDetailSales',productDetailSales)
 
 
 export default productsRoutes
