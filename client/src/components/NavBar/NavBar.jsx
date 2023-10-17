@@ -33,19 +33,17 @@ const darkTheme = createTheme({
   },
 });
 
-const pages = ["HOME", "SHOP", "EXERCISE", "ADD PRODUCT"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ['HOME', 'SHOP', 'EXERCISE', 'ADD PRODUCT']
 
 export const NavBar = () => {
-  const {favorites} = favoriteStore()
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const { user, logout } = useAuthStore();
-  console.log(user);
-  const { shoppingCart } = useCartStore();
-  const navigate = useNavigate();
+  const { favorites } = favoriteStore()
+  const [anchorElNav, setAnchorElNav] = React.useState(null)
+  const [anchorElUser, setAnchorElUser] = React.useState(null)
+  const { user, logout } = useAuthStore()
+  const { shoppingCart } = useCartStore()
+  const navigate = useNavigate()
   /* Logic modal */
-  const [modalOpen, setModalOpen] = React.useState({ anchor: "", open: false });
+  const [modalOpen, setModalOpen] = React.useState({ anchor: '', open: false })
   const [prof, setProf] = React.useState(false)
 
   const handleLogout = () => {
@@ -57,9 +55,14 @@ export const NavBar = () => {
     setAnchorElUser(null);
     setProf(!prof)
   }
+
+  /* Admin Validation */
+  let settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+  if (user.role !== 'User')
+    settings = settings.filter((item) => item !== 'Dashboard')
+
   const handleDashboard = () => {
     if (user.role === 'User') navigate('/admin')
-    else alert('No tienes permisos para acceder a esta seccion')
   }
 
   const [ifSearch, setIfSearch] = React.useState(false);
@@ -228,10 +231,6 @@ export const NavBar = () => {
                 <SearchBar />
               </div>
             )}
-
-            
-
-            
 
             {/* Icono de favoritos */}
             <IconButton
