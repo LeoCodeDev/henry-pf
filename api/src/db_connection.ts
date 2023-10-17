@@ -92,5 +92,6 @@ module.exports = {
     Sale,
     RefreshToken,
     Coupon,
+    Rating,
     sequelize
 }

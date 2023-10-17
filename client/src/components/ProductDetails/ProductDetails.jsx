@@ -37,6 +37,7 @@ export const ProductDetails = () => {
     useCartStore();
   const { user } = useAuthStore();
   const { favorites, addFavorite, deleteFavorite } = favoriteStore();
+  const idProduct = product.id_product;
 
   useEffect(() => {
     setCart(
@@ -342,9 +343,9 @@ export const ProductDetails = () => {
         }}
       >
         <div>
-          <Reviews />
+          <Reviews idProduct={idProduct}/>
         </div>
-        <CustomizedAccordions />
+        <CustomizedAccordions idProduct={idProduct} />
       </div>
     </div>
   );
