@@ -1,5 +1,4 @@
 import { BarChart } from '@mui/x-charts/BarChart'
-import { PieChart } from '@mui/x-charts/PieChart'
 import { useProductsStore } from '../../../../store/productsStore'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -54,6 +53,7 @@ const Bar = () => {
 
   console.log(data)
 
+  
   const productsLowStock = products
     .sort((a, b) => a.stock - b.stock)
     .slice(0, 5)
@@ -71,14 +71,12 @@ const Bar = () => {
     data: productsHighStock.map((product) => product.name),
     values: productsHighStock.map((product) => product.stock),
   }
-  const pieData = products.map((product) => ({
-    id: product.id_product,
-    value: product.stock,
-    label: product.name,
-  }))
+  
 
   return (
     <>
+    <section>
+    <h4>Low Stock</h4>
       <BarChart
         xAxis={[
           {
@@ -95,6 +93,10 @@ const Bar = () => {
         width={500}
         height={300}
       />
+    </section>
+
+    <section>
+        <h4>High Stock</h4>
       <BarChart
         xAxis={[
           {
@@ -111,24 +113,11 @@ const Bar = () => {
         width={500}
         height={300}
       />
+    </section>
 
-      <PieChart
-        series={[
-          {
-            data: pieData,
-            innerRadius: 30,
-            outerRadius: 100,
-            paddingAngle: 5,
-            cornerRadius: 5,
-            startAngle: 0,
-            endAngle: 360,
-            cx: 150,
-            cy: 150,
-          },
-        ]}
-        width={700}
-        height={300}
-      />
+    <section>
+
+    </section>
     </>
   )
 }
