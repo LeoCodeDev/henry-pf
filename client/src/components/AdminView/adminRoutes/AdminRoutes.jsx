@@ -5,7 +5,6 @@ import { Bar } from "../scenes/Graphics/Bar";
 import { Pie } from "../scenes/Graphics/Pie";
 import { Sales } from "../scenes/Sales/Sales";
 import { TableCreate } from "../scenes/Tables/TableCreate";
-import { TableStocks } from "../scenes/Tables/TableStocks";
 import { Coupon } from "../scenes/Marketing/Coupon";
 import { Update } from '../../ProductUpdate/ProductUpdate'
 import UserDetails from "../../userAdmin/userDetails";
@@ -35,16 +34,6 @@ export const AdminRoutes = [
   {
     path: "/admin/table-create",
     element: <TableCreate />,
-    title: "table sales",
-  },
-  {
-    path: "/admin/table-stocks",
-    element: <TableStocks />,
-    title: "table sales",
-  },
-  {
-    path: "/admin/table-stocks",
-    element: <TableStocks />,
     title: "table sales",
   },
   {

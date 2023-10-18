@@ -33,7 +33,7 @@ const darkTheme = createTheme({
   },
 });
 
-const pages = ['HOME', 'SHOP', 'EXERCISE', 'ADD PRODUCT']
+const pages = ['HOME', 'SHOP', 'EXERCISE']
 
 export const NavBar = () => {
   const { favorites } = favoriteStore()
@@ -162,14 +162,6 @@ export const NavBar = () => {
                   onClick={handleCloseNavMenu}>
                   <Typography>{'EXERCISE'}</Typography>
                 </MenuItem>
-
-                {/* <MenuItem
-                  component="a"
-                  href="/product-creation"
-                  key={'ADD PRODUCT'}
-                  onClick={handleCloseNavMenu}>
-                  <Typography>{'ADD PRODUCT'}</Typography>
-                </MenuItem> */}
               </Menu>
             </Box>
 
