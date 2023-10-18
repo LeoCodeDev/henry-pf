@@ -37,9 +37,10 @@ export const ProductDetails = () => {
   const [isFav, setFav] = useState(false);
   const [cart, setCart] = useState(false);
   const { product } = useShowProductStore();
-  const { addProductToCart, deleteProductFromCart, shoppingCart } =
+  const { addProductToCart, deleteProductFromCart, shoppingCart, total } =
     useCartStore();
   const { user } = useAuthStore();
+  const initialState = useAuthStore((state) => state.user)
   const { favorites, addFavorite, deleteFavorite } = favoriteStore();
   const idProduct = product.id_product;
   const [Sales, setSales] = useState([]);
@@ -51,35 +52,34 @@ export const ProductDetails = () => {
       shoppingCart.find((element) => element.id_product === product.id_product)
         ? true
         : false
-    ),
+    )
+    total(),
       setFav(
         favorites.find((element) => element.id_product === product.id_product)
           ? true
           : false
       );
-  }, [shoppingCart, product, favorites]);
+  }, [shoppingCart, product, favorites, total]);
 
   const handleFav = (id) => {
     if (isFav) {
-      deleteFavorite(user.username, id);
-      setFav(false);
+      deleteFavorite(initialState.username, id)
     } else {
-      addFavorite(user.username, id);
-      setFav(true);
+      addFavorite(initialState.username, id)
     }
   };
 
   const handleCart = () => {
     if (cart) {
       deleteProductFromCart(product);
-      setCart(false);
     } else {
       addProductToCart(product);
-      setCart(true);
+      // setCart(true);
     }
   };
 
   const handleProductDetail = async () => {
+    let DS = {};
     setIsLoading(true);
     try {
       const { data } = await axios.get("/products/getProductDetailSales", {
@@ -87,7 +87,7 @@ export const ProductDetails = () => {
           product: product.id_product,
         },
       });
-
+      DS = data;
       setSales(data.Sales);
     } catch (error) {
       console.log(error.message);
@@ -95,20 +95,22 @@ export const ProductDetails = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 300);
-    setSales(data.Sales);
+    setSales(DS.Sales);
   };
 
   useEffect(() => {
     handleProductDetail();
   }, [product]);
 
-  const hasUserPurchased = (sales) => {
-    for (const sale of sales) {
-      if (sale.UserIdUser === user.id_user) {
-        return true;
+  const hasUserPurchased = (sales) => { 
+    if (sales) {
+      for (const sale of sales) {
+        if (sale.UserIdUser === user.id_user) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
   };
   let userCanCommentAndRate = false;
   userCanCommentAndRate = hasUserPurchased(Sales);
