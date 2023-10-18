@@ -140,7 +140,7 @@ export default function ProductForm() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
           <Box
