@@ -21,6 +21,7 @@
 
 const { Rating } = require('../../db_connection');
 import { Request, Response } from "express";
+const ratingService = require('../../services/ratingService'); // Ajusta la ruta según la estructura de tu proyecto
 
 const postProductReview = async (req: Request, res: Response) => {
     try {
@@ -44,6 +45,9 @@ const postProductReview = async (req: Request, res: Response) => {
             productId,
         });
 
+        // Después de crear la reseña, llama a la función para actualizar el rating del producto
+        await ratingService.updateProductRating(productId);
+
         return res.status(201).json({ message: "Reseña publicada exitosamente", newReview });
     } catch (error:any) {
         return res.status(500).json({ error: error.message });
@@ -51,4 +55,3 @@ const postProductReview = async (req: Request, res: Response) => {
 }
 
 module.exports = postProductReview;
-

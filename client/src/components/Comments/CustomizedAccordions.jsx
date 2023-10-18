@@ -15,7 +15,8 @@ const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
-  width: "95%",
+  marginLeft: -2,
+  width: "98%",
   "&:not(:last-child)": {
     borderBottom: 0,
   },
@@ -116,17 +117,16 @@ export default function CustomizedAccordions(props) {
             aria-controls={`panel${startIndex + index + 1}d-content`}
             id={`panel${startIndex + index + 1}d-header`}
           >
-            <Typography color={"#1c7805"}>{comment.username}</Typography>
+            <Typography color={"#1c7805"} style={{minWidth:"4rem"}}>{comment.username}</Typography>
             <Rating
-              sx={{ marginLeft: 4, color: "gray", fontSize: "1rem" }}
+              sx={{ marginLeft: 3, color: "gray", fontSize: "1rem" }}
               name="product-rating"
               value={comment.rating}
               precision={0.5}
               style={{ pointerEvents: "none" }}
             />
-            <Typography sx={{ marginLeft: 4, fontSize: "0.8rem" }}>
-              {comment.createdAt.substring(0, 10)} (
-              {comment.createdAt.substring(12, 16)} hs)
+            <Typography sx={{ marginLeft: 2, fontSize: "0.8rem", marginRight:"1rem" }}>
+              {comment.createdAt.substring(0, 10)}
             </Typography>
             <Typography sx={{ fontSize: "0.8rem", minWidth:"30%" }}>
               {comment.comment.substring(0, 20)}...

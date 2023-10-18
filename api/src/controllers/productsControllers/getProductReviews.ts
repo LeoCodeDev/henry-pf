@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 const { Product, Rating, User} = require( "../../db_connection");
 
 const getProductReviews = async (req: Request, res: Response) => {
-  const productId = req.params.productId; 
+  const productId = req.params.productId;
 
   try {
     const product = await Product.findByPk(productId);
@@ -10,17 +10,20 @@ const getProductReviews = async (req: Request, res: Response) => {
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
+    
     const comments = await Rating.findAll({
       where: {
         productId: productId,
       },
       include: [
         {
-          model: User, attributes: ["username"]
-      }
-    ]
+          model: User,
+          attributes: ["username"],
+        },
+      ],
+      order: [['createdAt', 'DESC']], 
     });
-    
+
     return res.json(comments);
   } catch (error) {
     console.error(error);
