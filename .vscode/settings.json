@@ -7,5 +7,20 @@
     "cSpell.words": [
         "cloudinary",
         "zustand"
+    ],
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": true
+            },
+            "previewLimit": 50,
+            "server": "dpg-ckmqcuqv7m0s7380quc0-a.oregon-postgres.render.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Healtech",
+            "database": "healtech_bdd",
+            "username": "healtech_bdd_user",
+            "password": "fNYvOhY3Pn6UVoqcumnwUk7WehiXmhDg"
+        }
     ]
 }
