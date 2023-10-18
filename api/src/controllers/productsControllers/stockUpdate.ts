@@ -3,18 +3,19 @@ import { Request, Response } from "express";
 
 const updateProductStock = async (req:Request, res:Response) => {
     try {
+        const {operation}=req.query
         interface Update {
             id_product: string,
-            amount: string
+            quantity: string
         }
         const updateData = req.body.map((update: Update) => ({
             id_product: parseInt(update.id_product),
-            amount: parseInt(update.amount)
+            amount: parseInt(update.quantity)
         }));
         for (const update of updateData) {
             const product = await Product.findByPk(update.id_product);
             if (product) {
-                const newStock = product.stock - update.amount;
+                const newStock = operation==="subtract"? product.stock - update.amount: product.stock + update.amount;
                 if (newStock <= 0) {
                     product.active = false;
                 }
