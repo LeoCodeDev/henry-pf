@@ -21,7 +21,7 @@
 
 const { Rating } = require('../../db_connection');
 import { Request, Response } from "express";
-const ratingService = require('../../services/ratingService'); // Ajusta la ruta según la estructura de tu proyecto
+const ratingService = require('../../services/ratingService'); 
 
 const postProductReview = async (req: Request, res: Response) => {
     try {
