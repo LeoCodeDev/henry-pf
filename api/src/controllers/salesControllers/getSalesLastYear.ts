@@ -2,7 +2,8 @@ const { Sale } = require('../../db_connection');
 import { Request, Response } from 'express';
 import { Op, fn, col } from 'sequelize';
 
-const lastYearSales = async (_req: Request, res: Response) => {
+const lastYearSales = async (req: Request, res: Response) => {
+    const { type } = req.query;
   try {
     const currentDate = new Date();
     const oneYearAgoDate = new Date();
@@ -11,7 +12,7 @@ const lastYearSales = async (_req: Request, res: Response) => {
     const last12MonthSales = await Sale.findAll({
       attributes: [
         [fn('date_trunc', 'month', col('date')), 'month'],
-        [fn('sum', col('total')), 'total'],
+        [fn(`${type}`, col('id_sale')), 'total']
       ],
       where: {
         date: {
