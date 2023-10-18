@@ -57,7 +57,6 @@ export const ModalCart = ({ toggleDrawer }) => {
     }
   }
 
-
   return (
     <>
       <div className={styles.container}>
