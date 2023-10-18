@@ -1,4 +1,4 @@
-const { User, Team } = require("../db_connection")
+const { User, Team, Sale, Product, Routine } = require("../db_connection")
 import { Request, Response } from "express";
 
 
@@ -7,7 +7,11 @@ const getUser = async (req: Request, res: Response) => {
     try {
         const userData = await User.findOne({
             where: { email },
-            include: Team
+            include:  [
+                Team,
+                { model: Sale, include: [Product] },
+                Routine
+            ]
         })
 
         if (!userData) {

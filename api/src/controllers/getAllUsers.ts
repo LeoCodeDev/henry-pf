@@ -1,10 +1,16 @@
-const {User,Team}= require("../db_connection")
+const {User,Team, Sale, Product, Routine}= require("../db_connection")
 import { Request, Response } from "express";
 
 
 const getAllUsers=async(_req:Request, res:Response)=>{
 try {
-    const allUsers= await User.findAll({include:Team})
+    const allUsers = await User.findAll({
+        include: [
+            Team,
+            { model: Sale, include: [Product] },
+            Routine
+        ]
+      });
     if(allUsers){
         res.status(200).json(allUsers)
     } else{

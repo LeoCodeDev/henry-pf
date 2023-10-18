@@ -46,14 +46,18 @@ export const ModalCart = ({ toggleDrawer }) => {
 
   const setCouponDiscount=async(coupon)=>{
     if(coupon){
-      const { data} = await axios.get(`/dashboard/validateCoupon?email=${user.email}&code=${coupon}`)
-      console.log(data)
-      if(data.message != 'Coupon is valid'){
-          toast.error("Invalid or expired coupon!")
+      try {
+        const { data} = await axios.get(`/dashboard/validateCoupon?email=${user.email}&code=${coupon}`)
+        if(data.message != 'Coupon is valid'){
+            toast.error("Invalid or expired coupon!")
+        }
+        localStorage.setItem('coupon', JSON.stringify({coupon:coupon,discount:data.discount}))
+        setTotalToPay(totalToPay-data.discount)
+        toast.success("Coupon applied successfully!")
       }
-      localStorage.setItem('coupon', JSON.stringify({coupon:coupon,discount:data.discount}))
-      setTotalToPay(totalToPay-data.discount)
-      toast.success("Coupon applied successfully!")
+      catch (error) {
+        toast.error("Invalid or expired coupon!")
+      }
     }
   }
 

@@ -8,6 +8,7 @@ import { TableCreate } from "../scenes/Tables/TableCreate";
 import { TableStocks } from "../scenes/Tables/TableStocks";
 import { Coupon } from "../scenes/Marketing/Coupon";
 import { Update } from '../../ProductUpdate/ProductUpdate'
+import UserDetails from "../../userAdmin/userDetails";
 
 export const AdminRoutes = [
   {
@@ -70,4 +71,9 @@ export const AdminRoutes = [
     element: <Pie />,
     title: 'line graphics'
   },
+  {
+    path:'/admin/table-users/user-details/:email',
+    element: <UserDetails/>,
+    title: 'user details'
+  }
 ];
