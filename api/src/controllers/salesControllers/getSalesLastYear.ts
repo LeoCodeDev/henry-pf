@@ -4,13 +4,9 @@ import { Op, fn, col } from 'sequelize';
 
 const lastYearSales = async (_req: Request, res: Response) => {
   try {
-    const currentDate = new Date()
-    const oneYearAgoDate = new Date()
-    // oneYearAgoDate.setMonth(oneYearAgoDate.getMonth() - 12)
-    const getMonthYear = oneYearAgoDate.getMonth()
-
-    console.log({currentDate, oneYearAgoDate, getMonthYear});
-    
+    const currentDate = new Date();
+    const oneYearAgoDate = new Date();
+    oneYearAgoDate.setMonth(oneYearAgoDate.getMonth() - 12);
 
     const last12MonthSales = await Sale.findAll({
       attributes: [
@@ -27,27 +23,21 @@ const lastYearSales = async (_req: Request, res: Response) => {
       order: [[col('month'), 'ASC']],
     });
 
-    const sales : Record<string, number> = {};
+    const sales: Record<string, number> = {};
 
-    const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+    const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
-    months.forEach(month=>{
-        console.log({month});
-        sales[month] = 0
-    })
-
-    console.log({last12MonthSales});
-    
+    months.forEach((month) => {
+      sales[month] = 0;
+    });
 
     last12MonthSales.forEach((sale: any) => {
-      const monthIndex = sale.get('month').getMonth();
-      const month = months[monthIndex]
-      const monthTest = ('0' + (sale.get('month').getMonth() + 1)).slice(-2)
-    //   const monthTest2 = monthTest.getMonth()
-      console.log({sale, monthIndex, month, monthTest, total : sales[month]});
-      
+      let month = sale.get('month').getMonth() + 1;
       const total = parseFloat(sale.get('total'));
-      sales[month] = total
+      if (month >= 12) {
+        month -= 12;
+      }
+      sales[months[month]] = total;      
     });
 
     res.json(sales);
@@ -55,6 +45,6 @@ const lastYearSales = async (_req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({ error: 'Hubo un error al obtener las ventas de los últimos 12 meses' });
   }
-}
+};
 
 module.exports = lastYearSales;
