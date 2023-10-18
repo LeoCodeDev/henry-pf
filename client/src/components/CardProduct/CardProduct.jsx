@@ -12,17 +12,17 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useShowProductStore } from "../../store/showProduct";
-import { useAuthStore } from '../../store/authStore'
+import { useAuthStore } from "../../store/authStore";
 import { favoriteStore } from "../../store/favoriteStore";
 import { useCartStore } from "../../store/shoppingCartStore";
 import { Link } from "react-router-dom";
 
 export const CardProduct = ({ product }) => {
-  const { productById } = useShowProductStore()
+  const { productById } = useShowProductStore();
   const { addProductToCart, deleteProductFromCart, shoppingCart, total } =
-    useCartStore()
-  const { favorites, addFavorite, deleteFavorite } = favoriteStore()
-  const initialState = useAuthStore((state) => state.user)
+    useCartStore();
+  const { favorites, addFavorite, deleteFavorite } = favoriteStore();
+  const initialState = useAuthStore((state) => state.user);
 
   const theme = createTheme({
     breakpoints: {
@@ -32,50 +32,50 @@ export const CardProduct = ({ product }) => {
         md: 900,
         lg: 1200,
         xl: 1440,
-        xxl: 1800
-      }
-    }
-  })
+        xxl: 1800,
+      },
+    },
+  });
 
-  const [isFav, setFav] = useState(false)
-  const [cart, setCart] = useState(false)
+  const [isFav, setFav] = useState(false);
+  const [cart, setCart] = useState(false);
   useEffect(() => {
     setCart(
       shoppingCart.find((element) => element.id_product === product.id_product)
         ? true
         : false
-    )
-    total()
-  }, [shoppingCart, product, total])
-  
+    );
+    total();
+  }, [shoppingCart, product, total]);
+
   useEffect(() => {
     setFav(
       favorites.find((element) => element.id_product === product.id_product)
         ? true
         : false
-    )
-  }, [favorites, product])
+    );
+  }, [favorites, product]);
 
   const handleFav = (id) => {
     if (isFav) {
-      deleteFavorite(initialState.username, id)
+      deleteFavorite(initialState.username, id);
     } else {
-      addFavorite(initialState.username, id)
+      addFavorite(initialState.username, id);
     }
-  }
+  };
 
   const handleProductId = (id) => {
     productById(id);
   };
 
   const handleCart = () => {
-    if(cart){
-      deleteProductFromCart(product)
-    }else{
-      addProductToCart(product)
+    if (cart) {
+      deleteProductFromCart(product);
+    } else {
+      addProductToCart(product);
     }
-  }
-  
+  };
+ 
   return (
     <ThemeProvider theme={theme}>
       <Card
@@ -113,23 +113,51 @@ export const CardProduct = ({ product }) => {
           />
         </Link>
         <CardContent className={style.card_txt}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center", 
+              position: "absolute",
+              left: "78%", 
+              top: -290,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              paddingInline: "0.3rem",
+              borderRadius: "8px",
+            }}
+          >
+            <Typography
+              style={{
+                fontFamily: "Poppins",
+                fontSize: "0.8rem",
+                color: "white",
+              }}
+              variant="h6"
+            >
+              {product?.rating} ⭐
+            </Typography>
+          </div>
+
           <Link
-            style={{ textDecoration: 'none', color: '#bfbfbf' }}
+            style={{ textDecoration: "none", color: "#bfbfbf" }}
             onClick={() => handleProductId(product.id_product)}
-            to={'/product-detail'}>
+            to={"/product-detail"}
+          >
             <Typography
               className={style.name_product}
               gutterBottom
               variant="p"
               component="div"
-              sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+              sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+            >
               {product.name}
             </Typography>
           </Link>
           <Typography
             className={style.price_product}
             variant="p"
-            component="div">
+            component="div"
+          >
             $ {product.price}
           </Typography>
           <div className={style.icons}>
