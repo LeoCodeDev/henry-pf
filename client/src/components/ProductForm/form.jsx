@@ -196,7 +196,7 @@ export default function ProductForm() {
               onSubmit={handleSubmit}
               width= {isMobile ? '100%' : '60%'}
               sx={{
-                backgroundColor: theme.palette.background_ligth.main,
+                backgroundColor: theme.palette.background_ligth?.main,
                 padding: 4,
                 borderRadius: 6,
                 marginTop: 4,

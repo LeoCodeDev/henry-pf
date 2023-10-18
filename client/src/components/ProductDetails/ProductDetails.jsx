@@ -6,7 +6,9 @@ import {
   Container,
   Typography,
   Paper,
-  Button
+  Button,
+  Card,
+  CardContent,
 } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -20,6 +22,7 @@ import { isDesktop } from "react-device-detect";
 import theme from "../../../theme";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartOutlinedIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
+import axios from "axios";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#B0B0B0" : "#fff",
@@ -38,6 +41,8 @@ export const ProductDetails = () => {
   const { user } = useAuthStore();
   const { favorites, addFavorite, deleteFavorite } = favoriteStore();
   const idProduct = product.id_product;
+  const [Sales, setSales] = useState([]);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     setCart(
@@ -54,13 +59,13 @@ export const ProductDetails = () => {
 
   const handleFav = (id) => {
     if (isFav) {
-      deleteFavorite(user.username, id)
-      setFav(false)
+      deleteFavorite(user.username, id);
+      setFav(false);
     } else {
-      addFavorite(user.username, id)
-      setFav(true)
+      addFavorite(user.username, id);
+      setFav(true);
     }
-  }
+  };
 
   const handleCart = () => {
     if (cart) {
@@ -71,6 +76,30 @@ export const ProductDetails = () => {
       setCart(true);
     }
   };
+
+  const handleProductDetail = async () => {
+    const { data } = await axios.get("/products/getProductDetailSales", {
+      params: {
+        product: product.id_product,
+      },
+    });
+    setSales(data.Sales);
+  };
+
+  useEffect(() => {
+    handleProductDetail();
+  }, [product]);
+
+  const hasUserPurchased = (sales) => {
+    for (const sale of sales) {
+      if (sale.UserIdUser === user.id_user) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const userCanCommentAndRate = hasUserPurchased(Sales);
 
   return (
     <div>
@@ -178,7 +207,7 @@ export const ProductDetails = () => {
             }}
           >
             <Typography
-              style={{ fontFamily: "Poppins", color:"white" }}
+              style={{ fontFamily: "Poppins", color: "white" }}
               variant="h4"
               gutterBottom
             >
@@ -293,48 +322,34 @@ export const ProductDetails = () => {
                 )}
               </Button>
               <Button
-              style={{
-                color: theme.palette.primary.main,
-                width: '70px',
-                borderRadius: '10px',
-                border: '3px solid #B0B0B0'
-              }}
-              variant="outlined"
-              onClick={() => handleFav(product.id_product)}>
-            {isFav ? (
-              <FavoriteOutlinedIcon
-                fontSize="large"
+                style={{
+                  color: theme.palette.primary.main,
+                  width: "70px",
+                  borderRadius: "10px",
+                  border: "3px solid #B0B0B0",
+                }}
+                variant="outlined"
                 onClick={() => handleFav(product.id_product)}
-              />
-            ) : (
-              <FavoriteBorderOutlinedIcon
-                fontSize="large"
-                onClick={() => handleFav()}
-              />
-            )}
-            </Button>
+              >
+                {isFav ? (
+                  <FavoriteOutlinedIcon
+                    fontSize="large"
+                    onClick={() => handleFav(product.id_product)}
+                  />
+                ) : (
+                  <FavoriteBorderOutlinedIcon
+                    fontSize="large"
+                    onClick={() => handleFav()}
+                  />
+                )}
+              </Button>
             </div>
           </div>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          textAlign: "center",
-          padding: "1rem",
-        }}
-      >
-        <hr style={{ width: "98%" }}></hr>
-        <Typography
-          variant="h5"
-          p={1}
-          mb={-1}
-          color={theme.palette.primary.main}
-        >
-          Reviews
-        </Typography>
-      </div>
+
+      <hr style={{ width: "98%" }}></hr>
+
       <div
         style={{
           display: "flex",
@@ -343,9 +358,31 @@ export const ProductDetails = () => {
         }}
       >
         <div>
-          <Reviews idProduct={idProduct}/>
+          {userCanCommentAndRate ? (
+            <Reviews idProduct={idProduct} setUpdate={setUpdate}/>
+          ) : (
+            <Card
+              style={{
+                maxWidth: 600,
+                margin: "2rem",
+                padding: "1rem",
+                marginTop:"3rem",
+                fontFamily: theme.typography.fontFamily,
+                color: theme.palette.secondary.main,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h6" style={{ textAlign: "justify" }}>
+                  You will be able to rate and review this product after making
+                  a purchase.
+                </Typography>
+              </CardContent>
+            </Card>
+          )}
         </div>
-        <CustomizedAccordions idProduct={idProduct} />
+        <div style={{ marginBlock: "1rem", width:"100%" }}>
+          <CustomizedAccordions idProduct={idProduct} update={update} />
+        </div>
       </div>
     </div>
   );

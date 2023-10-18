@@ -1,12 +1,12 @@
 import {Router} from 'express'
-const postSale= require('../controllers/postSale')
-const getSale= require('../controllers/getSale')
-const paymentIntent = require('../controllers/paymentIntent')
-const salesMetrics = require('../controllers/salesMetrics')
-const stockMetrics= require('../controllers/stockMetrics')
-const userSalesMetrics= require('../controllers/userSalesMetrics')
-const ratingMetrics= require('../controllers/ratingMetrics')
-const getSalesByDate= require('../controllers/getSalesByDate')
+const postSale= require('../controllers/salesControllers/postSale')
+const getSale= require('../controllers/salesControllers/getSale')
+const paymentIntent = require('../controllers/salesControllers/paymentIntent')
+const salesMetrics = require('../controllers/salesControllers/salesMetrics')
+const stockMetrics= require('../controllers/salesControllers/stockMetrics')
+const userSalesMetrics= require('../controllers/salesControllers/userSalesMetrics')
+const ratingMetrics= require('../controllers/salesControllers/ratingMetrics')
+const getSalesByDate= require('../controllers/salesControllers/getSalesByDate')
 
 const salesRoutes = Router()
 

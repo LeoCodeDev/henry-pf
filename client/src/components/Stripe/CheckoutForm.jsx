@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const CheckoutForm = () => {
+  const coupon= JSON.parse(localStorage.getItem('coupon')) || null
   const stripe = useStripe();
   const elements = useElements();
   const [countryCode, setCountryCode] = useState("");
@@ -113,9 +114,11 @@ const CheckoutForm = () => {
             address: address,
             phone_number: fullPhoneNumber,
             products: shoppingCart,
-            email: getEmailFromLs
+            email: getEmailFromLs,
+            coupon
         })
         clearCart()
+        localStorage.removeItem('coupon')
         navigate('/order-placed')
     }
   };

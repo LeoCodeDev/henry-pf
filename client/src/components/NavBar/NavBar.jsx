@@ -83,7 +83,6 @@ export const NavBar = () => {
     if (value === "HOME") navigate("/home");
     if (value === "SHOP") navigate("/home");
     if (value === "EXERCISE") navigate("/home");
-    if (value === "ADD PRODUCT") navigate("/product-creation");
   };
 
   const handleCloseNavMenu = () => {
@@ -164,13 +163,13 @@ export const NavBar = () => {
                   <Typography>{'EXERCISE'}</Typography>
                 </MenuItem>
 
-                <MenuItem
+                {/* <MenuItem
                   component="a"
                   href="/product-creation"
                   key={'ADD PRODUCT'}
                   onClick={handleCloseNavMenu}>
                   <Typography>{'ADD PRODUCT'}</Typography>
-                </MenuItem>
+                </MenuItem> */}
               </Menu>
             </Box>
 

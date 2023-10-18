@@ -1,8 +1,8 @@
 import { Router } from "express";
-const addCoupon= require("../controllers/addCoupon") ;
-const updateCoupon= require("../controllers/updateCoupon") ;
-const validateCoupon= require("../controllers/validateCoupon") ;
-const getCoupons= require("../controllers/getCoupons") ;
+const addCoupon= require("../controllers/dashboardControllers/addCoupon") ;
+const updateCoupon= require("../controllers/dashboardControllers/updateCoupon") ;
+const validateCoupon= require("../controllers/dashboardControllers/validateCoupon") ;
+const getCoupons= require("../controllers/dashboardControllers/getCoupons") ;
 const checkToken = require('../middlewares/authentications')
 const checkRole = require('../middlewares/checkRole')
 

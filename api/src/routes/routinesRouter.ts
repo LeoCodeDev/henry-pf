@@ -1,11 +1,11 @@
 import { Router } from "express";
-const postRoutine  = require("../controllers/postRoutine");
-const getUserRoutines= require('../controllers/getUserRoutines')
-const getAllRoutines= require('../controllers/getAllRoutines')
-const addUserRoutine = require('../controllers/addUserRoutine')
-const putActiveRoutine= require('../controllers/putDeleteRutine')
-const putChangesInRoutine = require('../controllers/putChangesInRoutine')
-const deleteSavedRoutine = require('../controllers/deleteSavedRoutine')
+const postRoutine  = require("../controllers/routinesControllers/postRoutine");
+const getUserRoutines= require('../controllers/routinesControllers/getUserRoutines')
+const getAllRoutines= require('../controllers/routinesControllers/getAllRoutines')
+const addUserRoutine = require('../controllers/routinesControllers/addUserRoutine')
+const putActiveRoutine= require('../controllers/routinesControllers/putDeleteRutine')
+const putChangesInRoutine = require('../controllers/routinesControllers/putChangesInRoutine')
+const deleteSavedRoutine = require('../controllers/routinesControllers/deleteSavedRoutine')
 const checkToken = require('../middlewares/authentications')
 const checkRole = require('../middlewares/checkRole')
 

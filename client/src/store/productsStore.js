@@ -163,11 +163,14 @@ const useProductsStore = create((set, get) => ({
         userId,
         productId,
       });
-      if (response.status === 201) {
-        window.alert('Publised review');
-      }
+
+      // if (response.status === 201) {
+      //   window.alert('Publised review');
+      // }
+      return response.status;
     } catch (error) {
-      throw new Error(error.message)
+      return error.response.status
+      // throw new Error(error.response.status)
     }
   },
   fetchProductReviews: async (productId) => {
@@ -179,6 +182,7 @@ const useProductsStore = create((set, get) => ({
           comment: review.comment,
           rating: review.rating,
           createdAt: review.createdAt,
+          username: review.User?.username
         }));
         return reviews;
       } else {
