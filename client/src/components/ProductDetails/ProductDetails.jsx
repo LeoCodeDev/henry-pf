@@ -87,8 +87,7 @@ export const ProductDetails = () => {
           product: product.id_product,
         },
       });
-      DS = data
-      console.log(DS);
+      DS = data;
       setSales(data.Sales);
     } catch (error) {
       console.log(error.message);
@@ -97,20 +96,21 @@ export const ProductDetails = () => {
       setIsLoading(false);
     }, 300);
     setSales(DS.Sales);
-    console.log(DS);
   };
 
   useEffect(() => {
     handleProductDetail();
   }, [product]);
 
-  const hasUserPurchased = (sales) => {
-    for (const sale of sales) {
-      if (sale.UserIdUser === user.id_user) {
-        return true;
+  const hasUserPurchased = (sales) => { 
+    if (sales) {
+      for (const sale of sales) {
+        if (sale.UserIdUser === user.id_user) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
   };
   let userCanCommentAndRate = false;
   userCanCommentAndRate = hasUserPurchased(Sales);
