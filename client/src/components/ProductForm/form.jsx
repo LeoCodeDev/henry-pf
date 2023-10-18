@@ -157,8 +157,8 @@ export default function ProductForm() {
               onSubmit={handleSubmit}
               width= {isMobile ? '80%' : '70%'}
               sx={{
-                backgroundColor: theme.palette.background.paper,
-                padding: 3,
+                backgroundColor: theme.palette.background_ligth?.main,
+                padding: 4,
                 borderRadius: 6,
                 marginTop: 2,
               }}
@@ -259,7 +259,7 @@ export default function ProductForm() {
                 </Grid>
                 <Grid item xs={12}>
                   <DropAndCrop
-                    endpoint={'/postImage'}
+                    endpoint={'/products/postImage'}
                     setProductImageURL={setProductImageURL}
                   />
                 </Grid>

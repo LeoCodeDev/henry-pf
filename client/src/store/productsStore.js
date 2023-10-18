@@ -155,6 +155,45 @@ const useProductsStore = create((set, get) => ({
       throw new Error(error.message)
     }
   },
+  submitReview: async (productId, comment, rating, userId) => {
+    try {
+      const response = await axios.post('/products/postProductReview', {
+        comment,
+        rating,
+        userId,
+        productId,
+      });
+
+      // if (response.status === 201) {
+      //   window.alert('Publised review');
+      // }
+      return response.status;
+    } catch (error) {
+      return error.response.status
+      // throw new Error(error.response.status)
+    }
+  },
+  fetchProductReviews: async (productId) => {
+    try {
+      const response = await axios.get(`/products/getProductReviews/${productId}`);
+      if (response.data) {
+        const reviews = response.data.map((review) => ({
+          userId: review.userId,
+          comment: review.comment,
+          rating: review.rating,
+          createdAt: review.createdAt,
+          username: review.User?.username
+        }));
+        return reviews;
+      } else {
+        throw new Error('No reviews found');
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+
 }))
+
 
 export { useProductsStore }

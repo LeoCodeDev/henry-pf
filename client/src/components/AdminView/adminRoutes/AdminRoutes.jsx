@@ -7,22 +7,30 @@ import { Sales } from "../scenes/Sales/Sales";
 import { TableCreate } from "../scenes/Tables/TableCreate";
 import { TableStocks } from "../scenes/Tables/TableStocks";
 import { Coupon } from "../scenes/Marketing/Coupon";
-
-
-
-
-
+import { Update } from '../../ProductUpdate/ProductUpdate'
+import UserDetails from "../../userAdmin/userDetails";
+import ProductFormView from "../../../views/Product Form/productForm";
 
 export const AdminRoutes = [
   {
-    path: "/admin/",
+    path: '/admin/',
     element: <Dashboard />,
-    title: "dashboard",
+    title: 'dashboard'
   },
   {
-    path: "/admin/table-update",
+    path: 'admin/update',
+    element: <Update />,
+    title: 'product update'
+  },
+  {
+    path: '/admin/table-update',
     element: <TableUpdate />,
-    title: "table update",
+    title: 'table update'
+  },
+  {
+    path: "/admin/table-create",
+    element: <TableCreate />,
+    title: "table sales",
   },
   {
     path: "/admin/table-create",
@@ -35,9 +43,14 @@ export const AdminRoutes = [
     title: "table sales",
   },
   {
-    path: "/admin/table-users",
+    path: "/admin/table-stocks",
+    element: <TableStocks />,
+    title: "table sales",
+  },
+  {
+    path: '/admin/table-users',
     element: <TableUsers />,
-    title: "table users",
+    title: 'table users'
   },
   {
     path: "/admin/sales",
@@ -50,14 +63,23 @@ export const AdminRoutes = [
     title: "line graphics",
   },
   {
-    path: "/admin/bar",
+    path: '/admin/bar',
     element: <Bar />,
-    title: "line graphics",
+    title: 'line graphics'
   },
   {
-    path: "/admin/pie",
+    path: '/admin/pie',
     element: <Pie />,
-    title: "line graphics",
+    title: 'line graphics'
   },
-  
+  {
+    path:'/admin/table-users/user-details/:email',
+    element: <UserDetails/>,
+    title: 'user details'
+  },
+  {
+    path: "/admin/table-create",
+    element: <ProductFormView />,
+    title: "product-creation",
+  },
 ];

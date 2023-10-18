@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useEffect, useState } from 'react'
 import styles from '../ModalCart/ModelCart.module.css'
 import { CardProductMiniCart } from '../../CardProductMiniCart/CardProductMiniCart'
 import Button from '@mui/material/Button'
@@ -9,14 +9,19 @@ import { isMobile } from 'react-device-detect'
 import { useCartStore } from '../../../store/shoppingCartStore'
 import { useAuthStore } from '../../../store/authStore'
 import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
+import toast, { Toaster } from "react-hot-toast";
 
 export const ModalCart = ({ toggleDrawer }) => {
   const { shoppingCart, totalToPay ,setTotalToPay} = useCartStore()
-  const [coupon, setCoupon] = useState("");
-  const [cuponUsed, setCuponUsed] = useState(false);
+  const [coupon, setCoupon] = useState('');
   const {user, setShowRegister}= useAuthStore()
   const navigate= useNavigate()
+
+  useEffect(() => {
+    if (localStorage.getItem('coupon')) {
+    const {discount}=JSON.parse(localStorage.getItem('coupon'))
+      setTotalToPay(totalToPay - discount )}
+    },[shoppingCart])
 
   const validateTokenUser= async()=>{
     console.log('function')
@@ -41,14 +46,18 @@ export const ModalCart = ({ toggleDrawer }) => {
 
   const setCouponDiscount=async(coupon)=>{
     if(coupon){
-      const { data } = await axios.get(`/dashboard/validateCoupon?email=${user.email}&code=${coupon}`)
-      console.log(data)
-      if(data.message !='Coupon is valid'){
-          toast.error("Invalid or expired coupon!")
+      try {
+        const { data} = await axios.get(`/dashboard/validateCoupon?email=${user.email}&code=${coupon}`)
+        if(data.message != 'Coupon is valid'){
+            toast.error("Invalid or expired coupon!")
+        }
+        localStorage.setItem('coupon', JSON.stringify({coupon:coupon,discount:data.discount}))
+        setTotalToPay(totalToPay-data.discount)
+        toast.success("Coupon applied successfully!")
       }
-      setTotalToPay(totalToPay-data.discount)
-      setCuponUsed(true)
-      toast.success("Coupon applied successfully!")
+      catch (error) {
+        toast.error("Invalid or expired coupon!")
+      }
     }
   }
 
@@ -74,7 +83,7 @@ export const ModalCart = ({ toggleDrawer }) => {
             </div>
           ))}
         </section>
-        {cuponUsed?<p className={styles.subtitle}>Coupon applied successfully!</p>:
+        {localStorage.getItem('coupon')?<p className={styles.subtitle}>Coupon applied successfully!</p>:
         <section>
         <TextField
               label="Discount Coupon"
@@ -103,6 +112,8 @@ export const ModalCart = ({ toggleDrawer }) => {
             GO TO PAY
           </Button>
         </section>
+        
+      <Toaster position="top-center" reverseOrder={false} />
       </div>
     </>
   )

@@ -7,6 +7,11 @@ const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:8000'
 
 axios.defaults.baseURL = baseUrl
 
+axios.interceptors.request.use(function (config) {
+  config.withCredentials = true;
+  return config;
+});
+
 import { ThemeProvider } from '@mui/material/styles'
 import theme from '../theme'
 
