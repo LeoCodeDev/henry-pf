@@ -1,14 +1,14 @@
-import { NavBar } from "../../components/NavBar/NavBar";
-import { Update } from "../../components/ProductUpdate/ProductUpdate";
+// import { NavBar } from "../../components/NavBar/NavBar";
+// import { Update } from "../../components/AdminView/scenes/ProductUpdate/ProductUpdate";
 
-const productUpdate = ()=>{
-    return (
-        <>
-        <NavBar />
-        <Update />
-        </>
-    )
-}
+// const productUpdate = ()=>{
+//     return (
+//         <>
+//         <NavBar />
+//         <Update />
+//         </>
+//     )
+// }
 
-export default productUpdate;
+// export default productUpdate;
 

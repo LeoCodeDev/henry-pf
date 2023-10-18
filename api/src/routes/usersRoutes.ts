@@ -16,7 +16,7 @@ const refreshToken = require('../controllers/refreshToken')
 const deleteToken = require('../controllers/deleteToken')
 const resetPasswordToken = require('../controllers/resetPasswordToken')
 const getAccessTokenExpiration = require('../controllers/validateTokenExpiration')
-// const checkToken = require('../middlewares/authentications')
+const checkToken = require('../middlewares/authentications')
 // const checkRole = require('../middlewares/checkRole')
 
 const usersRoutes = Router()
@@ -24,14 +24,14 @@ const usersRoutes = Router()
 usersRoutes.post('/login', userLogin) 
 usersRoutes.post('/postUser', postUser) 
 usersRoutes.get('/getUser', getUser) 
-usersRoutes.put("/newPassword/:id", putNewPasswordUser); 
+usersRoutes.put("/newPassword/:id", checkToken, putNewPasswordUser); 
 usersRoutes.get('/getAllFavorites', getAllFavorites); 
 usersRoutes.post('/postFavorite', postFavorite); 
 usersRoutes.delete('/delFavorite', delFavorite); 
 usersRoutes.post('/delImage', delImage);
-usersRoutes.put('/putUser', putUser); 
+usersRoutes.put('/putUser',checkToken, putUser); 
 usersRoutes.get("/getTeams", getTeams )
-usersRoutes.get('/allUsers', getAllUsers) 
+usersRoutes.get('/allUsers',getAllUsers) 
 usersRoutes.post("/send-email", postMail);
 usersRoutes.get('/tokenValidation',tokenValidation)
 usersRoutes.get('/refreshToken',refreshToken)
