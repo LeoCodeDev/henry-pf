@@ -2,6 +2,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./themeAdmin";
 import { TopBar } from "./scenes/Global/TopBar";
 import { SideBar } from "./scenes/Global/SideBar";
+import styles from './Css/AdminView.module.css';
 
 export const AdminView = ({ children }) => {
   const [theme, colorMode] = useMode();
@@ -10,14 +11,17 @@ export const AdminView = ({ children }) => {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="App">
+        <div className="App" style={{width: '100%'}}>
           <main className="content" style={{display: 'flex'}}>
-            <div>
+            <>
               <SideBar />
-            </div>
+            </>
             <div style={{width: '100%'}}>
               <TopBar />
-              {children}
+              <div className={styles.children}  style={{overflow: 'scroll', height: '91vh'}}>
+               {children} 
+              </div>
+              
             </div>
           </main>
         </div>
