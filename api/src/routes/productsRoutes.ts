@@ -1,16 +1,16 @@
 import {Router} from 'express'
-import productDetailSales from '../controllers/getProductDetailSales';
-const postProduct = require('../controllers/postProduct');
-const getProducts  = require("../controllers/getProducts");
-const getCategories  = require("../controllers/getCategories");
-const getProductByName= require('../controllers/getProductByName')
-const getProductsById = require("../controllers/getProductById");
-const activeDesactiveproduct = require("../controllers/putProduct");
-const getAllProductsAdmin = require('../controllers/getAllproducts');
-const updateProductStock= require('../controllers/stockUpdate')
-const postProductReview = require('../controllers/postProductReview');
-const { processImage, postImage } = require('../controllers/postImage')
-const getProductReviews = require('../controllers/getProductReviews');
+import productDetailSales from '../controllers/productsControllers/getProductDetailSales';
+const postProduct = require('../controllers/productsControllers/postProduct');
+const getProducts  = require("../controllers/productsControllers/getProducts");
+const getCategories  = require("../controllers/productsControllers/getCategories");
+const getProductByName= require('../controllers/productsControllers/getProductByName')
+const getProductsById = require("../controllers/productsControllers/getProductById");
+const activeDesactiveproduct = require("../controllers/productsControllers/putProduct");
+const getAllProductsAdmin = require('../controllers/productsControllers/getAllproducts');
+const updateProductStock= require('../controllers/productsControllers/stockUpdate')
+const postProductReview = require('../controllers/productsControllers/postProductReview');
+const { processImage, postImage } = require('../controllers/productsControllers/postImage')
+const getProductReviews = require('../controllers/productsControllers/getProductReviews');
 const checkToken = require('../middlewares/authentications')
 const checkRole = require('../middlewares/checkRole')
 
