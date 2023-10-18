@@ -2,14 +2,17 @@ import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import {
+  Box,
+  Typography,
+  CardContent,
+} from "@mui/material/";import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
 import { useProductsStore } from "../../store/productsStore";
 import Rating from "@mui/material/Rating";
+import theme from "../../../theme";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -40,9 +43,10 @@ const AccordionSummary = styled((props) => (
     transform: "rotate(90deg)",
   },
   "& .MuiAccordionSummary-content": {
-    alignItems:"center",
-    justifyContent:"space-between",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginLeft: theme.spacing(1),
+    marginRight: 0
   },
 }));
 
@@ -85,58 +89,54 @@ export default function CustomizedAccordions(props) {
         .catch((error) => {
           console.error("Error fetching product reviews:", error);
         });
-
-
-
     }, [productid, props.update]); // El efecto se ejecutará cada vez que cambie productid
 
-    const getAllUsers = async () => {
-      try {
-        const response = await fetch(`/users/getAllUsers`);
-        if (!response.ok) {
-          throw new Error("No se pudieron obtener los usuarios.");
-        }
-        const allUsers = await response.json();
-        return allUsers;
-      } catch (error) {
-        console.error("Error al obtener los usuarios:", error);
-        return [];
-      }
-    };
-
     return (
-      visibleComments.map((comment, index) => (
-        <Accordion
-          size="small"
-          key={index}
-          expanded={expanded === `panel${startIndex + index + 1}`}
-          onChange={handleChange(`panel${startIndex + index + 1}`)}
-          
-        >
-          <AccordionSummary
-            aria-controls={`panel${startIndex + index + 1}d-content`}
-            id={`panel${startIndex + index + 1}d-header`}
-          >
-            <Typography color={"#1c7805"} style={{minWidth:"4rem"}}>{comment.username}</Typography>
-            <Rating
-              sx={{ marginLeft: 3, color: "gray", fontSize: "1rem" }}
-              name="product-rating"
-              value={comment.rating}
-              precision={0.5}
-              style={{ pointerEvents: "none" }}
-            />
-            <Typography sx={{ marginLeft: 2, fontSize: "0.8rem", marginRight:"1rem" }}>
-              {comment.createdAt.substring(0, 10)}
-            </Typography>
-            <Typography sx={{ fontSize: "0.8rem", minWidth:"30%" }}>
-              {comment.comment.substring(0, 20)}...
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography sx={{ fontSize: "0.8rem"}}>{comment.comment}</Typography>
-          </AccordionDetails>
-        </Accordion>
-    )));
+      <>
+        {visibleComments.length > 0 ? (
+          visibleComments.map((comment, index) => (
+            <Accordion
+              key={index}
+              expanded={expanded === `panel${startIndex + index + 1}`}
+              onChange={handleChange(`panel${startIndex + index + 1}`)}
+            >
+              <AccordionSummary
+                aria-controls={`panel${startIndex + index + 1}d-content`}
+                id={`panel${startIndex + index + 1}d-header`}
+              >
+                <Typography color={theme.palette.primary.main} style={{ minWidth: "5rem" }}>
+                  {comment.username}
+                </Typography>
+                <Rating
+                  sx={{ marginLeft: 3, color: "gray", fontSize: "0.9rem" }}
+                  name="product-rating"
+                  value={comment.rating}
+                  precision={0.5}
+                  style={{ pointerEvents: "none" }}
+                />
+                <Typography
+                  sx={{ marginLeft: 2, fontSize: "0.9rem", marginRight: "1rem" }}
+                >
+                  {comment.createdAt.substring(0, 10)}
+                </Typography>
+                <Typography sx={{ fontSize: "0.9rem"}}>
+                  {comment.comment.substring(0, 20)}...
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography sx={{ fontSize: "0.9rem" }}>{comment.comment}</Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))
+        ) : (
+          <CardContent>
+          <Typography variant="h6" style={{ textAlign: "justify" }}>
+          There are no reviews available for this product.
+          </Typography>
+        </CardContent>
+        )}
+      </>
+    );    
   };
 
   const handlePageChange = (page) => {
@@ -145,11 +145,11 @@ export default function CustomizedAccordions(props) {
 
   return (
     <Box
-      sx={{display:"flex", flexDirection:"column", alignItems:"center"}}
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       width={"100%"}
       mt={-4}
     >
-      <Stack p={2} >
+      <Stack p={2}>
         <Pagination
           count={totalPages}
           page={currentPage}
