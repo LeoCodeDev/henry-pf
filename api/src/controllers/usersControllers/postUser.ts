@@ -1,11 +1,16 @@
 const {User, Team}= require("../../db_connection")
 import { Request, Response } from "express";
 import geoLocation from '../geolocation'
+interface CustomRequest extends Request {
+    clientIp?: any; // Ajusta el tipo de 'user' según lo que esperes
+}
 
+const postUser= async (req: CustomRequest, res: Response) => {
 
-const postUser= async (req: Request, res: Response) => {
-    
-     const ip_location = await geoLocation()
+    const ip = req.clientIp
+
+     const ip_location = await geoLocation(ip)
+     console.log({ip_location , aviso: 'este es un avios de donde esta el ip', ip})
     try {
         const { username, first_name, last_name, password, avatar, email, birth_date, role, team} = req.body;
         if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && team!== "" && role!== "") {

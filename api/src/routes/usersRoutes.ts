@@ -19,11 +19,12 @@ const getAccessTokenExpiration = require('../controllers/usersControllers/valida
 const checkToken = require('../middlewares/authentications')
 const manageUser = require('../controllers/manageUser')
 // const checkRole = require('../middlewares/checkRole')
+const requestIp = require('request-ip');
 
 const usersRoutes = Router()
 
 usersRoutes.post('/login', userLogin) 
-usersRoutes.post('/postUser', postUser) 
+usersRoutes.post('/postUser',requestIp.mw(), postUser) 
 usersRoutes.get('/getUser', getUser) 
 usersRoutes.put("/newPassword/:id", checkToken, putNewPasswordUser); 
 usersRoutes.get('/getAllFavorites', getAllFavorites); 
