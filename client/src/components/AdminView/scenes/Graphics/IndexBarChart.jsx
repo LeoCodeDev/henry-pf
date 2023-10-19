@@ -1,52 +1,82 @@
-import { BarChart } from '@mui/x-charts/BarChart'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import {
+  ResponsiveChartContainer,
+  BarPlot,
+  LinePlot,
+  ChartsXAxis,
+  ChartsYAxis,
+} from '@mui/x-charts';
+import { Box } from '@mui/material';
+
 
 const IndexBarChart = () => {
   const [sales, setSales] = useState({
     keys: [],
-    values: []
+    values: [],
+    quantities: [],
   })
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios('/sales/getLastYearSales?type=sum')
+        const { data: dataQuantity  } = await axios('/sales/getLastYearSales?type=count')
         const keys = Object.keys(data)
         const values = Object.values(data)
+        const quantities = Object.values(dataQuantity)
         setSales({
           keys: keys,
-          values: values
+          values: values,
+          quantities: quantities
         })
       } catch (error) {
-        console.log(error)
+        console.log({error: error.message})
       }
     }
     fetchData()
   }, [])
 
+  if(!sales.keys.length || !sales.values.length) return <h1>loading</h1>
   return (
     <>
-      <section>
-        <h4>Total sales last year</h4>
-      {sales.keys.length > 0 &&
-        <BarChart
-          xAxis={[
-            {
-              id: 'Sales per year',
-              data: sales.keys,
-              scaleType: 'band',
-            },
-          ]}
-          series={[
-            {
-              data: sales.values,
-            },
-          ]}
-          width={500}
-          height={300}
-        />}
-      </section>
+    <Box sx={{width: '100%', maxWidth: 500 }}>
+      <ResponsiveChartContainer
+      xAxis={[
+        {
+          scaleType: 'band',
+          data: sales.keys,
+          id: 'quarters',
+          label: 'Quarters'
+        },
+      ]}
+      yAxis={[{id: 'money'}, {id: 'quantities'}]}
+      series={[
+        {
+          type: 'line',
+          id: 'revenue',
+          yAxisKey: 'money',
+          data: sales.quantities
+        }, 
+        {
+          type: 'bar',
+          id: 'sales',
+          yAxisKey: 'quantities',
+          data: sales.values
+        },
+      ]}
+      width={500}
+      height={400}
+      margin={{ top: 20 }}
+      
+      >
+        <BarPlot />
+        <LinePlot />
+        <ChartsXAxis axisId="quarters" label="Total sales last year" labelFontSize={18} />
+        <ChartsYAxis axisId="quantities" label="Total" />
+        <ChartsYAxis axisId="money" position="right" label="Quantities" />
+      </ResponsiveChartContainer>
+    </Box>
     </>
   )
 }
