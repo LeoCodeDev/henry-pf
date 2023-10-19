@@ -385,7 +385,7 @@ export const ProductDetails = () => {
             </div>
           </div>
 
-          <hr style={{ width: "98%" }}></hr>
+          <hr style={{ width: "98%", marginBlock:"4rem" }}></hr>
 
           <div
             style={{
@@ -410,6 +410,7 @@ export const ProductDetails = () => {
                     margin: "2rem",
                     padding: "1rem",
                     marginTop: "3rem",
+                    maxHeight:"15vh",
                     fontFamily: theme.typography.fontFamily,
                     color: theme.palette.secondary.main,
                   }}
@@ -424,7 +425,7 @@ export const ProductDetails = () => {
               )}
             </div>
             <div style={{ marginBlock: "1rem", width: "100%" }}>
-              <CustomizedAccordions idProduct={idProduct} update={update} />
+              <CustomizedAccordions idProduct={idProduct} update={update} user={user}/>
             </div>
           </div>
         </>
