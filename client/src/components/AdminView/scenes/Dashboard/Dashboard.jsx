@@ -1,46 +1,31 @@
-import { Box, Grid } from "@mui/material";
-import { BasicCard } from "../../../Card/Card";
-import { TotalSells } from "../../../TotalsCards/TotalSells";
-import { TotalSales } from "../../../TotalsCards/TotalSales";
-import { TotalUsers } from "../../../TotalsCards/TotalUsers";
+import { Box, Grid } from '@mui/material'
+import { BasicCard } from '../../../Card/Card'
+import { TotalSells } from '../../../TotalsCards/TotalSells'
+import { TotalSales } from '../../../TotalsCards/TotalSales'
+import { TotalUsers } from '../../../TotalsCards/TotalUsers'
+import { IndexBarChart } from '../Graphics/IndexBarChart'
 
 export const Dashboard = () => {
-  const dashboardData = [
-    {
-      xs: 12,
-      sm: 4,
-      children: <TotalSells />
-    },
-    {
-      xs: 12,
-      sm: 4,
-      children: <TotalSales />
-    },
-      {
-        xs: 12,
-      sm: 4,
-      children: <TotalUsers />
-    },
-  ]
+  // eslint-disable-next-line react/jsx-key
+  const dashboardData = [<TotalSells />, <TotalSales />, <TotalUsers />]
+
   return (
     <>
-      <Box sx={{ m: "1rem" }}>
+      <Box sx={{ m: '1rem' }}>
         <Grid container spacing={1}>
-        {dashboardData.map((item, index ) => (
-          <Grid item xs={item.xs} sm={item.sm} key={index}>
-            <BasicCard>
-              {item.children}
-            </BasicCard>
-          </Grid>
-        ))}
+          {dashboardData.map((item, index) => (
+            <Grid item xs={12} sm={4} key={index}>
+              <BasicCard>{item}</BasicCard>
+            </Grid>
+          ))}
         </Grid>
       </Box>
 
-      <Box sx={{ m: "1rem" }}>
+      <Box sx={{ m: '1rem' }}>
         <BasicCard customHeight={256}>
-
+            <IndexBarChart/>
         </BasicCard>
       </Box>
     </>
-  );
-};
+  )
+}
