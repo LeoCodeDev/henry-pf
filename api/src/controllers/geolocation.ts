@@ -1,11 +1,13 @@
 import axios from "axios";
 const { API_KEY_IP } = process.env;
-const { isIPv6 } = require('net');
+import { isIPv4, isIPv6 } from 'net';
 
 
-const geoLocation = async () => {
+const geoLocation = async (IP:string) => {
+
   const {data} = await axios.get('https://api.ipgeolocation.io/getip')
-  const {ip} = data
+  const ip = isIPv6(IP) || isIPv4(IP) ? IP : data.ip;
+
 
  try {
     if (ip && isIPv6(ip)) {

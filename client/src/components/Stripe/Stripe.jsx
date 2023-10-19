@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Loader from '../Loader/Loader';
 import {useCartStore} from "../../store/shoppingCartStore"
+import { useProductsStore } from '../../store/productsStore'
 
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -16,6 +17,7 @@ export default function Stripe() {
     const [clientSecretKey,setClientSecretKey] = useState('')
     const [isLoading,setIsLoading] = useState(true)
     const {totalToPay} = useCartStore()
+    const {actualCurrency} = useProductsStore()
 
     const themeDesign = {
         theme: 'night',
@@ -25,7 +27,7 @@ export default function Stripe() {
 
     useEffect(() => {
         const getPaymentIntent = async() => {
-        const { data } = await axios.post('/sales/paymentIntent',{amount:totalToPay,currency:'usd'})
+        const { data } = await axios.post('/sales/paymentIntent',{amount:totalToPay,currency:actualCurrency})
         const client_secret = data.client_secret
         setClientSecretKey(client_secret);
         setIsLoading(false)

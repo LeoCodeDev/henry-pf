@@ -1,10 +1,13 @@
 const { Sale, Product, User, Coupon } = require('../../db_connection');
 import { Request, Response } from "express";
+import currenciesExchange from "../currenciesExchanges"
 import axios from "axios";
+// import { parse } from "path";
 
 const createSale = async (req:Request, res:Response) => {
-    const {  total, address, phone_number, products, email, coupon } = req.body;
+    const {  total, address, phone_number, products, email, coupon, currency } = req.body;
     const parsedTotal=parseFloat(total)
+    const parsedCurrency= await currenciesExchange(currency, 'USD', parsedTotal.toString())
     try {
         if(!total || !address || !phone_number || !products || !email)
         {res.status(400).json({ message: "Missing required fields" })}
@@ -14,7 +17,7 @@ const createSale = async (req:Request, res:Response) => {
         }
         const sale = await Sale.create({
             
-            total:parsedTotal,
+            total:parsedCurrency,
             address,
             phone_number
         });

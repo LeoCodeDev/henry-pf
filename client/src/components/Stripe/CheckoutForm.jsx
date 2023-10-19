@@ -17,6 +17,7 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useCartStore } from "../../store/shoppingCartStore";
 import { useNavigate } from "react-router-dom";
+import { useProductsStore } from "../../store/productsStore";
 
 
 const CheckoutForm = () => {
@@ -29,6 +30,7 @@ const CheckoutForm = () => {
   const [address, setAddress] = useState("");
   const [countryCodes, setCountryCodes] = useState([]);
   const { shoppingCart, totalToPay, clearCart} = useCartStore()
+  const { actualCurrency } = useProductsStore()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -115,7 +117,8 @@ const CheckoutForm = () => {
             phone_number: fullPhoneNumber,
             products: shoppingCart,
             email: getEmailFromLs,
-            coupon
+            coupon , 
+            currency : actualCurrency
         })
         clearCart()
         localStorage.removeItem('coupon')
