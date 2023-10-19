@@ -2,24 +2,24 @@ import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
-import {
-  Box,
-  Typography,
-  CardContent,
-} from "@mui/material/";import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import { Box, Typography, CardContent, IconButton, Grid } from "@mui/material/";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useProductsStore } from "../../store/productsStore";
 import Rating from "@mui/material/Rating";
 import theme from "../../../theme";
+import { isDesktop } from "react-device-detect";
+import ReportIcon from "@mui/icons-material/Report";
+import ReportOffIcon from "@mui/icons-material/ReportOff";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   marginLeft: -2,
-  width: "98%",
+  width: "90%",
   "&:not(:last-child)": {
     borderBottom: 0,
   },
@@ -44,9 +44,12 @@ const AccordionSummary = styled((props) => (
   },
   "& .MuiAccordionSummary-content": {
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "initial",
+    height: "2rem",
+    gap: isDesktop ? "12%" : "0.5rem",
+    overflow: "hidden",
     marginLeft: theme.spacing(1),
-    marginRight: 0
+    marginRight: 0,
   },
 }));
 
@@ -60,7 +63,7 @@ export default function CustomizedAccordions(props) {
   const productStore = useProductsStore();
   const productid = props.idProduct;
   const [comments, setComments] = useState([]);
-
+  const [reported, setReported] = useState({});
   const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1);
   const [expanded, setExpanded] = useState(null); // Estado para controlar la expansión de los acordeones
@@ -78,6 +81,12 @@ export default function CustomizedAccordions(props) {
     const visibleComments = comments.slice(startIndex, endIndex);
 
     useEffect(() => {
+      console.log("Reported: ", reported);
+      console.log("Type: 'comment'");
+      console.log("Usuario que reporta: ", props.user);
+    }, [reported]);
+
+    useEffect(() => {
       // Realizar la llamada asincrónica y actualizar el estado cuando esté completo
       productStore
         .fetchProductReviews(productid)
@@ -90,6 +99,15 @@ export default function CustomizedAccordions(props) {
           console.error("Error fetching product reviews:", error);
         });
     }, [productid, props.update]); // El efecto se ejecutará cada vez que cambie productid
+
+    const handleReport = (comment) => {
+      if (!reported[comment.username]) {
+        setReported({ ...reported, [comment.username]: true });
+      } else {
+        setReported({ ...reported, [comment.username]: false });
+      }
+      console.log("el comentario entero:", comment);
+    };
 
     return (
       <>
@@ -104,39 +122,120 @@ export default function CustomizedAccordions(props) {
                 aria-controls={`panel${startIndex + index + 1}d-content`}
                 id={`panel${startIndex + index + 1}d-header`}
               >
-                <Typography color={theme.palette.primary.main} style={{ minWidth: "5rem" }}>
+                <Typography
+                  color={theme.palette.primary.main}
+                  style={{ minWidth: "6rem", maxWidth: "6rem" }}
+                >
                   {comment.username}
                 </Typography>
+                {reported[comment.username] && (
+                  <ReportIcon
+                    style={{
+                      color: "yellow",
+                      fontSize: "1rem",
+                      position: "absolute",
+                      left: 0,
+                      padding: "0.2rem",
+                    }}
+                  />
+                )}
                 <Rating
-                  sx={{ marginLeft: 3, color: "gray", fontSize: "0.9rem" }}
+                  sx={{ color: "gray", fontSize: "0.9rem" }}
                   name="product-rating"
                   value={comment.rating}
                   precision={0.5}
                   style={{ pointerEvents: "none" }}
                 />
                 <Typography
-                  sx={{ marginLeft: 2, fontSize: "0.9rem", marginRight: "1rem" }}
+                  sx={{ marginLeft: 1, fontSize: "0.9rem", minWidth: "6rem" }}
                 >
                   {comment.createdAt.substring(0, 10)}
                 </Typography>
-                <Typography sx={{ fontSize: "0.9rem"}}>
-                  {comment.comment.substring(0, 20)}...
-                </Typography>
+                {isDesktop ? (
+                  <Typography
+                    sx={{
+                      color: "lightgrey",
+                      fontSize: "0.9rem",
+                      marginLeft: 1,
+                    }}
+                  >
+                    {!reported[comment.username] ? (
+                      <p> {comment.comment.substring(0, 25)}...</p>
+                    ) : (
+                      <p
+                        style={{
+                          textDecoration: "line-through red",
+                          color: "gray",
+                        }}
+                      >
+                        {comment.comment.substring(0, 25)}...
+                      </p>
+                    )}
+                  </Typography>
+                ) : (
+                  <Typography sx={{ fontSize: "0.9rem", marginLeft: 1 }}>
+                    {!reported[comment.username] ? (
+                      <p> {comment.comment.substring(0, 10)}...</p>
+                    ) : (
+                      <p
+                        style={{
+                          textDecoration: "line-through red",
+                          color: "gray",
+                        }}
+                      >
+                        {comment.comment.substring(0, 10)}...
+                      </p>
+                    )}{" "}
+                  </Typography>
+                )}
               </AccordionSummary>
               <AccordionDetails>
-                <Typography sx={{ fontSize: "0.9rem" }}>{comment.comment}</Typography>
+                <Grid container alignItems="center" justifyContent="center">
+                  <Grid item xs={11}>
+                    <Typography sx={{ fontSize: "0.9rem" }}>
+                      {!reported[comment.username] ? (
+                        <p>{comment.comment}</p>
+                      ) : (
+                        <p
+                          style={{
+                            textDecoration: "line-through red",
+                            color: "gray",
+                          }}
+                        >
+                          {comment.comment}
+                        </p>
+                      )}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={1} style={{ textAlign: "center" }}>
+                    <IconButton
+                      onClick={() => handleReport(comment)}
+                      aria-label="Report"
+                    >
+                      {reported[comment.username] ? (
+                        <div title="Unreport this comment">
+                          <ReportOffIcon sx={{ color: "red" }} />
+                        </div>
+                      ) : (
+                        <div title="Report this comment">
+                          <ReportIcon sx={{ color: "orange" }} />
+                        </div>
+                      )}
+                    </IconButton>
+                  </Grid>
+                </Grid>
               </AccordionDetails>
             </Accordion>
           ))
         ) : (
           <CardContent>
-          <Typography variant="h6" style={{ textAlign: "justify" }}>
-          There are no reviews available for this product.
-          </Typography>
-        </CardContent>
+            <Typography variant="h6" style={{ textAlign: "justify" }}>
+              There are no reviews available for this product.
+            </Typography>
+          </CardContent>
         )}
       </>
-    );    
+    );
   };
 
   const handlePageChange = (page) => {
