@@ -20,6 +20,7 @@ const checkToken = require('../middlewares/authentications')
 const manageUser = require('../controllers/usersControllers/manageUser')
 // const checkRole = require('../middlewares/checkRole')
 const requestIp = require('request-ip');
+const lastYearUsers = require('../controllers/usersControllers/getLastYearCreationUsers');
 
 const usersRoutes = Router()
 
@@ -41,5 +42,6 @@ usersRoutes.delete('/deleteToken',deleteToken)
 usersRoutes.get('/resetPasswordToken',resetPasswordToken)
 usersRoutes.get('/getAccessTokenExpiration',getAccessTokenExpiration)
 usersRoutes.put('/manageUser',checkToken, manageUser)
+usersRoutes.get('/getLastUsers', lastYearUsers)
 
 export default usersRoutes
