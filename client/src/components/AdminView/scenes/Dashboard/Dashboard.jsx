@@ -4,6 +4,7 @@ import { TotalSells } from '../../../TotalsCards/TotalSells'
 import { TotalSales } from '../../../TotalsCards/TotalSales'
 import { TotalUsers } from '../../../TotalsCards/TotalUsers'
 import { IndexBarChart } from '../Graphics/IndexBarChart'
+import { UserBarChart } from '../Graphics/userBarChart'
 
 export const Dashboard = () => {
   // eslint-disable-next-line react/jsx-key
@@ -11,6 +12,7 @@ export const Dashboard = () => {
 
   return (
     <>
+    
       <Box sx={{ m: '1rem' }}>
         <Grid container spacing={1}>
           {dashboardData.map((item, index) => (
@@ -24,6 +26,7 @@ export const Dashboard = () => {
       <Box sx={{ m: '1rem' }}>
         <BasicCard customHeight={256}>
             <IndexBarChart/>
+            <UserBarChart />
         </BasicCard>
       </Box>
     </>
