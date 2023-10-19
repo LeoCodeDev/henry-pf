@@ -56,5 +56,5 @@ export const UserModel = (sequelize: Sequelize) => {
                 currencyName:"US Dollar"},
             allowNull: false
         }
-    },{ timestamps: false })
+    },{ timestamps: true })
 }
