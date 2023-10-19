@@ -9,6 +9,7 @@ import { Coupon } from "../scenes/Marketing/Coupon";
 import { Update } from '../../ProductUpdate/ProductUpdate'
 import UserDetails from "../../userAdmin/userDetails";
 import ProductFormView from "../../../views/Product Form/productForm";
+import UserEmails from "../../userAdmin/userEmails";
 
 export const AdminRoutes = [
   {
@@ -51,6 +52,11 @@ export const AdminRoutes = [
     element: <Coupon />,
     title: "line graphics",
   },
+  {
+    path:'admin/email',
+    element:<UserEmails/>,
+    title:'email'
+  }, 
   {
     path: '/admin/bar',
     element: <Bar />,

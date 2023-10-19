@@ -9,6 +9,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import EmailIcon from '@mui/icons-material/Email';
 //import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
@@ -124,6 +125,13 @@ export const SideBar = () => {
               title="Users Information"
               to="/admin/table-users"
               icon={<ContactsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Send Emails"
+              to='/admin/email'
+              icon={<EmailIcon />}
               selected={selected}
               setSelected={setSelected}
             />

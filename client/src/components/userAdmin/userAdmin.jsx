@@ -39,6 +39,7 @@ export default function UserAdmin(){
                 <TableCell>Username</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>Email</TableCell>
+                <TableCell>Role</TableCell>
                 <TableCell>Active</TableCell>
               </TableRow>
             </TableHead>
@@ -51,6 +52,7 @@ export default function UserAdmin(){
 
                   <TableCell>{user.first_name} {user.last_name}</TableCell>
                   <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.role}</TableCell>
                   <TableCell>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Switch

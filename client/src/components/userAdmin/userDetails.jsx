@@ -1,9 +1,9 @@
 import  axios  from 'axios';
 import { useState } from 'react';
-import { Avatar, Paper, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Avatar, Paper, Typography, List, ListItem, ListItemText, Button } from '@mui/material';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import toast, {Toaster} from 'react-hot-toast';
 
 const UserDetails = () => {
     const [user, setUser]= useState({})
@@ -16,6 +16,19 @@ const UserDetails = () => {
         setUser(data)
         setLoading(false)
     }
+
+    const toggleAdmin=async(id_user, role)=>{
+      setLoading(true)
+      try {
+        await axios.put(`/users/manageUser?id_user=${id_user}`, {role})
+        getUser()
+        setLoading(false) 
+        toast.success('User updated successfully')      
+      } catch (error) {
+        setLoading(false)
+        toast.error(error.message)
+      }
+    }  
     
     useEffect(()=>{
         getUser()
@@ -31,7 +44,9 @@ const UserDetails = () => {
         {`Username: ${user.username}`}
       </Typography>
       <Typography variant="subtitle1" align="center" gutterBottom>
-        {`Email: ${user.email}`}
+        {`Email: ${user.email} 
+        Role: ${user.role}
+         Team:${user.team}`}
       </Typography>
 
       <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
@@ -68,6 +83,15 @@ const UserDetails = () => {
           </ListItem>
         ))}
       </List>
+      <Button
+        variant="contained"
+        sx={{size: 'large', backgroundColor: '#010402' }}
+        styles={{margin: '1rem'}}
+        onClick={()=>toggleAdmin(user.id_user, user.role)}
+      >
+        {user.role==='Admin'? 'Remove admin permissions' : 'Make user admin'}
+      </Button>
+      <Toaster position="top-center" reverseOrder={false} />
     </Paper>
   );
 };
