@@ -8,6 +8,7 @@ body {
   color-scheme: light dark;
   color: var(--color-text-light);
   background-color: var(--background-color);
+  overflow-x: hidden;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
