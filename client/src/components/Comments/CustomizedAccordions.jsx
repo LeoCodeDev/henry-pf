@@ -1,113 +1,186 @@
-import { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion from "@mui/material/Accordion";
-import { Box, Typography, CardContent, IconButton, Grid } from "@mui/material/";
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { useProductsStore } from "../../store/productsStore";
-import Rating from "@mui/material/Rating";
-import theme from "../../../theme";
-import { isDesktop } from "react-device-detect";
-import ReportIcon from "@mui/icons-material/Report";
-import ReportOffIcon from "@mui/icons-material/ReportOff";
+import { useState, useEffect } from 'react'
+import { styled } from '@mui/material/styles'
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
+import MuiAccordion from '@mui/material/Accordion'
+import { Box, Typography, CardContent, IconButton, Grid } from '@mui/material/'
+import MuiAccordionSummary from '@mui/material/AccordionSummary'
+import MuiAccordionDetails from '@mui/material/AccordionDetails'
+import Pagination from '@mui/material/Pagination'
+import Stack from '@mui/material/Stack'
+import { useProductsStore } from '../../store/productsStore'
+import Rating from '@mui/material/Rating'
+import theme from '../../../theme'
+import { isDesktop } from 'react-device-detect'
+import ReportIcon from '@mui/icons-material/Report'
+import ReportOffIcon from '@mui/icons-material/ReportOff'
+import Swal from 'sweetalert2'
+import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   marginLeft: -2,
-  width: "90%",
-  "&:not(:last-child)": {
+  width: '90%',
+  '&:not(:last-child)': {
     borderBottom: 0,
   },
-  "&:before": {
-    display: "none",
+  '&:before': {
+    display: 'none',
   },
-}));
+}))
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
+    theme.palette.mode === 'dark'
+      ? 'rgba(255, 255, 255, .05)'
+      : 'rgba(0, 0, 0, .03)',
+  flexDirection: 'row-reverse',
+  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+    transform: 'rotate(90deg)',
   },
-  "& .MuiAccordionSummary-content": {
-    alignItems: "center",
-    justifyContent: "initial",
-    height: "2rem",
-    gap: isDesktop ? "12%" : "0.5rem",
-    overflow: "hidden",
+  '& .MuiAccordionSummary-content': {
+    alignItems: 'center',
+    justifyContent: 'initial',
+    height: '2rem',
+    gap: isDesktop ? '12%' : '0.5rem',
+    overflow: 'hidden',
     marginLeft: theme.spacing(1),
     marginRight: 0,
   },
-}));
+}))
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-  fontWeight: "normal",
-}));
+  borderTop: '1px solid rgba(0, 0, 0, .125)',
+  fontWeight: 'normal',
+}))
 
 export default function CustomizedAccordions(props) {
-  const productStore = useProductsStore();
-  const productid = props.idProduct;
-  const [comments, setComments] = useState([]);
-  const [reported, setReported] = useState({});
-  const itemsPerPage = 4;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [expanded, setExpanded] = useState(null); // Estado para controlar la expansión de los acordeones
-
-  const totalComments = comments.length;
-  const totalPages = Math.ceil(totalComments / itemsPerPage);
+  const productStore = useProductsStore()
+  const productid = props.idProduct
+  const [comments, setComments] = useState([])
+  const [reported, setReported] = useState({})
+  const itemsPerPage = 4
+  const [currentPage, setCurrentPage] = useState(1)
+  const [expanded, setExpanded] = useState(null)
+  const totalComments = comments.length
+  const totalPages = Math.ceil(totalComments / itemsPerPage)
+  const [response, setResponse] = useState('')
+  const [idComment, setIdComment] = useState(null)
 
   const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
+    setExpanded(newExpanded ? panel : false)
+  }
+
+  useEffect(() => {
+    if (response) {
+      const handleReportAndFetchData = async () => {
+        try {
+          await axios.post('/dashboard/createReport', {
+            reason: response,
+            reportedId: idComment,
+            reporterId: props.user.id_user,
+            type: 'Comment',
+          });
+  
+          toast.success('Comment successfully reported!');
+  
+          const handleAllReports = async () => {
+            try {
+              const { data } = await axios('/dashboard/allReports');
+              setReported((prevReported) => {
+                const updatedReported = { ...prevReported };
+                for (const report of data) {
+                  const reporterId = report.reporterId;
+                  const reportedId = report.reportedIdComment;
+                  if (reporterId === props.user.id_user) {
+                    updatedReported[reportedId] = true;
+                  }
+                }
+                return updatedReported;
+              });
+            } catch (error) {
+              console.log(error.message);
+            }
+          };
+  
+          handleAllReports();
+        } catch (error) {
+          toast.error('Error in the reporting process!');
+          console.log(error.message);
+        }
+      };
+  
+      handleReportAndFetchData();
+    }
+  
+    setResponse('');
+  }, [reported, response, idComment, props.user.id_user]);
+  
+
+  useEffect(() => {
+    productStore
+      .fetchProductReviews(productid)
+      .then((reviews) => {
+        if (comments.length !== reviews.length) {
+          setComments(reviews)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching product reviews:', error)
+      })
+  }, [productid, props.update, comments.length, productStore])
 
   const renderComments = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const visibleComments = comments.slice(startIndex, endIndex);
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    const visibleComments = comments.slice(startIndex, endIndex)
 
-    useEffect(() => {
-      console.log("Reported: ", reported);
-      console.log("Type: 'comment'");
-      console.log("Usuario que reporta: ", props.user);
-    }, [reported]);
+    const handleReason = async () => {
+      return Swal.fire({
+        title: 'Please, enter the reason why you are reporting the comment',
+        input: 'textarea',
+        inputPlaceholder: 'why...',
+        showCancelButton: true,
+        confirmButtonText: 'Report',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: theme.palette.primary.main,
+        showLoaderOnConfirm: true,
+        preConfirm: (reason) => {
+          if (!reason) {
+            Swal.showValidationMessage(
+              'Please, enter the reason why you are reporting the comment.'
+            )
+          }
+          return reason
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return result.value
+        }
+      })
+    }
 
-    useEffect(() => {
-      // Realizar la llamada asincrónica y actualizar el estado cuando esté completo
-      productStore
-        .fetchProductReviews(productid)
-        .then((reviews) => {
-          if (comments.length !== reviews.length) {
-            setComments(reviews);
+    const handleReport = async (comment) => {
+      if (!reported[comment.id]) {
+        handleReason().then((reason) => {
+          if (reason) {
+            setResponse(reason)
           }
         })
-        .catch((error) => {
-          console.error("Error fetching product reviews:", error);
-        });
-    }, [productid, props.update]); // El efecto se ejecutará cada vez que cambie productid
-
-    const handleReport = (comment) => {
-      if (!reported[comment.username]) {
-        setReported({ ...reported, [comment.username]: true });
       } else {
-        setReported({ ...reported, [comment.username]: false });
+        toast.error('You have already reported this comment')
+        return
       }
-      console.log("el comentario entero:", comment);
-    };
+      setIdComment(comment.id)
+    }
 
     return (
       <>
@@ -124,82 +197,80 @@ export default function CustomizedAccordions(props) {
               >
                 <Typography
                   color={theme.palette.primary.main}
-                  style={{ minWidth: "6rem", maxWidth: "6rem" }}
+                  style={{ minWidth: '6rem', maxWidth: '6rem' }}
                 >
                   {comment.username}
                 </Typography>
-                {reported[comment.username] && (
+                {reported[comment.id] && (
                   <ReportIcon
                     style={{
-                      color: "yellow",
-                      fontSize: "1rem",
-                      position: "absolute",
+                      color: 'yellow',
+                      fontSize: '1rem',
+                      position: 'absolute',
                       left: 0,
-                      padding: "0.2rem",
+                      padding: '0.2rem',
                     }}
                   />
                 )}
                 <Rating
-                  sx={{ color: "gray", fontSize: "0.9rem" }}
+                  sx={{ color: 'gray', fontSize: '0.9rem' }}
                   name="product-rating"
                   value={comment.rating}
                   precision={0.5}
-                  style={{ pointerEvents: "none" }}
+                  style={{ pointerEvents: 'none' }}
                 />
                 <Typography
-                  sx={{ marginLeft: 1, fontSize: "0.9rem", minWidth: "6rem" }}
+                  sx={{ marginLeft: 1, fontSize: '0.9rem', minWidth: '6rem' }}
                 >
-                  {comment.createdAt.substring(0, 10)}
+                  {comment.createdAt?.substring(0, 10)}
                 </Typography>
                 {isDesktop ? (
                   <Typography
                     sx={{
-                      color: "lightgrey",
-                      fontSize: "0.9rem",
+                      color: 'lightgrey',
+                      fontSize: '0.9rem',
                       marginLeft: 1,
                     }}
                   >
-                    {!reported[comment.username] ? (
-                      <p> {comment.comment.substring(0, 25)}...</p>
+                    {!reported[comment.id] ? (
+                      <p> {comment.comment?.substring(0, 25)}...</p>
                     ) : (
                       <p
                         style={{
-                          textDecoration: "line-through red",
-                          color: "gray",
+                          textDecoration: 'line-through red',
+                          color: 'gray',
                         }}
                       >
-                        {comment.comment.substring(0, 25)}...
+                        {comment.comment?.substring(0, 25)}...
                       </p>
                     )}
                   </Typography>
                 ) : (
-                  <Typography sx={{ fontSize: "0.9rem", marginLeft: 1 }}>
-                    {!reported[comment.username] ? (
-                      <p> {comment.comment.substring(0, 10)}...</p>
-                    ) : (
-                      <p
-                        style={{
-                          textDecoration: "line-through red",
-                          color: "gray",
-                        }}
-                      >
-                        {comment.comment.substring(0, 10)}...
-                      </p>
-                    )}{" "}
+                  <Typography sx={{ fontSize: '0.9rem', marginLeft: 1 }}>
+                    <p
+                      style={{
+                        color: !reported[comment.id] ? 'white' : 'gray',
+                        textDecoration: !reported[comment.id]
+                          ? 'none'
+                          : 'line-through red',
+                      }}
+                    >
+                      {comment.comment?.substring(0, 10)}...
+                    </p>
                   </Typography>
                 )}
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container alignItems="center" justifyContent="center">
                   <Grid item xs={11}>
-                    <Typography sx={{ fontSize: "0.9rem" }}>
-                      {!reported[comment.username] ? (
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      {!reported[comment.id] ? (
                         <p>{comment.comment}</p>
                       ) : (
                         <p
                           style={{
-                            textDecoration: "line-through red",
-                            color: "gray",
+                            textDecoration: 'line-through red',
+                            color: 'gray',
                           }}
                         >
                           {comment.comment}
@@ -207,18 +278,18 @@ export default function CustomizedAccordions(props) {
                       )}
                     </Typography>
                   </Grid>
-                  <Grid item xs={1} style={{ textAlign: "center" }}>
+                  <Grid item xs={1} style={{ textAlign: 'center' }}>
                     <IconButton
                       onClick={() => handleReport(comment)}
                       aria-label="Report"
                     >
-                      {reported[comment.username] ? (
+                      {reported[comment.id] ? (
                         <div title="Unreport this comment">
-                          <ReportOffIcon sx={{ color: "red" }} />
+                          <ReportOffIcon sx={{ color: 'red' }} />
                         </div>
                       ) : (
                         <div title="Report this comment">
-                          <ReportIcon sx={{ color: "orange" }} />
+                          <ReportIcon sx={{ color: 'orange' }} />
                         </div>
                       )}
                     </IconButton>
@@ -229,23 +300,23 @@ export default function CustomizedAccordions(props) {
           ))
         ) : (
           <CardContent>
-            <Typography variant="h6" style={{ textAlign: "justify" }}>
+            <Typography variant="h6" style={{ textAlign: 'justify' }}>
               There are no reviews available for this product.
             </Typography>
           </CardContent>
         )}
       </>
-    );
-  };
+    )
+  }
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+    setCurrentPage(page)
+  }
 
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-      width={"100%"}
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      width={'100%'}
       mt={-4}
     >
       <Stack p={2}>
@@ -258,5 +329,5 @@ export default function CustomizedAccordions(props) {
       </Stack>
       {renderComments()}
     </Box>
-  );
+  )
 }
