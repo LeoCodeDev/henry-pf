@@ -27,7 +27,6 @@ export const Dashboard = () => {
   
   }, [])
 
-  console.log(metricsData)
   return (
     <>
       <Select setMonth={setMonth} />

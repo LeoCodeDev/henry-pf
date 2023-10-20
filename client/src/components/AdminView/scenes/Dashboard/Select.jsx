@@ -48,7 +48,7 @@ const Select = ({ setMonth }) => {
         console.error(error);
       }
       );
-  }, []);
+  }, [setMonth]);
 
 const handleSelectValue = (month) => {
   setMonth(month)
