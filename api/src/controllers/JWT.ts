@@ -9,31 +9,29 @@ function sign(payload: object, isAccessToken: boolean) {
   );
 }
 
-function generateAccessToken(user: Object) {
+function generateAccessToken(user: object) {
   return sign(user, true);
 }
 
-function generateRefreshToken(user: Object) {
+function generateRefreshToken(user: object) {
   return sign(user, false);
 }
 
-function generateResetToken(user: Object) {
+function generateResetToken(user: object) {
   return jwt.sign(user, SECRET_ACCESS_TOKEN, {
     algorithm: "HS256",
     expiresIn: "1h",
   });
 }
 
-function verifyToken (token : string)  {
-    console.log(token)
-    try {
-        const tokenVerify = jwt.verify(token,SECRET_ACCESS_TOKEN )
-        console.log('___Token verificado___', tokenVerify)
-        return tokenVerify
-    } catch (error : any) {
-        console.log('__Algo fallo___', error.message)
-        return null
-    }
+function verifyToken(token: string, isAccessToken: boolean) {
+  try {
+    const tokenVerify = jwt.verify(token, isAccessToken ? SECRET_ACCESS_TOKEN : SECRET_REFRESH_TOKEN);
+    return tokenVerify;
+  } catch (error: any) {
+    console.error('Error al verificar el token:', error.message);
+    return null;
+  }
 }
 
 module.exports = {
@@ -42,3 +40,4 @@ module.exports = {
   generateResetToken,
   verifyToken
 };
+
