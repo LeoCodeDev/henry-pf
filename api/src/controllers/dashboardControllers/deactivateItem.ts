@@ -3,17 +3,18 @@ const { User, Rating, Product } = require('../../db_connection');
 
 const deactivateItem = async (req: Request, res: Response) => {
 try {
-    const { type, itemId, active } = req.params;
+    const { type, itemId, active } = req.body;
+    const parseItemId=parseInt(itemId)
     let entity;
     switch (type) {
     case "User":
-        entity = await User.findByPk(itemId);
+        entity = await User.findByPk(parseItemId);
         break;
     case "Comment":
-        entity = await Rating.findByPk(itemId);
+        entity = await Rating.findByPk(parseItemId);
         break;
     case "Product":
-        entity = await Product.findByPk(itemId);
+        entity = await Product.findByPk(parseItemId);
         break;
     default:
         return res.status(400).json({ error: "Invalid type" });
@@ -28,4 +29,4 @@ try {
 }
 };
 
-export default deactivateItem;
+module.exports= deactivateItem;
