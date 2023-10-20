@@ -16,7 +16,7 @@ export const RoutineModel = (sequelize: Sequelize) => {
         author:{
             type:DataTypes.STRING,
             allowNull: false,
-        },       
+        },
         puntuation:{
             type: DataTypes.FLOAT,
             allowNull: false,
