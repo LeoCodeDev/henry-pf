@@ -13,6 +13,9 @@ import theme from "../../../theme";
 import { isDesktop } from "react-device-detect";
 import ReportIcon from "@mui/icons-material/Report";
 import ReportOffIcon from "@mui/icons-material/ReportOff";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -62,14 +65,16 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export default function CustomizedAccordions(props) {
   const productStore = useProductsStore();
   const productid = props.idProduct;
+  const update = props.update;
   const [comments, setComments] = useState([]);
   const [reported, setReported] = useState({});
   const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1);
-  const [expanded, setExpanded] = useState(null); // Estado para controlar la expansión de los acordeones
-
+  const [expanded, setExpanded] = useState(null);
   const totalComments = comments.length;
   const totalPages = Math.ceil(totalComments / itemsPerPage);
+  const [response, setResponse] = useState("");
+  const [idComment, setIdComment] = useState(null);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -81,13 +86,47 @@ export default function CustomizedAccordions(props) {
     const visibleComments = comments.slice(startIndex, endIndex);
 
     useEffect(() => {
-      console.log("Reported: ", reported);
-      console.log("Type: 'comment'");
-      console.log("Usuario que reporta: ", props.user);
-    }, [reported]);
+      handleAllReports();
+    }, [response]);
+
+    const handleAllReports = async () => {
+      try {
+        const { data } = await axios("/dashboard/allReports");
+        setReported((prevReported) => {
+          const updatedReported = { ...prevReported };
+          for (const report of data) {
+            const reporterId = report.reporterId;
+            const reportedId = report.reportedIdComment;
+            if (reporterId == props.user.id_user) {
+              updatedReported[reportedId] = true;
+            }
+          }
+          return updatedReported;
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
 
     useEffect(() => {
-      // Realizar la llamada asincrónica y actualizar el estado cuando esté completo
+      if (response) {
+        try {
+          axios.post("/dashboard/createReport", {
+            reason: response,
+            reportedId: idComment,
+            reporterId: props.user.id_user,
+            type: "Comment",
+          });
+        } catch (error) {
+          toast.error("Error in the reporting process!");
+          return console.log(error.message);
+        }
+        toast.success("Comment successfully reported!");
+      }
+      setResponse("");
+    }, [reported, response]);
+
+    useEffect(() => {
       productStore
         .fetchProductReviews(productid)
         .then((reviews) => {
@@ -98,15 +137,45 @@ export default function CustomizedAccordions(props) {
         .catch((error) => {
           console.error("Error fetching product reviews:", error);
         });
-    }, [productid, props.update]); // El efecto se ejecutará cada vez que cambie productid
+    }, [productid, props.update]);
 
-    const handleReport = (comment) => {
-      if (!reported[comment.username]) {
-        setReported({ ...reported, [comment.username]: true });
+    const handleReason = async () => {
+      return Swal.fire({
+        title: "Please, enter the reason why you are reporting the comment",
+        input: "textarea",
+        inputPlaceholder: "why...",
+        showCancelButton: true,
+        confirmButtonText: "Report",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: theme.palette.primary.main,
+        showLoaderOnConfirm: true,
+        preConfirm: (reason) => {
+          if (!reason) {
+            Swal.showValidationMessage(
+              "Please, enter the reason why you are reporting the comment."
+            );
+          }
+          return reason;
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return result.value;
+        }
+      });
+    };
+
+    const handleReport = async (comment) => {
+      if (!reported[comment.id]) {
+        handleReason().then((reason) => {
+          if (reason) {
+            setResponse(reason);
+          }
+        });
       } else {
-        setReported({ ...reported, [comment.username]: false });
+        toast.error("You have already reported this comment");
+        return;
       }
-      console.log("el comentario entero:", comment);
+      setIdComment(comment.id);
     };
 
     return (
@@ -128,7 +197,7 @@ export default function CustomizedAccordions(props) {
                 >
                   {comment.username}
                 </Typography>
-                {reported[comment.username] && (
+                {reported[comment.id] && (
                   <ReportIcon
                     style={{
                       color: "yellow",
@@ -149,7 +218,7 @@ export default function CustomizedAccordions(props) {
                 <Typography
                   sx={{ marginLeft: 1, fontSize: "0.9rem", minWidth: "6rem" }}
                 >
-                  {comment.createdAt.substring(0, 10)}
+                  {comment.createdAt?.substring(0, 10)}
                 </Typography>
                 {isDesktop ? (
                   <Typography
@@ -159,8 +228,8 @@ export default function CustomizedAccordions(props) {
                       marginLeft: 1,
                     }}
                   >
-                    {!reported[comment.username] ? (
-                      <p> {comment.comment.substring(0, 25)}...</p>
+                    {!reported[comment.id] ? (
+                      <p> {comment.comment?.substring(0, 25)}...</p>
                     ) : (
                       <p
                         style={{
@@ -168,24 +237,23 @@ export default function CustomizedAccordions(props) {
                           color: "gray",
                         }}
                       >
-                        {comment.comment.substring(0, 25)}...
+                        {comment.comment?.substring(0, 25)}...
                       </p>
                     )}
                   </Typography>
                 ) : (
                   <Typography sx={{ fontSize: "0.9rem", marginLeft: 1 }}>
-                    {!reported[comment.username] ? (
-                      <p> {comment.comment.substring(0, 10)}...</p>
-                    ) : (
-                      <p
-                        style={{
-                          textDecoration: "line-through red",
-                          color: "gray",
-                        }}
-                      >
-                        {comment.comment.substring(0, 10)}...
-                      </p>
-                    )}{" "}
+                    <p
+                      style={{
+                        color: !reported[comment.id] ? "white" : "gray",
+                        textDecoration: !reported[comment.id]
+                          ? "none"
+                          : "line-through red",
+                      }}
+                    >
+                      {comment.comment?.substring(0, 10)}...
+                    </p>
+                    )
                   </Typography>
                 )}
               </AccordionSummary>
@@ -193,7 +261,7 @@ export default function CustomizedAccordions(props) {
                 <Grid container alignItems="center" justifyContent="center">
                   <Grid item xs={11}>
                     <Typography sx={{ fontSize: "0.9rem" }}>
-                      {!reported[comment.username] ? (
+                      {!reported[comment.id] ? (
                         <p>{comment.comment}</p>
                       ) : (
                         <p
@@ -212,7 +280,7 @@ export default function CustomizedAccordions(props) {
                       onClick={() => handleReport(comment)}
                       aria-label="Report"
                     >
-                      {reported[comment.username] ? (
+                      {reported[comment.id] ? (
                         <div title="Unreport this comment">
                           <ReportOffIcon sx={{ color: "red" }} />
                         </div>

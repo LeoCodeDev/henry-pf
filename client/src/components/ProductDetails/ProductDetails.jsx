@@ -37,8 +37,7 @@ export const ProductDetails = () => {
   const [isFav, setFav] = useState(false);
   const [cart, setCart] = useState(false);
   const { product } = useShowProductStore();
-  const { addProductToCart, deleteProductFromCart, shoppingCart, total } =
-    useCartStore();
+  const { addProductToCart, deleteProductFromCart, shoppingCart, total } = useCartStore();
   const { user } = useAuthStore();
   const initialState = useAuthStore((state) => state.user)
   const { favorites, addFavorite, deleteFavorite } = favoriteStore();
@@ -152,9 +151,10 @@ export const ProductDetails = () => {
                 component={"img"}
                 src={product.image}
                 sx={{
+                  marginTop:"1rem",
                   borderRadius: "2rem",
-                  maxWidth: "20rem",
-                  minWidth: "20rem",
+                  maxWidth: "23rem",
+                  minWidth: "23rem",
                   height: "28rem",
                   objectFit: "cover",
                 }}
@@ -425,7 +425,7 @@ export const ProductDetails = () => {
               )}
             </div>
             <div style={{ marginBlock: "1rem", width: "100%" }}>
-              <CustomizedAccordions idProduct={idProduct} update={update} user={user}/>
+              <CustomizedAccordions idProduct={idProduct} update={update} setUpdate={setUpdate} user={user}/>
             </div>
           </div>
         </>
