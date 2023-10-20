@@ -43,8 +43,7 @@ export const Modal = ({ modalOpen, setModalOpen }) => {
     <ThemeProvider theme={theme}>
       {['left', 'right'].map((anchor) => (
         <section key={anchor}>
-          <Drawer
-            sx={{ width: '30%' }}
+          <Drawer 
             anchor={anchor}
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}>

@@ -175,7 +175,7 @@ export default function SignUp({ setOption }) {
         role: selectedRole,
         team: developerType,
       };
-      await axios.post("/postUser", dataToSend);
+      await axios.post("/users/postUser", dataToSend);
       toast.success("User created successfully!");
       
       const title = 'Thank you for signing up for Healthech!';

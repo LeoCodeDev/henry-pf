@@ -26,12 +26,12 @@ const Products = () => {
   useEffect(() => {
     const checkTokenExpiration = async() => {
       try{
-        const {data} = await axios.get('/getAccessTokenExpiration', 
+        const {data} = await axios.get('/users/getAccessTokenExpiration', 
         {withCredentials: true}
         )
         const remainingTime = data.expirationTime - Date.now() / 1000;
         if (remainingTime < 60) {
-          await axios.get('/refreshToken', 
+          await axios.get('/users/refreshToken', 
           {withCredentials: true}
           )
         }

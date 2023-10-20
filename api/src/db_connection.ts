@@ -9,7 +9,12 @@ import { ExerciseModel } from './models/Exercise';
 import { RoutineModel } from './models/Routine';
 import { SaleModel } from './models/Sale';
 import { TokenModel } from './models/Token';
+import { CouponModel } from './models/Coupon';
 import {v2 as cloudinary} from 'cloudinary';
+import { RatingModel } from './models/Rating';
+import { ReportModel } from './models/Report';
+import { RoutinesUserModel } from './models/Routines_users';
+
 
 
 
@@ -43,9 +48,12 @@ ExerciseModel(sequelize)
 RoutineModel(sequelize)
 SaleModel(sequelize)
 TokenModel(sequelize)
+CouponModel(sequelize)
+RatingModel(sequelize)
+ReportModel(sequelize)
+RoutinesUserModel(sequelize)
 
-
-const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken} = sequelize.models
+const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken,Coupon,Rating, Report, Routines_users} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -59,8 +67,9 @@ User.belongsToMany(Product,{through: 'fav_users_products'})
 Exercise.belongsToMany(Routine,{through: 'routines_exercises'})
 Routine.belongsToMany(Exercise,{through: 'routines_exercises'})
 
-Routine.belongsToMany(User,{through: 'routines_users'})
-User.belongsToMany(Routine,{through: 'routines_users'})
+
+Routine.belongsToMany(User,{through: Routines_users})
+User.belongsToMany(Routine,{through: Routines_users})
 
 Sale.belongsTo(User)
 User.hasMany(Sale)
@@ -71,6 +80,19 @@ Sale.belongsToMany(Product,{through: 'sales_products'})
 User.hasMany(RefreshToken, { onDelete: 'CASCADE' });
 RefreshToken.belongsTo(User);
 
+User.belongsToMany(Coupon,{through: 'cupons_users'})
+Coupon.belongsToMany(User,{through: 'cupons_users'})
+
+Rating.belongsTo(User, { foreignKey: 'userId' }); // Un Rating pertenece a un User
+Rating.belongsTo(Product, { foreignKey: 'productId' }); // Un Rating pertenece a un Product
+
+
+Report.belongsTo(User, { as: 'reporterUser', foreignKey: 'reporterId'})
+Report.belongsTo(User, { as: 'reportedUser', foreignKey: 'reportedIdUser', });
+Report.belongsTo(Rating, { as: 'reportedComment',foreignKey: 'reportedIdComment', });
+Report.belongsTo(Product, { as: 'reportedProduct', foreignKey: 'reportedIdProduct', });
+
+
 module.exports = {
     Product,
     Category,
@@ -80,5 +102,9 @@ module.exports = {
     Routine,
     Sale,
     RefreshToken,
+    Coupon,
+    Rating,
+    Report,
+    Routines_users,
     sequelize
 }

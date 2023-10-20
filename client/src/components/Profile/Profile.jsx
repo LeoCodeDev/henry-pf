@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -15,6 +15,7 @@ import axios from "axios";
 import { ThemeProvider } from "@mui/system";
 import theme from "../../../theme";
 import { useAuthStore } from "../../store/authStore";
+import guest from "../../assets/images/avatars/avatar10.jpg"
 
 // Firebase
 import { initializeApp } from "firebase/app";
@@ -31,7 +32,6 @@ const firebaseConfig = {
   messagingSenderId: "455379913119",
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
-
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
@@ -59,7 +59,7 @@ export default function Profile() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/getTeams")
+      .get("/users/getTeams")
       .then((response) => {
         setTeams(response.data);
       })
@@ -71,7 +71,7 @@ export default function Profile() {
   useEffect(() => {
     const handleGetUser = async () => {
       try {
-        const response = await axios.get("/getUser", {
+        const response = await axios.get("/users/getUser", {
           params: {
             email: user.email,
           },
@@ -157,7 +157,7 @@ export default function Profile() {
       formData.team = selectedTeam;
 
       // Realiza la solicitud al servidor para actualizar los datos del usuario
-      await axios.put("/putUser", formData);
+      await axios.put("/users/putUser", formData);
 
       // Muestra una notificación de éxito
       toast.success("User updated successfully");
@@ -176,6 +176,14 @@ export default function Profile() {
     }
   };
 
+  const handleDisable = () =>{
+    if (user.email !== "") {
+      setIsEditing(!isEditing)
+    } else {
+      toast.error("Cannot edit guest user")
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -185,7 +193,6 @@ export default function Profile() {
           alignItems: "center",
           textAlign: "center",
           justifyContent: "center",
-          marginTop: "12vh",
         }}
       >
         <Paper
@@ -199,7 +206,7 @@ export default function Profile() {
             control={
               <Switch
                 checked={isEditing}
-                onChange={() => setIsEditing(!isEditing)}
+                onChange={handleDisable}
                 name="isEditing"
               />
             }
@@ -264,7 +271,7 @@ export default function Profile() {
               }}
             >
               <img
-                src={imageURL ? imageURL : user.avatar}
+                src={imageURL ? imageURL : user.email == "" ? guest : user.avatar}
                 style={{
                   minWidth: "150px",
                   maxWidth: "150px",

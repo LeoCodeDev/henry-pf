@@ -28,7 +28,7 @@ export default function SelectLabels(props) {
   };
 
   useEffect(() => {
-    axios.get("/getTeams")
+    axios.get("/users/getTeams")
       .then((response) => {
         setTeams(response.data);
       })

@@ -5,7 +5,7 @@ const favoriteStore = create((set, get) => ({
   favorites: [],
   getAllFavorites: async (username, force = true) => {
     try {
-      const response = await axios(`/getAllFavorites?username=${username}`)
+      const response = await axios(`/users/getAllFavorites?username=${username}`)
       if (response.status !== 200) {
         throw new Error('Something went wrong, try again')
       } else {
@@ -20,7 +20,7 @@ const favoriteStore = create((set, get) => ({
   },
   addFavorite: async (username, id_product) => {
     try {
-      const data = await axios.post('/postFavorite', {
+      const data = await axios.post('/users/postFavorite', {
         username,
         id_product,
       })
@@ -35,7 +35,7 @@ const favoriteStore = create((set, get) => ({
   },
   deleteFavorite: async (username, id_product) => {
     try {
-      const data = await axios.delete(`/delFavorite?username=${username}&id_product=${id_product}`)
+      const data = await axios.delete(`/users/delFavorite?username=${username}&id_product=${id_product}`)
 
       if (data.status !== 201) {
         return data.message

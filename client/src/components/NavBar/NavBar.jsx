@@ -1,19 +1,19 @@
 import * as React from "react";
 import { SearchBar } from '../SearchBar/SearchBar'
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Badge from "@mui/material/Badge";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+import {AppBar, Box, Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Badge,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem
+
+} from "@mui/material";
+import MenuIcon from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import MenuItem from "@mui/material/MenuItem";
 import { useAuthStore } from "../../store/authStore";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal/Modal";
 import { useCartStore } from "../../store/shoppingCartStore";
 import { favoriteStore } from "../../store/favoriteStore";
+import ProfileMain from "../../views/Profile/Profile";
 
 const darkTheme = createTheme({
   palette: {
@@ -32,28 +33,36 @@ const darkTheme = createTheme({
   },
 });
 
-const pages = ["HOME", "SHOP", "EXERCISE", "ADD PRODUCT"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ['HOME', 'SHOP', 'ROUTINES']
 
 export const NavBar = () => {
-  const {favorites} = favoriteStore()
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const { user, logout } = useAuthStore();
-  const { shoppingCart } = useCartStore();
-  const navigate = useNavigate();
+  const { favorites } = favoriteStore()
+  const [anchorElNav, setAnchorElNav] = React.useState(null)
+  const [anchorElUser, setAnchorElUser] = React.useState(null)
+  const { user, logout } = useAuthStore()
+  const { shoppingCart } = useCartStore()
+  const navigate = useNavigate()
   /* Logic modal */
-  const [modalOpen, setModalOpen] = React.useState({ anchor: "", open: false });
+  const [modalOpen, setModalOpen] = React.useState({ anchor: '', open: false })
+  const [prof, setProf] = React.useState(false)
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
+
   const handleProfile = () => {
-    navigate('/profile')
+    setAnchorElUser(null);
+    setProf(!prof)
   }
+
+  /* Admin Validation */
+  let settings = ['Profile', 'Account', 'Logout']
+  if (user.role === 'Admin' || user.role === 'Trainer')
+    settings.splice(2,0,'Dashboard')
+
   const handleDashboard = () => {
-    navigate('/update')
+    if (user.role === 'Admin' || user.role === 'Trainer') navigate('/admin')
   }
 
   const [ifSearch, setIfSearch] = React.useState(false);
@@ -64,6 +73,7 @@ export const NavBar = () => {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+  
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -72,8 +82,7 @@ export const NavBar = () => {
     const value = e.target.innerText;
     if (value === "HOME") navigate("/home");
     if (value === "SHOP") navigate("/home");
-    if (value === "EXERCISE") navigate("/home");
-    if (value === "ADD PRODUCT") navigate("/product-creation");
+    if (value === "ROUTINES") navigate("/routines");
   };
 
   const handleCloseNavMenu = () => {
@@ -148,18 +157,10 @@ export const NavBar = () => {
                 </MenuItem>
                 <MenuItem
                   component="a"
-                  href="/home"
-                  key={'EXERCISE'}
+                  href="/routines"
+                  key={'ROUTINES'}
                   onClick={handleCloseNavMenu}>
-                  <Typography>{'EXERCISE'}</Typography>
-                </MenuItem>
-
-                <MenuItem
-                  component="a"
-                  href="/product-creation"
-                  key={'ADD PRODUCT'}
-                  onClick={handleCloseNavMenu}>
-                  <Typography>{'ADD PRODUCT'}</Typography>
+                  <Typography>{'ROUTINES'}</Typography>
                 </MenuItem>
               </Menu>
             </Box>
@@ -222,10 +223,6 @@ export const NavBar = () => {
               </div>
             )}
 
-            
-
-            
-
             {/* Icono de favoritos */}
             <IconButton
               size="large"
@@ -281,7 +278,7 @@ export const NavBar = () => {
                       setting === 'Logout'
                         ? handleLogout
                         : setting === 'Profile'
-                        ? handleProfile
+                        ? handleProfile 
                         : setting === 'Dashboard'
                         ? handleDashboard
                         : handleCloseUserMenu
@@ -290,6 +287,7 @@ export const NavBar = () => {
                   </MenuItem>
                 ))}
               </Menu>
+              {prof && <ProfileMain />}
             </Box>
           </Toolbar>
         </Container>

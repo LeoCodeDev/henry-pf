@@ -10,10 +10,12 @@ import {
   TableCell,
   Grid,
   useMediaQuery,
+  ThemeProvider,
 } from "@mui/material";
 import { useProductsStore } from "../../store/productsStore";
 import style from "./ProductUpdate.module.css";
 import axios from "axios";
+import theme from '../../../theme'
 
 export const Update = () => {
   const { activeDesactiveProducts, fetchActiveDesactiveProducts, setProductsFiltered } =
@@ -51,7 +53,7 @@ export const Update = () => {
   };
       const eraseproduct = async (productId) => {
         try {
-          await axios.put(`/prod/${productId}`);
+          await axios.put(`/products/prod/${productId}`);
           listProducts();
         } catch (error) {
           console.error("Error al cambiar el estado del producto:", error);
@@ -104,6 +106,7 @@ export const Update = () => {
   const isMobile = useMediaQuery("(max-width: 700px)");
 
   return (
+    <ThemeProvider theme={theme}>
     <Container
       className={style.container}
       style={{
@@ -145,7 +148,7 @@ export const Update = () => {
             variant="contained"
             color="primary"
             onClick={() => handleFilter("active")}
-          >
+            >
             Show Active
           </Button>
           <Button
@@ -153,7 +156,7 @@ export const Update = () => {
             variant="contained"
             color="primary"
             onClick={() => handleFilter("inactive")}
-          >
+            >
             Show Inactive
           </Button>
         </div>
@@ -316,5 +319,6 @@ export const Update = () => {
         </Grid>
       </div>
     </Container>
+            </ThemeProvider>
   );
 };

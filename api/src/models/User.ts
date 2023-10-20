@@ -39,7 +39,7 @@ export const UserModel = (sequelize: Sequelize) => {
         },
         role:{
             type: DataTypes.ENUM,
-            values:["User","Trainer"],
+            values:["User","Trainer","Admin"],
             allowNull: false
         },
         active:{
@@ -58,3 +58,4 @@ export const UserModel = (sequelize: Sequelize) => {
         }
     },{ timestamps: true })
 }
+

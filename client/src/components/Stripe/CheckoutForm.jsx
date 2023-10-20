@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   useStripe,
   useElements,
@@ -17,16 +17,20 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useCartStore } from "../../store/shoppingCartStore";
 import { useNavigate } from "react-router-dom";
+import { useProductsStore } from "../../store/productsStore";
 
 
 const CheckoutForm = () => {
+  const coupon= JSON.parse(localStorage.getItem('coupon')) || null
   const stripe = useStripe();
   const elements = useElements();
   const [countryCode, setCountryCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
   const [address, setAddress] = useState("");
   const [countryCodes, setCountryCodes] = useState([]);
-  const { shoppingCart, totalToPay, clearCart } = useCartStore()
+  const { shoppingCart, totalToPay, clearCart} = useCartStore()
+  const { actualCurrency } = useProductsStore()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -107,14 +111,17 @@ const CheckoutForm = () => {
       toast.error(`${error.message}`);
     } else {
         const getEmailFromLs = JSON.parse(localStorage.getItem('authState')).user.email
-        await axios.post('/postSale',{
+        await axios.post('/sales/postSale',{
             total: totalToPay,
             address: address,
             phone_number: fullPhoneNumber,
             products: shoppingCart,
             email: getEmailFromLs,
+            coupon , 
+            currency : actualCurrency
         })
         clearCart()
+        localStorage.removeItem('coupon')
         navigate('/order-placed')
     }
   };

@@ -1,4 +1,3 @@
-.modal{
-    display: flex;
-    justify-content: flex-end;
+.MuiDrawer-paper {
+    width: 100%;
 }

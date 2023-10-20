@@ -7,7 +7,7 @@ const useShowProductStore = create((set) => ({
   productById: async (id) => {
     try {
       const to= useProductsStore.getState().actualCurrency
-      const { data } = await axios(`/productsById?id=${id}&to=${to}`)
+      const { data } = await axios(`/products/productsById?id=${id}&to=${to}`)
       if (!data) {
         throw new Error(data.message)
       } else {
