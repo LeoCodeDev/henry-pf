@@ -58,3 +58,4 @@ export const UserModel = (sequelize: Sequelize) => {
         }
     },{ timestamps: true })
 }
+
