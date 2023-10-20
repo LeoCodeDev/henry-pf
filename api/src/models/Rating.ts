@@ -10,5 +10,9 @@ export const RatingModel = (sequelize: Sequelize) =>{
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    }
   });
 } 
