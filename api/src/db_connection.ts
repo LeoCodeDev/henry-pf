@@ -13,6 +13,9 @@ import { CouponModel } from './models/Coupon';
 import {v2 as cloudinary} from 'cloudinary';
 import { RatingModel } from './models/Rating';
 import { ReportModel } from './models/Report';
+import { RoutinesUserModel } from './models/Routines_users';
+
+
 
 
 cloudinary.config({ 
@@ -48,8 +51,9 @@ TokenModel(sequelize)
 CouponModel(sequelize)
 RatingModel(sequelize)
 ReportModel(sequelize)
+RoutinesUserModel(sequelize)
 
-const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken,Coupon,Rating, Report} = sequelize.models
+const { Product,Category,User,Team,Exercise,Routine,Sale,RefreshToken,Coupon,Rating, Report, Routines_users} = sequelize.models
 
 Product.belongsTo(Category)
 Category.hasMany(Product)
@@ -63,8 +67,9 @@ User.belongsToMany(Product,{through: 'fav_users_products'})
 Exercise.belongsToMany(Routine,{through: 'routines_exercises'})
 Routine.belongsToMany(Exercise,{through: 'routines_exercises'})
 
-Routine.belongsToMany(User,{through: 'routines_users'})
-User.belongsToMany(Routine,{through: 'routines_users'})
+
+Routine.belongsToMany(User,{through: Routines_users})
+User.belongsToMany(Routine,{through: Routines_users})
 
 Sale.belongsTo(User)
 User.hasMany(Sale)
