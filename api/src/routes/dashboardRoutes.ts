@@ -6,6 +6,8 @@ const getCoupons= require("../controllers/dashboardControllers/getCoupons") ;
 const checkToken = require('../middlewares/authentications')
 const checkRole = require('../middlewares/checkRole')
 const emailSender = require('../controllers/dashboardControllers/emailSender')
+const getAllReports = require('../controllers/dashboardControllers/getAllReports')
+const newReport = require('../controllers/dashboardControllers/postNewReport')
 
 const dashboardRoutes = Router()
 
@@ -14,5 +16,7 @@ dashboardRoutes.put('/updateCoupon',checkToken, checkRole(["Admin"]) ,updateCoup
 dashboardRoutes.get('/validateCoupon', validateCoupon)
 dashboardRoutes.get('/getCoupons',checkToken, checkRole(["Admin","Trainer"]) , getCoupons)
 dashboardRoutes.post('/emailSender',emailSender)
+dashboardRoutes.get('/allReports',getAllReports)
+dashboardRoutes.post('/createReport',newReport)
 
 export default dashboardRoutes

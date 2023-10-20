@@ -178,6 +178,7 @@ const useProductsStore = create((set, get) => ({
       const response = await axios.get(`/products/getProductReviews/${productId}`);
       if (response.data) {
         const reviews = response.data.map((review) => ({
+          id: review.id,
           userId: review.userId,
           comment: review.comment,
           rating: review.rating,
