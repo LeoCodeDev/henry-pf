@@ -6,7 +6,7 @@ const {Op}= require('sequelize')
 import { Request, Response } from "express";    
 
 const postRoutine= async (req: Request, res: Response) => {
-    const{email, exercises, puntuation}=req.body
+    const{email, name_routine, exercises, puntuation}=req.body
     const parsedPuntuation= parseInt(puntuation)
     try {
         if(email && exercises){
@@ -14,7 +14,7 @@ const postRoutine= async (req: Request, res: Response) => {
         if(!author){
             res.status(404).json({message:"User not found"})
         } 
-        const newRoutine= await Routine.create({id_author:author.id_user, puntuation:parsedPuntuation})
+        const newRoutine= await Routine.create({author:author.username,name_routine, puntuation:parsedPuntuation})
         interface Exercise {
             id_exercise: number;
             name: string;

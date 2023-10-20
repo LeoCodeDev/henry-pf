@@ -10,12 +10,12 @@ export const RoutineModel = (sequelize: Sequelize) => {
             primaryKey: true
         },
         name_routine:{
-            type:DataTypes.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         author:{
             type:DataTypes.STRING,
-            allowNull:false
+            allowNull: false,
         },
         puntuation:{
             type: DataTypes.FLOAT,
