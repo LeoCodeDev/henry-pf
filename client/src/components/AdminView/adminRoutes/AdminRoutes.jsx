@@ -1,8 +1,6 @@
 import { Dashboard } from "../scenes/Dashboard/Dashboard";
 import { TableUpdate } from "../scenes/Tables/TableUpdate";
 import { TableUsers } from "../scenes/Tables/TableUsers";
-import { Bar } from "../scenes/Graphics/Bar";
-import { Pie } from "../scenes/Graphics/Pie";
 import { Sales } from "../scenes/Sales/Sales";
 import { TableCreate } from "../scenes/Tables/TableCreate";
 import { Coupon } from "../scenes/Marketing/Coupon";
@@ -57,16 +55,6 @@ export const AdminRoutes = [
     element:<UserEmails/>,
     title:'email'
   }, 
-  {
-    path: '/admin/bar',
-    element: <Bar />,
-    title: 'line graphics'
-  },
-  {
-    path: '/admin/pie',
-    element: <Pie />,
-    title: 'line graphics'
-  },
   {
     path:'/admin/table-users/user-details/:email',
     element: <UserDetails/>,
