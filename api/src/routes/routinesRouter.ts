@@ -8,16 +8,17 @@ const putChangesInRoutine = require('../controllers/routinesControllers/putChang
 const deleteSavedRoutine = require('../controllers/routinesControllers/deleteSavedRoutine')
 const checkToken = require('../middlewares/authentications')
 const checkRole = require('../middlewares/checkRole')
+const getRoutineById = require('../controllers/routinesControllers/getRoutineById')
 
 const routinesRoutes = Router()
-routinesRoutes.post('/postRoutine',checkToken, checkRole(["Admin", "trainer"]),  postRoutine); 
+routinesRoutes.post('/postRoutine', postRoutine); 
 routinesRoutes.post('/addUserRoutine', addUserRoutine);
 routinesRoutes.get('/getAllRoutines', getAllRoutines);
 routinesRoutes.put('/putDeleteRoutine',checkToken, checkRole(["Admin", "trainer"]), putActiveRoutine);
 routinesRoutes.put('/putChangesInRoutine',checkToken, checkRole(["Admin", "trainer"]), putChangesInRoutine);
 routinesRoutes.delete('/deleteSavedRoutine', deleteSavedRoutine);
 routinesRoutes.get('/getUserRoutines', getUserRoutines);
-
+routinesRoutes.get('/getRoutineById', getRoutineById);
 
 
 

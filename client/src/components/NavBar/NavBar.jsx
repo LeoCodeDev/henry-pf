@@ -33,7 +33,7 @@ const darkTheme = createTheme({
   },
 });
 
-const pages = ['HOME', 'SHOP', 'EXERCISE']
+const pages = ['HOME', 'SHOP', 'ROUTINES']
 
 export const NavBar = () => {
   const { favorites } = favoriteStore()
@@ -82,7 +82,7 @@ export const NavBar = () => {
     const value = e.target.innerText;
     if (value === "HOME") navigate("/home");
     if (value === "SHOP") navigate("/home");
-    if (value === "EXERCISE") navigate("/home");
+    if (value === "ROUTINES") navigate("/routines");
   };
 
   const handleCloseNavMenu = () => {
@@ -157,10 +157,10 @@ export const NavBar = () => {
                 </MenuItem>
                 <MenuItem
                   component="a"
-                  href="/home"
-                  key={'EXERCISE'}
+                  href="/routines"
+                  key={'ROUTINES'}
                   onClick={handleCloseNavMenu}>
-                  <Typography>{'EXERCISE'}</Typography>
+                  <Typography>{'ROUTINES'}</Typography>
                 </MenuItem>
               </Menu>
             </Box>
