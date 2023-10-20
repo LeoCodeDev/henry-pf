@@ -3,7 +3,7 @@ import theme from "../../../theme";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const TotalUsers = () => {
+const TotalUsers = ({month}) => {
   const [users, setUsers] = useState({})
 
   useEffect(()=>{
@@ -20,11 +20,11 @@ const TotalUsers = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{display: 'flex', justifyContent: 'center'}}>
-        <Typography sx={{ fontSize: "1rem" }}>Total Users</Typography>
-        <h1>Nº{users.oct} de users</h1>
-      </Box>
-    </ThemeProvider>
+    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <Typography sx={{ fontSize: "1rem" }}>Total Users</Typography>
+      <Typography sx={{ fontSize: "2.5rem", marginTop: '1rem' }}>{users[month]}</Typography>
+    </Box>
+  </ThemeProvider>
   );
 };
 

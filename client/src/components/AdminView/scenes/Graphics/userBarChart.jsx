@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 const UserBarChart = () => {
-  const [sales, setSales] = useState({
+  const [users, setUsers] = useState({
     keys: [],
     values: []
   })
@@ -14,7 +14,7 @@ const UserBarChart = () => {
         const { data } = await axios('/users/getLastUsers')
         const keys = Object.keys(data)
         const values = Object.values(data)
-        setSales({
+        setUsers({
           keys: keys,
           values: values
         })
@@ -24,28 +24,28 @@ const UserBarChart = () => {
     }
     fetchData()
   }, [])
-
+  if(!users.keys.length || !users.values.length) return <h1>loading</h1>
   return (
     <>
       <section>
-        <h4>Users created last year</h4>
-      {sales.keys.length > 0 &&
         <BarChart
           xAxis={[
             {
-              id: 'Sales per year',
-              data: sales.keys,
+              id: 'Sales',
+              data: users.keys,
               scaleType: 'band',
+              label: "Users created last year"
             },
           ]}
           series={[
             {
-              data: sales.values,
+              data: users.values,
+              color: '#228d07',
             },
           ]}
           width={500}
           height={300}
-        />}
+        />
       </section>
     </>
   )

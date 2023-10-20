@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography, ThemeProvider } from "@mui/material";
-// import {fetchData} from './dataFetch'
 import theme from "../../../theme";
 import axios from 'axios';
 
-const TotalSells = () => {
+const TotalSells = ({month}) => {
   const [sales, setSales] = useState({})
 
   useEffect(()=>{
@@ -21,9 +20,9 @@ const TotalSells = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{display: 'flex', justifyContent: 'center'}}>
+      <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <Typography sx={{ fontSize: "1rem" }}>Total Sells</Typography>
-        <h1>${sales.oct} de ventas</h1>
+        <Typography sx={{ fontSize: "2.5rem", marginTop: '1rem' }}>${sales[month]}</Typography>
       </Box>
     </ThemeProvider>
   );

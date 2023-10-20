@@ -3,7 +3,7 @@ import theme from "../../../theme";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const TotalSales = () => {
+const TotalQuantity = ({month}) => {
   const [sales, setSales] = useState({})
 
   useEffect(()=>{
@@ -20,12 +20,12 @@ const TotalSales = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{display: 'flex', justifyContent: 'center'}}>
-        <Typography sx={{ fontSize: "1rem" }}>Total Sales</Typography>
-        <h1>Nº{sales.oct} de ventas</h1>
-      </Box>
-    </ThemeProvider>
+    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <Typography sx={{ fontSize: "1rem" }}>Total Quantity</Typography>
+      <Typography sx={{ fontSize: "2.5rem", marginTop: '1rem' }}>{sales[month]}</Typography>
+    </Box>
+  </ThemeProvider>
   );
 };
 
-export {TotalSales}
+export {TotalQuantity}

@@ -56,23 +56,23 @@ const IndexBarChart = () => {
           type: 'line',
           id: 'revenue',
           yAxisKey: 'money',
-          data: sales.quantities
+          data: sales.quantities,
+          color: '#fff',
         }, 
         {
           type: 'bar',
           id: 'sales',
           yAxisKey: 'quantities',
-          data: sales.values
+          data: sales.values,
+          color: '#228d07',
         },
       ]}
       width={500}
-      height={400}
-      margin={{ top: 20 }}
-      
+      height={300}
       >
         <BarPlot />
         <LinePlot />
-        <ChartsXAxis axisId="quarters" label="Total sales last year" labelFontSize={18} />
+        <ChartsXAxis axisId="quarters" label="Total sales last year" labelFontSize={15} />
         <ChartsYAxis axisId="quantities" label="Total" />
         <ChartsYAxis axisId="money" position="right" label="Quantities" />
       </ResponsiveChartContainer>
