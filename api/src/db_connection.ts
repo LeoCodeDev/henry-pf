@@ -105,5 +105,6 @@ module.exports = {
     Coupon,
     Rating,
     Report,
+    Routines_users,
     sequelize
 }
