@@ -8,6 +8,8 @@ import Admin from "./Admin/Admin";
 import OrderPlaced from "./OrderPlaced/OrderPlaced";
 import Stripe from "../components/Stripe/Stripe";
 // import Reviews from "../components/Comments/Reviews"
+import RoutineList from "../components/RoutinesList/RoutinesList";
+import {DetailRoutine} from "../components/DetailRoutine/DetailRoutine";
 
 const viewsData = [
   // {
@@ -60,6 +62,16 @@ const viewsData = [
     path: "payment",
     element: <Stripe />,
     title: "payment",
+  },
+  {
+    path: "routines",
+    element: <RoutineList />,
+    title: "routines",
+  },
+  {
+    path: "routines/detail/:id_routine",
+    element: <DetailRoutine />,
+    title: "routineDetail",
   }
 ];
 
