@@ -17,6 +17,9 @@ export const ModalCart = ({ toggleDrawer }) => {
   const navigate = useNavigate()
 
   const calculateTotal = async () => {
+    if (shoppingCart.length === 0) {
+      localStorage.removeItem('coupon');
+    }
     const total = await shoppingCart.reduce(
       (acc, product) => acc + product.price * product.quantity,
       0
@@ -34,8 +37,6 @@ export const ModalCart = ({ toggleDrawer }) => {
   }, [shoppingCart])
 
   const validateTokenUser= async()=>{
-    console.log('function')
-    console.log(user)
     try {
       if(user.role==='guest'){
         toggleDrawer('right', false)
@@ -53,7 +54,7 @@ export const ModalCart = ({ toggleDrawer }) => {
       console.log(error)
     }
   }
-  
+
   const setCouponDiscount=async(coupon)=>{
     if(coupon){
       try {
