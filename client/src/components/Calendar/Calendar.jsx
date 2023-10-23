@@ -43,7 +43,7 @@ export default function Calendar(){
         setEvents(
             allRoutine.reduce((result, item) => {
                 const { name_routine, Routines_users: { date } } = item;
-                return result.concat(date.map(d => ({
+                return result.concat(date?.map(d => ({
                     title: name_routine,
                     date: d.Date,
                     hour: d.hour
