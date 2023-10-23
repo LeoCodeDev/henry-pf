@@ -6,11 +6,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useAuthStore } from "../../store/authStore";
+import styles from "./Calendar.module.css";
 
 export default function Calendar() {
   const { user } = useAuthStore();
   const [allRoutine, setAllRoutine] = useState([]);
   const [events, setEvents] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     const fechRoutine = async () => {
@@ -18,15 +21,15 @@ export default function Calendar() {
         `/routines/getUserRoutines?email=${user.email}`
       );
       setAllRoutine(data);
-      console.log(data)
+      console.log(data);
     };
 
     fechRoutine();
   }, [user]);
 
   useEffect(() => {
-    if (allRoutine.length > 0 && allRoutine[0].Routines_users.date !== null){
-      console.log(allRoutine)
+    if (allRoutine.length > 0 && allRoutine[0].Routines_users.date !== null) {
+      console.log(allRoutine);
       setEvents(
         allRoutine.reduce((result, item) => {
           const {
@@ -35,28 +38,32 @@ export default function Calendar() {
             Routines_users: { date },
           } = item;
           return result.concat(
-            date ?
-            date.map((d) => ({
-              id: id_routine,
-              title: name_routine,
-              date: `${d.Date}T${d.hour}`,
-              dateOnly :d.Date,
-              hourOnly:d.hour
-            })) : []
+            date
+              ? date.map((d) => ({
+                  id: `${id_routine}-${d.Date}-${d.hour}`,
+                  idEstandar: id_routine,
+                  title: name_routine,
+                  date: `${d.Date}T${d.hour}`,
+                  dateOnly: d.Date,
+                  hourOnly: d.hour,
+                  description: name_routine,
+                }))
+              : []
           );
         }, [])
-      )
+      );
     } else setEvents([]);
-    console.log(allRoutine)
+    console.log(allRoutine);
+    console.log(events);
   }, [allRoutine]);
 
   const handleEventDrop = async (info) => {
-    console.log(info) ;
-    console.log( info.event._instance.range.start)
+    console.log(info);
+    console.log(info.event._instance.range.start);
     const { id_user } = user;
-    const  id_routine  = info.event._def.publicId;
+    const id_routine = info.event._def.extendedProps.idEstandar;
     // const {dateOnly} =info.event._def.extendedProps
-    const {hourOnly} =info.event._def.extendedProps
+    const { hourOnly } = info.event._def.extendedProps;
     // const GMT = info.oldEvent._instance.range.start.toTimeString().match(/GMT([+-]\d+)/)[1];
     const initialDate = info.oldEvent._instance.range.start
       .toISOString()
@@ -65,7 +72,7 @@ export default function Calendar() {
       .toISOString()
       .split("T")[0];
 
-      const timeOffset = info.oldEvent._instance.range.start.getTimezoneOffset();
+    const timeOffset = info.oldEvent._instance.range.start.getTimezoneOffset();
 
     // Formatea la hora en 24 horas con minutos y segundos
     const initialHour = new Date(
@@ -91,10 +98,10 @@ export default function Calendar() {
     // Agrega o resta la diferencia de tiempo en minutos a newHour
     initialHourDate.setMinutes(initialHourDate.getMinutes() + timeOffset);
     const newHourAdjusted = initialHourDate.toLocaleTimeString("en-US", {
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
     });
 
     try {
@@ -112,9 +119,54 @@ export default function Calendar() {
     }
   };
 
-  const handleEventClik = (info) => {
-    alert
-    console.log(info)
+  const handleEventClikc = (info) => {
+    
+    const event = info.event;
+    const extendedProps = event.extendedProps;
+    setSelectedEvent(extendedProps);
+    setIsModalOpen(true);
+    console.log({aqui:info.event._def.extendedProps.idEstandar ,extendedProps})
+    alert("dando click mi papa, que susto ");
+    console.log(info);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEventDidMount = (info) => {
+    const event = info.event;
+    const extendedProps = event.extendedProps;
+
+    // Crear un elemento de tooltip
+    const tooltip = document.createElement("div");
+    tooltip.className = styles.tooltip; // Aplica los estilos CSS Modules
+    tooltip.textContent = extendedProps.description;
+
+    // Agrega el tooltip al evento en el DOM
+    info.el.appendChild(tooltip);
+
+    // Manejar el evento hover
+    info.el.addEventListener("mouseover", () => {
+      tooltip.style.visibility = "visible";
+      tooltip.style.opacity = 1;
+    });
+
+    info.el.addEventListener("mouseout", () => {
+      tooltip.style.visibility = "hidden";
+      tooltip.style.opacity = 0;
+    });
+  };
+  
+  const handleCheckedRoutine =(event,selectEvent)=>{
+    console.log({event, selectEvent})
+    axios.put(`/routines/putUserRoutineCheck`,{
+      idUser : user.id_user,
+      idRoutine :selectEvent.idEstandar, 
+      Date : selectEvent.dateOnly, 
+      hour : selectEvent.hourOnly
+
+    })
   }
 
   return (
@@ -134,11 +186,24 @@ export default function Calendar() {
           editable={true}
           droppable={true}
           eventDrop={handleEventDrop}
-          eventClick={handleEventClik}
-          
+          eventClick={handleEventClikc}
+          eventDidMount={handleEventDidMount}
         />
       </div>
+      {isModalOpen && selectedEvent && (
+        <div className={styles.modalBackground} onClick={handleCloseModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2>{selectedEvent.description}</h2>
+            <label>
+              <input type="checkbox" checked={selectedEvent.done} onClick={()=>{handleCheckedRoutine(event,selectedEvent)} } />
+              Checkbox
+            </label>
+          </div>
+        </div>
+      )}
     </>
-
   );
 }

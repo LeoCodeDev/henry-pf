@@ -1,0 +1,17 @@
+
+.tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    top: -32px; /* Ajusta la posición vertical según tu diseño */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+  }
+  
