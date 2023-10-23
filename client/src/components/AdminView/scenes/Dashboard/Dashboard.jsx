@@ -40,13 +40,13 @@ export const Dashboard = () => {
         </Grid>
       </Box>
       <Box sx={{ m: "1rem" }}>
-        <Grid container spacing={2} marginTop={2.5}>
-          <Grid item xs={12} sm={6} key={1}>
+        <Grid container spacing={1} marginTop={2.5}>
+          <Grid item xs={12} sm={6} >
             <BasicCard>
               <IndexBarChart />
             </BasicCard>
           </Grid>
-          <Grid item xs={12} sm={6} key={2}>
+          <Grid item xs={12} sm={6} >
             <BasicCard>
               <UserBarChart />
             </BasicCard>
@@ -54,7 +54,7 @@ export const Dashboard = () => {
         </Grid>
       </Box>
       <Box sx={{ m: '1rem'}}>
-        <Grid container spacing={2} marginTop={2.5}>
+        <Grid container spacing={1} marginTop={2.5}>
           <Grid item xs={12} sm={4}>
           <div style={{marginBottom: '10px'}}>
             <BasicCard>
@@ -67,7 +67,7 @@ export const Dashboard = () => {
             </BasicCard>
           </Grid>
           <Grid item xs={12} sm={8} >
-          <div style={{display:' flex'}}>
+          <div>
             <BasicCard customHeight={650} >
               <TotalBestBuyer highBuyer={metricsData?.highBuyer}/>
             </BasicCard>
