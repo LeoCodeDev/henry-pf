@@ -47,6 +47,7 @@ export default function Calendar() {
                   dateOnly: d.Date,
                   hourOnly: d.hour,
                   description: name_routine,
+                  complete: d.complete
                 }))
               : []
           );
@@ -62,19 +63,14 @@ export default function Calendar() {
     console.log(info.event._instance.range.start);
     const { id_user } = user;
     const id_routine = info.event._def.extendedProps.idEstandar;
-    // const {dateOnly} =info.event._def.extendedProps
     const { hourOnly } = info.event._def.extendedProps;
-    // const GMT = info.oldEvent._instance.range.start.toTimeString().match(/GMT([+-]\d+)/)[1];
     const initialDate = info.oldEvent._instance.range.start
       .toISOString()
       .split("T")[0];
     const newDate = info.event._instance.range.start
       .toISOString()
       .split("T")[0];
-
     const timeOffset = info.oldEvent._instance.range.start.getTimezoneOffset();
-
-    // Formatea la hora en 24 horas con minutos y segundos
     const initialHour = new Date(
       info.oldEvent._instance.range.start
     ).toLocaleTimeString("en-US", {
@@ -83,19 +79,7 @@ export default function Calendar() {
       minute: "2-digit",
       second: "2-digit",
     });
-
-    // const newHour = new Date(
-    //   info.event._instance.range.start
-    // ).toLocaleTimeString("en-US", {
-    //   hour12: false,
-    //   hour: "2-digit",
-    //   minute: "2-digit",
-    //   second: "2-digit",
-    // });
-
     const initialHourDate = new Date(`2023-10-24T${initialHour}`);
-
-    // Agrega o resta la diferencia de tiempo en minutos a newHour
     initialHourDate.setMinutes(initialHourDate.getMinutes() + timeOffset);
     const newHourAdjusted = initialHourDate.toLocaleTimeString("en-US", {
       hour12: false,
@@ -119,13 +103,12 @@ export default function Calendar() {
     }
   };
 
-  const handleEventClikc = (info) => {
-    
+  const handleEventClick = (info) => {
     const event = info.event;
     const extendedProps = event.extendedProps;
     setSelectedEvent(extendedProps);
     setIsModalOpen(true);
-    console.log({aqui:info.event._def.extendedProps.idEstandar ,extendedProps})
+    console.log({ aqui: info.event._def.extendedProps.idEstandar, extendedProps });
     alert("dando click mi papa, que susto ");
     console.log(info);
   };
@@ -157,17 +140,16 @@ export default function Calendar() {
       tooltip.style.opacity = 0;
     });
   };
-  
-  const handleCheckedRoutine =(event,selectEvent)=>{
-    console.log({event, selectEvent})
-    axios.put(`/routines/putUserRoutineCheck`,{
-      idUser : user.id_user,
-      idRoutine :selectEvent.idEstandar, 
-      Date : selectEvent.dateOnly, 
-      hour : selectEvent.hourOnly
 
-    })
-  }
+  const handleCheckedRoutine = (event, selectEvent) => {
+    console.log({ event, selectEvent });
+    axios.put(`/routines/putUserRoutineCheck`, {
+      idUser: user.id_user,
+      idRoutine: selectEvent.idEstandar,
+      Date: selectEvent.dateOnly,
+      hour: selectEvent.hourOnly,
+    });
+  };
 
   return (
     <>
@@ -186,7 +168,7 @@ export default function Calendar() {
           editable={true}
           droppable={true}
           eventDrop={handleEventDrop}
-          eventClick={handleEventClikc}
+          eventClick={handleEventClick}
           eventDidMount={handleEventDidMount}
         />
       </div>
@@ -198,7 +180,11 @@ export default function Calendar() {
           >
             <h2>{selectedEvent.description}</h2>
             <label>
-              <input type="checkbox" checked={selectedEvent.done} onClick={()=>{handleCheckedRoutine(event,selectedEvent)} } />
+              <input
+                type="checkbox"
+                checked={selectedEvent.complete}
+                onChange={() => handleCheckedRoutine(event, selectedEvent)}
+              />
               Checkbox
             </label>
           </div>
