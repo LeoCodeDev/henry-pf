@@ -11,7 +11,7 @@ import Stripe from "../components/Stripe/Stripe";
 import RoutineList from "../components/RoutinesList/RoutinesList";
 import {DetailRoutine} from "../components/DetailRoutine/DetailRoutine";
 import Calendar from "../components/Calendar/Calendar";
-
+import ProfilePage from "./Profile/ProfileInfo";
 const viewsData = [
   // {
   //   path: "home",
@@ -78,6 +78,11 @@ const viewsData = [
     path: "profile/calendar",
     element: <Calendar />,
     title: "calendar",
+  },
+  {
+    path: "profile",
+    element: <ProfilePage />,
+    title: "profile",
   }
 ];
 
