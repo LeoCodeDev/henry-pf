@@ -18,8 +18,7 @@ export default function Calendar() {
         `/routines/getUserRoutines?email=${user.email}`
       );
       setAllRoutine(data);
-      console.log(data);
-      console.log(allRoutine);
+      console.log(data)
     };
 
     fechRoutine();
@@ -27,6 +26,7 @@ export default function Calendar() {
 
   useEffect(() => {
     if (allRoutine.length > 0 && allRoutine[0].Routines_users.date !== null){
+      console.log(allRoutine)
       setEvents(
         allRoutine.reduce((result, item) => {
           const {
@@ -35,13 +35,14 @@ export default function Calendar() {
             Routines_users: { date },
           } = item;
           return result.concat(
+            date ?
             date.map((d) => ({
               id: id_routine,
               title: name_routine,
               date: `${d.Date}T${d.hour}`,
               dateOnly :d.Date,
               hourOnly:d.hour
-            }))
+            })) : []
           );
         }, [])
       )
@@ -111,6 +112,11 @@ export default function Calendar() {
     }
   };
 
+  const handleEventClik = (info) => {
+    alert
+    console.log(info)
+  }
+
   return (
     <>
       <NavBar />
@@ -128,6 +134,7 @@ export default function Calendar() {
           editable={true}
           droppable={true}
           eventDrop={handleEventDrop}
+          eventClick={handleEventClik}
           
         />
       </div>
