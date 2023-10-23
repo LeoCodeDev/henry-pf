@@ -18,40 +18,46 @@ export default function Calendar() {
         `/routines/getUserRoutines?email=${user.email}`
       );
       setAllRoutine(data);
+      console.log(data)
     };
 
     fechRoutine();
   }, [user]);
 
   useEffect(() => {
-    setEvents(
-      allRoutine.reduce((result, item) => {
-        const {
-          name_routine,
-          id_routine,
-          Routines_users: { date },
-        } = item;
-        return result.concat(
-          date.map((d) => ({
-            id: id_routine,
-            title: name_routine,
-            date: `${d.Date}T${d.hour}`,
-            dateOnly :d.Date,
-            hourOnly:d.hour
-          }))
-        );
-      }, [])
-    );
+    if (allRoutine.length > 0 && allRoutine[0].Routines_users.date !== null){
+      console.log(allRoutine)
+      setEvents(
+        allRoutine.reduce((result, item) => {
+          const {
+            name_routine,
+            id_routine,
+            Routines_users: { date },
+          } = item;
+          return result.concat(
+            date ?
+            date.map((d) => ({
+              id: id_routine,
+              title: name_routine,
+              date: `${d.Date}T${d.hour}`,
+              dateOnly :d.Date,
+              hourOnly:d.hour
+            })) : []
+          );
+        }, [])
+      )
+    } else setEvents([]);
+    console.log(allRoutine)
   }, [allRoutine]);
 
   const handleEventDrop = async (info) => {
-    console.log(info)
+    console.log(info) ;
     console.log( info.event._instance.range.start)
     const { id_user } = user;
     const  id_routine  = info.event._def.publicId;
-    const {dateOnly} =info.event._def.extendedProps
+    // const {dateOnly} =info.event._def.extendedProps
     const {hourOnly} =info.event._def.extendedProps
-    const GMT = info.oldEvent._instance.range.start.toTimeString().match(/GMT([+-]\d+)/)[1];
+    // const GMT = info.oldEvent._instance.range.start.toTimeString().match(/GMT([+-]\d+)/)[1];
     const initialDate = info.oldEvent._instance.range.start
       .toISOString()
       .split("T")[0];
@@ -71,14 +77,14 @@ export default function Calendar() {
       second: "2-digit",
     });
 
-    const newHour = new Date(
-      info.event._instance.range.start
-    ).toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+    // const newHour = new Date(
+    //   info.event._instance.range.start
+    // ).toLocaleTimeString("en-US", {
+    //   hour12: false,
+    //   hour: "2-digit",
+    //   minute: "2-digit",
+    //   second: "2-digit",
+    // });
 
     const initialHourDate = new Date(`2023-10-24T${initialHour}`);
 
@@ -90,18 +96,6 @@ export default function Calendar() {
         minute: "2-digit",
         second: "2-digit",
     });
-
-    // const data = {
-    //   idUser: id_user,
-    //   idRoutine: id_routine,
-    //   originDate: initialDate,
-    //   originHour: initialHour,
-    //   newDate: newDate,
-    //   newHour: newHour,
-    // };
-
-    // console.log(data);
-    console.log({id_user, id_routine, initialDate, initialHour, newDate, newHour,dateOnly, hourOnly,GMT, newHourAdjusted});
 
     try {
       const response = await axios.put("/routines/putUserRoutineNewDate", {
@@ -117,6 +111,11 @@ export default function Calendar() {
       console.error(error);
     }
   };
+
+  const handleEventClik = (info) => {
+    alert
+    console.log(info)
+  }
 
   return (
     <>
@@ -135,8 +134,11 @@ export default function Calendar() {
           editable={true}
           droppable={true}
           eventDrop={handleEventDrop}
+          eventClick={handleEventClik}
+          
         />
       </div>
     </>
+
   );
 }
