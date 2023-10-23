@@ -21,9 +21,13 @@ const putUserRoutineDate = async (req: Request, res: Response) => {
     if (!userRoutineDate) {
       return res.status(404).json({ error: "Routine not found" });
     }
-
+    
     let newDates = userRoutineDate.date;
-    newDates.push(date);
+    if(newDates === null){
+      newDates = [date];
+    }else{
+      newDates.push(date);
+    }
 
     // Usa el método update para actualizar la propiedad date en la base de datos
     await Routines_users.update(
