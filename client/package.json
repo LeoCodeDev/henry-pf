@@ -12,6 +12,10 @@
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
     "@cloudinary/url-gen": "^1.11.2",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/interaction": "^6.1.9",
+    "@fullcalendar/react": "^6.1.9",
+    "@fullcalendar/timegrid": "^6.1.9",
     "@mui/icons-material": "^5.14.11",
     "@mui/x-charts": "^6.0.0-alpha.15",
     "@stripe/react-stripe-js": "^2.3.1",

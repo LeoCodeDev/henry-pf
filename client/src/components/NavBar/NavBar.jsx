@@ -58,6 +58,10 @@ export const NavBar = () => {
     setProf(!prof)
   }
 
+  const handleProfileInfo=()=>{
+    navigate('/profile')
+  }
+
   /* Admin Validation */
   let settings = ['Profile', 'Account', 'Logout']
   if (user.role === 'Admin' || user.role === 'Trainer')
@@ -265,6 +269,8 @@ export const NavBar = () => {
                         ? handleProfile
                         : setting === 'Dashboard'
                         ? handleDashboard
+                        : setting === 'Account'
+                        ? handleProfileInfo
                         : handleCloseUserMenu
                     }>
                     <Typography>{setting}</Typography>

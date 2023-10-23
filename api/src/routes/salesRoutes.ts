@@ -8,6 +8,7 @@ const userSalesMetrics= require('../controllers/salesControllers/userSalesMetric
 const ratingMetrics= require('../controllers/salesControllers/ratingMetrics')
 const getSalesByDate= require('../controllers/salesControllers/getSalesByDate')
 const lastYearSales = require('../controllers/salesControllers/getSalesLastYear')
+const getUserSales= require('../controllers/salesControllers/getUserSales')
 
 const salesRoutes = Router()
 
@@ -20,5 +21,6 @@ salesRoutes.get('/userSalesMetrics', userSalesMetrics)
 salesRoutes.get('/ratingMetrics', ratingMetrics)
 salesRoutes.get('/getSalesByDate', getSalesByDate)
 salesRoutes.get('/getLastYearSales', lastYearSales)
+salesRoutes.get('/getUserSales', getUserSales)
 
 export default salesRoutes
