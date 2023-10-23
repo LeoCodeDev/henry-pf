@@ -47,6 +47,8 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
   })
 );
 
+const types = ['ALL PRODUCTS', 'CLOTHES', 'SUPPLEMENT', 'EQUIPMENT']
+
 export default function CustomizedTabs() {
   const [value, setValue] = useState(0);
   const { setProductsFiltered, fetchCategories, categories } = useProductsStore();
@@ -68,9 +70,7 @@ export default function CustomizedTabs() {
   }, [fetchCategories]);
   
   useEffect(() => {
-    const category = categories?.find((category) => category.name === value);
-    console.log(category);
-    
+    const category = categories?.find((category) => category.name.toLowerCase() === value);
     setProductsFiltered(category);
   }, [categories ,value, setProductsFiltered]);
 
@@ -106,86 +106,28 @@ export default function CustomizedTabs() {
           p: "0px 0px 0px 10px",
         }}
       >
-        <StyledTab
-        index={0}
-        value='all products'
-          sx={{
-            fontSize: {
-              xs: "0.88rem",
-              sm: "1.25rem",
-              md: "1.463rem",
-              lg: "1.5rem",
-              xl: "1.5rem",
-            },
-            fontWeight: {
-              xs: 600,
-              md: 500,
-              lg: 500,
-              xl: 500,
-            },
-          }}
-          label="ALL PRODUCTS"
+        {types.map((type, index) => (
+          <StyledTab
+            index={index}
+            value={type}
+            sx={{
+              fontSize: {
+                xs: "0.88rem",
+                sm: "1.25rem",
+                md: "1.463rem",
+                lg: "1.5rem",
+                xl: "1.5rem",
+              },
+              fontWeight: {
+                xs: 600,
+                md: 500,
+                lg: 500,
+                xl: 500,
+              },
+            }}
+            label={ type }
         />
-        <StyledTab
-        index={1}
-        value={value}
-          sx={{
-            fontSize: {
-              xs: "0.88rem",
-              sm: "1.25rem",
-              md: "1.463rem",
-              lg: "1.5rem",
-              xl: "1.5rem",
-            },
-            fontWeight: {
-              xs: 600,
-              md: 500,
-              lg: 500,
-              xl: 500,
-            },
-          }}
-          label="CLOTHES"
-        />
-        <StyledTab
-        index={2}
-        value={value}
-          sx={{
-            fontSize: {
-              xs: "0.88rem",
-              sm: "1.25rem",
-              md: "1.463rem",
-              lg: "1.5rem",
-              xl: "1.5rem",
-            },
-            fontWeight: {
-              xs: 600,
-              md: 500,
-              lg: 500,
-              xl: 500,
-            },
-          }}
-          label="SUPPLEMENT"
-        />
-        <StyledTab
-        value={value}
-        index={3}
-          sx={{
-            fontSize: {
-              xs: "0.88rem",
-              sm: "1.25rem",
-              md: "1.463rem",
-              lg: "1.5rem",
-              xl: "1.5rem",
-            },
-            fontWeight: {
-              xs: 600,
-              md: 500,
-              lg: 500,
-              xl: 500,
-            },
-          }}
-          label="EQUIPMENT"
-        />
+        ))}
       </StyledTabs>
     </Box>
   );

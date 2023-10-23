@@ -14,7 +14,7 @@ import {
   Tooltip,
   MenuItem
 } from '@mui/material'
-import MenuIcon from '@mui/material/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import { useAuthStore } from '../../store/authStore'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
@@ -58,7 +58,7 @@ export const NavBar = () => {
     setProf(!prof)
   }
 
-  const handleProfileInfo=()=>{
+  const handleProfileInfo = () => {
     navigate('/profile')
   }
 
@@ -126,7 +126,7 @@ export const NavBar = () => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                color="red">
+                color="inherit">
                 <MenuIcon />
               </IconButton>
               <Menu
@@ -169,7 +169,7 @@ export const NavBar = () => {
                 mr: 2,
                 display: { xs: 'flex', md: 'none' },
                 fontFamily: 'monospace',
-                fontWeight: 500,
+                fontWeight: 700,
                 color: 'inherit',
                 textDecoration: 'none'
               }}>
