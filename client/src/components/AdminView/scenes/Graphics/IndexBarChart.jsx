@@ -40,7 +40,7 @@ const IndexBarChart = () => {
   if(!sales.keys.length || !sales.values.length) return <h1>loading</h1>
   return (
     <>
-    <Box sx={{width: '100%', maxWidth: 500 }}>
+    <Box>
       <ResponsiveChartContainer
       xAxis={[
         {
@@ -67,7 +67,7 @@ const IndexBarChart = () => {
           color: '#228d07',
         },
       ]}
-      width={500}
+      sx={{width: '100%'}}
       height={300}
       >
         <BarPlot />
