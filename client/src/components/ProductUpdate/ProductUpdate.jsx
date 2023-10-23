@@ -110,18 +110,18 @@ export const Update = () => {
     <Container
       className={style.container}
       style={{
-        marginTop: "15vh",
         textAlign: "center",
         justifyContent: "space-between",
         alignItems: "center",
         flexWrap: "wrap",
         borderRadius: "5px",
+        maxWidth: "100%"
       }}
     >
       <div>
         <Typography
           variant="h6"
-          color="primary"
+          color="#fff"
           sx={{ fontSize: { xs: "26px" }, padding: { xs: "5px" } }}
         >
           Admin Products
@@ -166,7 +166,7 @@ export const Update = () => {
             <TableHead>
               <TableRow>
                 <TableCell
-                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px" }}
+                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.id_product === "asc"
                       ? style.sortedAsc
@@ -182,6 +182,7 @@ export const Update = () => {
                     fontSize: isMobile ? "10px" : "12px",
                     display:  isMobile ? 'display' : 'table-Cell',
                     justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
                   }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.name === "asc"
@@ -193,7 +194,7 @@ export const Update = () => {
                   Name
                 </TableCell>
                 <TableCell
-                  sx={{ padding: isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px" }}
+                  sx={{ padding: isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.description === "asc"
                       ? style.sortedAsc
@@ -209,6 +210,7 @@ export const Update = () => {
                     fontSize: isMobile ? "10px" : "12px",
                     display:  isMobile ? 'display' : 'table-Cell',
                     justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
                   }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.price === "asc"
@@ -220,7 +222,7 @@ export const Update = () => {
                   Price
                 </TableCell>
                 <TableCell
-                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", }}
+                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.stock === "asc"
                       ? style.sortedAsc
@@ -231,7 +233,7 @@ export const Update = () => {
                   Stock
                 </TableCell>
                 <TableCell
-                  sx={{ padding:  isMobile ? '0px' : 'none', fontSize: isMobile ? "10px" : "12px", }}
+                  sx={{ padding:  isMobile ? '0px' : 'none', fontSize: isMobile ? "10px" : "12px",color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.rating === "asc"
                       ? style.sortedAsc
@@ -247,6 +249,7 @@ export const Update = () => {
                     fontSize: isMobile ? "10px" : "12px",
                     display:  isMobile ? 'display' : 'table-Cell',
                     justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
                   }}
                 >
                   Active
@@ -259,7 +262,7 @@ export const Update = () => {
                   <TableRow key={index}>
                     <TableCell
                       sx={{ padding: isMobile ? '0px' : 'none',
-                      fontSize: isMobile ? "10px" : "12px", }}
+                      fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                     >
                       {product.id_product}
                     </TableCell>
@@ -270,6 +273,7 @@ export const Update = () => {
                         textOverflow: "ellipsis",
                         maxWidth: isMobile ? "20px" : "none",
                         fontSize: isMobile ? "10px" : "12px",
+                        color: '#fff'
                       }}
                     >
                       {product.name}
@@ -282,20 +286,21 @@ export const Update = () => {
                         maxWidth: isMobile ? "10px" : "none",
                         fontSize: isMobile ? "10px" : "12px",
                         padding:  isMobile ? '5px' : 'none',
+                        color: '#fff'
                       }}
                     >
                       {product.description}
                     </TableCell>
                     <TableCell
-                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none' }}
+                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none', color: '#fff' }}
                     >
                       {product.price}
                     </TableCell>
-                    <TableCell sx={{ fontSize: isMobile ? "10px" : "12px" }}>
+                    <TableCell sx={{ fontSize: isMobile ? "10px" : "12px", color: '#fff' }}>
                       {product.stock}
                     </TableCell>
                     <TableCell
-                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none' }}
+                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none', color: '#fff' }}
                     >
                       {product.rating}
                     </TableCell>

@@ -1,11 +1,9 @@
 .container {
-  background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #000;
+  color: #fff;
 }
 
 .tableHeaderCell:hover {
-  background-color: #f0f0f0; /* Cambia el color de fondo al pasar el mouse */
   cursor: pointer; /* Cambia el cursor a una mano para indicar que es interactivo */
 }
 
