@@ -27,9 +27,9 @@ export default function Calendar() {
   }, [user]);
 
   useEffect(() => {
-    let findEvent = [];
+    let findEvent = false;
     if(allRoutine.length > 0){
-      findEvent = allRoutine.filter(routine => routine.Routines_users.date !== null)
+      findEvent = allRoutine.some(routine => routine.Routines_users.date !== null)
     }
     console.log(findEvent)
     if (allRoutine.length > 0 && findEvent) {
