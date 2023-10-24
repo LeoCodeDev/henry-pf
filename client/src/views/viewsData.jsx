@@ -10,7 +10,8 @@ import Stripe from "../components/Stripe/Stripe";
 // import Reviews from "../components/Comments/Reviews"
 import RoutineList from "../components/RoutinesList/RoutinesList";
 import {DetailRoutine} from "../components/DetailRoutine/DetailRoutine";
-
+import Calendar from "../components/Calendar/Calendar";
+import ProfilePage from "./Profile/ProfileInfo";
 const viewsData = [
   // {
   //   path: "home",
@@ -72,6 +73,16 @@ const viewsData = [
     path: "routines/detail/:id_routine",
     element: <DetailRoutine />,
     title: "routineDetail",
+  },
+  {
+    path: "profile/calendar",
+    element: <Calendar />,
+    title: "calendar",
+  },
+  {
+    path: "profile",
+    element: <ProfilePage />,
+    title: "profile",
   }
 ];
 
