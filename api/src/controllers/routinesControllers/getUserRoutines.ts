@@ -4,7 +4,6 @@ import { Request, Response } from 'express';
 const getUserRoutines = async (req:Request, res:Response) => {
     try {
         const { email } = req.query;
-        console.log(req.query);
     const user = await User.findOne({ where: { email }}
         );
     if (!user) {
