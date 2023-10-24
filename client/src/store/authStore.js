@@ -27,7 +27,7 @@ const initialStateWithStorage = storedState
   : initialState
 
 const useAuthStore = create((set) => ({
-  ...initialStateWithStorage,
+  ...initialStateWithStorage, 
   showRegisterModal:false,
 
   login: (userData) => {
