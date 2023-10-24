@@ -195,6 +195,7 @@ const useProductsStore = create((set, get) => ({
       throw new Error(error.message)
     }
   },
+  
 }))
 
 export { useProductsStore }
