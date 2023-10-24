@@ -22,10 +22,9 @@ const Reviews = (props) => {
 
   const handleSubmitReview = async () => {
 
-    // Puedes enviar la información a tu backend o realizar otras acciones necesarias
     const status = await productStore.submitReview(productId, comment, rating, userId);
-
-    if (status === 201) {
+    
+    if (status === 201 || status === 200) {
       toast.success("Comment sent successfully!")
     } else {
       toast.error("You have already rated this product")
