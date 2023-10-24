@@ -62,11 +62,11 @@ function ProfilePage() {
   return (
     <>
     <NavBar/>
-    <div style={{display:'flex', flexDirection:'row', marginTop:'5em'}} >
+    <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5em' }}>
       <ProfileSidebar user={user}
     //    handleProfile={handleProfile}
        />
-      <main >
+      <main style={{ flex: 1, padding: '20px' }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <ProfileTabs sales={sales} routines={routines} />

@@ -21,15 +21,18 @@ export default function Calendar() {
         `/routines/getUserRoutines?email=${user.email}`
       );
       setAllRoutine(data);
-      console.log(data);
     };
 
     fechRoutine();
   }, [user]);
 
   useEffect(() => {
-    if (allRoutine.length > 0 && allRoutine[0].Routines_users.date !== null) {
-      console.log(allRoutine);
+    let findEvent = false;
+    if(allRoutine.length > 0){
+      findEvent = allRoutine.some(routine => routine.Routines_users.date !== null)
+    }
+    console.log(findEvent)
+    if (allRoutine.length > 0 && findEvent) {
       setEvents(
         allRoutine.reduce((result, item) => {
           const {
@@ -54,13 +57,32 @@ export default function Calendar() {
         }, [])
       );
     } else setEvents([]);
-    console.log(allRoutine);
-    console.log(events);
+    console.log({events , allRoutine});
   }, [allRoutine]);
 
+  useEffect(() => {
+    // Redibujar el calendario al cargar el componente
+    const calendar = document.querySelector('.fc');
+    if (calendar) {
+      window.dispatchEvent(new Event('resize'));
+    }
+
+    // Redibujar el calendario cuando cambia el tamaño de la pantalla
+    const handleResize = () => {
+      if (calendar) {
+        window.dispatchEvent(new Event('resize'));
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const handleEventDrop = async (info) => {
-    console.log(info);
-    console.log(info.event._instance.range.start);
+
     const { id_user } = user;
     const id_routine = info.event._def.extendedProps.idEstandar;
     const { hourOnly } = info.event._def.extendedProps;
@@ -108,9 +130,6 @@ export default function Calendar() {
     const extendedProps = event.extendedProps;
     setSelectedEvent(extendedProps);
     setIsModalOpen(true);
-    console.log({ aqui: info.event._def.extendedProps.idEstandar, extendedProps });
-    alert("dando click mi papa, que susto ");
-    console.log(info);
   };
 
   const handleCloseModal = () => {
@@ -142,7 +161,7 @@ export default function Calendar() {
   };
 
   const handleCheckedRoutine = (event, selectEvent) => {
-    console.log({ event, selectEvent });
+
     axios.put(`/routines/putUserRoutineCheck`, {
       idUser: user.id_user,
       idRoutine: selectEvent.idEstandar,
