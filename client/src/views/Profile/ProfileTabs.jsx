@@ -6,10 +6,22 @@ import {AppBar, Tabs, Tab,Typography, Box, Card,
   AccordionDetails,} from '@mui/material'
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useAuthStore } from '../../store/authStore';
 
 export function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props;
+  const { user } = useAuthStore()
   
+  const fetchRoutinesUser = async () => {
+    const routine = await axios.get(`routines/getUserRoutines?email=${user.email}`)
+    console.log(routine);
+    return routine
+  }
+  useEffect(() => {
+    fetchRoutinesUser()
+  }, []);
+
     useEffect(() => {
       // Redibujar el calendario cuando se muestra la pestaña del calendario
       const calendar = document.querySelector('.fc');
