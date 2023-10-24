@@ -39,7 +39,7 @@ export function TabPanel(props) {
     };
   
     return (
-      <div>
+      <div style={{borderLeft:'1px solid #ccc'}}>
         <AppBar position="static">
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Routines" />
