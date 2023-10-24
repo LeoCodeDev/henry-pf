@@ -29,13 +29,12 @@ const useProductsStore = create((set, get) => ({
   fetchProducts: async () => {
     const actualCurrency = get().actualCurrency
     try {
-      const { data } = await axios.get(
-        `/products/products?to=${actualCurrency}`
-      )
+      const { data } = await axios(`/products/products?to=${actualCurrency}`)
       if (!data) {
         throw new Error('No products found')
       } else {
-        set({ products: data, prefilterProducts: data })
+        const activeProducts = data.filter((product) => product.active)
+        set({ products: activeProducts, prefilterProducts: activeProducts })
         return data
       }
     } catch (error) {
@@ -162,12 +161,12 @@ const useProductsStore = create((set, get) => ({
         rating,
         userId,
         productId,
-      });
+      })
 
       // if (response.status === 201) {
       //   window.alert('Publised review');
       // }
-      return response.status;
+      return response.status
     } catch (error) {
       return error.response.status
       // throw new Error(error.response.status)
@@ -175,7 +174,9 @@ const useProductsStore = create((set, get) => ({
   },
   fetchProductReviews: async (productId) => {
     try {
-      const response = await axios.get(`/products/getProductReviews/${productId}`);
+      const response = await axios.get(
+        `/products/getProductReviews/${productId}`
+      )
       if (response.data) {
         const reviews = response.data.map((review) => ({
           id: review.id,
@@ -184,18 +185,17 @@ const useProductsStore = create((set, get) => ({
           rating: review.rating,
           updatedAt: review.updatedAt,
           username: review.User?.username,
-          active: review.active
-        }));
-        return reviews;
+          active: review.active,
+        }))
+        return reviews
       } else {
-        throw new Error('No reviews found');
+        throw new Error('No reviews found')
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
   },
-
+  
 }))
-
 
 export { useProductsStore }
