@@ -5,10 +5,10 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../themeAdmin.js";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PollIcon from '@mui/icons-material/Poll';
 import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";/* 
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined'; */
 import EmailIcon from '@mui/icons-material/Email';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -92,7 +92,7 @@ export const SideBar = () => {
             <Item
               to={'/admin'}
               title="Dashboard"
-              icon={<HomeOutlinedIcon />}
+              icon={<PollIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -125,14 +125,8 @@ export const SideBar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Send Emails"
-              to='/admin/email'
-              icon={<EmailIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Typography
+            
+           {/*  <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
@@ -145,7 +139,7 @@ export const SideBar = () => {
               icon={<AttachMoneyOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
 
             <Typography
               variant="h6"
@@ -158,6 +152,13 @@ export const SideBar = () => {
               title="Coupon"
               to="/admin/coupon"
               icon={<StorefrontOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Send Emails"
+              to='/admin/email'
+              icon={<EmailIcon />}
               selected={selected}
               setSelected={setSelected}
             />

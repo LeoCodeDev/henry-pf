@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NavBar } from "../NavBar/NavBar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -78,6 +78,23 @@ export default function Calendar() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const checked = useRef();
+
+  useEffect(() => {
+    const closeMenuOnOutsideClick = (e) => {
+      if (checked.current && !checked.current.contains(e.target)) {
+        setIsModalOpen(false);
+      }
+    };
+     document.addEventListener("mousedown", closeMenuOnOutsideClick);
+    
+
+    // Limpieza del efecto cuando el componente se desmonta
+    return () => {
+      document.removeEventListener("mousedown", closeMenuOnOutsideClick);
     };
   }, []);
 
@@ -160,14 +177,20 @@ export default function Calendar() {
     });
   };
 
-  const handleCheckedRoutine = (event, selectEvent) => {
+  const handleCheckedRoutine = async(event, selectEvent) => {
+    const checked = event.target.checked;
+  setSelectedEvent({
+    ...selectEvent,
+    complete: checked,
+  });
 
-    axios.put(`/routines/putUserRoutineCheck`, {
+    const peticion  = await axios.put(`/routines/putUserRoutineCheck`, {
       idUser: user.id_user,
       idRoutine: selectEvent.idEstandar,
       Date: selectEvent.dateOnly,
       hour: selectEvent.hourOnly,
     });
+    console.log({peticion, event,selectEvent})
   };
 
   return (
@@ -192,19 +215,21 @@ export default function Calendar() {
         />
       </div>
       {isModalOpen && selectedEvent && (
-        <div className={styles.modalBackground} onClick={handleCloseModal}>
+        <div className={styles.modalBackground} ref={checked} onClick={handleCloseModal}>
           <div
             className={styles.modalContent}
             onClick={(e) => e.stopPropagation()}
           >
             <h2>{selectedEvent.description}</h2>
+            <h4>Day : {selectedEvent.dateOnly}</h4>
+            <h4>Hour : {selectedEvent.hourOnly}</h4>
             <label>
               <input
                 type="checkbox"
                 checked={selectedEvent.complete}
                 onChange={() => handleCheckedRoutine(event, selectedEvent)}
               />
-              Checkbox
+              Complet
             </label>
           </div>
         </div>

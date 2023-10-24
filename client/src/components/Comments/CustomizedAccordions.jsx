@@ -346,11 +346,11 @@ export default function CustomizedAccordions(props) {
                   </Grid>
 
                   <Grid item xs={1} style={{ textAlign: "center" }}>
-                    <IconButton
-                      onClick={() => handleDeleteComment(comment)}
-                      aria-label="Detele"
-                    >
-                      {comment.userId === props.user.id_user && (
+                    {comment.userId === props.user.id_user && (
+                      <IconButton
+                        onClick={() => handleDeleteComment(comment)}
+                        aria-label="Detele"
+                      >
                         <div title="Delete your comment">
                           <DeleteIcon
                             style={{
@@ -360,8 +360,8 @@ export default function CustomizedAccordions(props) {
                             }}
                           />
                         </div>
-                      )}
-                    </IconButton>
+                      </IconButton>
+                    )}
                   </Grid>
 
                   <Grid item xs={1} style={{ textAlign: "center" }}>
