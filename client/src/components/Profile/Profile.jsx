@@ -36,7 +36,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-export default function Profile() {
+export default function Profile({onlyEdit}) {
   const { user } = useAuthStore();
   const [isEditing, setIsEditing] = useState(false);
   const [imagen, setImagen] = useState(user.avatar);
@@ -60,6 +60,7 @@ export default function Profile() {
     setHasChanges(true); // bandera para saber que si hubo cambio
   };
 
+  console.log(onlyEdit);
   useEffect(() => {
     handleGetSales();
     axios
@@ -238,7 +239,7 @@ export default function Profile() {
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={!onlyEdit ? 8 : 12}>
             <Paper elevation={8} sx={{ padding: "20px", borderRadius: "8px" }}>
               <Typography variant="h5" color="primary" gutterBottom>
                 User Profile
@@ -377,7 +378,7 @@ export default function Profile() {
               </form>
             </Paper>
           </Grid>
-          <Grid item xs={12} md={4}>
+         {!onlyEdit && <Grid item xs={12} md={4}>
             <Paper
               elevation={8}
               sx={{ padding: "20px", borderRadius: "8px", minWidth: "30vw" }}
@@ -419,7 +420,8 @@ export default function Profile() {
                 )}
               </div>
             </Paper>
-          </Grid>
+          </Grid> 
+          }
         </Grid>
       </Container>
       <Toaster position="top-center" reverseOrder={false} />

@@ -18,7 +18,6 @@ function ReusableModal(props) {
     height:"100%",
     boxShadow: "none",
     transition: "transform 0.5s",
-    zIndex: 9999,
   };
 
   const backdropStyle = {
@@ -28,7 +27,6 @@ function ReusableModal(props) {
     width: "100%",
     height: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.7)",  
-    zIndex: 9998,  
   };
 
   const modalContentStyle = {
