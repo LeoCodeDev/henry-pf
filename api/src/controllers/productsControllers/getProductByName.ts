@@ -13,6 +13,7 @@ const getProductByName= async (req:Request,res:Response)=>{
         const searchTerms = name.split(' ');
         const selectedProduct = await Product.findAll({
             where: {
+                active: true,
                 [Op.or]: searchTerms.map(term => ({
                 name: { [Op.iLike]: `%${term}%` } ,  
                 }))
