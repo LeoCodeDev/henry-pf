@@ -54,9 +54,7 @@ export const ProductDetails = () => {
     )
     total(),
       setFav(
-        favorites.find((element) => element.id_product === product.id_product)
-          ? true
-          : false
+        favorites.some((element) => element.id_product === product.id_product)
       );
   }, [shoppingCart, product, favorites, total]);
 
@@ -91,9 +89,7 @@ export const ProductDetails = () => {
     } catch (error) {
       console.log(error.message);
     }
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 300);
+    setIsLoading(false);
     setSales(DS.Sales);
   };
 
@@ -120,195 +116,175 @@ export const ProductDetails = () => {
       {isLoading ? (
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "70vh",
-          }}
-        >
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '70vh'
+          }}>
           <CircularProgress sx={{ color: theme.palette.primary.main }} />
         </div>
       ) : (
         <>
           <div
             style={{
-              display: "flex",
-              flexDirection: isDesktop ? "row" : "column",
-              marginTop: "5rem",
-              justifyContent: "space-around",
-            }}
-          >
+              display: 'flex',
+              flexDirection: isDesktop ? 'row' : 'column',
+              marginTop: '5rem',
+              justifyContent: 'space-around'
+            }}>
             <div
               title="image"
               style={{
-                textAlign:"center",
-                alignItems:"center",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+                textAlign: 'center',
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
               <Box
-                component={"img"}
+                component={'img'}
                 src={product.image}
                 sx={{
-                  marginTop:"1rem",
-                  borderRadius: "2rem",
-                  maxWidth: "23rem",
-                  minWidth: "23rem",
-                  height: "28rem",
-                  objectFit: "cover",
+                  marginTop: '1rem',
+                  borderRadius: '2rem',
+                  maxWidth: '23rem',
+                  minWidth: '23rem',
+                  height: '28rem',
+                  objectFit: 'cover'
                 }}
               />
 
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Item
-                  component={"img"}
+                  component={'img'}
                   src={product.image}
                   style={{
-                    borderRadius: "1rem",
-                    height: "5rem",
-                    width: "min-content",
-                    background: "transparent",
-                  }}
-                ></Item>
+                    borderRadius: '1rem',
+                    height: '5rem',
+                    width: 'min-content',
+                    background: 'transparent'
+                  }}></Item>
                 <Item
-                  component={"img"}
+                  component={'img'}
                   src={product.image}
                   style={{
-                    borderRadius: "1rem",
-                    height: "5rem",
-                    width: "min-content",
-                    background: "transparent",
-                  }}
-                ></Item>
+                    borderRadius: '1rem',
+                    height: '5rem',
+                    width: 'min-content',
+                    background: 'transparent'
+                  }}></Item>
                 <Item
-                  component={"img"}
+                  component={'img'}
                   src={product.image}
                   style={{
-                    borderRadius: "1rem",
-                    height: "5rem",
-                    width: "min-content",
-                    background: "transparent",
-                  }}
-                ></Item>
+                    borderRadius: '1rem',
+                    height: '5rem',
+                    width: 'min-content',
+                    background: 'transparent'
+                  }}></Item>
               </div>
             </div>
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: "1rem",
-                  marginInline: "2rem",
-                  gap: "4rem",
-                }}
-              >
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: '1rem',
+                  marginInline: '2rem',
+                  gap: '4rem'
+                }}>
                 <Typography
                   style={{
-                    fontFamily: "Poppins",
-                    color: theme.palette.primary.main,
+                    fontFamily: 'Poppins',
+                    color: theme.palette.primary.main
                   }}
                   variant="h3"
-                  gutterBottom
-                >
+                  gutterBottom>
                   {product.name}
                 </Typography>
                 <Typography
-                  style={{ fontFamily: "Poppins" }}
+                  style={{ fontFamily: 'Poppins' }}
                   variant="h5"
-                  gutterBottom
-                >
-                  <h5 style={{ margin: ".5rem" }}>Rating</h5>
-                  <p
+                  gutterBottom>
+                  Rating
+                  <Typography
                     style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      margin: 0,
-                    }}
-                  >
+                      display: 'flex',
+                      justifyContent: 'center',
+                      margin: 0
+                    }}>
                     {product.rating} ⭐
-                  </p>
+                  </Typography>
                 </Typography>
               </div>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginInline: "2rem",
-                  justifyContent:"space-around"
-                }}
-              >
+                  display: 'flex',
+                  flexDirection: 'column',
+                  marginInline: '2rem',
+                  justifyContent: 'space-around'
+                }}>
                 <Typography
-                  style={{ fontFamily: "Poppins", color: "white" }}
+                  style={{ fontFamily: 'Poppins', color: 'white' }}
                   variant="h4"
-                  gutterBottom
-                >
+                  gutterBottom>
                   $ {product.price}
                 </Typography>
                 <Container
                   maxWidth="sm"
                   sx={{
-                    backgroundColor: "lightgray",
-                    borderRadius: "8px",
-                    display: "flex",
+                    backgroundColor: 'lightgray',
+                    borderRadius: '8px',
+                    display: 'flex',
                     marginLeft: -4,
-                    flexDirection: "column",
-                    width: "95vw",
-                    height:"25vh"
-                  }}
-                >
+                    flexDirection: 'column',
+                    width: '95vw',
+                    height: '25vh'
+                  }}>
                   <Typography
                     style={{
-                      fontFamily: "Poppins",
+                      fontFamily: 'Poppins',
                       color: theme.palette.primary.main,
-                      marginTop: "1rem",
+                      marginTop: '1rem'
                     }}
                     variant="h5"
-                    gutterBottom
-                  >
+                    gutterBottom>
                     DESCRIPTION
                   </Typography>
                   <Typography
                     style={{
-                      fontFamily: "Poppins",
-                      color: "#24262E",
-                      marginTop: "-1vh",
-                      marginBottom: "2vh",
+                      fontFamily: 'Poppins',
+                      color: '#24262E',
+                      marginTop: '-1vh',
+                      marginBottom: '2vh'
                     }}
-                    variant="p"
-                    gutterBottom
-                  >
+                    gutterBottom>
                     {product.description}
                   </Typography>
                   <Typography
                     style={{
-                      fontFamily: "Poppins",
-                      color: theme.palette.primary.main,
+                      fontFamily: 'Poppins',
+                      color: theme.palette.primary.main
                     }}
                     variant="h5"
-                    gutterBottom
-                  >
+                    gutterBottom>
                     {product.Category?.name.toUpperCase()}
                   </Typography>
-                  <div style={{ marginLeft: "-1vh" }}>
+                  <div style={{ marginLeft: '-1vh' }}>
                     <div
                       style={{
-                        display: "flex",
-                        fontFamily: "Poppins",
-                        marginTop: "-2vh",
-                      }}
-                    >
+                        display: 'flex',
+                        fontFamily: 'Poppins',
+                        marginTop: '-2vh'
+                      }}>
                       {product.Category?.variants?.map((size) => (
                         <Item
-                          style={{ margin: ".2rem", color: "#24262E" }}
-                          key={size}
-                        >
+                          style={{ margin: '.2rem', color: '#24262E' }}
+                          key={size}>
                           {size}
                         </Item>
                       ))}
@@ -317,43 +293,39 @@ export const ProductDetails = () => {
                 </Container>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                    padding: "1rem",
-                    flexWrap: "wrap",
-                    gap: "1rem",
-                  }}
-                >
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    padding: '1rem',
+                    flexWrap: 'wrap',
+                    gap: '1rem'
+                  }}>
                   <Button
                     style={{
-                      width: "80%",
-                      fontFamily: "Poppins",
-                      fontSize: "1.1rem",
+                      width: '80%',
+                      fontFamily: 'Poppins',
+                      fontSize: '1.1rem',
                       background: theme.palette.primary.main,
-                      color: "white",
-                      filter: "brightness(90%)",
+                      color: 'white',
+                      filter: 'brightness(90%)'
                     }}
                     variant="contained"
-                    onClick={() => handleCart()}
-                  >
+                    onClick={() => handleCart()}>
                     {cart ? (
                       <div
                         style={{
-                          display: "flex",
-                          gap: "1rem",
-                          alignItems: "center",
-                        }}
-                      >
+                          display: 'flex',
+                          gap: '1rem',
+                          alignItems: 'center'
+                        }}>
                         REMOVE FROM CART <RemoveShoppingCartOutlinedIcon />
                       </div>
                     ) : (
                       <div
                         style={{
-                          display: "flex",
-                          gap: "1rem",
-                          alignItems: "center",
-                        }}
-                      >
+                          display: 'flex',
+                          gap: '1rem',
+                          alignItems: 'center'
+                        }}>
                         ADD TO CART <AddShoppingCartIcon />
                       </div>
                     )}
@@ -361,13 +333,12 @@ export const ProductDetails = () => {
                   <Button
                     style={{
                       color: theme.palette.primary.main,
-                      width: "70px",
-                      borderRadius: "10px",
-                      border: "3px solid #B0B0B0",
+                      width: '70px',
+                      borderRadius: '10px',
+                      border: '3px solid #B0B0B0'
                     }}
                     variant="outlined"
-                    onClick={() => handleFav(product.id_product)}
-                  >
+                    >
                     {isFav ? (
                       <FavoriteOutlinedIcon
                         fontSize="large"
@@ -376,7 +347,7 @@ export const ProductDetails = () => {
                     ) : (
                       <FavoriteBorderOutlinedIcon
                         fontSize="large"
-                        onClick={() => handleFav()}
+                        onClick={() => handleFav(product.id_product)}
                       />
                     )}
                   </Button>
@@ -385,38 +356,35 @@ export const ProductDetails = () => {
             </div>
           </div>
 
-          <hr style={{ width: "98%", marginBlock:"4rem" }}></hr>
+          <hr style={{ width: '98%', marginBlock: '4rem' }}></hr>
 
           <div
             style={{
-              display: "flex",
-              width: "100%",
-              flexDirection: isDesktop ? "row" : "column",
-              justifyContent:"center"
-            }}
-          >
+              display: 'flex',
+              width: '100%',
+              flexDirection: isDesktop ? 'row' : 'column',
+              justifyContent: 'center'
+            }}>
             <div
               style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
               {userCanCommentAndRate ? (
                 <Reviews idProduct={idProduct} setUpdate={setUpdate} />
               ) : (
                 <Card
                   style={{
                     maxWidth: 600,
-                    margin: "2rem",
-                    padding: "1rem",
-                    marginTop: "3rem",
-                    maxHeight:"15vh",
+                    margin: '2rem',
+                    padding: '1rem',
+                    marginTop: '3rem',
+                    maxHeight: '15vh',
                     fontFamily: theme.typography.fontFamily,
-                    color: theme.palette.secondary.main,
-                  }}
-                >
+                    color: theme.palette.secondary.main
+                  }}>
                   <CardContent>
-                    <Typography variant="h6" style={{ textAlign: "justify" }}>
+                    <Typography variant="h6" style={{ textAlign: 'justify' }}>
                       You will be able to rate and review this product after
                       making a purchase.
                     </Typography>
@@ -424,12 +392,17 @@ export const ProductDetails = () => {
                 </Card>
               )}
             </div>
-            <div style={{ marginBlock: "1rem", width: "100%" }}>
-              <CustomizedAccordions idProduct={idProduct} update={update} setUpdate={setUpdate} user={user}/>
+            <div style={{ marginBlock: '1rem', width: '100%' }}>
+              <CustomizedAccordions
+                idProduct={idProduct}
+                update={update}
+                setUpdate={setUpdate}
+                user={user}
+              />
             </div>
           </div>
         </>
       )}
     </div>
-  );
+  )
 };

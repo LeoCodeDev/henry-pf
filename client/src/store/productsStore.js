@@ -16,7 +16,6 @@ const useProductsStore = create((set, get) => ({
   fetchCategories: async () => {
     try {
       const { data } = await axios.get('/products/categories')
-      console.log(data);
       if (!data) {
         throw new Error('No categories found')
       } else {

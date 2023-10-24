@@ -50,10 +50,8 @@ export const CardProduct = ({ product }) => {
 
   useEffect(() => {
     setFav(
-      favorites.find((element) => element.id_product === product.id_product)
-        ? true
-        : false
-    );
+      favorites.some((element) => element.id_product === product.id_product)
+    )
   }, [favorites, product]);
 
   const handleFav = (id) => {

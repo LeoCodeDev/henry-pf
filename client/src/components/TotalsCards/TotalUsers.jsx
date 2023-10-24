@@ -12,7 +12,7 @@ const TotalUsers = ({month}) => {
         const {data} = await axios('/users/getLastUsers')
         setUsers(data)
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       }
     }
     fetchData()
