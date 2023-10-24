@@ -5,11 +5,18 @@ import {AppBar, Tabs, Tab,Typography, Box, Card,
   AccordionSummary,
   AccordionDetails,} from '@mui/material'
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
+    useEffect(() => {
+      // Redibujar el calendario cuando se muestra la pestaña del calendario
+      const calendar = document.querySelector('.fc');
+      if (calendar && value === 2) {
+        window.dispatchEvent(new Event('resize'));
+      }
+    }, [value]);
     return (
       <Typography
         component="div"
@@ -107,9 +114,9 @@ export function TabPanel(props) {
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Typography>Calendar</Typography>
-          <>
+          <div>
           <Calendar/>
-          </>
+          </div>
         </TabPanel>
       </div>
     );

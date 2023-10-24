@@ -79,9 +79,28 @@ export default function Calendar() {
       );
     } else setEvents([]);
     console.log({events , allRoutine});
-
-
   }, [allRoutine]);
+
+  useEffect(() => {
+    // Redibujar el calendario al cargar el componente
+    const calendar = document.querySelector('.fc');
+    if (calendar) {
+      window.dispatchEvent(new Event('resize'));
+    }
+
+    // Redibujar el calendario cuando cambia el tamaño de la pantalla
+    const handleResize = () => {
+      if (calendar) {
+        window.dispatchEvent(new Event('resize'));
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleEventDrop = async (info) => {
 
