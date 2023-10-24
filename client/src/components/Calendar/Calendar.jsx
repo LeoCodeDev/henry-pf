@@ -33,27 +33,6 @@ export default function Calendar() {
     }
     console.log(findEvent)
     if (allRoutine.length > 0 && findEvent) {
-      console.log(allRoutine.reduce((result, item) => {
-        const {
-          name_routine,
-          id_routine,
-          Routines_users: { date },
-        } = item;
-        return result.concat(
-          date
-            ? date.map((d) => ({
-                id: `${id_routine}-${d.Date}-${d.hour}`,
-                idEstandar: id_routine,
-                title: name_routine,
-                date: `${d.Date}T${d.hour}`,
-                dateOnly: d.Date,
-                hourOnly: d.hour,
-                description: name_routine,
-                complete: d.complete
-              }))
-            : []
-        );
-      }, []))
       setEvents(
         allRoutine.reduce((result, item) => {
           const {
