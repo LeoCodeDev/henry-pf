@@ -3,11 +3,12 @@ import { create } from 'zustand'
 import { useProductsStore } from './productsStore'
 
 const useShowProductStore = create((set) => ({
-  product: {},
+  product: JSON.parse(localStorage.getItem('product')) || {},
   productById: async (id) => {
     try {
       const to= useProductsStore.getState().actualCurrency
       const { data } = await axios(`/products/productsById?id=${id}&to=${to}`)
+      localStorage.setItem('product', JSON.stringify(data))
       if (!data) {
         throw new Error(data.message)
       } else {

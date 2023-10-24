@@ -10,22 +10,33 @@ import { useCartStore } from '../../../store/shoppingCartStore'
 import { useAuthStore } from '../../../store/authStore'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from "react-hot-toast";
-
 export const ModalCart = ({ toggleDrawer }) => {
   const { shoppingCart, totalToPay ,setTotalToPay} = useCartStore()
   const [coupon, setCoupon] = useState('');
   const {user, setShowRegister}= useAuthStore()
-  const navigate= useNavigate()
+  const navigate = useNavigate()
+
+  const calculateTotal = async () => {
+    if (shoppingCart.length === 0) {
+      localStorage.removeItem('coupon');
+    }
+    const total = await shoppingCart.reduce(
+      (acc, product) => acc + product.price * product.quantity,
+      0
+    )
+    if (localStorage.getItem('coupon')) {
+      const { discount } = await JSON.parse(localStorage.getItem('coupon'))
+      setTotalToPay(total - discount)
+    } else {
+      setTotalToPay(total)
+    }
+  }
 
   useEffect(() => {
-    if (localStorage.getItem('coupon')) {
-    const {discount}=JSON.parse(localStorage.getItem('coupon'))
-      setTotalToPay(totalToPay - discount )}
-    },[shoppingCart])
+    calculateTotal()
+  }, [shoppingCart])
 
   const validateTokenUser= async()=>{
-    console.log('function')
-    console.log(user)
     try {
       if(user.role==='guest'){
         toggleDrawer('right', false)
@@ -112,7 +123,6 @@ export const ModalCart = ({ toggleDrawer }) => {
             GO TO PAY
           </Button>
         </section>
-        
       <Toaster position="top-center" reverseOrder={false} />
       </div>
     </>
