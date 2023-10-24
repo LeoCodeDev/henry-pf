@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import {
   Table,
   TableBody,
@@ -11,19 +11,18 @@ import {
   Button,
   IconButton,
   TextField,
-  Checkbox,  
-} from '@mui/material';
+  Checkbox
+} from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 
-export default function ManageCoupons(){
-    const [editCoupon, setEditCoupon] = useState(null);
-  const [coupons, setCoupons] = useState([]);
+export default function ManageCoupons() {
+  const [editCoupon, setEditCoupon] = useState(null)
+  const [coupons, setCoupons] = useState([])
 
-  const fetchCoupons=()=>{
+  const fetchCoupons = () => {
     try {
-      axios.get('/dashboard/getCoupons')
-      .then(response => {
-        setCoupons(response.data);
+      axios.get('/dashboard/getCoupons').then((response) => {
+        setCoupons(response.data)
       })
     } catch (error) {
       console.log(error)
@@ -32,39 +31,35 @@ export default function ManageCoupons(){
 
   useEffect(() => {
     fetchCoupons()
-  }, []);
-  
-  const handleEditClick = (coupon) => {
-    setEditCoupon(coupon);
-  };
+  }, [])
 
-  const handleSaveClick = async() => {
-    console.log(editCoupon)
-    await axios.put(`/dashboard/updateCoupon?id=${editCoupon.id}`,{
+  const handleEditClick = (coupon) => {
+    setEditCoupon(coupon)
+  }
+
+  const handleSaveClick = async () => {
+    await axios.put(`/dashboard/updateCoupon?id=${editCoupon.id}`, {
       code: editCoupon.code,
       discount: editCoupon.discount,
       expiration: editCoupon.expiration,
       active: editCoupon.active
-    });
-    setEditCoupon(null);
+    })
+    setEditCoupon(null)
     fetchCoupons()
-  };
+  }
 
   const handleCancelClick = () => {
-    setEditCoupon(null);
-  };
+    setEditCoupon(null)
+  }
 
   const handleInputChange = (property, value) => {
-    setEditCoupon({ ...editCoupon, [property]: value });
-  };
-
+    setEditCoupon({ ...editCoupon, [property]: value })
+  }
 
   return (
-    <TableContainer component={Paper} style={{margin:"10px"}}>
-        <h1 style={{textAlign:"center"}}>Manage Coupons</h1>
-        <button 
-        onClick={fetchCoupons}
-        > Refresh </button>
+    <TableContainer component={Paper} style={{ margin: '10px' }}>
+      <h1 style={{ textAlign: 'center' }}>Manage Coupons</h1>
+      <button onClick={fetchCoupons}> Refresh </button>
       <Table>
         <TableHead>
           <TableRow>
@@ -93,36 +88,48 @@ export default function ManageCoupons(){
                   <TextField
                     value={editCoupon.discount}
                     type="number"
-                    onChange={(e) => handleInputChange('discount', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange('discount', e.target.value)
+                    }
                   />
                 ) : (
                   `${coupon.discount}$`
                 )}
               </TableCell>
-              <TableCell>                
+              <TableCell>
                 {editCoupon && editCoupon.id === coupon.id ? (
                   <TextField
                     value={editCoupon.expiration}
                     type="date"
-                    onChange={(e) => handleInputChange('expiration', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange('expiration', e.target.value)
+                    }
                   />
                 ) : (
                   coupon.expiration
-                )}</TableCell>
+                )}
+              </TableCell>
               <TableCell>
                 {editCoupon && editCoupon.id === coupon.id ? (
                   <Checkbox
                     checked={editCoupon.active}
-                    onChange={(e) => handleInputChange('active', e.target.checked)}
+                    onChange={(e) =>
+                      handleInputChange('active', e.target.checked)
+                    }
                   />
+                ) : coupon.active ? (
+                  'Active'
                 ) : (
-                  coupon.active ? 'Active' : 'Deactivated'
+                  'Deactivated'
                 )}
               </TableCell>
               <TableCell>
                 {editCoupon && editCoupon.id === coupon.id ? (
                   <div>
-                    <Button variant="contained" color="primary" onClick={handleSaveClick}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSaveClick}>
                       Save
                     </Button>
                     <Button variant="contained" onClick={handleCancelClick}>
@@ -140,5 +147,5 @@ export default function ManageCoupons(){
         </TableBody>
       </Table>
     </TableContainer>
-  );
+  )
 }

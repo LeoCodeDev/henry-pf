@@ -49,7 +49,6 @@ function ProfilePage() {
     const getSales=async()=>{
         const {data}=await axios.get(`/sales/getUserSales?id_user=${user.id_user}`);
         setSales(data);
-        console.log(sales)
     }
 
   useEffect(()=>{

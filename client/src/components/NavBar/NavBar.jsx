@@ -1,6 +1,9 @@
-import * as React from "react";
+import { useState } from 'react'
 import { SearchBar } from '../SearchBar/SearchBar'
-import {AppBar, Box, Toolbar,
+import {
+  AppBar,
+  Box,
+  Toolbar,
   IconButton,
   Typography,
   Menu,
@@ -10,92 +13,90 @@ import {AppBar, Box, Toolbar,
   Button,
   Tooltip,
   MenuItem
-
-} from "@mui/material";
-import MenuIcon from "@mui/material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import { useAuthStore } from "../../store/authStore";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
-import { Modal } from "../../components/Modal/Modal";
-import { useCartStore } from "../../store/shoppingCartStore";
-import { favoriteStore } from "../../store/favoriteStore";
-import ProfileMain from "../../views/Profile/Profile";
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
+import { useAuthStore } from '../../store/authStore'
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { useNavigate } from 'react-router-dom'
+import { Modal } from '../../components/Modal/Modal'
+import { useCartStore } from '../../store/shoppingCartStore'
+import { favoriteStore } from '../../store/favoriteStore'
+import ProfileMain from '../../views/Profile/Profile'
 
 const darkTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: 'dark',
     primary: {
-      main: "#1976d2",
-    },
-  },
-});
+      main: '#1976d2'
+    }
+  }
+})
 
 const pages = ['HOME', 'SHOP', 'ROUTINES']
 
 export const NavBar = () => {
+  const [ifSearch, setIfSearch] = useState(false)
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
+  const [modalOpen, setModalOpen] = useState({ anchor: '', open: false })
+  const [prof, setProf] = useState(false)
   const { favorites } = favoriteStore()
-  const [anchorElNav, setAnchorElNav] = React.useState(null)
-  const [anchorElUser, setAnchorElUser] = React.useState(null)
   const { user, logout } = useAuthStore()
   const { shoppingCart } = useCartStore()
   const navigate = useNavigate()
-  /* Logic modal */
-  const [modalOpen, setModalOpen] = React.useState({ anchor: '', open: false })
-  const [prof, setProf] = React.useState(false)
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
+    logout()
+    navigate('/')
+  }
 
   const handleProfile = () => {
-    setAnchorElUser(null);
+    setAnchorElUser(null)
     setProf(!prof)
   }
 
-  const handleProfileInfo=()=>{
+  const handleProfileInfo = () => {
     navigate('/profile')
   }
 
   /* Admin Validation */
   let settings = ['Profile', 'Account', 'Logout']
   if (user.role === 'Admin' || user.role === 'Trainer')
-    settings.splice(2,0,'Dashboard')
+    settings.splice(2, 0, 'Dashboard')
 
   const handleDashboard = () => {
     if (user.role === 'Admin' || user.role === 'Trainer') navigate('/admin')
   }
 
-  const [ifSearch, setIfSearch] = React.useState(false);
   const handleSearch = () => {
-    setIfSearch(!ifSearch);
-  };
+    setIfSearch(!ifSearch)
+  }
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  
+    setAnchorElNav(event.currentTarget)
+  }
+
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    setAnchorElUser(event.currentTarget)
+  }
 
   const handleMenu = (e) => {
-    const value = e.target.innerText;
-    if (value === "HOME") navigate("/home");
-    if (value === "SHOP") navigate("/home");
-    if (value === "ROUTINES") navigate("/routines");
-  };
+    const value = e.target.innerText
+    if (value === 'HOME') navigate('/home')
+    if (value === 'SHOP') navigate('/home')
+    if (value === 'ROUTINES') navigate('/routines')
+  }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+    setAnchorElUser(null)
+  }
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -145,34 +146,22 @@ export const NavBar = () => {
                 sx={{
                   display: { xs: 'block', md: 'none' }
                 }}>
-                <MenuItem
-                  component="a"
-                  href="/home"
-                  key={'HOME'}
-                  onClick={handleCloseNavMenu}>
-                  <Typography>{'HOME'}</Typography>
-                </MenuItem>
-                <MenuItem
-                  component="a"
-                  href="/home"
-                  key={'SHOP'}
-                  onClick={handleCloseNavMenu}>
-                  <Typography>{'SHOP'}</Typography>
-                </MenuItem>
-                <MenuItem
-                  component="a"
-                  href="/routines"
-                  key={'ROUTINES'}
-                  onClick={handleCloseNavMenu}>
-                  <Typography>{'ROUTINES'}</Typography>
-                </MenuItem>
+                {pages.map((page) => (
+                  <MenuItem
+                    component="a"
+                    href={page}
+                    key={page}
+                    onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </MenuItem>
+                ))}
               </Menu>
             </Box>
 
             <Typography
               position={'absolute'}
               left={'3rem'}
-              variant="h5"
+              variant="h6"
               noWrap
               component="a"
               href="/home"
@@ -180,7 +169,7 @@ export const NavBar = () => {
                 mr: 2,
                 display: { xs: 'flex', md: 'none' },
                 fontFamily: 'monospace',
-                fontWeight: 500,
+                fontWeight: 700,
                 color: 'inherit',
                 textDecoration: 'none'
               }}>
@@ -211,7 +200,6 @@ export const NavBar = () => {
               ))}
             </Box>
 
-            {/* Search Bar */}
             <IconButton size="large" color="inherit" onClick={handleSearch}>
               <SearchIcon />
             </IconButton>
@@ -227,25 +215,21 @@ export const NavBar = () => {
               </div>
             )}
 
-            {/* Icono de favoritos */}
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
               onClick={() => setModalOpen({ anchor: 'left', open: true })}>
-              {/* Abajo de esta línea poner el estado de favoritos */}
               <Badge badgeContent={favorites.length} color="error">
                 <FavoriteBorderOutlinedIcon />
               </Badge>
             </IconButton>
 
-            {/* Icono de carrito */}
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
               onClick={() => setModalOpen({ anchor: 'right', open: true })}>
-              {/* Abajo de esta línea poner el estado (.length) de carrito */}
               <Badge badgeContent={shoppingCart.length} color="error">
                 <ShoppingCartOutlinedIcon />
               </Badge>
@@ -282,7 +266,7 @@ export const NavBar = () => {
                       setting === 'Logout'
                         ? handleLogout
                         : setting === 'Profile'
-                        ? handleProfile 
+                        ? handleProfile
                         : setting === 'Dashboard'
                         ? handleDashboard
                         : setting === 'Account'
