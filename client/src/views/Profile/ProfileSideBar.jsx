@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit'
 
     
       return (
-        <div style={{ width: '20em', padding: '1em', borderRight: '1px solid #ccc', gap:'2em', height:'100%'}}>
+        <div style={{ width: '20em', padding: '1em', gap:'2em', height:'100%'}}>
           <Avatar alt="User Avatar" src={user.avatar} style={{ marginBottom: '10px', width:'55%', height:'50%' }} />
           <List>
             <ListItem style={{color:'white'}}>

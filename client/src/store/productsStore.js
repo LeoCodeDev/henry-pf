@@ -182,8 +182,9 @@ const useProductsStore = create((set, get) => ({
           userId: review.userId,
           comment: review.comment,
           rating: review.rating,
-          createdAt: review.createdAt,
-          username: review.User?.username
+          updatedAt: review.updatedAt,
+          username: review.User?.username,
+          active: review.active
         }));
         return reviews;
       } else {
