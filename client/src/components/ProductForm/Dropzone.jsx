@@ -104,7 +104,6 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
 
       if (response.status === 200) {
         setImage(null)
-        console.log(response.data.url)
         setProductImageURL(response.data.url)
         setCroppedImage(null)
         setImage(null)

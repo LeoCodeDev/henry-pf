@@ -6,11 +6,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useAuthStore } from "../../store/authStore";
+import styles from "./Calendar.module.css";
 
 export default function Calendar() {
   const { user } = useAuthStore();
   const [allRoutine, setAllRoutine] = useState([]);
   const [events, setEvents] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     const fechRoutine = async () => {
@@ -24,44 +27,72 @@ export default function Calendar() {
   }, [user]);
 
   useEffect(() => {
-    setEvents(
-      allRoutine.reduce((result, item) => {
-        const {
-          name_routine,
-          id_routine,
-          Routines_users: { date },
-        } = item;
-        return result.concat(
-          date.map((d) => ({
-            id: id_routine,
-            title: name_routine,
-            date: `${d.Date}T${d.hour}`,
-            dateOnly :d.Date,
-            hourOnly:d.hour
-          }))
-        );
-      }, [])
-    );
+    let findEvent = false;
+    if(allRoutine.length > 0){
+      findEvent = allRoutine.some(routine => routine.Routines_users.date !== null)
+    }
+    console.log(findEvent)
+    if (allRoutine.length > 0 && findEvent) {
+      setEvents(
+        allRoutine.reduce((result, item) => {
+          const {
+            name_routine,
+            id_routine,
+            Routines_users: { date },
+          } = item;
+          return result.concat(
+            date
+              ? date.map((d) => ({
+                  id: `${id_routine}-${d.Date}-${d.hour}`,
+                  idEstandar: id_routine,
+                  title: name_routine,
+                  date: `${d.Date}T${d.hour}`,
+                  dateOnly: d.Date,
+                  hourOnly: d.hour,
+                  description: name_routine,
+                  complete: d.complete
+                }))
+              : []
+          );
+        }, [])
+      );
+    } else setEvents([]);
+    console.log({events , allRoutine});
   }, [allRoutine]);
 
+  useEffect(() => {
+    // Redibujar el calendario al cargar el componente
+    const calendar = document.querySelector('.fc');
+    if (calendar) {
+      window.dispatchEvent(new Event('resize'));
+    }
+
+    // Redibujar el calendario cuando cambia el tamaño de la pantalla
+    const handleResize = () => {
+      if (calendar) {
+        window.dispatchEvent(new Event('resize'));
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const handleEventDrop = async (info) => {
-    console.log(info)
-    console.log( info.event._instance.range.start)
+
     const { id_user } = user;
-    const  id_routine  = info.event._def.publicId;
-    const {dateOnly} =info.event._def.extendedProps
-    const {hourOnly} =info.event._def.extendedProps
-    const GMT = info.oldEvent._instance.range.start.toTimeString().match(/GMT([+-]\d+)/)[1];
+    const id_routine = info.event._def.extendedProps.idEstandar;
+    const { hourOnly } = info.event._def.extendedProps;
     const initialDate = info.oldEvent._instance.range.start
       .toISOString()
       .split("T")[0];
     const newDate = info.event._instance.range.start
       .toISOString()
       .split("T")[0];
-
-      const timeOffset = info.oldEvent._instance.range.start.getTimezoneOffset();
-
-    // Formatea la hora en 24 horas con minutos y segundos
+    const timeOffset = info.oldEvent._instance.range.start.getTimezoneOffset();
     const initialHour = new Date(
       info.oldEvent._instance.range.start
     ).toLocaleTimeString("en-US", {
@@ -70,38 +101,14 @@ export default function Calendar() {
       minute: "2-digit",
       second: "2-digit",
     });
-
-    const newHour = new Date(
-      info.event._instance.range.start
-    ).toLocaleTimeString("en-US", {
+    const initialHourDate = new Date(`2023-10-24T${initialHour}`);
+    initialHourDate.setMinutes(initialHourDate.getMinutes() + timeOffset);
+    const newHourAdjusted = initialHourDate.toLocaleTimeString("en-US", {
       hour12: false,
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
     });
-
-    const initialHourDate = new Date(`2023-10-24T${initialHour}`);
-
-    // Agrega o resta la diferencia de tiempo en minutos a newHour
-    initialHourDate.setMinutes(initialHourDate.getMinutes() + timeOffset);
-    const newHourAdjusted = initialHourDate.toLocaleTimeString("en-US", {
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-    });
-
-    // const data = {
-    //   idUser: id_user,
-    //   idRoutine: id_routine,
-    //   originDate: initialDate,
-    //   originHour: initialHour,
-    //   newDate: newDate,
-    //   newHour: newHour,
-    // };
-
-    // console.log(data);
-    console.log({id_user, id_routine, initialDate, initialHour, newDate, newHour,dateOnly, hourOnly,GMT, newHourAdjusted});
 
     try {
       const response = await axios.put("/routines/putUserRoutineNewDate", {
@@ -116,6 +123,51 @@ export default function Calendar() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleEventClick = (info) => {
+    const event = info.event;
+    const extendedProps = event.extendedProps;
+    setSelectedEvent(extendedProps);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEventDidMount = (info) => {
+    const event = info.event;
+    const extendedProps = event.extendedProps;
+
+    // Crear un elemento de tooltip
+    const tooltip = document.createElement("div");
+    tooltip.className = styles.tooltip; // Aplica los estilos CSS Modules
+    tooltip.textContent = extendedProps.description;
+
+    // Agrega el tooltip al evento en el DOM
+    info.el.appendChild(tooltip);
+
+    // Manejar el evento hover
+    info.el.addEventListener("mouseover", () => {
+      tooltip.style.visibility = "visible";
+      tooltip.style.opacity = 1;
+    });
+
+    info.el.addEventListener("mouseout", () => {
+      tooltip.style.visibility = "hidden";
+      tooltip.style.opacity = 0;
+    });
+  };
+
+  const handleCheckedRoutine = (event, selectEvent) => {
+
+    axios.put(`/routines/putUserRoutineCheck`, {
+      idUser: user.id_user,
+      idRoutine: selectEvent.idEstandar,
+      Date: selectEvent.dateOnly,
+      hour: selectEvent.hourOnly,
+    });
   };
 
   return (
@@ -135,8 +187,28 @@ export default function Calendar() {
           editable={true}
           droppable={true}
           eventDrop={handleEventDrop}
+          eventClick={handleEventClick}
+          eventDidMount={handleEventDidMount}
         />
       </div>
+      {isModalOpen && selectedEvent && (
+        <div className={styles.modalBackground} onClick={handleCloseModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2>{selectedEvent.description}</h2>
+            <label>
+              <input
+                type="checkbox"
+                checked={selectedEvent.complete}
+                onChange={() => handleCheckedRoutine(event, selectedEvent)}
+              />
+              Checkbox
+            </label>
+          </div>
+        </div>
+      )}
     </>
   );
 }

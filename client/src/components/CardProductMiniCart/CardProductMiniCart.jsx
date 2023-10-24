@@ -47,7 +47,17 @@ export const CardProductMiniCart = ({ product }) => {
                 <RemoveIcon sx={{ width: '15px' }} />
               </Button>
               {/* aca si es necesario quitar el input todo bien, puedes hacerlo, tipo solo renderizar un p o un h1 */}
-              <input type="text" value={product.quantity} />
+              {/* <input type="text" value={product.quantity} /> */}
+              <p
+                style={{
+                  backgroundColor: '#000000de',
+                  padding: '0 .4rem',
+                  color: '#c9c9c9',
+                  fontFamily: 'Poppins',
+                  borderRadius: '4px'
+                }}>
+                {product.quantity}
+              </p>
               <Button
                 onClick={() => oneMore(product)}
                 sx={{
@@ -63,6 +73,6 @@ export const CardProductMiniCart = ({ product }) => {
           </div>
         </div>
       </section>
-    </> 
+    </>
   )
 }

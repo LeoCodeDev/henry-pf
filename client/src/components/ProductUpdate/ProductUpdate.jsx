@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import {
   Button,
   Container,
@@ -10,100 +10,100 @@ import {
   TableCell,
   Grid,
   useMediaQuery,
-  ThemeProvider,
-} from "@mui/material";
-import { useProductsStore } from "../../store/productsStore";
-import style from "./ProductUpdate.module.css";
-import axios from "axios";
+  ThemeProvider
+} from '@mui/material'
+import { useProductsStore } from '../../store/productsStore'
+import style from './ProductUpdate.module.css'
+import axios from 'axios'
 import theme from '../../../theme'
 
 export const Update = () => {
-  const { activeDesactiveProducts, fetchActiveDesactiveProducts, setProductsFiltered } =
-    useProductsStore();
+  const {
+    activeDesactiveProducts,
+    fetchActiveDesactiveProducts,
+    setProductsFiltered
+  } = useProductsStore()
   const [sortOrder, setSortOrder] = useState({
-    id_product: "asc",
-    name: "asc",
-    description: "asc",
-    price: "asc",
-    stock: "asc",
-    rating: "asc",
-  });
-  const [activeFilter, setActiveFilter] = useState("all");
+    id_product: 'asc',
+    name: 'asc',
+    description: 'asc',
+    price: 'asc',
+    stock: 'asc',
+    rating: 'asc'
+  })
+  const [activeFilter, setActiveFilter] = useState('all')
 
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchActiveDesactiveProducts();
+        await fetchActiveDesactiveProducts()
         await setProductsFiltered()
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error.message)
       }
-    };
-    fetchData();
-  }, [fetchActiveDesactiveProducts]);
-  
+    }
+    fetchData()
+  }, [fetchActiveDesactiveProducts])
+
   const listProducts = async () => {
     try {
-      await fetchActiveDesactiveProducts();
+      await fetchActiveDesactiveProducts()
       await setProductsFiltered()
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
-  };
-      const eraseproduct = async (productId) => {
-        try {
-          await axios.put(`/products/prod/${productId}`);
-          listProducts();
-        } catch (error) {
-          console.error("Error al cambiar el estado del producto:", error);
-        }
-      };
+  }
+  const eraseproduct = async (productId) => {
+    try {
+      await axios.put(`/products/prod/${productId}`)
+      listProducts()
+    } catch (error) {
+      console.error('Error al cambiar el estado del producto:', error)
+    }
+  }
 
   const handleSort = (column) => {
     setSortOrder((prevSortOrder) => ({
       ...prevSortOrder,
-      [column]: prevSortOrder[column] === "asc" ? "desc" : "asc",
-    }));
+      [column]: prevSortOrder[column] === 'asc' ? 'desc' : 'asc'
+    }))
 
     activeDesactiveProducts.sort((a, b) => {
       if (
-        column === "price" ||
-        column === "rating" ||
-        column === "id_product" ||
-        column === "stock"
+        column === 'price' ||
+        column === 'rating' ||
+        column === 'id_product' ||
+        column === 'stock'
       ) {
-        const valueA = parseFloat(a[column]);
-        const valueB = parseFloat(b[column]);
-        if (column === "id_product" || column === "stock") {
-          return sortOrder[column] === "asc"
-            ? valueA - valueB
-            : valueB - valueA;
+        const valueA = parseFloat(a[column])
+        const valueB = parseFloat(b[column])
+        if (column === 'id_product' || column === 'stock') {
+          return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA
         }
-        return sortOrder[column] === "asc" ? valueA - valueB : valueB - valueA;
+        return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA
       } else {
-        return sortOrder[column] === "asc"
+        return sortOrder[column] === 'asc'
           ? a[column].localeCompare(b[column])
-          : b[column].localeCompare(a[column]);
+          : b[column].localeCompare(a[column])
       }
-    });
-  };
+    })
+  }
 
   const handleFilter = (filter) => {
-    setActiveFilter(filter);
-  };
+    setActiveFilter(filter)
+  }
 
   const filteredProducts = activeDesactiveProducts?.filter((product) => {
-    if (activeFilter === "all") {
-      return true;
-    } else if (activeFilter === "active") {
-      return product.active;
+    if (activeFilter === 'all') {
+      return true
+    } else if (activeFilter === 'active') {
+      return product.active
     } else {
-      return !product.active;
+      return !product.active
     }
-  });
+  })
 
-  const isMobile = useMediaQuery("(max-width: 700px)");
+  const isMobile = useMediaQuery('(max-width: 700px)')
 
   return (
     <ThemeProvider theme={theme}>

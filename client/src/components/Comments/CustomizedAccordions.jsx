@@ -233,21 +233,21 @@ export default function CustomizedAccordions(props) {
                     }}
                   >
                     {!reported[comment.id] ? (
-                      <p> {comment.comment?.substring(0, 25)}...</p>
+                      <span> {comment.comment?.substring(0, 25)}...</span>
                     ) : (
-                      <p
+                      <span
                         style={{
                           textDecoration: 'line-through red',
                           color: 'gray',
                         }}
                       >
                         {comment.comment?.substring(0, 25)}...
-                      </p>
+                      </span>
                     )}
                   </Typography>
                 ) : (
                   <Typography sx={{ fontSize: '0.9rem', marginLeft: 1 }}>
-                    <p
+                    <span
                       style={{
                         color: !reported[comment.id] ? 'white' : 'gray',
                         textDecoration: !reported[comment.id]
@@ -256,7 +256,7 @@ export default function CustomizedAccordions(props) {
                       }}
                     >
                       {comment.comment?.substring(0, 10)}...
-                    </p>
+                    </span>
                   </Typography>
                 )}
               </AccordionSummary>
@@ -265,16 +265,16 @@ export default function CustomizedAccordions(props) {
                   <Grid item xs={11}>
                     <Typography sx={{ fontSize: '0.9rem' }}>
                       {!reported[comment.id] ? (
-                        <p>{comment.comment}</p>
+                        <span>{comment.comment}</span>
                       ) : (
-                        <p
+                        <span
                           style={{
                             textDecoration: 'line-through red',
                             color: 'gray',
                           }}
                         >
                           {comment.comment}
-                        </p>
+                        </span>
                       )}
                     </Typography>
                   </Grid>
