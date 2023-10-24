@@ -1,6 +1,10 @@
-
-import CardRoutine from '../../components/CardRoutine.jsx/CardRoutine';
-import {AppBar, Tabs, Tab,Typography, Box} from '@mui/material'
+import Calendar from '../../components/Calendar/Calendar';
+import {AppBar, Tabs, Tab,Typography, Box, Card,
+  CardContent,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,} from '@mui/material'
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from 'react';
 
 export function TabPanel(props) {
@@ -38,26 +42,74 @@ export function TabPanel(props) {
         </AppBar>
         <TabPanel value={value} index={0}>
           <Typography>Routines Content</Typography>
+          <div style={{margin:'1em'}}>
+
           {routines.map((routine)=>(
-              <CardRoutine routine={routine} key={routine.id_routine}/>
+                  <Card
+                  style={{margin:'1em'}}>
+                    <CardContent>
+                      <Typography variant="h5" component="div">
+                        🏋️‍♂️ {routine.name_routine}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        👤 Author username: {routine.author}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        🏆 Puntuation: {routine.puntuation || "N/A"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        🏋️‍♂️ Exercises: {routine?.Exercises.length}
+                      </Typography>
+                      <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <Typography variant="subtitle1">Exercises</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          {routine.Exercises.map((exercise) => (
+                            <div key={exercise.id_exercise}>
+                              <Typography variant="h6">{exercise.name}</Typography>
+                              <Typography variant="body2">Type: {exercise.type}</Typography>
+                              <Typography variant="body2">
+                                Muscle: {exercise.muscle}
+                              </Typography>
+                              <Typography variant="body2">
+                                Difficulty: {exercise.difficulty}
+                              </Typography>
+                              <Typography variant="body2">
+                                Description: {exercise.description}
+                              </Typography>
+                              <hr />
+                            </div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    </CardContent>
+                  </Card>
           ))}
+          </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Typography>Sales Content</Typography>
-          {sales.map((sale)=>(
-              <lu>
-              <li>Date: {sale.date}</li>
-              <li>Total: {sale.total}</li>
-              <li>Products: {sale.Products?.map((product)=>(
-                  <Typography>{product.name}</Typography>
-              ))}
-              </li>
-              </lu>
-          ))}
+          {sales.map((sale, index) => (
+            <div key={index} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '8px', marginBottom: '16px' }}>
+              <ul style={{ listStyleType: 'none', padding: '0' }}>
+                <li>Date: {sale.date}</li>
+                <li>Total: {sale.total}</li>
+                <li>Products: 
+                  <ul style={{ listStyleType: 'none', padding: '0' }}>
+                    {sale.Products?.map((product, index) => (
+                      <li key={index}>{product.name}</li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
+            </div>))}
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Typography>Calendar</Typography>
-          {/* <Calendar/> */}
+          <>
+          <Calendar/>
+          </>
         </TabPanel>
       </div>
     );

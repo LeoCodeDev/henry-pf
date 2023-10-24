@@ -49,7 +49,6 @@ function ProfilePage() {
     const getSales=async()=>{
         const {data}=await axios.get(`/sales/getUserSales?id_user=${user.id_user}`);
         setSales(data);
-        console.log(sales)
     }
 
   useEffect(()=>{
@@ -63,11 +62,11 @@ function ProfilePage() {
   return (
     <>
     <NavBar/>
-    <div style={{display:'flex', flexDirection:'row', marginTop:'5em'}} >
+    <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5em' }}>
       <ProfileSidebar user={user}
     //    handleProfile={handleProfile}
        />
-      <main >
+      <main style={{ flex: 1, padding: '20px' }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <ProfileTabs sales={sales} routines={routines} />
