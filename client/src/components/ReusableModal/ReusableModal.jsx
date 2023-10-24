@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import theme from "../../../theme";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import { isDesktop } from "react-device-detect";
 
 function ReusableModal(props) {
   const { open, onClose, children } = props;
@@ -12,8 +13,9 @@ function ReusableModal(props) {
   const modalStyle = {
     position: "absolute",
     left: "50%",
-    transform: `translate(-50%, ${closing ? "-100%" : opening ? "5%" : "-100%"})`,
+    transform: `translate(-50%, ${closing ? "-100%" : opening ? (isDesktop ? "5%" : "1%") : "-100%"})`,
     minWidth: "90%",
+    height:"100%",
     boxShadow: "none",
     transition: "transform 0.5s",
     zIndex: 9999,
@@ -25,9 +27,15 @@ function ReusableModal(props) {
     left: 0,
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.7)", // Fondo oscuro semitransparente
-    zIndex: 9998, // Por debajo del modal
+    backgroundColor: "rgba(0, 0, 0, 0.7)",  
+    zIndex: 9998,  
   };
+
+  const modalContentStyle = {
+    maxHeight: "100vh",
+    overflowY: "auto", 
+  };
+  
 
   const handleClose = () => {
     setClosing(true);
@@ -52,7 +60,7 @@ function ReusableModal(props) {
       )}
       <Modal
         open={open}
-        onClose={handleClose} // Usamos la función de cierre personalizada
+        onClose={handleClose} 
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
@@ -60,9 +68,9 @@ function ReusableModal(props) {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
             alignItems: "center",
-            textAlign: "center",
+            textAlign: "center", ...modalContentStyle,
+    
           }}
           style={modalStyle} 
         >
