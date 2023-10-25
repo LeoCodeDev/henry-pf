@@ -2,7 +2,7 @@ const { User, Routine } = require('../../db_connection');
 import { Request, Response } from 'express';
 
 const deleteSavedRutine = async (req:Request, res:Response) => {
-    const { email, id_routine} = req.body;
+    const { email, id_routine } = req.body;
     try {
         const user = await User.findOne({ where: { email } });
         const routine = await Routine.findOne({ where: { id_routine } });

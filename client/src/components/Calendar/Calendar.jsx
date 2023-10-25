@@ -15,16 +15,15 @@ export default function Calendar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const fechRoutine = async () => {
+    const { data } = await axios.get(
+      `/routines/getUserRoutines?email=${user.email}`
+    );
+    setAllRoutine(data);
+  };
   useEffect(() => {
-    const fechRoutine = async () => {
-      const { data } = await axios.get(
-        `/routines/getUserRoutines?email=${user.email}`
-      );
-      setAllRoutine(data);
-    };
-
     fechRoutine();
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     let findEvent = false;
