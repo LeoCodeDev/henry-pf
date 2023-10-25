@@ -13,123 +13,52 @@ import { NavBar } from '../NavBar/NavBar'
 import Grid from '@mui/material/Grid'
 import { TrainerProfile } from './TrainerProfile'
 
-//Data Hardcodeada para ejemplos (Mocks)
-const mockedData = [
-  {
-    id: 1,
-    avatar:
-      'https://previews.123rf.com/images/blankstock/blankstock1903/blankstock190302593/124721850-icono-de-l%C3%ADnea-de-usuario-signo-de-avatar-de-perfil-s%C3%ADmbolo-de-silueta-de-persona-formas.jpg',
-    userName: 'JohnDoe',
-    rating: 4,
-    routines: [
-      {
-        name_routine: 'Routine Name',
-        author: 'XXXXXXXX',
-        description:
-          'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. In hac habitasse platea dictumst. Phasellus eget vulputate dui. Praesent nec nisl auctor, fringilla leo at',
-        id_routine: 1,
-        puntuation: 4,
-        Exercises: ['uno'],
-      },
-    ],
-  },
-  {
-    id: 2,
-    avatar:
-      'https://previews.123rf.com/images/blankstock/blankstock1903/blankstock190302593/124721850-icono-de-l%C3%ADnea-de-usuario-signo-de-avatar-de-perfil-s%C3%ADmbolo-de-silueta-de-persona-formas.jpg',
-    userName: 'JohnDoe2',
-    rating: 4,
-    routines: [
-      {
-        name_routine: 'Routine Name',
-        author: 'XXXXXXXX',
-        description:
-          'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. In hac habitasse platea dictumst. Phasellus eget vulputate dui. Praesent nec nisl auctor, fringilla leo at',
-        id_routine: 1,
-        puntuation: 4,
-        Exercises: ['uno'],
-      },
-    ],
-  },
-  {
-    id: 3,
-    avatar:
-      'https://previews.123rf.com/images/blankstock/blankstock1903/blankstock190302593/124721850-icono-de-l%C3%ADnea-de-usuario-signo-de-avatar-de-perfil-s%C3%ADmbolo-de-silueta-de-persona-formas.jpg',
-    userName: 'JohnDoe',
-    rating: 4,
-    routines: [
-      {
-        name_routine: 'Routine Name',
-        author: 'XXXXXXXX',
-        description:
-          'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. In hac habitasse platea dictumst. Phasellus eget vulputate dui. Praesent nec nisl auctor, fringilla leo at',
-        id_routine: 1,
-        puntuation: 4,
-        Exercises: ['uno'],
-      },
-    ],
-  },
-  {
-    id: 4,
-    avatar:
-      'https://previews.123rf.com/images/blankstock/blankstock1903/blankstock190302593/124721850-icono-de-l%C3%ADnea-de-usuario-signo-de-avatar-de-perfil-s%C3%ADmbolo-de-silueta-de-persona-formas.jpg',
-    userName: 'JohnDoe',
-    rating: 4,
-    routines: [
-      {
-        name_routine: 'Routine Name',
-        author: 'XXXXXXXX',
-        description:
-          'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. In hac habitasse platea dictumst. Phasellus eget vulputate dui. Praesent nec nisl auctor, fringilla leo at',
-        id_routine: 1,
-        puntuation: 4,
-        Exercises: ['uno'],
-      },
-    ],
-  },
-  {
-    id: 5,
-    avatar:
-      'https://previews.123rf.com/images/blankstock/blankstock1903/blankstock190302593/124721850-icono-de-l%C3%ADnea-de-usuario-signo-de-avatar-de-perfil-s%C3%ADmbolo-de-silueta-de-persona-formas.jpg',
-    userName: 'JohnDoe',
-    rating: 4,
-    routines: [
-      {
-        name_routine: 'Routine Name',
-        author: 'XXXXXXXX',
-        description:
-          'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. In hac habitasse platea dictumst. Phasellus eget vulputate dui. Praesent nec nisl auctor, fringilla leo at',
-        id_routine: 1,
-        puntuation: 4,
-        Exercises: ['uno'],
-      },
-    ],
-  },
-]
-
 export default function RoutineList() {
   const [routines, setRoutines] = useState([])
+  const [trainers, setTrainers] = useState([])
   const [selectedTrainer, setSelectedTrainer] = useState(null)
+
+  const sortTrainers = (a, b) => {
+    if (a.avgRating < b.avgRating) {
+      return 1
+    } else if (a.avgRating > b.avgRating) {
+      return -1
+    } else {
+      return b.countRatings - a.countRatings
+    }
+  }
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const { data } = await axios('/users/getAllTrainers')
+        data && setTrainers(data.sort(sortTrainers))
+      })()
+    } catch (error) {
+      console.log(error.message)
+    }
+  }, [])
 
   useEffect(() => {
     const fetchRoutines = async () => {
       const { data } = await axios.get('/routines/getAllRoutines')
-      setRoutines(data)
+      data && setRoutines(data)
     }
     fetchRoutines()
   }, [])
 
   const handleClick = (e) => {
-    if (!selectedTrainer || selectedTrainer.id !== Number(e.target.id))
+    if (!selectedTrainer || selectedTrainer.id_user !== Number(e.target.id)) {
       return setSelectedTrainer(
-        mockedData.find((trainer) => Number(e.target.id) === trainer.id)
+        trainers.find((trainer) => Number(e.target.id) === trainer.id_user)
       )
+    }
     setSelectedTrainer(null)
   }
 
-  const trainerCollection = mockedData.map((trainer) => {
+  const trainerCollection = trainers.map((trainer) => {
     return (
-      <div key={trainer.id}>
+      <div key={trainer.id_user}>
         <MenuItem>
           <figure
             style={{
@@ -143,13 +72,15 @@ export default function RoutineList() {
           >
             <img
               src={trainer.avatar}
-              alt={`${trainer.userName} profile picture`}
-              id={trainer.id}
+              alt={`${trainer.username} profile picture`}
+              id={trainer.id_user}
               onClick={handleClick}
             />
           </figure>
         </MenuItem>
-        <SubMenu title={trainer.userName}>
+        <SubMenu
+          title={`${trainer.username} ⭐ ${trainer.avgRating.toFixed(1)}`}
+        >
           <div>
             <button>Suscribe</button>
             <button>Routines</button>
