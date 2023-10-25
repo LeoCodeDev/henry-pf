@@ -1,7 +1,7 @@
 const { User, Team, RefreshToken } = require('../../db_connection')
 import { Request, Response } from 'express'
 const {generateAccessToken, generateRefreshToken}= require ('../JWT')
-const domain = process.env.DOMAIN || 'http://localhost:5173';
+const domain = process.env.DOMAIN || 'localhost';
 
 const userLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body
