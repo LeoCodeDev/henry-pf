@@ -18,17 +18,25 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useAuthStore } from '../../store/authStore'
 import toast, { Toaster } from 'react-hot-toast'
+import Checkbox from '@mui/material/Checkbox'
+import Tooltip from '@mui/material/Tooltip'
+import { Link } from 'react-router-dom'
 
 export function ProfileTabs({ sales }) {
   const [isLoading, setIsLoading] = useState({})
   const { user } = useAuthStore()
   const [userRoutines, setUserRoutines] = useState([])
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
   const fetchRoutinesUser = async () => {
-    const routine = await axios.get(
-      `routines/getUserRoutines?email=${user.email}`
-    )
-    setUserRoutines(routine.data)
+    try {
+      const { data } = await axios.get(
+        `routines/getUserRoutines?email=${user.email}`
+      )
+      setUserRoutines(data)
+    } catch (error) {
+      setUserRoutines([])
+    }
   }
 
   const deleteRoutineUser = async (id) => {
@@ -85,7 +93,7 @@ export function ProfileTabs({ sales }) {
   }
 
   return (
-    <div style={{ borderLeft: '1px solid #ccc' }}>
+    <div style={{ borderLeft: '1px solid #ccc', background: '#111' }}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Routines" />
@@ -95,87 +103,111 @@ export function ProfileTabs({ sales }) {
       </AppBar>
       <TabPanel value={value} index={0}>
         <div style={{ margin: '1em' }}>
-          {userRoutines.map((routine) => (
-            <Card style={{ margin: '1em', position: 'relative' }}>
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  🏋️‍♂️ {routine.name_routine}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  👤 Author username: {routine.author}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  🏆 Puntuation: {routine.puntuation || 'N/A'}
-                </Typography>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '1rem',
-                    right: '2rem'
-                  }}>
-                  {isLoading[routine.id_routine] ? (
-                    <LoadingButton loading variant="outlined">
-                      Submit
-                    </LoadingButton>
-                  ) : (
-                    <Button
-                      onClick={() => deleteRoutineUser(routine.id_routine)}
-                      variant="outlined"
-                      color="error">
-                      Remove
-                    </Button>
-                  )}
-                </div>
-                <Typography variant="body2" color="text.secondary">
-                  🏋️‍♂️ Exercises: {routine?.Exercises.length}
-                </Typography>
-                <Accordion>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="subtitle1">Exercises</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    {routine.Exercises.map((exercise) => (
-                      <div key={exercise.id_exercise}>
-                        <Typography variant="h6">{exercise.name}</Typography>
-                        <Typography variant="body2">
-                          Type: {exercise.type}
-                        </Typography>
-                        <Typography variant="body2">
-                          Muscle: {exercise.muscle}
-                        </Typography>
-                        <Typography variant="body2">
-                          Difficulty: {exercise.difficulty}
-                        </Typography>
-                        <Typography variant="body2">
-                          Description: {exercise.description}
-                        </Typography>
-                        <hr />
-                      </div>
-                    ))}
-                  </AccordionDetails>
-                </Accordion>
-              </CardContent>
-            </Card>
-          ))}
+          {userRoutines.length === 0 ? (
+            <Typography>
+              “You haven’t added any routines yet, friend. Take a look at the{' '}
+              <Link
+                style={{ textDecoration: 'none', color: 'green' }}
+                to={'/routines'}>
+                routines
+              </Link>{' '}
+              we offer and enjoy your workout!”
+            </Typography>
+          ) : (
+            userRoutines.map((routine) => (
+              <Card style={{ margin: '1em', position: 'relative' }}>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    🏋️‍♂️ {routine.name_routine}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    👤 Author username: {routine.author}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    🏆 Puntuation: {routine.puntuation || 'N/A'}
+                  </Typography>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      right: '2rem'
+                    }}>
+                    {isLoading[routine.id_routine] ? (
+                      <LoadingButton loading variant="outlined">
+                        Submit
+                      </LoadingButton>
+                    ) : (
+                      <Button
+                        onClick={() => deleteRoutineUser(routine.id_routine)}
+                        variant="outlined"
+                        color="error">
+                        Remove
+                      </Button>
+                    )}
+                    <Tooltip title="Mark as done" placement="top" followCursor>
+                      <Checkbox {...label} color="success" />
+                    </Tooltip>
+                  </div>
+                  <Typography variant="body2" color="text.secondary">
+                    🏋️‍♂️ Exercises: {routine?.Exercises.length}
+                  </Typography>
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography variant="subtitle1">Exercises</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {routine.Exercises.map((exercise) => (
+                        <div key={exercise.id_exercise}>
+                          <Typography variant="h6">{exercise.name}</Typography>
+                          <Typography variant="body2">
+                            Type: {exercise.type}
+                          </Typography>
+                          <Typography variant="body2">
+                            Muscle: {exercise.muscle}
+                          </Typography>
+                          <Typography variant="body2">
+                            Difficulty: {exercise.difficulty}
+                          </Typography>
+                          <Typography variant="body2">
+                            Description: {exercise.description}
+                          </Typography>
+                          <hr />
+                        </div>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       </TabPanel>
+      <Toaster position="top-center" reverseOrder={false} />
       <TabPanel value={value} index={1}>
         <Typography>Sales Content</Typography>
-
-        <div className={styles.children}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            overflowY: "scroll",
-            height:'58vh',
-            flexFlow: "wrap",
-            justifyContent: "space-around"
-          }}
-        >
-          {sales.map((sale, index) => (
-            <ProfileSales sale={sale} key={index} />
-          ))}
-        </div>
+        {sales.map((sale, index) => (
+          <div
+            key={index}
+            style={{
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              padding: '8px',
+              marginBottom: '16px'
+            }}>
+            <ul style={{ listStyleType: 'none', padding: '0' }}>
+              <li>Date: {sale.date}</li>
+              <li>Total: {sale.total}</li>
+              <li>
+                Products:
+                <ul style={{ listStyleType: 'none', padding: '0' }}>
+                  {sale.Products?.map((product, index) => (
+                    <li key={index}>{product.name}</li>
+                  ))}
+                </ul>
+              </li>
+            </ul>
+          </div>
+        ))}
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Typography>Calendar</Typography>
@@ -184,5 +216,5 @@ export function ProfileTabs({ sales }) {
         </div>
       </TabPanel>
     </div>
-  );
+  )
 }
