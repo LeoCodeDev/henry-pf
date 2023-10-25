@@ -127,10 +127,10 @@ const useProductsStore = create((set, get) => ({
       mRated: (a, b) => b.rating - a.rating,
       lRated: (a, b) => a.rating - b.rating,
       cheap: (a, b) => {
-        Number(a.price) - Number(b.price)
+        a.price - b.price
       },
       expensive: (a, b) => {
-        Number(b.price) - Number(a.price)
+        b.price - a.price
       },
     }
 
