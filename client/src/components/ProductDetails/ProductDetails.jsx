@@ -89,7 +89,9 @@ export const ProductDetails = () => {
     } catch (error) {
       console.log(error.message);
     }
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
     setSales(DS.Sales);
   };
 

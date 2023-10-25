@@ -246,8 +246,6 @@ export default function CustomizedAccordions(props) {
       });
     };
 
-    console.log(visibleComments);
-
     return (
       <>
         {visibleComments.length > 0 ? (

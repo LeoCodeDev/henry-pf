@@ -36,6 +36,7 @@ const UserDetails = () => {
         setUser(data)
         setLoading(false)
     }
+    console.log(user)
 
     const getReportsMade=async()=>{
       setLoading(true)

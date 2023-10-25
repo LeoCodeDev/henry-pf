@@ -14,6 +14,7 @@ const getReportsByUser= require('../controllers/dashboardControllers/getReportsB
 const getReportsToUser= require('../controllers/dashboardControllers/getReportsToUser')
 const getUserRating= require('../controllers/dashboardControllers/getUserRating')
 
+
 const dashboardRoutes = Router()
 
 dashboardRoutes.post('/addCoupon',checkToken, checkRole(["Admin"]) ,addCoupon)
@@ -28,5 +29,6 @@ dashboardRoutes.put('/deactivateItem',deactivateItem)
 dashboardRoutes.get('/getReportsByUser',getReportsByUser)
 dashboardRoutes.get('/getReportsToUser',getReportsToUser)
 dashboardRoutes.get('/getUserRating',getUserRating)
+
 
 export default dashboardRoutes
