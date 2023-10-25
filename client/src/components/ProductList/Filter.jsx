@@ -86,8 +86,7 @@ const Filter = () => {
   const handleChange = (event, newValue) => {
     setRangeValues({
       ...rangeValues,
-      priceMin: newValue[0],
-      priceMax: newValue[1]
+      priceMin: newValue,
     })
 
     setValue(newValue)
@@ -95,8 +94,7 @@ const Filter = () => {
   const handleChange2 = (event, newValue) => {
     setRangeValues({
       ...rangeValues,
-      rateMin: newValue[0],
-      rateMax: newValue[1]
+      rateMin: newValue,
     })
 
     setValue2(newValue)
