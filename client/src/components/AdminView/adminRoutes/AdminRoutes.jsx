@@ -8,6 +8,7 @@ import { Update } from '../../ProductUpdate/ProductUpdate'
 import UserDetails from "../../userAdmin/userDetails";
 import ProductFormView from "../../../views/Product Form/productForm";
 import UserEmails from "../../userAdmin/userEmails";
+import ProductDetailAdmin from "../../ProductUpdate/ProductDetailAdmin";
 
 export const AdminRoutes = [
   {
@@ -65,4 +66,9 @@ export const AdminRoutes = [
     element: <ProductFormView />,
     title: "product-creation",
   },
+  {
+    path: '/admin/table-update/detail/:productId',
+    element: <ProductDetailAdmin />,
+    title: 'product detail'
+  }
 ];

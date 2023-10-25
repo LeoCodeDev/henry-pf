@@ -12,6 +12,8 @@ import {
   useMediaQuery,
   ThemeProvider
 } from '@mui/material'
+import Chip from '@mui/material/Chip'
+import { Link } from 'react-router-dom'
 import { useProductsStore } from '../../store/productsStore'
 import style from './ProductUpdate.module.css'
 import axios from 'axios'
@@ -110,17 +112,17 @@ export const Update = () => {
       <Container
         className={style.container}
         style={{
-          marginTop: '15vh',
           textAlign: 'center',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          borderRadius: '5px'
+          borderRadius: '5px',
+          maxWidth: '100%'
         }}>
         <div>
           <Typography
             variant="h6"
-            color="primary"
+            color="#fff"
             sx={{ fontSize: { xs: '26px' }, padding: { xs: '5px' } }}>
             Admin Products
           </Typography>
@@ -162,7 +164,8 @@ export const Update = () => {
                   <TableCell
                     sx={{
                       padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
+                      fontSize: isMobile ? '10px' : '12px',
+                      color: '#fff'
                     }}
                     className={`${style.tableHeaderCell} ${
                       sortOrder.id_product === 'asc'
@@ -177,7 +180,8 @@ export const Update = () => {
                       padding: isMobile ? '2px' : 'none',
                       fontSize: isMobile ? '10px' : '12px',
                       display: isMobile ? 'display' : 'table-Cell',
-                      justifyContent: isMobile ? 'center' : 'none'
+                      justifyContent: isMobile ? 'center' : 'none',
+                      color: '#fff'
                     }}
                     className={`${style.tableHeaderCell} ${
                       sortOrder.name === 'asc'
@@ -190,7 +194,8 @@ export const Update = () => {
                   <TableCell
                     sx={{
                       padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
+                      fontSize: isMobile ? '10px' : '12px',
+                      color: '#fff'
                     }}
                     className={`${style.tableHeaderCell} ${
                       sortOrder.description === 'asc'
@@ -205,7 +210,8 @@ export const Update = () => {
                       padding: isMobile ? '2px' : 'none',
                       fontSize: isMobile ? '10px' : '12px',
                       display: isMobile ? 'display' : 'table-Cell',
-                      justifyContent: isMobile ? 'center' : 'none'
+                      justifyContent: isMobile ? 'center' : 'none',
+                      color: '#fff'
                     }}
                     className={`${style.tableHeaderCell} ${
                       sortOrder.price === 'asc'
@@ -218,7 +224,8 @@ export const Update = () => {
                   <TableCell
                     sx={{
                       padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
+                      fontSize: isMobile ? '10px' : '12px',
+                      color: '#fff'
                     }}
                     className={`${style.tableHeaderCell} ${
                       sortOrder.stock === 'asc'
@@ -231,7 +238,8 @@ export const Update = () => {
                   <TableCell
                     sx={{
                       padding: isMobile ? '0px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
+                      fontSize: isMobile ? '10px' : '12px',
+                      color: '#fff'
                     }}
                     className={`${style.tableHeaderCell} ${
                       sortOrder.rating === 'asc'
@@ -246,7 +254,8 @@ export const Update = () => {
                       padding: isMobile ? '2px' : 'none',
                       fontSize: isMobile ? '10px' : '12px',
                       display: isMobile ? 'display' : 'table-Cell',
-                      justifyContent: isMobile ? 'center' : 'none'
+                      justifyContent: isMobile ? 'center' : 'none',
+                      color: '#fff'
                     }}>
                     Active
                   </TableCell>
@@ -259,7 +268,8 @@ export const Update = () => {
                       <TableCell
                         sx={{
                           padding: isMobile ? '0px' : 'none',
-                          fontSize: isMobile ? '10px' : '12px'
+                          fontSize: isMobile ? '10px' : '12px',
+                          color: '#fff'
                         }}>
                         {product.id_product}
                       </TableCell>
@@ -269,7 +279,8 @@ export const Update = () => {
                           whiteSpace: 'nowrap',
                           textOverflow: 'ellipsis',
                           maxWidth: isMobile ? '20px' : 'none',
-                          fontSize: isMobile ? '10px' : '12px'
+                          fontSize: isMobile ? '10px' : '12px',
+                          color: '#fff'
                         }}>
                         {product.name}
                       </TableCell>
@@ -280,24 +291,47 @@ export const Update = () => {
                           textOverflow: 'ellipsis',
                           maxWidth: isMobile ? '10px' : 'none',
                           fontSize: isMobile ? '10px' : '12px',
-                          padding: isMobile ? '5px' : 'none'
+                          padding: isMobile ? '5px' : 'none',
+                          color: '#fff'
                         }}>
                         {product.description}
                       </TableCell>
                       <TableCell
                         sx={{
                           fontSize: isMobile ? '10px' : '12px',
-                          padding: isMobile ? '5px' : 'none'
+                          padding: isMobile ? '5px' : 'none',
+                          color: '#fff'
                         }}>
                         {product.price}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: isMobile ? '10px' : '12px' }}>
-                        {product.stock}
                       </TableCell>
                       <TableCell
                         sx={{
                           fontSize: isMobile ? '10px' : '12px',
-                          padding: isMobile ? '5px' : 'none'
+                          color: '#fff'
+                        }}>
+                        {product.stock === 0 ? (
+                          <Chip
+                            variant="outlined"
+                            color="warning"
+                            size="small"
+                            // sx={{
+                            //   height: 'auto',
+                            //   '& .MuiChip-label': {
+                            //     display: 'block',
+                            //     whiteSpace: 'normal'
+                            //   }
+                            // }}
+                            label="“Out of stock”."
+                          />
+                        ) : (
+                          product.stock
+                        )}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          fontSize: isMobile ? '10px' : '12px',
+                          padding: isMobile ? '5px' : 'none',
+                          color: '#fff'
                         }}>
                         {product.rating}
                       </TableCell>
@@ -313,6 +347,11 @@ export const Update = () => {
                           {product.active ? 'Deactivate' : 'Activate'}
                         </Button>
                       </TableCell>
+                      <Link
+                        style={{ textDecoration: 'none', color: '#bfbfbf' }}
+                        to={`/admin/table-update/detail/${product.id_product}`}>
+                        View User Details
+                      </Link>
                     </TableRow>
                   ))}
               </TableBody>

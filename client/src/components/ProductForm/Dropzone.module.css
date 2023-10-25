@@ -11,6 +11,8 @@
 
 .dropzoneContainer p {
     text-align: center;
+    color: #228d07;
+    font-family: 'Poppins';
 }
 
 .imageContainer {

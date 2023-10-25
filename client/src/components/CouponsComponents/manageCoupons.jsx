@@ -25,9 +25,9 @@ export default function ManageCoupons() {
         setCoupons(response.data)
       })
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchCoupons()
@@ -57,9 +57,22 @@ export default function ManageCoupons() {
   }
 
   return (
-    <TableContainer component={Paper} style={{ margin: '10px' }}>
-      <h1 style={{ textAlign: 'center' }}>Manage Coupons</h1>
-      <button onClick={fetchCoupons}> Refresh </button>
+    <TableContainer component={Paper} style={{ margin: "10px" }}>
+      <h1 style={{ textAlign: "center" }}>Manage Coupons</h1>
+      <Button
+        variant="contained"
+        sx={{
+          size: "small",
+          backgroundColor: "#539a07",
+          ":hover": {
+            bgcolor: "#228d07",
+          },
+        }}
+        onClick={fetchCoupons}
+      >
+        {" "}
+        Refresh{" "}
+      </Button>
       <Table>
         <TableHead>
           <TableRow>
@@ -77,7 +90,7 @@ export default function ManageCoupons() {
                 {editCoupon && editCoupon.id === coupon.id ? (
                   <TextField
                     value={editCoupon.code}
-                    onChange={(e) => handleInputChange('code', e.target.value)}
+                    onChange={(e) => handleInputChange("code", e.target.value)}
                   />
                 ) : (
                   coupon.code
@@ -112,6 +125,12 @@ export default function ManageCoupons() {
               <TableCell>
                 {editCoupon && editCoupon.id === coupon.id ? (
                   <Checkbox
+                    sx={{
+                      color: "#228d07",
+                      "&.Mui-checked": {
+                        color: "#228d07",
+                      },
+                    }}
                     checked={editCoupon.active}
                     onChange={(e) =>
                       handleInputChange('active', e.target.checked)
@@ -128,11 +147,24 @@ export default function ManageCoupons() {
                   <div>
                     <Button
                       variant="contained"
+                      sx={{
+                        size: "small",
+                        backgroundColor: "#228d07",
+                      }}
                       color="primary"
-                      onClick={handleSaveClick}>
+                      onClick={handleSaveClick}
+                    >
                       Save
                     </Button>
-                    <Button variant="contained" onClick={handleCancelClick}>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        marginTop: "5px",
+                        size: "small",
+                        backgroundColor: "#228d07",
+                      }}
+                      onClick={handleCancelClick}
+                    >
                       Cancel
                     </Button>
                   </div>
@@ -149,3 +181,4 @@ export default function ManageCoupons() {
     </TableContainer>
   )
 }
+

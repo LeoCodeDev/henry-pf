@@ -2,7 +2,7 @@ import {List, ListItem, ListItemText, Avatar, IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 
     
-    export default function ProfileSidebar({user}) {
+    export default function ProfileSidebar({user, onEditProfileClick}) {
 
     
       return (
@@ -11,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit'
           <List>
             <ListItem style={{color:'white'}}>
               <ListItemText primary={user.username}  />
-              <IconButton style={{color:'green'}}>
+              <IconButton style={{ color: 'green' }} onClick={onEditProfileClick}>
                 <EditIcon />
               </IconButton>
             </ListItem>
