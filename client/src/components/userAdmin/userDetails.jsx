@@ -23,7 +23,7 @@ const UserDetails = () => {
     const [reportsReceived, setReportsReceived]=useState([])
     const [reviews, setReviews]=useState([])
     const {email}= useParams()
-    const [loading, setLoading]= useState(false)
+    const [loading, setLoading]= useState(true)
     const [expanded, setExpanded] = useState('panel1');
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -31,29 +31,24 @@ const UserDetails = () => {
     };
     
     const getUser=async()=>{
-        setLoading(true)
         const {data}= await axios.get(`/users/getUser?email=${email}`)
         setUser(data)
         setLoading(false)
     }
-    console.log(user)
 
     const getReportsMade=async()=>{
-      setLoading(true)
-      const {data}= await axios.get(`/dashboard/getReportsByUser?id_user=${user.id_user}`)
+      const {data}= await axios.get(`/dashboard/getReportsByUser?email=${email}`)
       setReportsMade(data)
       setLoading(false)
     }
 
     const getReportsReceived=async()=>{
-      setLoading(true)
-      const {data}= await axios.get(`/dashboard/getReportsToUser?id_user=${user.id_user}`)
+      const {data}= await axios.get(`/dashboard/getReportsToUser?email=${email}`)
       setReportsReceived(data)
       setLoading(false)
     }
 
     const getReviews=async()=>{
-      setLoading(true)
       const {data}= await axios.get(`/dashboard/getUserRating?email=${email}`)
       setReviews(data)
       setLoading(false)
@@ -72,13 +67,14 @@ const UserDetails = () => {
       }
     }  
     
-    useEffect(()=>{
-        getUser()
-        getReportsMade()
-        getReportsReceived()
-        getReviews()
-    }, [])
+    useEffect(() => {
+      getUser()
+      getReportsMade()
+      getReportsReceived()  
+      getReviews()
+    }, []);
 
+    console.log({user, reportsMade, reportsReceived, reviews})
     return (
       loading ? (
         <h1>Loading...</h1>
@@ -149,7 +145,7 @@ const UserDetails = () => {
                 <AccordionDetails>
                   <List >
                     {user.Routines && user.Routines.map((routine) => (
-                      <ListItem key={routine.id_routine} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '8px', marginBottom: '16px' }}>
+                      <ListItem key={routine.name_routine} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '8px', marginBottom: '16px' }}>
                         <ListItemText primary={routine.name_routine} />
                       </ListItem>
                     ))}
@@ -171,15 +167,15 @@ const UserDetails = () => {
                   {reportsMade && reportsMade.map((report) => (
                     <div  style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '8px', marginBottom: '16px' }}>
                     <ul key={report.id_report}>
-                      {report.reason? report.reason : 'NA'}
-                      <li>Type:{report.reportType? report.reportType : 'NA'}</li>
+                      {report.reason && report.reason}
+                      <li>Type:{report.reportType && report.reportType}</li>
                       <li>date:{report.date}</li>
                       {report.reportedIdUser && 
                       <li>Reported:{report.reportedUser.username}</li>}
                       {report.reportedIdComment && 
-                      <li>Reported:{report.reportedComment}</li>}
+                      <li>Reported:{report.reportedComment.comment}</li>}
                       {report.reportedIdProduct && 
-                      <li>Reported:{report.reportedProduct}</li>}
+                      <li>Reported:{report.reportedProduct.product}</li>}
                       <li>Checked:{report.checkedStatus}</li>
                     </ul>
                     </div>
@@ -190,8 +186,8 @@ const UserDetails = () => {
                   {reportsReceived && reportsReceived.map((report) => (
                     <div  style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '8px', marginBottom: '16px' }}>
                     <ul key={report.id_report}>
-                      {report.reason? report.reason : 'NA'}
-                      <li>Type:{report.reportType? report.reportType : 'NA'}</li>
+                      {report.reason && report.reason}
+                      <li>Type:{report.reportType && report.reportType}</li>
                       <li>date:{report.date}</li>
                       {report.reporterId && 
                       <li>Reported by:{report.reporterUser.username}</li>}
@@ -216,11 +212,11 @@ const UserDetails = () => {
                   <List>
                     {reviews && reviews.map((review) => (
                       <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '8px', marginBottom: '16px' }}>
-                      <ul key={review.id} >
-                        <li>Product: {review.Product?.name}</li>
-                        <li>Comment: {review.comment}</li>
-                        <li>Gave it {review.rating} stars</li>
-                      </ul>
+                        <ul key={review.id}>
+                          <li>Product: {review.Product && review.Product.name }</li>
+                          <li>Comment: {review.comment}</li>
+                          <li>Gave it {review.rating} stars</li>
+                        </ul>
                       </div>
                     ))}
                   </List>
