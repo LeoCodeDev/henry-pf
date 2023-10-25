@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField, Button, Grid, Container } from '@mui/material';
+import { TextField, Button, Grid, Container, ThemeProvider, createTheme } from '@mui/material';
 import axios from 'axios';
 import  toast,{ Toaster } from "react-hot-toast";
 
@@ -18,6 +18,20 @@ const AddCouponForm = () => {
     });
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#228d07', 
+      },
+      text: {
+        primary: '#fff', 
+      },
+      secondary: {
+        main: '#228d07', 
+      },
+    }
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -34,12 +48,14 @@ const AddCouponForm = () => {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <Container maxWidth="sm">
         <h1>Add coupons</h1>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
+              sx={{ label: { color: '#fff'}, fieldset: { borderColor: '#fff' }}}
               fullWidth
               label="Code"
               variant="outlined"
@@ -50,6 +66,7 @@ const AddCouponForm = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+            sx={{ label: { color: '#fff' }, fieldset: { borderColor: '#fff' } }}
               fullWidth
               label="Discount"
               variant="outlined"
@@ -61,6 +78,7 @@ const AddCouponForm = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+            sx={{ label: { color: '#fff' },  fieldset: { borderColor: '#fff' } }}
               fullWidth
               label="Expiration"
               variant="outlined"
@@ -74,7 +92,10 @@ const AddCouponForm = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" type="submit">
+            <Button 
+            variant="contained"
+            sx={{ margin: '1rem', size: 'large', backgroundColor: '#228d07' }}
+            type="submit">
               Add Coupon
             </Button>
           </Grid>
@@ -82,6 +103,7 @@ const AddCouponForm = () => {
       </form>
       <Toaster position="top-center" reverseOrder={false} />
     </Container>
+    </ThemeProvider>
   );
 };
 

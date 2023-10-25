@@ -10,6 +10,9 @@ const getAllReports = require('../controllers/dashboardControllers/getAllReports
 const newReport = require('../controllers/dashboardControllers/postNewReport')
 const checkReport= require('../controllers/dashboardControllers/checkReport')
 const deactivateItem= require('../controllers/dashboardControllers/deactivateItem')
+const getReportsByUser= require('../controllers/dashboardControllers/getReportsByUser')
+const getReportsToUser= require('../controllers/dashboardControllers/getReportsToUser')
+const getUserRating= require('../controllers/dashboardControllers/getUserRating')
 
 const dashboardRoutes = Router()
 
@@ -22,5 +25,8 @@ dashboardRoutes.get('/allReports',getAllReports)
 dashboardRoutes.post('/createReport',newReport)
 dashboardRoutes.put('/checkReport',checkReport)
 dashboardRoutes.put('/deactivateItem',deactivateItem)
+dashboardRoutes.get('/getReportsByUser',getReportsByUser)
+dashboardRoutes.get('/getReportsToUser',getReportsToUser)
+dashboardRoutes.get('/getUserRating',getUserRating)
 
 export default dashboardRoutes

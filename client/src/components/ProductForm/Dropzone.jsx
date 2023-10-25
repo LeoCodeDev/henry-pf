@@ -104,7 +104,6 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
 
       if (response.status === 200) {
         setImage(null)
-        console.log(response.data.url)
         setProductImageURL(response.data.url)
         setCroppedImage(null)
         setImage(null)
@@ -135,7 +134,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
               <input
                 {...getInputProps({ multiple: false, accept: 'image/*' })}
               />
-              <PanToolAltIcon fontSize='large'/>
+              <PanToolAltIcon sx={{color: '#fff'}} fontSize='large'/>
             </section>
               <section>
                 <p>Drag and drop some files here, or click to select files</p>
@@ -159,7 +158,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             fullWidth
             variant="contained"
             onClick={handleAcceptCrop}
-            sx={{ mt: 1, mb: 1 }}
+            sx={{ mt: 1, mb: 1, fontFamily: 'Poppins' }}
           >
             Crop
           </Button>
@@ -168,7 +167,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             fullWidth
             variant="contained"
             onClick={handleCancelCrop}
-            sx={{ mt: 1, mb: 1 }}
+            sx={{ mt: 1, mb: 1, fontFamily: 'Poppins' }}
           >
             Reset
           </Button>
@@ -184,7 +183,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             fullWidth
             variant="contained"
             onClick={handleCancelCrop}
-            sx={{ mt: 2, mb: 1 }}
+            sx={{ mt: 2, mb: 1, fontFamily: 'Poppins' }}
           >
             Reset
           </Button>
@@ -193,7 +192,7 @@ const DropAndCrop = ({ endpoint, setProductImageURL }) => {
             fullWidth
             variant="contained"
             onClick={acceptCrop}
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, fontFamily: 'Poppins' }}
           >
             Accept
           </Button>

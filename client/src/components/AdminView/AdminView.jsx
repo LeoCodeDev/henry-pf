@@ -19,9 +19,8 @@ export const AdminView = ({ children }) => {
             <div style={{width: '100%'}}>
               <TopBar />
               <div className={styles.children}  style={{overflow: 'scroll', height: '91vh'}}>
-               {children} 
+              {children} 
               </div>
-              
             </div>
           </main>
         </div>
