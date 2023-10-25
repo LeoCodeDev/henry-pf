@@ -2,9 +2,9 @@ import Carousel from "react-material-ui-carousel";
 import Box from "@mui/material/Box";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Item from "./Item";
-import slide1 from "../../assets/images/slide1.jpg";
-import slide2 from "../../assets/images/slide2.jpg";
-import slide3 from "../../assets/images/slide3.jpg";
+import slide1 from "../../assets/images/slide1.webp";
+import slide2 from "../../assets/images/slide2.webp";
+import slide3 from "../../assets/images/slide3.webp";
 
 const slide = [
   {
