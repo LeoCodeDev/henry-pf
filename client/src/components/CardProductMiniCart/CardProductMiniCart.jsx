@@ -4,6 +4,7 @@ import RemoveIcon from '@mui/icons-material/Remove'
 import styles from './CardProductMiniCart.module.css'
 import Button from '@mui/material/Button'
 import { useCartStore } from '../../store/shoppingCartStore'
+import theme from '../../../theme'
 
 export const CardProductMiniCart = ({ product }) => {
   const { name, image, description, price } = product
@@ -43,17 +44,14 @@ export const CardProductMiniCart = ({ product }) => {
                   borderRadius: '0.3rem'
                 }}
                 variant="contained">
-                {/*Aca leo dice que si queremos usar un icon un renderizado condicional para poner la misma logica del onClick para borrar ese producto cuando llegue a 0 la quantity*/}
                 <RemoveIcon sx={{ width: '15px' }} />
               </Button>
-              {/* aca si es necesario quitar el input todo bien, puedes hacerlo, tipo solo renderizar un p o un h1 */}
-              {/* <input type="text" value={product.quantity} /> */}
               <p
                 style={{
                   backgroundColor: '#000000de',
                   padding: '0 .4rem',
                   color: '#c9c9c9',
-                  fontFamily: 'Poppins',
+                  fontFamily: theme.typography.fontFamily,
                   borderRadius: '4px'
                 }}>
                 {product.quantity}
