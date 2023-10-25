@@ -25,6 +25,7 @@ const postTrainerReview = require('../controllers/trainersControllers/postTraine
 const getTrainerReview = require('../controllers/trainersControllers/getTrainerReview')
 const getAllTrainersReviews = require('../controllers/trainersControllers/getAllTrainersReviews')
 const getAvgTrainerRating = require('../controllers/trainersControllers/getAverageTrainerRating')
+const getAllTrainers = require('../controllers/trainersControllers/getAllTrainers')
 
 const usersRoutes = Router()
 
@@ -51,5 +52,6 @@ usersRoutes.post('/postTrainerReview',postTrainerReview)
 usersRoutes.get('/getTrainerReview', getTrainerReview)
 usersRoutes.get('/getAllTrainersReviews', getAllTrainersReviews)
 usersRoutes.get('/getAvgTrainerRating', getAvgTrainerRating)
+usersRoutes.get('/getAllTrainers', getAllTrainers)
 
 export default usersRoutes
