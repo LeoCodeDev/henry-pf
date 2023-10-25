@@ -161,31 +161,22 @@ export function ProfileTabs({ sales }) {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Typography>Sales Content</Typography>
-        {sales.map((sale, index) => (
-          <div
-            key={index}
-            style={{
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-              padding: '8px',
-              marginBottom: '16px'
-            }}>
-            <ul style={{ listStyleType: 'none', padding: '0' }}>
-              <li>Date: {sale.date}</li>
-              <li>Total: {sale.total}</li>
-              <li>
-                Products:
-                <ul style={{ listStyleType: 'none', padding: '0' }}>
-                  {sale.Products?.map((product, index) => (
-                    <li key={index}>{product.name}</li>
-                  ))}
-                </ul>
-              </li>
-            </ul>
-          </div>
-        ))}
+
+        <div className={styles.children}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            overflowY: "scroll",
+            height:'58vh',
+            flexFlow: "wrap",
+            justifyContent: "space-around"
+          }}
+        >
+          {sales.map((sale, index) => (
+            <ProfileSales sale={sale} key={index} />
+          ))}
+        </div>
       </TabPanel>
-      <Toaster position="top-center" reverseOrder={false} />
       <TabPanel value={value} index={2}>
         <Typography>Calendar</Typography>
         <div>
@@ -193,5 +184,5 @@ export function ProfileTabs({ sales }) {
         </div>
       </TabPanel>
     </div>
-  )
+  );
 }

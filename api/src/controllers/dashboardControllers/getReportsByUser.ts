@@ -7,7 +7,7 @@ const getReportsByUser = async (req:Request, res:Response) => {
       
       const reportsMadeByUser = await Report.findAll({
         where: {
-          reporterId: id_user
+          reporterId: parseInt(id_user as string)
         },
         include: [
           { model: User, as: 'reportedUser', attributes: ['username','email'] },
