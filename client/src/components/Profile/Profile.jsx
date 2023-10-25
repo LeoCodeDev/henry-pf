@@ -59,8 +59,6 @@ export default function Profile({onlyEdit}) {
     setSelectedTeam(event.target.value); // Actualiza el estado con el equipo seleccionado
     setHasChanges(true); // bandera para saber que si hubo cambio
   };
-
-  console.log(onlyEdit);
   useEffect(() => {
     handleGetSales();
     axios

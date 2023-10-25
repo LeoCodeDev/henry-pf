@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   ThemeProvider
 } from '@mui/material'
+import { Link } from 'react-router-dom'
 import { useProductsStore } from '../../store/productsStore'
 import style from './ProductUpdate.module.css'
 import axios from 'axios'
@@ -32,6 +33,7 @@ export const Update = () => {
     rating: 'asc'
   })
   const [activeFilter, setActiveFilter] = useState('all')
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -317,6 +319,11 @@ export const Update = () => {
                         {product.active ? "Deactivate" : "Activate"}
                       </Button>
                     </TableCell>
+                    <Link
+                      style={{ textDecoration: 'none', color: '#bfbfbf' }}
+                      to={`/admin/table-update/detail/${product.id_product}`}>
+                      View User Details
+                    </Link>
                   </TableRow>
                 ))}
             </TableBody>
