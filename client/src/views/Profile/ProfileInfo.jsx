@@ -7,6 +7,7 @@ import { useAuthStore } from '../../store/authStore';
 import { NavBar } from '../../components/NavBar/NavBar';
 import ProfileSidebar from './ProfileSideBar';
 import {ProfileTabs} from './ProfileTabs';
+import RoutineForm from '../../components/RoutineForm/RoutineForm';
 // import ProfileMain from '../OrderPlaced/OrderPlaced';
 
 // const drawerWidth = 250;
@@ -71,6 +72,7 @@ function ProfilePage() {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <ProfileTabs sales={sales} routines={routines} />
+            <RoutineForm user={user}/>
           </Grid>
         </Grid>
       </main>

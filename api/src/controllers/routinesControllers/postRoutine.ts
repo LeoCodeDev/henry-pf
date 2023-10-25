@@ -1,48 +1,52 @@
-const {Exercise, User, Routine}= require('../../db_connection')
-const {Op}= require('sequelize')
+const { Exercise, User, Routine } = require('../../db_connection');
+import { Request, Response } from "express";
 
+const postRoutine = async (req: Request, res: Response) => {
+  const { email, name_routine, exercises, puntuation } = req.body;
 
+  try {
+    // Busca al usuario por su email
+    const user = await User.findOne({ where: { email } });
 
-import { Request, Response } from "express";    
-
-const postRoutine= async (req: Request, res: Response) => {
-    const{email, name_routine, exercises, puntuation}=req.body
-    const parsedPuntuation= parseInt(puntuation)
-    try {
-        if(email && exercises){
-        const author= await User.findOne({where:{email:email}})
-        if(!author){
-            res.status(404).json({message:"User not found"})
-        } 
-        const newRoutine= await Routine.create({author:author.username,name_routine, puntuation:parsedPuntuation})
-        interface Exercise {
-            id_exercise: number;
-            name: string;
-            type: string;
-            muscle: string;
-            difficulty: string;
-            instructions: string;
-            image: string;
-            }
-        const exerciseIds:number[] = exercises.map((exercise:Exercise)=> exercise.id_exercise);
-
-        const exercisesToAssociate = await Exercise.findAll({
-        where: {
-            id_exercise: {
-            [Op.in]: exerciseIds
-            }
-        }
-        });
-        if(!exercisesToAssociate){
-            res.status(404).json({message:"Exercises not found"})
-        }
-        //pending to validate if there is an existing routine with same exercises already
-        await newRoutine.setExercises(exercisesToAssociate)  
-        res.status(200).json({message:"Routine created succesfully"})
-    }}
-    catch (error:any) {
-        res.status(500).json({ error: error.message });
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
+
+    // Verifica si el nombre de la rutina ya existe para el usuario
+    const existingRoutine = await Routine.findOne({
+      where: {
+        name_routine,
+        author: user.username
+      }
+    });
+
+    if (existingRoutine) {
+      return res.status(400).json({ error: 'El nombre de la rutina ya existe' });
+    }
+
+    // Crea una rutina en la tabla de rutinas
+    const routine = await Routine.create({
+      name_routine,
+      author: user.username,
+      puntuation,
+    });
+
+    // Itera a través de los ejercicios y crea cada uno en la tabla de ejercicios
+    for (const exerciseData of exercises) {
+      const exercise = await Exercise.create(exerciseData);
+
+      // Asocia el ejercicio con la rutina
+      await routine.addExercise(exercise);
+    }
+
+    // Asocia la rutina con el usuario
+    await user.addRoutine(routine);
+
+    return res.status(200).json({ message: 'Rutina creada con éxito' });
+  } catch (error) {
+    console.error('Error al crear la rutina:', error);
+    return res.status(500).json({ error: 'Error en el servidor' });
+  }
 }
 
-module.exports=postRoutine
+module.exports = postRoutine;
