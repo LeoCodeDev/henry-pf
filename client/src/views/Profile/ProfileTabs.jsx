@@ -114,8 +114,10 @@ export function TabPanel(props) {
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Typography>Calendar</Typography>
-          <div>
-          <Calendar/>
+          <div style={{display:'grid'}}>
+          <Calendar 
+          routines={routines}
+          />
           </div>
         </TabPanel>
       </div>
