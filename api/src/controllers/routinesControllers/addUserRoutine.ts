@@ -12,8 +12,15 @@ const associateRoutineWithUser = async (req:Request, res:Response) => {
     if (!foundRoutine) {
         return res.status(404).json({ error: 'Routine not found' });
     }
-    await user.addRoutine(foundRoutine);
-    return res.status(200).json({ message: 'Routine associated with user successfully' });
+    const routinesAssociated= await user.getRoutines()
+    const filtered= routinesAssociated.filter((e:any)=>(e.id_routine==routine))
+    console.log(filtered)
+    if(filtered.length){
+        return res.status(400).json({ error: 'Routine already associated with user' })
+    } else{
+        await user.addRoutine(foundRoutine);
+        return res.status(200).json({ message: 'Routine associated with user successfully' });
+    }
     } catch (error:any) {
     return res.status(500).json({ error: error.message });
     }

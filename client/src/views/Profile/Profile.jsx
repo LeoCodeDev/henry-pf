@@ -5,7 +5,8 @@ import ReusableModal from "../../components/ReusableModal/ReusableModal";
 
 const ProfileMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
-
+  const onlyEdit = false;
+  
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -14,7 +15,7 @@ const ProfileMain = () => {
     <div>
       <NavBar />
       <ReusableModal open={isModalOpen} onClose={closeModal} title="Perfil">
-        <Profile />
+        <Profile onlyEdit={onlyEdit}/>
       </ReusableModal>
     </div>
   );

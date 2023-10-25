@@ -21,7 +21,7 @@ const getProductReviews = async (req: Request, res: Response) => {
           attributes: ["username"],
         },
       ],
-      order: [['createdAt', 'DESC']], 
+      order: [['updatedAt', 'DESC']], 
     });
 
     return res.json(comments);

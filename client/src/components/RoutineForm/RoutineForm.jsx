@@ -2,11 +2,11 @@
 
 
 import { useState } from "react";
-import { TextField, Select, MenuItem, Button, FormControl, InputLabel } from "@mui/material";
+import { TextField, Select, MenuItem, Button, FormControl, InputLabel, Modal } from "@mui/material";
 import style from "./RoutineForm.module.css";
 import axios from "axios";
 
-export default function RoutineForm({ user }) {
+export default function RoutineForm({ user, open, onClose }) {
   const [exerciseName, setExerciseName] = useState("");
   const [exerciseType, setExerciseType] = useState("");
   const [exerciseMuscle, setExerciseMuscle] = useState("");
@@ -142,6 +142,8 @@ export default function RoutineForm({ user }) {
   };
 
   return (
+    <Modal open={open} onClose={onClose}>
+
     <div className={style.container}>
       <h1>Agregar rutina</h1>
       <form noValidate autoComplete="off">
@@ -167,7 +169,7 @@ export default function RoutineForm({ user }) {
           label="Nombre del Ejercicio"
           value={exerciseName}
           onChange={(e) => setExerciseName(e.target.value)}
-        />
+          />
         <FormControl>
           <InputLabel>Tipo de Ejercicio</InputLabel>
           <Select value={exerciseType} onChange={(e) => setExerciseType(e.target.value)}>
@@ -193,7 +195,7 @@ export default function RoutineForm({ user }) {
           <Select
             value={exerciseDifficulty}
             onChange={(e) => setExerciseDifficulty(e.target.value)}
-          >
+            >
             {difficultyLevels.map((diff) => (
               <MenuItem key={diff} value={diff}>
                 {diff}
@@ -208,7 +210,7 @@ export default function RoutineForm({ user }) {
           multiline
           rows={5}
           onChange={(e) => setExerciseDescription(e.target.value)}
-        />
+          />
         <Button variant="contained" onClick={handleExerciseAdd}>
           Agregar Ejercicio
         </Button>
@@ -236,5 +238,6 @@ export default function RoutineForm({ user }) {
         </Button>
       </form>
     </div>
+        </Modal>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import {
   Button,
   Container,
@@ -10,118 +10,120 @@ import {
   TableCell,
   Grid,
   useMediaQuery,
-  ThemeProvider,
-} from "@mui/material";
-import { useProductsStore } from "../../store/productsStore";
-import style from "./ProductUpdate.module.css";
-import axios from "axios";
+  ThemeProvider
+} from '@mui/material'
+import { Link } from 'react-router-dom'
+import { useProductsStore } from '../../store/productsStore'
+import style from './ProductUpdate.module.css'
+import axios from 'axios'
 import theme from '../../../theme'
 
 export const Update = () => {
-  const { activeDesactiveProducts, fetchActiveDesactiveProducts, setProductsFiltered } =
-    useProductsStore();
+  const {
+    activeDesactiveProducts,
+    fetchActiveDesactiveProducts,
+    setProductsFiltered
+  } = useProductsStore()
   const [sortOrder, setSortOrder] = useState({
-    id_product: "asc",
-    name: "asc",
-    description: "asc",
-    price: "asc",
-    stock: "asc",
-    rating: "asc",
-  });
-  const [activeFilter, setActiveFilter] = useState("all");
+    id_product: 'asc',
+    name: 'asc',
+    description: 'asc',
+    price: 'asc',
+    stock: 'asc',
+    rating: 'asc'
+  })
+  const [activeFilter, setActiveFilter] = useState('all')
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchActiveDesactiveProducts();
+        await fetchActiveDesactiveProducts()
         await setProductsFiltered()
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error.message)
       }
-    };
-    fetchData();
-  }, [fetchActiveDesactiveProducts]);
-  
+    }
+    fetchData()
+  }, [fetchActiveDesactiveProducts])
+
   const listProducts = async () => {
     try {
-      await fetchActiveDesactiveProducts();
+      await fetchActiveDesactiveProducts()
       await setProductsFiltered()
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message)
     }
-  };
-      const eraseproduct = async (productId) => {
-        try {
-          await axios.put(`/products/prod/${productId}`);
-          listProducts();
-        } catch (error) {
-          console.error("Error al cambiar el estado del producto:", error);
-        }
-      };
+  }
+  const eraseproduct = async (productId) => {
+    try {
+      await axios.put(`/products/prod/${productId}`)
+      listProducts()
+    } catch (error) {
+      console.error('Error al cambiar el estado del producto:', error)
+    }
+  }
 
   const handleSort = (column) => {
     setSortOrder((prevSortOrder) => ({
       ...prevSortOrder,
-      [column]: prevSortOrder[column] === "asc" ? "desc" : "asc",
-    }));
+      [column]: prevSortOrder[column] === 'asc' ? 'desc' : 'asc'
+    }))
 
     activeDesactiveProducts.sort((a, b) => {
       if (
-        column === "price" ||
-        column === "rating" ||
-        column === "id_product" ||
-        column === "stock"
+        column === 'price' ||
+        column === 'rating' ||
+        column === 'id_product' ||
+        column === 'stock'
       ) {
-        const valueA = parseFloat(a[column]);
-        const valueB = parseFloat(b[column]);
-        if (column === "id_product" || column === "stock") {
-          return sortOrder[column] === "asc"
-            ? valueA - valueB
-            : valueB - valueA;
+        const valueA = parseFloat(a[column])
+        const valueB = parseFloat(b[column])
+        if (column === 'id_product' || column === 'stock') {
+          return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA
         }
-        return sortOrder[column] === "asc" ? valueA - valueB : valueB - valueA;
+        return sortOrder[column] === 'asc' ? valueA - valueB : valueB - valueA
       } else {
-        return sortOrder[column] === "asc"
+        return sortOrder[column] === 'asc'
           ? a[column].localeCompare(b[column])
-          : b[column].localeCompare(a[column]);
+          : b[column].localeCompare(a[column])
       }
-    });
-  };
+    })
+  }
 
   const handleFilter = (filter) => {
-    setActiveFilter(filter);
-  };
+    setActiveFilter(filter)
+  }
 
   const filteredProducts = activeDesactiveProducts?.filter((product) => {
-    if (activeFilter === "all") {
-      return true;
-    } else if (activeFilter === "active") {
-      return product.active;
+    if (activeFilter === 'all') {
+      return true
+    } else if (activeFilter === 'active') {
+      return product.active
     } else {
-      return !product.active;
+      return !product.active
     }
-  });
+  })
 
-  const isMobile = useMediaQuery("(max-width: 700px)");
+  const isMobile = useMediaQuery('(max-width: 700px)')
 
   return (
     <ThemeProvider theme={theme}>
     <Container
       className={style.container}
       style={{
-        marginTop: "15vh",
         textAlign: "center",
         justifyContent: "space-between",
         alignItems: "center",
         flexWrap: "wrap",
         borderRadius: "5px",
+        maxWidth: "100%"
       }}
     >
       <div>
         <Typography
           variant="h6"
-          color="primary"
+          color="#fff"
           sx={{ fontSize: { xs: "26px" }, padding: { xs: "5px" } }}
         >
           Admin Products
@@ -166,7 +168,7 @@ export const Update = () => {
             <TableHead>
               <TableRow>
                 <TableCell
-                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px" }}
+                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.id_product === "asc"
                       ? style.sortedAsc
@@ -182,6 +184,7 @@ export const Update = () => {
                     fontSize: isMobile ? "10px" : "12px",
                     display:  isMobile ? 'display' : 'table-Cell',
                     justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
                   }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.name === "asc"
@@ -193,7 +196,7 @@ export const Update = () => {
                   Name
                 </TableCell>
                 <TableCell
-                  sx={{ padding: isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px" }}
+                  sx={{ padding: isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.description === "asc"
                       ? style.sortedAsc
@@ -209,6 +212,7 @@ export const Update = () => {
                     fontSize: isMobile ? "10px" : "12px",
                     display:  isMobile ? 'display' : 'table-Cell',
                     justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
                   }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.price === "asc"
@@ -220,7 +224,7 @@ export const Update = () => {
                   Price
                 </TableCell>
                 <TableCell
-                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", }}
+                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.stock === "asc"
                       ? style.sortedAsc
@@ -231,7 +235,7 @@ export const Update = () => {
                   Stock
                 </TableCell>
                 <TableCell
-                  sx={{ padding:  isMobile ? '0px' : 'none', fontSize: isMobile ? "10px" : "12px", }}
+                  sx={{ padding:  isMobile ? '0px' : 'none', fontSize: isMobile ? "10px" : "12px",color: '#fff' }}
                   className={`${style.tableHeaderCell} ${
                     sortOrder.rating === "asc"
                       ? style.sortedAsc
@@ -247,6 +251,7 @@ export const Update = () => {
                     fontSize: isMobile ? "10px" : "12px",
                     display:  isMobile ? 'display' : 'table-Cell',
                     justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
                   }}
                 >
                   Active
@@ -259,7 +264,7 @@ export const Update = () => {
                   <TableRow key={index}>
                     <TableCell
                       sx={{ padding: isMobile ? '0px' : 'none',
-                      fontSize: isMobile ? "10px" : "12px", }}
+                      fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
                     >
                       {product.id_product}
                     </TableCell>
@@ -270,6 +275,7 @@ export const Update = () => {
                         textOverflow: "ellipsis",
                         maxWidth: isMobile ? "20px" : "none",
                         fontSize: isMobile ? "10px" : "12px",
+                        color: '#fff'
                       }}
                     >
                       {product.name}
@@ -282,20 +288,21 @@ export const Update = () => {
                         maxWidth: isMobile ? "10px" : "none",
                         fontSize: isMobile ? "10px" : "12px",
                         padding:  isMobile ? '5px' : 'none',
+                        color: '#fff'
                       }}
                     >
                       {product.description}
                     </TableCell>
                     <TableCell
-                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none' }}
+                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none', color: '#fff' }}
                     >
                       {product.price}
                     </TableCell>
-                    <TableCell sx={{ fontSize: isMobile ? "10px" : "12px" }}>
+                    <TableCell sx={{ fontSize: isMobile ? "10px" : "12px", color: '#fff' }}>
                       {product.stock}
                     </TableCell>
                     <TableCell
-                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none' }}
+                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none', color: '#fff' }}
                     >
                       {product.rating}
                     </TableCell>
@@ -312,6 +319,11 @@ export const Update = () => {
                         {product.active ? "Deactivate" : "Activate"}
                       </Button>
                     </TableCell>
+                    <Link
+                      style={{ textDecoration: 'none', color: '#bfbfbf' }}
+                      to={`/admin/table-update/detail/${product.id_product}`}>
+                      View User Details
+                    </Link>
                   </TableRow>
                 ))}
             </TableBody>
