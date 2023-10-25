@@ -3,16 +3,27 @@ import { useEffect, useState } from "react";
 import CardRoutine from "../CardRoutine.jsx/CardRoutine";
 import { NavBar } from '../NavBar/NavBar';
 import Grid from '@mui/material/Grid';
+import { useAuthStore } from '../../store/authStore';
 
 export default function RoutineList(){
-    const [routines, setRoutines]=useState([])
+  const [routines, setRoutines] = useState([])
+  
+  const {user}=useAuthStore();
+
     const fetchRoutines=async ()=>{
-        const {data}= await axios.get('/routines/getAllRoutines')
+      const { data } = await axios.get('/routines/getAllRoutines')
+      console.log(data);
         setRoutines(data)
-    }
+  }
+  
+  const getRoutineUser = async () => {
+    const routine = await axios.get(`routines/getUserRoutines?email=${user.email}`,)
+    console.log(routine);
+  }
 
     useEffect(()=>{
-        fetchRoutines()
+      getRoutineUser()
+      fetchRoutines()
     },[])
 
     return(

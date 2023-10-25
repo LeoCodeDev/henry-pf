@@ -30,14 +30,13 @@ export default function Calendar({ routines }) {
   const [Date, setDate] = useState("");
   const [send, setSend] = useState(true);
 
+  const fechRoutine = async () => {
+    const { data } = await axios.get(
+      `/routines/getUserRoutines?email=${user.email}`
+    );
+    setAllRoutine(data);
+  };
   useEffect(() => {
-    const fechRoutine = async () => {
-      const { data } = await axios.get(
-        `/routines/getUserRoutines?email=${user.email}`
-      );
-      setAllRoutine(data);
-    };
-
     fechRoutine();
   }, [user, send]);
 

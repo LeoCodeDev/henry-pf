@@ -13,7 +13,7 @@ const { processImage, postImage } = require('../controllers/productsControllers/
 const getProductReviews = require('../controllers/productsControllers/getProductReviews');
 const checkToken = require('../middlewares/authentications')
 const checkRole = require('../middlewares/checkRole')
-
+const getProductsReports= require('../controllers/productsControllers/getProductsReports')
 
 const productsRoutes = Router()
 
@@ -29,6 +29,6 @@ productsRoutes.post('/postImage', postImage, processImage)
 productsRoutes.get('/getProductDetailSales',productDetailSales)
 productsRoutes.post('/postProductReview', postProductReview);
 productsRoutes.get('/getProductReviews/:productId', getProductReviews);
-
+productsRoutes.get('/getProductsReports', getProductsReports);
 
 export default productsRoutes
