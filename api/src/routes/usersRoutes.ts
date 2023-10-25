@@ -21,6 +21,10 @@ const manageUser = require('../controllers/usersControllers/manageUser')
 // const checkRole = require('../middlewares/checkRole')
 const requestIp = require('request-ip');
 const lastYearUsers = require('../controllers/usersControllers/getLastYearCreationUsers');
+const postTrainerReview = require('../controllers/trainersControllers/postTrainerReview')
+const getTrainerReview = require('../controllers/trainersControllers/getTrainerReview')
+const getAllTrainersReviews = require('../controllers/trainersControllers/getAllTrainersReviews')
+const getAvgTrainerRating = require('../controllers/trainersControllers/getAverageTrainerRating')
 
 const usersRoutes = Router()
 
@@ -43,5 +47,9 @@ usersRoutes.get('/resetPasswordToken',resetPasswordToken)
 usersRoutes.get('/getAccessTokenExpiration',getAccessTokenExpiration)
 usersRoutes.put('/manageUser',checkToken, manageUser)
 usersRoutes.get('/getLastUsers', lastYearUsers)
+usersRoutes.post('/postTrainerReview',postTrainerReview)
+usersRoutes.get('/getTrainerReview', getTrainerReview)
+usersRoutes.get('/getAllTrainersReviews', getAllTrainersReviews)
+usersRoutes.get('/getAvgTrainerRating', getAvgTrainerRating)
 
 export default usersRoutes

@@ -39,11 +39,19 @@ app.use('/', routes)
 // (esto lo hacemos para cuando no vamos a usar el parámetro en ese código)
 
 
+const initServer = () => {
+  try {
+    sequelize.sync({alter:true}).then(() => {
+      app.listen(port, () => {
+          console.log(`⚡ﻌ[server]: Server is running at https://localhost:${port}`)
+      })
+    })
+  } catch (error) {
+    console.log('Conection Failed! Retrying.....');
+    setTimeout(initServer,3000)
+  }
+}
 
-sequelize.sync({alter:true}).then(() => {
-  app.listen(port, () => {
-      console.log(`⚡ﻌ[server]: Server is running at https://localhost:${port}`)
-  })
-})
+initServer()
 
 
