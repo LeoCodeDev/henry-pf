@@ -211,8 +211,8 @@ export function ProfileTabs({ sales }) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Typography>Calendar</Typography>
-        <div>
-          <Calendar />
+        <div style={{maxWidth : '68vw'}}>
+          <Calendar routines={userRoutines} />
         </div>
       </TabPanel>
     </div>

@@ -20,6 +20,7 @@ import { useAuthStore } from "../../store/authStore";
 import styles from "./Calendar.module.css";
 
 export default function Calendar({ routines }) {
+  console.log(routines)
   const { user } = useAuthStore();
   const [allRoutine, setAllRoutine] = useState([]);
   const [events, setEvents] = useState([]);
@@ -27,7 +28,7 @@ export default function Calendar({ routines }) {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedRoutine, setSelectedRoutine] = useState(null);
   const [Hour, setHour] = useState("");
-  const [Date, setDate] = useState("");
+  const [Fecha, setFecha] = useState("");
   const [send, setSend] = useState(true);
 
   const fechRoutine = async () => {
@@ -216,7 +217,7 @@ export default function Calendar({ routines }) {
     await axios.put("/routines/putUserRoutineDate", {
       idUser: id_user,
       idRoutine: id_routine,
-      Date: Date,
+      Date: Fecha,
       hour: Hour,
     });
 
@@ -264,11 +265,11 @@ export default function Calendar({ routines }) {
                         label="Fecha"
                         type="date"
                         style={{ marginTop: '0.5rem' }}
-                        value={Date}
+                        value={Fecha}
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={(e) => setFecha(e.target.value)}
                       />
                       <Button
                         variant="contained"
