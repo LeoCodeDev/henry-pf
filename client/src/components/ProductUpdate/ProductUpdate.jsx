@@ -107,219 +107,223 @@ export const Update = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container
-        className={style.container}
-        style={{
-          marginTop: '15vh',
-          textAlign: 'center',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          borderRadius: '5px'
-        }}>
-        <div>
-          <Typography
-            variant="h6"
+    <Container
+      className={style.container}
+      style={{
+        textAlign: "center",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+        borderRadius: "5px",
+        maxWidth: "100%"
+      }}
+    >
+      <div>
+        <Typography
+          variant="h6"
+          color="#fff"
+          sx={{ fontSize: { xs: "26px" }, padding: { xs: "5px" } }}
+        >
+          Admin Products
+        </Typography>
+        <div className={style.buttonContainer}>
+          <Button
+            sx={{ margin: "10px", lineHeight: { xs: "14px" } }}
+            variant="contained"
             color="primary"
-            sx={{ fontSize: { xs: '26px' }, padding: { xs: '5px' } }}>
-            Admin Products
-          </Typography>
-          <div className={style.buttonContainer}>
-            <Button
-              sx={{ margin: '10px', lineHeight: { xs: '14px' } }}
-              variant="contained"
-              color="primary"
-              onClick={listProducts}>
-              Refresh list
-            </Button>
-            <Button
-              sx={{ margin: '10px', lineHeight: { xs: '14px' } }}
-              variant="contained"
-              color="primary"
-              onClick={() => handleFilter('all')}>
-              Show All
-            </Button>
-            <Button
-              sx={{ margin: '10px', lineHeight: { xs: '14px' } }}
-              variant="contained"
-              color="primary"
-              onClick={() => handleFilter('active')}>
-              Show Active
-            </Button>
-            <Button
-              sx={{ margin: '10px', lineHeight: { xs: '14px' } }}
-              variant="contained"
-              color="primary"
-              onClick={() => handleFilter('inactive')}>
-              Show Inactive
-            </Button>
-          </div>
-
-          <Grid sx={{ width: '100%' }}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
-                    }}
-                    className={`${style.tableHeaderCell} ${
-                      sortOrder.id_product === 'asc'
-                        ? style.sortedAsc
-                        : style.sortedDesc
-                    }`}
-                    onClick={() => handleSort('id_product')}>
-                    Id
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px',
-                      display: isMobile ? 'display' : 'table-Cell',
-                      justifyContent: isMobile ? 'center' : 'none'
-                    }}
-                    className={`${style.tableHeaderCell} ${
-                      sortOrder.name === 'asc'
-                        ? style.sortedAsc
-                        : style.sortedDesc
-                    }`}
-                    onClick={() => handleSort('name')}>
-                    Name
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
-                    }}
-                    className={`${style.tableHeaderCell} ${
-                      sortOrder.description === 'asc'
-                        ? style.sortedAsc
-                        : style.sortedDesc
-                    }`}
-                    onClick={() => handleSort('description')}>
-                    Description
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px',
-                      display: isMobile ? 'display' : 'table-Cell',
-                      justifyContent: isMobile ? 'center' : 'none'
-                    }}
-                    className={`${style.tableHeaderCell} ${
-                      sortOrder.price === 'asc'
-                        ? style.sortedAsc
-                        : style.sortedDesc
-                    }`}
-                    onClick={() => handleSort('price')}>
-                    Price
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
-                    }}
-                    className={`${style.tableHeaderCell} ${
-                      sortOrder.stock === 'asc'
-                        ? style.sortedAsc
-                        : style.sortedDesc
-                    }`}
-                    onClick={() => handleSort('stock')}>
-                    Stock
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      padding: isMobile ? '0px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px'
-                    }}
-                    className={`${style.tableHeaderCell} ${
-                      sortOrder.rating === 'asc'
-                        ? style.sortedAsc
-                        : style.sortedDesc
-                    }`}
-                    onClick={() => handleSort('rating')}>
-                    Rating
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      padding: isMobile ? '2px' : 'none',
-                      fontSize: isMobile ? '10px' : '12px',
-                      display: isMobile ? 'display' : 'table-Cell',
-                      justifyContent: isMobile ? 'center' : 'none'
-                    }}>
-                    Active
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredProducts &&
-                  filteredProducts.map((product, index) => (
-                    <TableRow key={index}>
-                      <TableCell
-                        sx={{
-                          padding: isMobile ? '0px' : 'none',
-                          fontSize: isMobile ? '10px' : '12px'
-                        }}>
-                        {product.id_product}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          maxWidth: isMobile ? '20px' : 'none',
-                          fontSize: isMobile ? '10px' : '12px'
-                        }}>
-                        {product.name}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          maxWidth: isMobile ? '10px' : 'none',
-                          fontSize: isMobile ? '10px' : '12px',
-                          padding: isMobile ? '5px' : 'none'
-                        }}>
-                        {product.description}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          fontSize: isMobile ? '10px' : '12px',
-                          padding: isMobile ? '5px' : 'none'
-                        }}>
-                        {product.price}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: isMobile ? '10px' : '12px' }}>
-                        {product.stock}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          fontSize: isMobile ? '10px' : '12px',
-                          padding: isMobile ? '5px' : 'none'
-                        }}>
-                        {product.rating}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          sx={{
-                            fontSize: isMobile ? '10px' : '12px',
-                            padding: isMobile ? '2px' : 'none'
-                          }}
-                          variant="contained"
-                          color={product.active ? 'primary' : 'secondary'}
-                          onClick={() => eraseproduct(product.id_product)}>
-                          {product.active ? 'Deactivate' : 'Activate'}
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </Grid>
+            onClick={listProducts}
+          >
+            Refresh list
+          </Button>
+          <Button
+            sx={{ margin: "10px", lineHeight: { xs: "14px" } }}
+            variant="contained"
+            color="primary"
+            onClick={() => handleFilter("all")}
+          >
+            Show All
+          </Button>
+          <Button
+            sx={{ margin: "10px", lineHeight: { xs: "14px" } }}
+            variant="contained"
+            color="primary"
+            onClick={() => handleFilter("active")}
+            >
+            Show Active
+          </Button>
+          <Button
+            sx={{ margin: "10px", lineHeight: { xs: "14px" } }}
+            variant="contained"
+            color="primary"
+            onClick={() => handleFilter("inactive")}
+            >
+            Show Inactive
+          </Button>
         </div>
-      </Container>
-    </ThemeProvider>
-  )
-}
+
+        <Grid sx={{ width: "100%" }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
+                  className={`${style.tableHeaderCell} ${
+                    sortOrder.id_product === "asc"
+                      ? style.sortedAsc
+                      : style.sortedDesc
+                  }`}
+                  onClick={() => handleSort("id_product")}
+                >
+                  Id
+                </TableCell>
+                <TableCell
+                  sx={{
+                    padding:  isMobile ? '2px' : 'none',
+                    fontSize: isMobile ? "10px" : "12px",
+                    display:  isMobile ? 'display' : 'table-Cell',
+                    justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
+                  }}
+                  className={`${style.tableHeaderCell} ${
+                    sortOrder.name === "asc"
+                      ? style.sortedAsc
+                      : style.sortedDesc
+                  }`}
+                  onClick={() => handleSort("name")}
+                >
+                  Name
+                </TableCell>
+                <TableCell
+                  sx={{ padding: isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
+                  className={`${style.tableHeaderCell} ${
+                    sortOrder.description === "asc"
+                      ? style.sortedAsc
+                      : style.sortedDesc
+                  }`}
+                  onClick={() => handleSort("description")}
+                >
+                  Description
+                </TableCell>
+                <TableCell
+                  sx={{
+                    padding:  isMobile ? '2px' : 'none',
+                    fontSize: isMobile ? "10px" : "12px",
+                    display:  isMobile ? 'display' : 'table-Cell',
+                    justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
+                  }}
+                  className={`${style.tableHeaderCell} ${
+                    sortOrder.price === "asc"
+                      ? style.sortedAsc
+                      : style.sortedDesc
+                  }`}
+                  onClick={() => handleSort("price")}
+                >
+                  Price
+                </TableCell>
+                <TableCell
+                  sx={{ padding:  isMobile ? '2px' : 'none', fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
+                  className={`${style.tableHeaderCell} ${
+                    sortOrder.stock === "asc"
+                      ? style.sortedAsc
+                      : style.sortedDesc
+                  }`}
+                  onClick={() => handleSort("stock")}
+                >
+                  Stock
+                </TableCell>
+                <TableCell
+                  sx={{ padding:  isMobile ? '0px' : 'none', fontSize: isMobile ? "10px" : "12px",color: '#fff' }}
+                  className={`${style.tableHeaderCell} ${
+                    sortOrder.rating === "asc"
+                      ? style.sortedAsc
+                      : style.sortedDesc
+                  }`}
+                  onClick={() => handleSort("rating")}
+                >
+                  Rating
+                </TableCell>
+                <TableCell
+                  sx={{
+                    padding:  isMobile ? '2px' : 'none',
+                    fontSize: isMobile ? "10px" : "12px",
+                    display:  isMobile ? 'display' : 'table-Cell',
+                    justifyContent:  isMobile ? 'center' : 'none',
+                    color: '#fff'
+                  }}
+                >
+                  Active
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredProducts &&
+                filteredProducts.map((product, index) => (
+                  <TableRow key={index}>
+                    <TableCell
+                      sx={{ padding: isMobile ? '0px' : 'none',
+                      fontSize: isMobile ? "10px" : "12px", color: '#fff' }}
+                    >
+                      {product.id_product}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        maxWidth: isMobile ? "20px" : "none",
+                        fontSize: isMobile ? "10px" : "12px",
+                        color: '#fff'
+                      }}
+                    >
+                      {product.name}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        maxWidth: isMobile ? "10px" : "none",
+                        fontSize: isMobile ? "10px" : "12px",
+                        padding:  isMobile ? '5px' : 'none',
+                        color: '#fff'
+                      }}
+                    >
+                      {product.description}
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none', color: '#fff' }}
+                    >
+                      {product.price}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: isMobile ? "10px" : "12px", color: '#fff' }}>
+                      {product.stock}
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontSize: isMobile ? "10px" : "12px", padding: isMobile ? '5px' : 'none', color: '#fff' }}
+                    >
+                      {product.rating}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        sx={{
+                          fontSize: isMobile ? "10px" : "12px",
+                          padding:  isMobile ? '2px' : 'none',
+                        }}
+                        variant="contained"
+                        color={product.active ? "primary" : "secondary"}
+                        onClick={() => eraseproduct(product.id_product)}
+                      >
+                        {product.active ? "Deactivate" : "Activate"}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </Grid>
+      </div>
+    </Container>
+            </ThemeProvider>
+  );
+};
