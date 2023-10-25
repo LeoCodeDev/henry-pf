@@ -38,6 +38,7 @@ const postRoutine= async (req: Request, res: Response) => {
         }
         //pending to validate if there is an existing routine with same exercises already
         await newRoutine.setExercises(exercisesToAssociate)  
+        await newRoutine.setUser(author)
         res.status(200).json({message:"Routine created succesfully"})
     }}
     catch (error:any) {

@@ -3,8 +3,7 @@ import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
 import Toolbar from '@mui/material/Toolbar'
 import Box from '@mui/material/Box'
-import { useProductsStore } from '../../store/productsStore'
-import { useState } from 'react'
+import { useSearch } from './SearchBar.logic'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -36,7 +35,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -46,31 +44,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-export const SearchBar = () => {
-  const setProductsByName = useProductsStore((state) => state.setProductsByName)
-  const fetchProducts = useProductsStore((state) => state.fetchProducts)
-
-  const [name, setName] = useState('')
-
-  const handleSearch = async (name) => {
-    try {
-      if (name === '') {
-        await fetchProducts()
-      } else {
-        await setProductsByName(name)
-      }
-    } catch (error) {
-      throw new Error(error.message)
-    }
-  }
+export const SearchBar = ({ hide }) => {
+  
+  const { name, setName, inputRef, searchBarRef, handleSearch } = useSearch(hide)
 
   const handleChange = (event) => {
-    setName(event.target.value)
-    handleSearch(event.target.value)
+    const value = event.target.value;
+    setName(value)
+    handleSearch(value)
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box ref={searchBarRef} sx={{ flexGrow: 1 }}>
       <Toolbar>
         <Search
           style={{
@@ -81,10 +66,9 @@ export const SearchBar = () => {
             transform: 'translateX(50%)',
             top: '50%',
             zIndex: '1',
-            width: '100%',
+            width: '100%'
           }}
-          sx={{ ml: 1, width: '100%' }}
-        >
+          sx={{ ml: 1, width: '100%' }}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
@@ -93,6 +77,7 @@ export const SearchBar = () => {
             inputProps={{ 'aria-label': 'search' }}
             value={name}
             onChange={handleChange}
+            inputRef={inputRef}
           />
         </Search>
       </Toolbar>

@@ -8,6 +8,7 @@
     font-size: 14px;
     top: -32px; /* Ajusta la posición vertical según tu diseño */
     left: 50%;
+    
     transform: translateX(-50%);
     z-index: 10;
     display: block;
@@ -19,27 +20,60 @@
   .modalBackground {
     border: solid 2px rgb(177, 177, 177);
     position: absolute;
-    width: max-content;
+    margin-inline: 10%;
+    width: auto;
     height: auto;
+    max-height: max-content;
     display: flex;
     justify-self: center;
     top: auto;
-    left: 50%;
-    bottom: 0%;
     z-index: 1000;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
+
   }
   
   /* Style the modal content */
   .modalContent {
     background-color: rgb(238, 238, 238);
-    padding: 20px;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #272727;
+    display: grid;
+
+    & h4{
+      margin-inline:10%;
+      margin-top: 0;
+      margin-bottom: 0
+    } ;
+    & label{
+      justify-self: center;
+    }
   }
   
   /* Style the checkbox */
   input[type="checkbox"] {
     margin-right: 10px;
+  }
+
+  .external-events {
+    position: fixed;
+    z-index: 2;
+    top: 20px;
+    left: 20px;
+    width: 150px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    background: #eee;
+  }
+  .lateral_scroll_container {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: max-content;
+  }
+  
+  .lateralScroll {
+    display: flex;
+    flex-direction: row;
+    min-width: fit-content
   }

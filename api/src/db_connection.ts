@@ -68,7 +68,7 @@ User.belongsToMany(Product,{through: 'fav_users_products'})
 
 Exercise.belongsToMany(Routine,{through: 'routines_exercises'})
 Routine.belongsToMany(Exercise,{through: 'routines_exercises'})
-
+Routine.belongsTo(User,{foreignKey:'userAuthor' ,as:'user_author'})
 
 Routine.belongsToMany(User,{through: Routines_users})
 User.belongsToMany(Routine,{through: Routines_users})

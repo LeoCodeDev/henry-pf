@@ -126,12 +126,8 @@ const useProductsStore = create((set, get) => ({
       zyx: (a, b) => b.name.localeCompare(a.name),
       mRated: (a, b) => b.rating - a.rating,
       lRated: (a, b) => a.rating - b.rating,
-      cheap: (a, b) => {
-        Number(a.price) - Number(b.price)
-      },
-      expensive: (a, b) => {
-        Number(b.price) - Number(a.price)
-      },
+      cheap: (a, b) => a.price - b.price ,
+      expensive: (a, b) =>  b.price - a.price,
     }
 
     set((state) => {

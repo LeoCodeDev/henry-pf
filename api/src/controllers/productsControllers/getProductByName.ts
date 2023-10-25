@@ -31,7 +31,7 @@ const getProductByName= async (req:Request,res:Response)=>{
             const rate = rateResult;
             const newPricedProducts = selectedProduct.map( (product: any) => {
                 const newPrice = product.price * rate;
-                return { ...product.dataValues, price: newPrice.toLocaleString() };
+                return { ...product.dataValues, price: newPrice };
                 });
             return res.status(200).json(newPricedProducts);
             } 
