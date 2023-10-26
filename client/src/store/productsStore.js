@@ -159,13 +159,9 @@ const useProductsStore = create((set, get) => ({
         productId,
       })
 
-      // if (response.status === 201) {
-      //   window.alert('Publised review');
-      // }
       return response.status
     } catch (error) {
       return error.response.status
-      // throw new Error(error.response.status)
     }
   },
   fetchProductReviews: async (productId) => {
@@ -191,7 +187,6 @@ const useProductsStore = create((set, get) => ({
       throw new Error(error.message)
     }
   },
-  
 }))
 
 export { useProductsStore }
