@@ -1,0 +1,32 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color:black
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color:black
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: 20px;
+  color:black
+
+}
+
+.missing-field {
+  background-color: red;
+}
