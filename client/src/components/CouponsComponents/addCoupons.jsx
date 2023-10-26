@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField, Button, Grid, Container, ThemeProvider, createTheme } from '@mui/material';
+import { TextField, Button, Grid, Container, ThemeProvider, createTheme, Typography } from '@mui/material';
 import axios from 'axios';
 import  toast,{ Toaster } from "react-hot-toast";
 
@@ -50,7 +50,7 @@ const AddCouponForm = () => {
   return (
     <ThemeProvider theme={theme}>
     <Container maxWidth="sm">
-        <h1>Add coupons</h1>
+        <Typography sx={{color: '#fff', fontSize: '1.8rem', padding: '0.3rem'}}>Add coupons</Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>

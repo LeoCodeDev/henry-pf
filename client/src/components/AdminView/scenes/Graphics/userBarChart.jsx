@@ -1,6 +1,7 @@
 import { BarChart } from "@mui/x-charts/BarChart";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {Typography} from '@mui/material';
 
 const UserBarChart = () => {
   const [users, setUsers] = useState({
@@ -24,7 +25,7 @@ const UserBarChart = () => {
     };
     fetchData();
   }, []);
-  if (!users.keys.length || !users.values.length) return <h1>loading</h1>;
+  if (!users.keys.length || !users.values.length) return <Typography sx={{color: '#fff'}}>loading...</Typography>;
   return (
     <>
       <section>

@@ -85,7 +85,7 @@ export default function UserEmails() {
         backgroundColor: "#1E1E1E",
       }}
     >
-      <h1>Send Email</h1>
+      <Typography sx={{fontSize: '1.5rem'}}>Send Email</Typography>
       <FormControl fullWidth>
         {sendToAll ? null : (
           <>

@@ -7,7 +7,7 @@ import {
   ChartsXAxis,
   ChartsYAxis,
 } from '@mui/x-charts';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 
 const IndexBarChart = () => {
@@ -37,7 +37,7 @@ const IndexBarChart = () => {
     fetchData()
   }, [])
 
-  if(!sales.keys.length || !sales.values.length) return <h1>loading</h1>
+  if(!sales.keys.length || !sales.values.length) return <Typography sx={{color: '#fff'}}>loading...</Typography>
   return (
     <>
     <Box>

@@ -35,8 +35,8 @@ const TrainerProfile = ({ selectedTrainer }) => {
   
   console.log(reviews);
   return (
-    <Grid item xs={12} md={8}>
-      <div style={{ textAlign: 'center' }}>
+    <Grid sx={{marginLeft:'10rem'}} item xs={12} md={8}>
+      <div style={{ textAlign: 'center', marginLeft:'10rem' }}>
         <h3>{selectedTrainer.userName}</h3>
         <img
           src={selectedTrainer.avatar}

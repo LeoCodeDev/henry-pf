@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
 import { Request, Response } from "express";
-const {SECRET_ACCESS_TOKEN}=process.env
+const {SECRET_ACCESS_TOKEN, SECRET_REFRESH_TOKEN}=process.env
 
 const validateAccessToken = async (req:Request, res:Response) => {
 const accessToken = req.cookies.accessToken;
+const refreshToken= req.cookies.refreshToken
 console.log(req.cookies);
 try {
     interface Decoded{
@@ -12,9 +13,9 @@ try {
         iat: number;
         exp: number; 
     }
-    if(!accessToken)
+    if(!accessToken || !refreshToken)
         res.status(401).json({ valid: false, message: 'No token provided' })
-        else { await jwt.verify(accessToken, SECRET_ACCESS_TOKEN, (error:any, decoded:Decoded) => {
+        else { await jwt.verify(accessToken? accessToken : refreshToken, accessToken? SECRET_ACCESS_TOKEN : SECRET_REFRESH_TOKEN , (error:any, decoded:Decoded) => {
         if (error) 
             res.status(401).json({ valid: false, message: 'Invalid token' });   
         else{ 

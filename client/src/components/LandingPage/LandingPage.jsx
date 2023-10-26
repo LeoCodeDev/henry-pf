@@ -198,6 +198,7 @@ function SignInSide() {
                 padding: 4,
                 borderRadius: 6,
                 marginTop: 4,
+                width:"100%"
               }}
             >
               <TextField

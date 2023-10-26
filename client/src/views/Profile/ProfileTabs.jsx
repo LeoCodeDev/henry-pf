@@ -25,11 +25,14 @@ import { ProfileSales } from "./ProfileSales";
 import styles from "../../components/AdminView/Css/AdminView.module.css";
 import RoutineForm from "../../components/RoutineForm/RoutineForm";
 
+
+
 export function ProfileTabs({ sales }) {
   const [isLoading, setIsLoading] = useState({});
   const { user } = useAuthStore();
   const [userRoutines, setUserRoutines] = useState([]);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
+  
 
   const fetchRoutinesUser = async () => {
     try {

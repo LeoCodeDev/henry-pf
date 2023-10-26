@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import axios from 'axios'
+import { useState, useEffect, useRef } from 'react'
 import {
   Typography,
   Card,
@@ -10,43 +10,84 @@ import {
   TextField,
   FormControl,
   Button,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import { useAuthStore } from "../../store/authStore";
-import styles from "./Calendar.module.css";
+  ToggleButton,
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import { useAuthStore } from '../../store/authStore'
+import styles from './Calendar.module.css'
+import ReusableModal from '../ReusableModal/ReusableModal'
 
 export default function Calendar({ routines }) {
   console.log(routines)
-  const { user } = useAuthStore();
-  const [allRoutine, setAllRoutine] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [selectedRoutine, setSelectedRoutine] = useState(null);
-  const [Hour, setHour] = useState("");
-  const [Fecha, setFecha] = useState("");
-  const [send, setSend] = useState(true);
+  const { user } = useAuthStore()
+  const [allRoutine, setAllRoutine] = useState([])
+  const [events, setEvents] = useState([])
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null)
+  const [selectedRoutine, setSelectedRoutine] = useState(null)
+  const [Hour, setHour] = useState('')
+  const [Fecha, setFecha] = useState('')
+  const [send, setSend] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [Days, setDays] = useState({
+    Lunes: false,
+    Martes: true,
+    Miercoles: false,
+    Jueves: false,
+    Viernes: false,
+    Sabado: false,
+    Domingo: false,
+  })
+  function obtenerFechasDelMes() {
+    const fechaActual = new Date();
+    const fechasSeleccionadas = [];
+  
+    Object.keys(Days).forEach((dia) => {
+      if (Days[dia]) {
+        const fechaDelDia = new Date(fechaActual);
+        fechaDelDia.setDate(1); // Establece el día al 1ro del mes
+        while (fechaDelDia.getDay() !== 0) {
+          fechaDelDia.setDate(fechaDelDia.getDate() - 1);
+        }
+  
+        while (fechaDelDia.getDay() !== 0 || dia !== fechaDelDia.toLocaleString("es-ES", { weekday: "long" })) {
+          fechaDelDia.setDate(fechaDelDia.getDate() + 1);
+        }
+  
+        // Agrega la fecha al arreglo de fechas seleccionadas
+        fechasSeleccionadas.push(new Date(fechaDelDia));
+      }
+    });
+  
+    return fechasSeleccionadas;
+  }
+
+  
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
 
   const fechRoutine = async () => {
     const { data } = await axios.get(
       `/routines/getUserRoutines?email=${user.email}`
-    );
-    setAllRoutine(data);
-  };
+    )
+    setAllRoutine(data)
+  }
   useEffect(() => {
-    fechRoutine();
-  }, [user, send]);
+    fechRoutine()
+  }, [user, send])
 
   useEffect(() => {
-    let findEvent = false;
+    let findEvent = false
     if (allRoutine.length > 0) {
       findEvent = allRoutine.some(
         (routine) => routine.Routines_users.date !== null
-      );
+      )
     }
     if (allRoutine.length > 0 && findEvent) {
       setEvents(
@@ -55,7 +96,7 @@ export default function Calendar({ routines }) {
             name_routine,
             id_routine,
             Routines_users: { date },
-          } = item;
+          } = item
           return result.concat(
             date
               ? date.map((d) => ({
@@ -69,167 +110,162 @@ export default function Calendar({ routines }) {
                   complete: d.complete,
                 }))
               : []
-          );
+          )
         }, [])
-      );
-    } else setEvents([]);
-  }, [allRoutine]);
+      )
+    } else setEvents([])
+  }, [allRoutine])
 
   useEffect(() => {
     // Redibujar el calendario al cargar el componente
-    const calendar = document.querySelector(".fc");
+    const calendar = document.querySelector('.fc')
     if (calendar) {
-      window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new Event('resize'))
     }
     // Redibujar el calendario cuando cambia el tamaño de la pantalla
     const handleResize = () => {
       if (calendar) {
-        window.dispatchEvent(new Event("resize"));
+        window.dispatchEvent(new Event('resize'))
       }
-    };
-    window.addEventListener("resize", handleResize);
+    }
+    window.addEventListener('resize', handleResize)
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const checked = useRef();
-
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+  const checked = useRef()
   useEffect(() => {
     const closeMenuOnOutsideClick = (e) => {
       if (checked.current && !checked.current.contains(e.target)) {
-        setIsModalOpen(false);
+        setIsModalOpen(false)
       }
-    };
-    document.addEventListener("mousedown", closeMenuOnOutsideClick);
+    }
+    document.addEventListener('mousedown', closeMenuOnOutsideClick)
     // Limpieza del efecto cuando el componente se desmonta
     return () => {
-      document.removeEventListener("mousedown", closeMenuOnOutsideClick);
-    };
-  }, []);
+      document.removeEventListener('mousedown', closeMenuOnOutsideClick)
+    }
+  }, [])
 
   const handleEventDrop = async (info) => {
-    const { id_user } = user;
-    const id_routine = info.event._def.extendedProps.idEstandar;
-    const { hourOnly } = info.event._def.extendedProps;
+    const { id_user } = user
+    const id_routine = info.event._def.extendedProps.idEstandar
+    const { hourOnly } = info.event._def.extendedProps
     const initialDate = info.oldEvent._instance.range.start
       .toISOString()
-      .split("T")[0];
-    const newDate = info.event._instance.range.start
-      .toISOString()
-      .split("T")[0];
-    const timeOffset = info.oldEvent._instance.range.start.getTimezoneOffset();
+      .split('T')[0]
+    const newDate = info.event._instance.range.start.toISOString().split('T')[0]
+    const timeOffset = info.oldEvent._instance.range.start.getTimezoneOffset()
     const initialHour = new Date(
       info.oldEvent._instance.range.start
-    ).toLocaleTimeString("en-US", {
+    ).toLocaleTimeString('en-US', {
       hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    const initialHourDate = new Date(`2023-10-24T${initialHour}`);
-    initialHourDate.setMinutes(initialHourDate.getMinutes() + timeOffset);
-    const newHourAdjusted = initialHourDate.toLocaleTimeString("en-US", {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+    const initialHourDate = new Date(`2023-10-24T${initialHour}`)
+    initialHourDate.setMinutes(initialHourDate.getMinutes() + timeOffset)
+    const newHourAdjusted = initialHourDate.toLocaleTimeString('en-US', {
       hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
 
     try {
-      const response = await axios.put("/routines/putUserRoutineNewDate", {
+      const response = await axios.put('/routines/putUserRoutineNewDate', {
         idUser: id_user,
         idRoutine: id_routine,
         originDate: initialDate,
         originHour: hourOnly,
         newDate: newDate,
         newHour: newHourAdjusted,
-      });
-      console.log(response.data);
+      })
+      console.log(response.data)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handleEventClick = (info) => {
-    const event = info.event;
-    const extendedProps = event.extendedProps;
-    setSelectedEvent(extendedProps);
-    setIsModalOpen(true);
+    const event = info.event
+    const extendedProps = event.extendedProps
+    setSelectedEvent(extendedProps)
+    setIsModalOpen(true)
     setSelectedRoutine(
       routines.find(
         (routine) => routine.id_routine === extendedProps.idEstandar
       )
-    );
-  };
+    )
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   const handleEventDidMount = (info) => {
-    const event = info.event;
-    const extendedProps = event.extendedProps;
+    const event = info.event
+    const extendedProps = event.extendedProps
 
     // Crear un elemento de tooltip
-    const tooltip = document.createElement("div");
-    tooltip.className = styles.tooltip; // Aplica los estilos CSS Modules
-    tooltip.textContent = extendedProps.description;
+    const tooltip = document.createElement('div')
+    tooltip.className = styles.tooltip // Aplica los estilos CSS Modules
+    tooltip.textContent = extendedProps.description
 
     // Agrega el tooltip al evento en el DOM
-    info.el.appendChild(tooltip);
+    info.el.appendChild(tooltip)
 
     // Manejar el evento hover
-    info.el.addEventListener("mouseover", () => {
-      tooltip.style.visibility = "visible";
-      tooltip.style.opacity = 1;
-    });
+    info.el.addEventListener('mouseover', () => {
+      tooltip.style.visibility = 'visible'
+      tooltip.style.opacity = 1
+    })
 
-    info.el.addEventListener("mouseout", () => {
-      tooltip.style.visibility = "hidden";
-      tooltip.style.opacity = 0;
-    });
-  };
+    info.el.addEventListener('mouseout', () => {
+      tooltip.style.visibility = 'hidden'
+      tooltip.style.opacity = 0
+    })
+  }
 
   const handleCheckedRoutine = async (event, selectEvent) => {
-    const checked = event.target.checked;
+    const checked = event.target.checked
     setSelectedEvent({
       ...selectEvent,
       complete: checked,
-    });
+    })
 
-     await axios.put(`/routines/putUserRoutineCheck`, {
+    await axios.put(`/routines/putUserRoutineCheck`, {
       idUser: user.id_user,
       idRoutine: selectEvent.idEstandar,
       Date: selectEvent.dateOnly,
       hour: selectEvent.hourOnly,
-    });
-
-  };
+    })
+  }
 
   const handleSubmit = async (event, routine) => {
-    event.preventDefault();
-    console.log({ routine, event });
-    console.log({ Hour, Date });
-    const { id_user } = user;
-    const id_routine = routine.id_routine;
+    event.preventDefault()
+    console.log({ routine, event })
+    console.log({ Hour, Date })
+    const { id_user } = user
+    const id_routine = routine.id_routine
 
-    await axios.put("/routines/putUserRoutineDate", {
+    await axios.put('/routines/putUserRoutineDate', {
       idUser: id_user,
       idRoutine: id_routine,
       Date: Fecha,
       hour: Hour,
-    });
+    })
 
-    setSend(send ? false : true);
-  };
+    setSend(send ? false : true)
+  }
 
   return (
     <>
       <div className={styles.lateral_scroll_container}>
         <div className={styles.lateralScroll}>
           {routines.map((routine) => (
-            <Card style={{ margin: "1em" }} key={routine.id}>
+            <Card style={{ margin: '1em' }} key={routine.id}>
               <CardContent>
                 <Typography variant="h5" component="div">
                   🏋️‍♂️ {routine.name_routine}
@@ -238,7 +274,7 @@ export default function Calendar({ routines }) {
                   👤 Author username: {routine.author}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  🏆 Puntuation: {routine.puntuation || "N/A"}
+                  🏆 Puntuation: {routine.puntuation || 'N/A'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   🏋️‍♂️ Exercises: {routine?.Exercises.length}
@@ -246,7 +282,7 @@ export default function Calendar({ routines }) {
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="subtitle1">
-                    schedule routine:{" "}
+                      schedule routine:{' '}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -271,6 +307,30 @@ export default function Calendar({ routines }) {
                         }}
                         onChange={(e) => setFecha(e.target.value)}
                       />
+                      <Typography>OR</Typography>
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridColumn: '3',
+                          gridRow: '3',
+                        }}
+                      >
+                        {Object.keys(Days).map((propiedad) => (
+                          <ToggleButton
+                            key={propiedad}
+                            value="check"
+                            selected={Days[propiedad]}
+                            onChange={() => {console.log(obtenerFechasDelMes())
+                              setDays({
+                                ...Days,
+                                [propiedad]: !Days[propiedad],
+                              })
+                            }}
+                          >
+                            {propiedad}
+                          </ToggleButton>
+                        ))}
+                      </div>
                       <Button
                         variant="contained"
                         color="primary"
@@ -287,15 +347,15 @@ export default function Calendar({ routines }) {
         </div>
       </div>
 
-      <div style={{ marginTop: "5em" }}>
+      <div style={{ marginTop: '5em' }}>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
           initialView="dayGridMonth"
           timeZone="UTC"
           headerToolbar={{
-            start: "timeGridDay,dayGridMonth",
-            center: "title",
-            end: "today prev,next",
+            start: 'timeGridDay,dayGridMonth',
+            center: 'title',
+            end: 'today prev,next',
           }}
           events={events}
           editable={true}
@@ -305,70 +365,73 @@ export default function Calendar({ routines }) {
           eventDidMount={handleEventDidMount}
         />
       </div>
-      {isModalOpen && selectedEvent && (
-        <div
-          className={styles.modalBackground}
-          ref={checked}
-          onClick={handleCloseModal}
-        >
+      <ReusableModal open={isModalOpen} onClose={closeModal} title="Perfil">
+        {isModalOpen && selectedEvent && (
           <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
+            className={styles.modalBackground}
+            ref={checked}
+            onClick={handleCloseModal}
           >
-            <Card style={{ margin: "1em" }}>
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  🏋️‍♂️ {selectedRoutine.name_routine}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  👤 Author username: {selectedRoutine.author}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  🏆 Puntuation: {selectedRoutine.puntuation || "N/A"}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  🏋️‍♂️ Exercises: {selectedRoutine?.Exercises.length}
-                </Typography>
-                <Accordion>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="subtitle1">Exercises</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    {selectedRoutine.Exercises.map((exercise) => (
-                      <div key={exercise.id_exercise}>
-                        <Typography variant="h6">{exercise.name}</Typography>
-                        <Typography variant="body2">
-                          Type: {exercise.type}
-                        </Typography>
-                        <Typography variant="body2">
-                          Muscle: {exercise.muscle}
-                        </Typography>
-                        <Typography variant="body2">
-                          Difficulty: {exercise.difficulty}
-                        </Typography>
-                        <Typography variant="body2">
-                          Description: {exercise.description}
-                        </Typography>
-                        <hr />
-                      </div>
-                    ))}
-                  </AccordionDetails>
-                </Accordion>
-              </CardContent>
-            </Card>
-            <h4>Day : {selectedEvent.dateOnly}</h4>
-            <h4>Hour : {selectedEvent.hourOnly}</h4>
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedEvent.complete}
-                onChange={() => handleCheckedRoutine(event, selectedEvent)}
-              />
-              Complet
-            </label>
+            <div
+              className={styles.modalContent}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Card style={{ margin: '1em' }}>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    🏋️‍♂️ {selectedRoutine.name_routine}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    👤 Author username: {selectedRoutine.author}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    🏆 Puntuation: {selectedRoutine.puntuation || 'N/A'}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    🏋️‍♂️ Exercises: {selectedRoutine?.Exercises.length}
+                  </Typography>
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography variant="subtitle1">Exercises</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {selectedRoutine.Exercises.map((exercise) => (
+                        <div key={exercise.id_exercise}>
+                          <Typography variant="h6">{exercise.name}</Typography>
+                          <Typography variant="body2">
+                            Type: {exercise.type}
+                          </Typography>
+                          <Typography variant="body2">
+                            Muscle: {exercise.muscle}
+                          </Typography>
+                          <Typography variant="body2">
+                            Difficulty: {exercise.difficulty}
+                          </Typography>
+                          <Typography variant="body2">
+                            Description: {exercise.description}
+                          </Typography>
+                          <hr />
+                        </div>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+                </CardContent>
+              </Card>
+              <Typography>Day : {selectedEvent.dateOnly}</Typography>
+              <Typography>Hour : {selectedEvent.hourOnly}</Typography>
+
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedEvent.complete}
+                  onChange={() => handleCheckedRoutine(event, selectedEvent)}
+                />
+                Complet
+              </label>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </ReusableModal>
     </>
-  );
+  )
 }

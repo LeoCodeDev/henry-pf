@@ -6,7 +6,8 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Switch
+  Switch,
+  Typography
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -37,7 +38,7 @@ export default function UserAdmin() {
   }
 
   return loading ? (
-    <h1>Loading...</h1>
+    <Typography variant='h1' sx={{color: '#fff'}}>Loading...</Typography>
   ) : (
     <TableContainer component={Paper}>
       <Table>

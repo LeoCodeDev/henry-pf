@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavBar } from "../../components/NavBar/NavBar";
 import Profile from "../../components/Profile/Profile";
 import ReusableModal from "../../components/ReusableModal/ReusableModal"; 

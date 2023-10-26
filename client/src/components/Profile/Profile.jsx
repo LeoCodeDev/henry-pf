@@ -200,7 +200,6 @@ export default function Profile({onlyEdit}) {
       const lastDataSale = data.slice(0, 3).map((registro) => {
         const product = registro.Products[0];
         const quantity = Math.round(registro.total / parseFloat(product.price));
-
         return {
           date: registro.date.split("T")[0],
           product: product.name,
@@ -208,7 +207,6 @@ export default function Profile({onlyEdit}) {
           total: registro.total,
         };
       });
-
       setActivitySale(lastDataSale);
 
       const secondData = await axios("/dashboard/getUserRating", {
@@ -216,15 +214,17 @@ export default function Profile({onlyEdit}) {
           email: user.email,
         },
       });
-
       const rawData = secondData.data.slice(0, 3);
-
-      const filteredData = rawData.map((element) => ({
-        date: element.updatedAt.split("T")[0],
-        comment: element.comment,
-        rating: element.rating,
-        productName: element.Product.name,
-      }));
+      
+      // Voy a traer sólo los comentarios activos
+      const filteredData = rawData
+        .filter((element) => element.active === true)
+        .map((element) => ({
+          date: element.updatedAt.split("T")[0],
+          comment: element.comment,
+          rating: element.rating,
+          productName: element.Product.name,
+        }));
 
       setActivityReview(filteredData);
     } catch (error) {
