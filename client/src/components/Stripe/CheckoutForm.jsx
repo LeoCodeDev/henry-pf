@@ -126,6 +126,7 @@ const CheckoutForm = () => {
     }
   };
 
+
   return (
     <Container maxWidth="md" style={{ textAlign: "center" }}>
       <Paper elevation={3} style={{ padding: "20px", marginTop: "10vh" }}>

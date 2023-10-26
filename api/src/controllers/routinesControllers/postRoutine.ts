@@ -1,9 +1,6 @@
-const {Exercise, User, Routine}= require('../../db_connection')
-const {Op}= require('sequelize')
-
-
-
-import { Request, Response } from "express";    
+const { Exercise, User, Routine } = require('../../db_connection');
+const {Op}=require("sequelize")
+import { Request, Response } from "express";
 
 const postRoutine= async (req: Request, res: Response) => {
     const{email, name_routine, exercises, puntuation}=req.body
@@ -38,6 +35,7 @@ const postRoutine= async (req: Request, res: Response) => {
         }
         //pending to validate if there is an existing routine with same exercises already
         await newRoutine.setExercises(exercisesToAssociate)  
+        await newRoutine.addUser(author)
         res.status(200).json({message:"Routine created succesfully"})
     }}
     catch (error:any) {
@@ -45,4 +43,4 @@ const postRoutine= async (req: Request, res: Response) => {
     }
 }
 
-module.exports=postRoutine
+module.exports = postRoutine;

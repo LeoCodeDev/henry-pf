@@ -3,11 +3,13 @@ const { Report,  Product, Rating,User} = require('../../db_connection')
 
 const getReportsByUser = async (req:Request, res:Response) => {
     try {
-      const {id_user} = req.query; 
+      const {email} = req.query; 
+
+      const user= await User.findOne({where:{email}})
       
       const reportsMadeByUser = await Report.findAll({
         where: {
-          reporterId: id_user
+          reporterId: user.id_user
         },
         include: [
           { model: User, as: 'reportedUser', attributes: ['username','email'] },

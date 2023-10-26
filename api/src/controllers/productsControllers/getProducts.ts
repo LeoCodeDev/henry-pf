@@ -25,7 +25,7 @@ const getProducts = async (req: Request, res: Response) => {
       const rate = rateResult;
       const newPricedProducts = await Promise.all(allProducts.map(async (product: any) => {
         const newPrice = product.price * rate;
-        return { ...product.dataValues, price: newPrice };
+        return { ...product.dataValues, price: parseFloat(newPrice.toFixed(2)) };
       }));
       return res.status(200).json(newPricedProducts);
     } else {

@@ -211,7 +211,7 @@ export const NavBar = () => {
                   left: '50%',
                   zIndex: 100
                 }}>
-                <SearchBar />
+                <SearchBar hide={() => setIfSearch(false)} />
               </div>
             )}
 

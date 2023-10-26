@@ -16,7 +16,7 @@ const checkRole = require('../middlewares/checkRole')
 const getRoutineById = require('../controllers/routinesControllers/getRoutineById')
 
 const routinesRoutes = Router()
-routinesRoutes.post('/postRoutine',checkToken, checkRole(["Admin", "trainer"]), postRoutine); 
+routinesRoutes.post('/postRoutine',postRoutine); 
 routinesRoutes.post('/addUserRoutine', addUserRoutine);
 routinesRoutes.get('/getAllRoutines', getAllRoutines);
 routinesRoutes.put('/putDeleteRoutine',checkToken, checkRole(["Admin", "trainer"]), putActiveRoutine);

@@ -17,6 +17,7 @@
     "@fullcalendar/react": "^6.1.9",
     "@fullcalendar/timegrid": "^6.1.9",
     "@mui/icons-material": "^5.14.11",
+    "@mui/lab": "^5.0.0-alpha.150",
     "@mui/x-charts": "^6.0.0-alpha.15",
     "@stripe/react-stripe-js": "^2.3.1",
     "@stripe/stripe-js": "^2.1.7",
@@ -38,7 +39,7 @@
   "devDependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.11",
+    "@mui/material": "^5.14.15",
     "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.8",
     "@vitejs/plugin-react": "^4.1.0",

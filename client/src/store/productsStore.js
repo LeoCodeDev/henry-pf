@@ -126,12 +126,8 @@ const useProductsStore = create((set, get) => ({
       zyx: (a, b) => b.name.localeCompare(a.name),
       mRated: (a, b) => b.rating - a.rating,
       lRated: (a, b) => a.rating - b.rating,
-      cheap: (a, b) => {
-        Number(a.price) - Number(b.price)
-      },
-      expensive: (a, b) => {
-        Number(b.price) - Number(a.price)
-      },
+      cheap: (a, b) => a.price - b.price ,
+      expensive: (a, b) =>  b.price - a.price,
     }
 
     set((state) => {
@@ -163,13 +159,9 @@ const useProductsStore = create((set, get) => ({
         productId,
       })
 
-      // if (response.status === 201) {
-      //   window.alert('Publised review');
-      // }
       return response.status
     } catch (error) {
       return error.response.status
-      // throw new Error(error.response.status)
     }
   },
   fetchProductReviews: async (productId) => {
@@ -195,7 +187,6 @@ const useProductsStore = create((set, get) => ({
       throw new Error(error.message)
     }
   },
-  
 }))
 
 export { useProductsStore }
