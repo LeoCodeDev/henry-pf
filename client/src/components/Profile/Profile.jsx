@@ -10,12 +10,13 @@ import {
   Typography,
   Select,
   MenuItem,
+  Grid,
 } from "@mui/material";
 import axios from "axios";
 import { ThemeProvider } from "@mui/system";
 import theme from "../../../theme";
 import { useAuthStore } from "../../store/authStore";
-import guest from "../../assets/images/avatars/avatar10.jpg"
+import guest from "../../assets/images/avatars/avatar10.jpg";
 
 // Firebase
 import { initializeApp } from "firebase/app";
@@ -35,7 +36,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-export default function Profile() {
+export default function Profile({onlyEdit}) {
   const { user } = useAuthStore();
   const [isEditing, setIsEditing] = useState(false);
   const [imagen, setImagen] = useState(user.avatar);
@@ -49,6 +50,8 @@ export default function Profile() {
   const [imageURL, setImageURL] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
+  const [activitySale, setActivitySale] = useState(null);
+  const [activityReview, setActivityReview] = useState(null);
   const navigate = useNavigate();
   let downloadURL = "";
 
@@ -57,7 +60,9 @@ export default function Profile() {
     setHasChanges(true); // bandera para saber que si hubo cambio
   };
 
+  console.log(onlyEdit);
   useEffect(() => {
+    handleGetSales();
     axios
       .get("/users/getTeams")
       .then((response) => {
@@ -176,156 +181,248 @@ export default function Profile() {
     }
   };
 
-  const handleDisable = () =>{
+  const handleDisable = () => {
     if (user.email !== "") {
-      setIsEditing(!isEditing)
+      setIsEditing(!isEditing);
     } else {
-      toast.error("Cannot edit guest user")
+      toast.error("Cannot edit guest user");
     }
-  }
+  };
+
+  const handleGetSales = async () => {
+    try {
+      const { data } = await axios(
+        `sales/getUserSales?id_user=${user.id_user}`
+      );
+
+      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const lastDataSale = data.slice(0, 3).map((registro) => {
+        const product = registro.Products[0];
+        const quantity = Math.round(registro.total / parseFloat(product.price));
+
+        return {
+          date: registro.date.split("T")[0],
+          product: product.name,
+          quantity: quantity,
+          total: registro.total,
+        };
+      });
+
+      setActivitySale(lastDataSale);
+
+      const secondData = await axios("/dashboard/getUserRating", {
+        params: {
+          email: user.email,
+        },
+      });
+
+      const rawData = secondData.data.slice(0, 3);
+
+      const filteredData = rawData.map((element) => ({
+        date: element.updatedAt.split("T")[0],
+        comment: element.comment,
+        rating: element.rating,
+        productName: element.Product.name,
+      }));
+
+      setActivityReview(filteredData);
+    } catch (error) {
+      console.error("Error en las solicitudes GET:", error);
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <Container
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-          justifyContent: "center",
-        }}
+        maxWidth="md"
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Paper
-          elevation={8}
-          sx={{ padding: "20px", minWidth: "50%", borderRadius: "8px" }}
-        >
-          <Typography variant="h5" color="primary" gutterBottom>
-            User Profile
-          </Typography>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isEditing}
-                onChange={handleDisable}
-                name="isEditing"
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={!onlyEdit ? 8 : 12}>
+            <Paper elevation={8} sx={{ padding: "20px", borderRadius: "8px" }}>
+              <Typography variant="h5" color="primary" gutterBottom>
+                User Profile
+              </Typography>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isEditing}
+                    onChange={handleDisable}
+                    name="isEditing"
+                  />
+                }
+                label={isEditing ? "Edit on" : "Edit off"}
               />
-            }
-            label={isEditing ? "Edit on" : "Edit off"}
-          />
-          <form style={{ display: "flex", flexDirection: "column" }}>
-            <TextField
-              type="text"
-              name="first_name"
-              label="First Name"
-              variant="outlined"
-              size="small"
-              value={formData.first_name}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-              sx={{ marginBottom: "16px" }}
-            />
-            <TextField
-              type="text"
-              name="last_name"
-              label="Last Name"
-              variant="outlined"
-              size="small"
-              value={formData.last_name}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-              sx={{ marginBottom: "16px" }}
-            />
-            <TextField
-              type="text"
-              name="username"
-              label="Username"
-              variant="outlined"
-              size="small"
-              value={formData.username}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-              sx={{ marginBottom: "16px" }}
-            />
-            <Select
-              label="Team"
-              variant="standard"
-              value={selectedTeam || formData?.team || ""}
-              onChange={handleTeamChange}
-              size="small"
-              fullWidth
-              sx={{ marginBottom: "16px" }}
-              disabled={!isEditing}
-            >
-              {teams?.map((team, key) => (
-                <MenuItem key={key} value={team.name}>
-                  {team.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                flexDirection: "column",
-              }}
-            >
-              <img
-                src={imageURL ? imageURL : user.email == "" ? guest : user.avatar}
-                style={{
-                  minWidth: "150px",
-                  maxWidth: "150px",
-                  height: "auto",
-                  border: `2px solid ${theme.palette.primary.main}`,
-                  filter: !isEditing ? "grayscale(100%)" : "grayscale(0%)",
-                  marginBottom: "0.2rem",
-                }}
-                alt="Avatar"
-              />
-              <label htmlFor="avatar">
-                <input
-                  type="file"
-                  id="avatar"
-                  name="avatar"
-                  onChange={handleImageUpload}
-                  accept="image/png, image/jpeg"
+              <form style={{ display: "flex", flexDirection: "column" }}>
+                <TextField
+                  type="text"
+                  name="first_name"
+                  label="First Name"
+                  variant="outlined"
+                  size="small"
+                  value={formData.first_name}
+                  onChange={handleInputChange}
                   disabled={!isEditing}
-                  style={{ display: "none" }}
+                  sx={{ marginBottom: "16px" }}
                 />
-                <Button
-                  variant="contained"
-                  component="span"
-                  sx={{
-                    backgroundColor: theme.palette.primary.main,
-                    color: "white",
-                    cursor: "pointer",
-                    borderRadius: "4px",
-                    fontSize: "12px",
-                    marginBottom: "1rem",
+                <TextField
+                  type="text"
+                  name="last_name"
+                  label="Last Name"
+                  variant="outlined"
+                  size="small"
+                  value={formData.last_name}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                  sx={{ marginBottom: "16px" }}
+                />
+                <TextField
+                  type="text"
+                  name="username"
+                  label="Username"
+                  variant="outlined"
+                  size="small"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                  sx={{ marginBottom: "16px" }}
+                />
+                <Select
+                  label="Team"
+                  variant="standard"
+                  value={selectedTeam || formData?.team || ""}
+                  onChange={handleTeamChange}
+                  size="small"
+                  fullWidth
+                  sx={{ marginBottom: "16px" }}
+                  disabled={!isEditing}
+                >
+                  {teams?.map((team, key) => (
+                    <MenuItem key={key} value={team.name}>
+                      {team.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    textAlign: "center",
+                    flexDirection: "column",
                   }}
-                  disabled={!isEditing}
                 >
-                  Upload image
-                </Button>
-              </label>
-            </div>
-            {isEditing && (
-              <>
-                <hr
-                  style={{ border: "solid 1px lightgray", margin: "0.1rem" }}
-                />
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  onClick={handlePostData} // Envia los datos al servidor
-                >
-                  Submit
-                </Button>
-              </>
-            )}
-          </form>
-        </Paper>
+                  <img
+                    src={
+                      imageURL
+                        ? imageURL
+                        : user.email == ""
+                        ? guest
+                        : user.avatar
+                    }
+                    style={{
+                      minWidth: "150px",
+                      maxWidth: "150px",
+                      height: "auto",
+                      border: `2px solid ${theme.palette.primary.main}`,
+                      filter: !isEditing ? "grayscale(100%)" : "grayscale(0%)",
+                      marginBottom: "0.2rem",
+                    }}
+                    alt="Avatar"
+                  />
+                  <label htmlFor="avatar">
+                    <input
+                      type="file"
+                      id="avatar"
+                      name="avatar"
+                      onChange={handleImageUpload}
+                      accept="image/png, image/jpeg"
+                      disabled={!isEditing}
+                      style={{ display: "none" }}
+                    />
+                    <Button
+                      variant="contained"
+                      component="span"
+                      sx={{
+                        backgroundColor: theme.palette.primary.main,
+                        color: "white",
+                        cursor: "pointer",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                        marginBottom: "1rem",
+                      }}
+                      disabled={!isEditing}
+                    >
+                      Upload image
+                    </Button>
+                  </label>
+                </div>
+                {isEditing && (
+                  <>
+                    <hr
+                      style={{
+                        border: "solid 1px lightgray",
+                        margin: "0.1rem",
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="primary"
+                      onClick={handlePostData}
+                    >
+                      Submit
+                    </Button>
+                  </>
+                )}
+              </form>
+            </Paper>
+          </Grid>
+         {!onlyEdit && <Grid item xs={12} md={4}>
+            <Paper
+              elevation={8}
+              sx={{ padding: "20px", borderRadius: "8px", minWidth: "30vw" }}
+            >
+              <Typography variant="h6" color="primary" gutterBottom>
+                Last activity
+              </Typography>
+              <hr color="primary"></hr>
+              <div style={{ marginTop: "2rem" }}>
+                <Typography variant="h7" color="primary" >
+                  Purchases:
+                </Typography>
+                {activitySale && activitySale.length > 0 ? (
+                  <div>
+                    {activitySale.map((sale, index) => (
+                      <Typography color="black" fontSize={12} key={index} sx={{padding:"0.5rem"}}>
+                      {`🛒 ${sale.quantity} ${sale.product} for $${sale.total} (${sale.date})`}
+                      </Typography>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No purchase activity.</p>
+                )}
+              </div>
+              <div style={{ marginTop: "2rem" }}>
+                <Typography variant="h7" color="primary">
+                  Reviews:
+                </Typography>
+                {activityReview && activityReview.length > 0 ? (
+                  <div>
+                    {activityReview.map((review, index) => (
+                      <Typography color="black" fontSize={12} key={index} sx={{padding:"0.5rem"}}>
+                      {`✍️ Rated ${review.rating}/5 for ${review.productName}: "${review.comment} (${review.date})"`}
+                      </Typography>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No review activity.</p>
+                )}
+              </div>
+            </Paper>
+          </Grid> 
+          }
+        </Grid>
       </Container>
       <Toaster position="top-center" reverseOrder={false} />
     </ThemeProvider>
