@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Loader from '../Loader/Loader';
 import {useCartStore} from "../../store/shoppingCartStore"
 import { useProductsStore } from '../../store/productsStore'
+import { Checkout } from './Checkout';
 
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -16,7 +17,7 @@ const stripePromise = loadStripe('pk_test_51NxWZcLXoKZYYBLlqdLbDjkjkwYKPcM41zGJ4
 export default function Stripe() {
     const [clientSecretKey,setClientSecretKey] = useState('')
     const [isLoading,setIsLoading] = useState(true)
-    const {totalToPay} = useCartStore()
+    const {totalToPay, shoppingCart } = useCartStore()
     const {actualCurrency} = useProductsStore()
 
     const themeDesign = {
@@ -40,13 +41,21 @@ export default function Stripe() {
         // Fully customizable with appearance API.
         appearance: themeDesign,
         };
-    
+    console.log('carrito', shoppingCart);
 
     return (
         isLoading ? <Loader />:
         <div>
             <Elements stripe={stripePromise} options={options}>
-                <CheckoutForm />
+            <div style={{display:'flex',flexDirection:'row', flexWrap: 'wrap', justifyContent: 'center'}}>  
+                <div>
+                 <CheckoutForm />   
+                </div>
+                <div>
+                <Checkout shoppingCart={shoppingCart} totalToPay={totalToPay} actualCurrency={actualCurrency}/>
+                </div>
+            </div>
+                
             </Elements>
         </div>
         );
