@@ -193,11 +193,10 @@ function SignInSide() {
               noValidate
               onSubmit={handleSubmit}
               sx={{
-                mt: 1,
                 backgroundColor: theme.palette.background_ligth.main,
                 padding: 4,
                 borderRadius: 6,
-                marginTop: 4,
+                mt: 2,
                 width:"100%"
               }}
             >
@@ -217,7 +216,6 @@ function SignInSide() {
               <TextField
                 error={passwordError}
                 onChange={handlePasswordChange}
-                margin="normal"
                 required
                 fullWidth
                 name="password"
@@ -251,15 +249,13 @@ function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{
-                  mt: 3,
-                  mb: 2,
                   backgroundColor: theme.palette.primary.main,
                   color: theme.palette.common.white,
                 }}
               >
                 Sign In
               </Button>
-              <div style={{display: "flex", flexDirection: isDesktop ? "row" : "column", justifyContent:"center", gap:"1rem", marginBottom:"1rem"}}>
+              <div style={{display: "flex", flexDirection: isDesktop ? "row" : "column", justifyContent:"center", gap:"0.5rem"}}>
               <GoogleLogin
                 setEmail={setEmail}
                 setPassword={setPassword}
