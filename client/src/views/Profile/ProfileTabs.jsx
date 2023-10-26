@@ -1,4 +1,4 @@
-import Calendar from '../../components/Calendar/Calendar'
+import Calendar from "../../components/Calendar/Calendar";
 import {
   AppBar,
   Tabs,
@@ -9,72 +9,73 @@ import {
   CardContent,
   Accordion,
   AccordionSummary,
-  AccordionDetails
-} from '@mui/material'
-import Button from '@mui/material/Button'
-import LoadingButton from '@mui/lab/LoadingButton'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useAuthStore } from '../../store/authStore'
-import toast, { Toaster } from 'react-hot-toast'
-import Checkbox from '@mui/material/Checkbox'
-import Tooltip from '@mui/material/Tooltip'
-import { Link } from 'react-router-dom'
-import { ProfileSales } from './ProfileSales'
-import styles from '../../components/AdminView/Css/AdminView.module.css'
+  AccordionDetails,
+} from "@mui/material";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useAuthStore } from "../../store/authStore";
+import toast, { Toaster } from "react-hot-toast";
+import Checkbox from "@mui/material/Checkbox";
+import Tooltip from "@mui/material/Tooltip";
+import { Link } from "react-router-dom";
+import { ProfileSales } from "./ProfileSales";
+import styles from "../../components/AdminView/Css/AdminView.module.css";
+import RoutineForm from "../../components/RoutineForm/RoutineForm";
 
 export function ProfileTabs({ sales }) {
-  const [isLoading, setIsLoading] = useState({})
-  const { user } = useAuthStore()
-  const [userRoutines, setUserRoutines] = useState([])
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
+  const [isLoading, setIsLoading] = useState({});
+  const { user } = useAuthStore();
+  const [userRoutines, setUserRoutines] = useState([]);
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const fetchRoutinesUser = async () => {
     try {
       const { data } = await axios.get(
         `routines/getUserRoutines?email=${user.email}`
-      )
-      setUserRoutines(data)
+      );
+      setUserRoutines(data);
     } catch (error) {
-      setUserRoutines([])
+      setUserRoutines([]);
     }
-  }
+  };
 
   const deleteRoutineUser = async (id) => {
-    setIsLoading((prevLoading) => ({ ...prevLoading, [id]: true }))
+    setIsLoading((prevLoading) => ({ ...prevLoading, [id]: true }));
     try {
       await axios({
-        method: 'DELETE',
-        url: 'routines/deleteSavedRoutine',
+        method: "DELETE",
+        url: "routines/deleteSavedRoutine",
         data: {
           email: user.email,
-          id_routine: id
-        }
-      })
-      await fetchRoutinesUser()
-      toast.success('Routine remove')
+          id_routine: id,
+        },
+      });
+      await fetchRoutinesUser();
+      toast.success("Routine remove");
     } catch (error) {
-      toast.error('Error removing routine')
+      toast.error("Error removing routine");
     } finally {
-      setIsLoading((prevLoading) => ({ ...prevLoading, [id]: false }))
+      setIsLoading((prevLoading) => ({ ...prevLoading, [id]: false }));
     }
-  }
+  };
 
   useEffect(() => {
-    fetchRoutinesUser()
-  }, [])
+    fetchRoutinesUser();
+  }, []);
 
   function TabPanel(props) {
-    const { children, value, index, ...other } = props
+    const { children, value, index, ...other } = props;
 
     useEffect(() => {
       // Redibujar el calendario cuando se muestra la pestaña del calendario
-      const calendar = document.querySelector('.fc')
+      const calendar = document.querySelector(".fc");
       if (calendar && value === 2) {
-        window.dispatchEvent(new Event('resize'))
+        window.dispatchEvent(new Event("resize"));
       }
-    }, [value])
+    }, [value]);
     return (
       <Typography
         component="div"
@@ -82,42 +83,45 @@ export function ProfileTabs({ sales }) {
         hidden={value !== index}
         id={`tabpanel-${index}`}
         aria-labelledby={`tab-${index}`}
-        {...other}>
+        {...other}
+      >
         <Box p={3}>{children}</Box>
       </Typography>
-    )
+    );
   }
 
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
   return (
-    <div style={{ borderLeft: '1px solid #ccc', background: '#111' }}>
+    <div style={{ borderLeft: "1px solid #ccc", background: "#111" }}>
       <AppBar position="static">
-        <Tabs value={value} onChange={handleChange}>
-          <Tab label="Routines" />
-          <Tab label="Sales" />
-          <Tab label="Calendar" />
+        <Tabs value={value} onChange={handleChange} indicatorColor="secondary">
+          <Tab style={{color:"white"}} label="Routines" />
+          <Tab style={{color:"white"}} label="Sales" />
+          <Tab style={{color:"white"}} label="Calendar" />
+          <Tab style={{color:"white"}} label="Add Routine"/>
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <div style={{ margin: '1em' }}>
+        <div style={{ margin: "1em" }}>
           {userRoutines.length === 0 ? (
             <Typography>
-              “You haven’t added any routines yet, friend. Take a look at the{' '}
+              “You haven’t added any routines yet, friend. Take a look at the{" "}
               <Link
-                style={{ textDecoration: 'none', color: 'green' }}
-                to={'/routines'}>
+                style={{ textDecoration: "none", color: "green" }}
+                to={"/routines"}
+              >
                 routines
-              </Link>{' '}
+              </Link>{" "}
               we offer and enjoy your workout!”
             </Typography>
           ) : (
             userRoutines.map((routine) => (
-              <Card style={{ margin: '1em', position: 'relative' }}>
+              <Card style={{ margin: "1em", position: "relative" }}>
                 <CardContent>
                   <Typography variant="h5" component="div">
                     🏋️‍♂️ {routine.name_routine}
@@ -126,14 +130,15 @@ export function ProfileTabs({ sales }) {
                     👤 Author username: {routine.author}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    🏆 Puntuation: {routine.puntuation || 'N/A'}
+                    🏆 Puntuation: {routine.puntuation || "N/A"}
                   </Typography>
                   <div
                     style={{
-                      position: 'absolute',
-                      top: '1rem',
-                      right: '2rem'
-                    }}>
+                      position: "absolute",
+                      top: "1rem",
+                      right: "2rem",
+                    }}
+                  >
                     {isLoading[routine.id_routine] ? (
                       <LoadingButton loading variant="outlined">
                         Submit
@@ -142,7 +147,8 @@ export function ProfileTabs({ sales }) {
                       <Button
                         onClick={() => deleteRoutineUser(routine.id_routine)}
                         variant="outlined"
-                        color="error">
+                        color="error"
+                      >
                         Remove
                       </Button>
                     )}
@@ -188,14 +194,15 @@ export function ProfileTabs({ sales }) {
       <TabPanel value={value} index={1}>
         <Typography>Sales Content</Typography>
 
-        <div className={styles.children}
+        <div
+          className={styles.children}
           style={{
             display: "flex",
             flexDirection: "row",
             overflowY: "scroll",
-            height:'60vh',
+            height: "60vh",
             flexFlow: "wrap",
-            justifyContent: "space-around"
+            justifyContent: "space-around",
           }}
         >
           {sales.map((sale, index) => (
@@ -205,10 +212,13 @@ export function ProfileTabs({ sales }) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Typography>Calendar</Typography>
-        <div style={{maxWidth : '68vw'}}>
+        <div style={{ maxWidth: "68vw" }}>
           <Calendar routines={userRoutines} />
         </div>
       </TabPanel>
+      <TabPanel value={value} index={3}> 
+            <RoutineForm />
+      </TabPanel>
     </div>
-  )
+  );
 }

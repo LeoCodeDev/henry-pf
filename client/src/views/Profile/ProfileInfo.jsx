@@ -72,10 +72,10 @@ function ProfilePage() {
             </Grid>
           </Grid>
         </main>
-        <div>
+        {/* <div>
         <button onClick={openModalRoutine}>Agregar rutina</button>
         <RoutineForm user={user} open={isModalOpenRoutine} onClose={closeModalRoutine} />
-        </div>
+        </div> */}
       </div>
     </>
   );
