@@ -11,7 +11,8 @@ import {
   Button,
   IconButton,
   TextField,
-  Checkbox
+  Checkbox,
+  Typography
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 
@@ -58,7 +59,7 @@ export default function ManageCoupons() {
 
   return (
     <TableContainer component={Paper} style={{ margin: "10px" }}>
-      <h1 style={{ textAlign: "center" }}>Manage Coupons</h1>
+      <Typography sx={{color: '#fff', fontSize: '1.8rem', padding: '0.3rem', textAlign: 'center'}}>Manage Coupons </Typography>
       <Button
         variant="contained"
         sx={{

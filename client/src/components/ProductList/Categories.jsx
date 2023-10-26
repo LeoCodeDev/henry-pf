@@ -47,7 +47,7 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
   })
 );
 
-const types = ['ALL PRODUCTS', 'CLOTHES', 'SUPPLEMENT', 'EQUIPMENT']
+const types = ['ALL PRODUCTS', 'CLOTHE', 'SUPPLEMENT', 'EQUIPMENT']
 
 export default function CustomizedTabs() {
   const [tabValue, setTabValue] = useState(types[0])

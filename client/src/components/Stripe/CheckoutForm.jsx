@@ -129,7 +129,7 @@ const CheckoutForm = () => {
 
   return (
     <Container maxWidth="md" style={{ textAlign: "center" }}>
-      <Paper elevation={3} style={{ padding: "20px", marginTop: "10vh" }}>
+      <Paper elevation={3} style={{ padding: "20px", marginTop: "10vh", backgroundColor: '#1E1E1E' }}>
         <Typography variant="h4" component="h1" color="primary" gutterBottom>
           Payment Form
         </Typography>
@@ -144,7 +144,9 @@ const CheckoutForm = () => {
             }}
           >
             <TextField
+              sx={{ label: { color: '#fff'}, fieldset: { borderColor: '#fff' }, input: { color: '#fff'}}}
               label="Address"
+
               variant="outlined"
               fullWidth
               value={address}
@@ -152,6 +154,20 @@ const CheckoutForm = () => {
             />
 
             <Select
+            sx={{
+                       color: '#fff' ,fieldset: { borderColor: "#fff", color: '#fff' },
+                        padding: "0px",
+                        "& .MuiSelect-select": { color: "#fff" },
+                      }}
+                      inputProps={{
+                        MenuProps: {
+                          PaperProps: {
+                            sx: {
+                              backgroundColor: "#1E1E1E",
+                            },
+                          },
+                        },
+                      }}
               size="small"
               label="Country Code"
               variant="outlined"
@@ -169,6 +185,7 @@ const CheckoutForm = () => {
                         textAlign: "center",
                         alignItems: "center",
                         minWidth: "4vw",
+                        color: '#fff'
                       }}
                     >
                       <img
@@ -187,6 +204,7 @@ const CheckoutForm = () => {
             </Select>
 
             <TextField
+              sx={{ label: { color: '#fff'}, fieldset: { borderColor: '#fff' }, input: { color: '#fff'}}}
               label="Phone Number"
               variant="outlined"
               value={phoneNumber}

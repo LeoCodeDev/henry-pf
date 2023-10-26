@@ -11,8 +11,7 @@ import 'react-pro-sidebar/dist/css/styles.css'
 import CardRoutine from '../CardRoutine.jsx/CardRoutine'
 import { NavBar } from '../NavBar/NavBar'
 import Grid from '@mui/material/Grid'
-import { TrainerProfile } from './TrainerProfile'
-
+import { TrainerProfile } from './TrainerProfile' 
 export default function RoutineList() {
   const [routines, setRoutines] = useState([])
   const [trainers, setTrainers] = useState([])
@@ -94,18 +93,18 @@ export default function RoutineList() {
     <>
       <NavBar />
       <Grid container xs={10} margin="5em" textAlign="center" spacing={2}>
-        <Grid item md={2}>
+        <Grid item md={2} position="relative" >
           <ProSidebar>
-            <SidebarHeader>Trainers</SidebarHeader>
+            <SidebarHeader >Trainers</SidebarHeader>
             <Menu>{trainerCollection}</Menu>
           </ProSidebar>
         </Grid>
         <Grid container xs={10}>
           <Grid item md={12}>
             {selectedTrainer ? (
-              <TrainerProfile selectedTrainer={selectedTrainer} />
+              <TrainerProfile sx={{marginLeft:'10rem'}} selectedTrainer={selectedTrainer} />
             ) : (
-              <Grid container md={8} xs={8}>
+              <Grid sx={{marginLeft: '10rem'}} container md={8} xs={8}>
                 {routines.map((routine) => (
                   <Grid item xs={12} sm={6} md={4} key={routine.id_routine}>
                     <CardRoutine routine={routine} />

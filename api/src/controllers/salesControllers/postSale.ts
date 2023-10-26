@@ -11,6 +11,7 @@ const createSale = async (req:Request, res:Response) => {
     try {
         if(!total || !address || !phone_number || !products || !email)
         {res.status(400).json({ message: "Missing required fields" })}
+        console.log({coupon})
         const user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -23,7 +24,7 @@ const createSale = async (req:Request, res:Response) => {
         });
         await sale.setUser(user);
         if(coupon){
-            const couponFound = await Coupon.findOne({ where: { code: coupon } });
+            const couponFound = await Coupon.findOne({ where: { code: coupon.coupon } });
             if (!couponFound) {
                 return res.status(404).json({ message: "Cupon not found" });
             }
