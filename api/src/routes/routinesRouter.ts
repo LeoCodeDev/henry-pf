@@ -9,6 +9,8 @@ const deleteSavedRoutine = require('../controllers/routinesControllers/deleteSav
 const putUserRoutineDate = require('../controllers/routinesControllers/putRoutine_users_date')
 const putUserRoutineNewDate = require('../controllers/routinesControllers/putRoutine_user_newDate')
 const putUserRoutineDateCheck = require('../controllers/routinesControllers/putRoutine_user_check')
+const putUserRoutineDateMonth = require('../controllers/routinesControllers/putRoutine_user_date_month')
+const deleteDateRoutine = require('../controllers/routinesControllers/deleteDateRoutine')
 
 
 const checkToken = require('../middlewares/authentications')
@@ -26,7 +28,10 @@ routinesRoutes.get('/getUserRoutines', getUserRoutines);
 routinesRoutes.put('/putUserRoutineDate', putUserRoutineDate);
 routinesRoutes.get('/getRoutineById', getRoutineById);
 routinesRoutes.put('/putUserRoutineNewDate', putUserRoutineNewDate);
+routinesRoutes.put('/putUserRoutineDateMonth', putUserRoutineDateMonth);
 routinesRoutes.put('/putUserRoutineCheck', putUserRoutineDateCheck);
+routinesRoutes.put('/deleteDateRoutine', deleteDateRoutine);
+
 
 
 

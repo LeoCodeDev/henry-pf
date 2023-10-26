@@ -1,18 +1,18 @@
 const { Routines_users } = require("../../db_connection");
 import { Request, Response } from "express";
 
-const putUserRoutineDate = async (req: Request, res: Response) => {
-  const { idUser, idRoutine, Date, hour } = req.body;
+const putUserRoutineDateMonth = async (req: Request, res: Response) => {
+  const { idUser, idRoutine, Dates } = req.body;
 
-  if (!idUser || !idRoutine || !Date) {
+  if (!idUser || !idRoutine || !Dates) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const date = {
-    Date: Date,
-    hour: hour,
-    complete: false,
-  };
+  //   const date = {
+  //     Date: Date,
+  //     hour: '12:00:00',
+  //     complete: false,
+  //   };
 
   try {
     const userRoutineDate = await Routines_users.findOne({
@@ -21,13 +21,22 @@ const putUserRoutineDate = async (req: Request, res: Response) => {
     if (!userRoutineDate) {
       return res.status(404).json({ error: "Routine not found" });
     }
-    
+
     let newDates = userRoutineDate.date;
-    if(newDates === null){
-      newDates = [date];
-    }else{
-      newDates.push(date);
-    }
+
+    Dates.forEach((date: { Date: string }) => {
+      const day = {
+            Date: date,
+            hour: '12:00:00',
+            complete: false,
+          };
+      
+      if (newDates === null) {
+        newDates = [day];
+      } else {
+        newDates.push(day);
+      }
+    });
 
     // Usa el método update para actualizar la propiedad date en la base de datos
     await Routines_users.update(
@@ -46,4 +55,4 @@ const putUserRoutineDate = async (req: Request, res: Response) => {
   }
 };
 
-module.exports = putUserRoutineDate;
+module.exports = putUserRoutineDateMonth;
