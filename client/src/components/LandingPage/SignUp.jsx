@@ -14,6 +14,9 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useTheme } from "@mui/material/styles";
 import {
   isValidEmail,
@@ -36,6 +39,7 @@ export default function SignUp({ setOption }) {
   const theme = useTheme();
   const [selectedRole, setSelectedRole] = useState("User");
   const { authenticate } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -61,6 +65,27 @@ export default function SignUp({ setOption }) {
   useEffect(() => {
     if (isDeveloper === "No") setDeveloperType("");
   }, [isDeveloper, developerType]);
+
+  useEffect(() => {
+    findEmail();
+  }, [formData.email]);
+
+  const findEmail = async () => {
+    if (formData.email && !formErrors.email) {
+      try {
+        const { data } = await axios(`/users/getUser?email=${formData.email}`);
+        if (data) {
+          setFormErrors({
+            ...formErrors,
+            email: "repeated",
+          });
+          return;
+        }
+      } catch (error) {
+        return;
+      }
+    }
+  };
 
   const handleIsDeveloperChange = (value) => {
     setIsDeveloper(value);
@@ -177,7 +202,7 @@ export default function SignUp({ setOption }) {
       };
       await axios.post("/users/postUser", dataToSend);
       toast.success("User created successfully!");
-      
+
       const title = 'Thank you for signing up for Healthech!';
       const message = "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
       emailSender(formData.email, title, message);
@@ -190,7 +215,7 @@ export default function SignUp({ setOption }) {
         toast.error("Authentication Error!");
       }
     } catch (error) {
-      toast.error("Authentication Error!");
+      toast.error("Registering Error!");
     }
   };
 
@@ -209,7 +234,7 @@ export default function SignUp({ setOption }) {
         mt: 2,
         display: "flex",
         flexDirection: "column",
-        justifyContent:"center",
+        justifyContent: "center",
         alignItems: "center",
         transform: formVisible ? "translateY(0)" : "translateY(-100%)",
         transition: "transform 0.5s ease-in-out",
@@ -300,7 +325,13 @@ export default function SignUp({ setOption }) {
               label={formErrors.email ? "Error" : "Email Address"}
               name="email"
               autoComplete="email"
-              helperText={formErrors.email ? "Invalid email format" : ""}
+              helperText={
+                formErrors.email === true
+                  ? "Invalid email format"
+                  : formErrors.email === "  "
+                  ? "This email is already registered"
+                  : ""
+              }
               value={formData.email}
             />
           </Grid>
@@ -310,7 +341,7 @@ export default function SignUp({ setOption }) {
               fullWidth
               name="password"
               label={formErrors.password ? "Error" : "Password"}
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="new-password"
               value={formData.password}
@@ -321,8 +352,16 @@ export default function SignUp({ setOption }) {
                   ? "Password must be at least 8 characters, including an uppercase letter and a number"
                   : ""
               }
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
+              }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               id="date"
@@ -374,9 +413,18 @@ export default function SignUp({ setOption }) {
               onChange={handleAvatarChange}
             />
           </Grid>
-          <Grid item xs={12}  >
-            <FormControl component="fieldset" sx={{ display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center", gap:"2vw"}}>
-              <FormLabel id="demo-controlled-radio-buttons-group" >
+          <Grid item xs={12}>
+            <FormControl
+              component="fieldset"
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "2vw",
+              }}
+            >
+              <FormLabel id="demo-controlled-radio-buttons-group">
                 Role
               </FormLabel>
               <RadioGroup
@@ -384,7 +432,7 @@ export default function SignUp({ setOption }) {
                 name="controlled-radio-buttons-group"
                 value={selectedRole}
                 onChange={handleRoleChange}
-                sx={{display:"flex", flexDirection:"row"}}
+                sx={{ display: "flex", flexDirection: "row" }}
               >
                 <FormControlLabel
                   value="User"
@@ -401,12 +449,7 @@ export default function SignUp({ setOption }) {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mb: 2 }}>
               Sign Up
             </Button>
           </Grid>
