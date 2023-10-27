@@ -5,7 +5,7 @@ const putUserRoutineNewDate = async (req: Request, res: Response) => {
   const { idUser, idRoutine, originDate, originHour, newDate, newHour } = req.body;
 
   
-  if (!idUser || !idRoutine || !originDate || !originHour || !newDate || !newHour) {
+  if (!idUser || !idRoutine || !originDate ||  !newDate ) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
@@ -28,7 +28,8 @@ const putUserRoutineNewDate = async (req: Request, res: Response) => {
 
     // Actualiza la fecha y la hora en el objeto local
     dateToUpdate.Date = newDate;
-    dateToUpdate.hour = newHour;
+    if(newHour)dateToUpdate.hour = newHour;
+    
 
     // Usa el método update para actualizar la propiedad date en la base de datos
     await Routines_users.update(
