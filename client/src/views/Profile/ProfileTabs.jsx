@@ -155,9 +155,6 @@ export function ProfileTabs({ sales }) {
                         Remove
                       </Button>
                     )}
-                    <Tooltip title="Mark as done" placement="top" followCursor>
-                      <Checkbox {...label} color="success" />
-                    </Tooltip>
                   </div>
                   <Typography variant="body2" color="text.secondary">
                     🏋️‍♂️ Exercises: {routine?.Exercises.length}
@@ -193,7 +190,6 @@ export function ProfileTabs({ sales }) {
           )}
         </div>
       </TabPanel>
-      <Toaster position="top-center" reverseOrder={false} />
       <TabPanel value={value} index={1}>
         <Typography>Sales Content</Typography>
 
@@ -222,6 +218,7 @@ export function ProfileTabs({ sales }) {
       <TabPanel value={value} index={3}> 
             <RoutineForm />
       </TabPanel>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }
