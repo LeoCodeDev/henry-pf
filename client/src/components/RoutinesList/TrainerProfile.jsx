@@ -1,54 +1,61 @@
-import { useState, useEffect } from 'react'
-import { Grid } from '@mui/material'
-import CardRoutine from '../CardRoutine.jsx/CardRoutine'
-import axios from 'axios'
+import { useState, useEffect } from "react";
+import { Grid, Typography, Button } from "@mui/material";
+import CardRoutine from "../CardRoutine.jsx/CardRoutine";
+import axios from "axios";
+import theme from "../../../theme";
 
 const TrainerProfile = ({ selectedTrainer }) => {
-  const [routines, setRoutines] = useState([])
-  const [reviews, setReviews] = useState([])
+  const [routines, setRoutines] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     try {
       (async () => {
         const { data } = await axios(
           `/users/getTrainerRoutines?trainer_id=${selectedTrainer.id_user}`
-        )
-        setRoutines(data)
-      })()
+        );
+        setRoutines(data);
+      })();
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }, [selectedTrainer])
+  }, [selectedTrainer]);
 
   useEffect(() => {
     try {
       (async () => {
         const { data } = await axios(
           `/users/getTrainerReview?trainer_id=${selectedTrainer.id_user}`
-        )
-        setReviews(data)
-      })()
+        );
+        setReviews(data);
+      })();
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }, [selectedTrainer])
-  
-  console.log(reviews);
+  }, [selectedTrainer]);
+
   return (
-    <Grid sx={{marginLeft:'10rem'}} item xs={12} md={8}>
-      <div style={{ textAlign: 'center', marginLeft:'10rem' }}>
-        <h3>{selectedTrainer.userName}</h3>
+    <Grid sx={{ marginLeft: "10rem" }} item xs={12} md={8}>
+      <div style={{ textAlign: "center", marginLeft: "10rem", marginTop:"10rem" }}>
+        <Typography variant="h4">{selectedTrainer.userName}</Typography>
         <img
           src={selectedTrainer.avatar}
           alt={`${selectedTrainer.username} profile picture`}
-          style={{ width: '100px', height: '100px' }}
+          style={{ width: "10rem", height: "10rem", borderRadius:"8px" }}
         />
-        <div style={{ textAlign: 'left' }}>
-          <p>Puntuación: {`⭐ ${selectedTrainer.avgRating.toFixed(1)}`}</p>
+        <div style={{ textAlign: "left" }}>
+          <Typography>Puntuation: {`⭐ ${selectedTrainer.avgRating.toFixed(1)}`}</Typography>
           <div>
-            <button>Suscribe</button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.common.white,
+              }}
+            >
+              Suscribe
+            </Button>
           </div>
-          {/* Benja aqui puedes poner los comentarios en acordion? */}
         </div>
       </div>
       <Grid container spacing={2}>
@@ -59,7 +66,7 @@ const TrainerProfile = ({ selectedTrainer }) => {
         ))}
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export { TrainerProfile }
+export { TrainerProfile };
