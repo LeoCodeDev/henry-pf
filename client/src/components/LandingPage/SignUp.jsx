@@ -239,32 +239,29 @@ export default function SignUp({ setOption }) {
       sx={{
         mx: 4,
         mt: 2,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        transform: formVisible ? "translateY(0)" : "translateY(-100%)",
-        transition: "transform 0.5s ease-in-out",
-      }}
-    >
-      <div style={{ display: "flex", padding: "1rem" }}>
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        transform: formVisible ? 'translateY(0)' : 'translateY(-100%)',
+        transition: 'transform 0.5s ease-in-out'
+      }}>
+      <div style={{ display: 'flex', padding: '1rem' }}>
         <Avatar
           sx={{
             bgcolor: theme.palette.primary.main,
             mr: 2,
             width: 30,
-            height: 30,
-          }}
-        ></Avatar>
+            height: 30
+          }}></Avatar>
         <Typography
           component="h5"
           variant="h5"
           sx={{
-            color: "white",
+            color: 'white',
             fontFamily: theme.typography.fontFamily,
-            fontSize: theme.typography.h3,
-          }}
-        >
+            fontSize: theme.typography.h3
+          }}>
           Sign up
         </Typography>
       </div>
@@ -275,9 +272,8 @@ export default function SignUp({ setOption }) {
         sx={{
           backgroundColor: theme.palette.background_ligth?.main,
           padding: 4,
-          borderRadius: 6,
-        }}
-      >
+          borderRadius: 6
+        }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -288,16 +284,16 @@ export default function SignUp({ setOption }) {
               fullWidth
               id={
                 formErrors.firstName
-                  ? "outlined-error-helper-text"
-                  : "firstName"
+                  ? 'outlined-error-helper-text'
+                  : 'firstName'
               }
-              label={formErrors.firstName ? "Error" : "First Name"}
+              label={formErrors.firstName ? 'Error' : 'First Name'}
               value={formData.firstName}
               onChange={handleChange}
               helperText={
                 formErrors.firstName
-                  ? "Must be at least two characters without numbers"
-                  : ""
+                  ? 'Must be at least two characters without numbers'
+                  : ''
               }
             />
           </Grid>
@@ -306,9 +302,9 @@ export default function SignUp({ setOption }) {
               required
               fullWidth
               id={
-                formErrors.lastName ? "outlined-error-helper-text" : "lastName"
+                formErrors.lastName ? 'outlined-error-helper-text' : 'lastName'
               }
-              label={formErrors.lastName ? "Error" : "Last Name"}
+              label={formErrors.lastName ? 'Error' : 'Last Name'}
               name="lastName"
               autoComplete="family-name"
               value={formData.lastName}
@@ -316,8 +312,8 @@ export default function SignUp({ setOption }) {
               error={formErrors.lastName}
               helperText={
                 formErrors.lastName
-                  ? "Must be at least two characters without numbers"
-                  : ""
+                  ? 'Must be at least two characters without numbers'
+                  : ''
               }
             />
           </Grid>
@@ -328,16 +324,21 @@ export default function SignUp({ setOption }) {
               margin="normal"
               required
               fullWidth
+
               id={(formErrors.email || formErrors.repeatedEmail)? "outlined-error-helper-text" : "email"}
               label={(formErrors.email || formErrors.repeatedEmail)? "Error" : "Email Address"}
+
+
               name="email"
               autoComplete="email"
               helperText={
                 formErrors.email === true
+
                   ? "Invalid email format"
                   : formErrors.repeatedEmail === true
                   ? "Please change your email"
                   : ""
+
               }
               value={formData.email}
             />
@@ -347,8 +348,8 @@ export default function SignUp({ setOption }) {
               required
               fullWidth
               name="password"
-              label={formErrors.password ? "Error" : "Password"}
-              type={showPassword ? "text" : "password"}
+              label={formErrors.password ? 'Error' : 'Password'}
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="new-password"
               value={formData.password}
@@ -356,15 +357,15 @@ export default function SignUp({ setOption }) {
               error={formErrors.password}
               helperText={
                 formErrors.password
-                  ? "Password must be at least 8 characters, including an uppercase letter and a number"
-                  : ""
+                  ? 'Password must be at least 8 characters, including an uppercase letter and a number'
+                  : ''
               }
               InputProps={{
                 endAdornment: (
                   <IconButton onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
-                ),
+                )
               }}
             />
           </Grid>
@@ -378,7 +379,7 @@ export default function SignUp({ setOption }) {
               value={formData.birthday}
               onChange={handleChange}
               InputLabelProps={{
-                shrink: true,
+                shrink: true
               }}
             />
           </Grid>
@@ -395,24 +396,23 @@ export default function SignUp({ setOption }) {
             item
             xs={12}
             style={{
-              display: "flex",
-              flexDirection: isDesktop ? "row" : "column",
-              justifyContent: "space-between",
-            }}
-          >
+              display: 'flex',
+              flexDirection: isDesktop ? 'row' : 'column',
+              justifyContent: 'space-between'
+            }}>
             <TextField
-              style={{ width: "auto" }}
+              style={{ width: 'auto' }}
               error={formErrors.nickName}
               name="nickName"
               required
               fullWidth
               id={
-                formErrors.nickName ? "outlined-error-helper-text" : "nickName"
+                formErrors.nickName ? 'outlined-error-helper-text' : 'nickName'
               }
-              label={formErrors.nickName ? "Error" : "Nick Name"}
+              label={formErrors.nickName ? 'Error' : 'Nick Name'}
               value={formData.nickName}
               onChange={handleChange}
-              helperText={formErrors.nickName ? "Invalid nickName" : ""}
+              helperText={formErrors.nickName ? 'Invalid nickName' : ''}
             />
             <AvatarSelection
               isDesktop={isDesktop}
@@ -424,13 +424,12 @@ export default function SignUp({ setOption }) {
             <FormControl
               component="fieldset"
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "2vw",
-              }}
-            >
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '2vw'
+              }}>
               <FormLabel id="demo-controlled-radio-buttons-group">
                 Role
               </FormLabel>
@@ -439,8 +438,7 @@ export default function SignUp({ setOption }) {
                 name="controlled-radio-buttons-group"
                 value={selectedRole}
                 onChange={handleRoleChange}
-                sx={{ display: "flex", flexDirection: "row" }}
-              >
+                sx={{ display: 'flex', flexDirection: 'row' }}>
                 <FormControlLabel
                   value="User"
                   control={<Radio />}
@@ -462,14 +460,13 @@ export default function SignUp({ setOption }) {
           </Grid>
 
           <Link
-            onClick={() => setOption("signin")}
-            sx={{ cursor: "pointer", ml: "auto" }}
-            variant="body2"
-          >
-            {"Already have an account? Sign in"}
+            onClick={() => setOption('signin')}
+            sx={{ cursor: 'pointer', ml: 'auto' }}
+            variant="body2">
+            {'Already have an account? Sign in'}
           </Link>
         </Grid>
       </Box>
     </Box>
-  );
+  )
 }
