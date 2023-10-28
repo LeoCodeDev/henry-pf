@@ -53,7 +53,7 @@ const userLogin = async (req: Request, res: Response) => {
             refreshToken: refreshToken,
           })
         } else {
-          res.status(401).json({ message: 'Wrong password' })
+          res.status(401).json({ message: 'Email/Password not valid' })
         }
       } else {
         res.status(404).json({ message: 'User not found' })

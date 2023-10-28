@@ -10,12 +10,12 @@ const postUser= async (req: CustomRequest, res: Response) => {
     const ip = req.clientIp
 
      const ip_location = await geoLocation(ip)
-     console.log({ip_location , aviso: 'este es un avios de donde esta el ip', ip})
+     
     try {
         const { username, first_name, last_name, password, avatar, email, birth_date, role, team} = req.body;
         if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && team!== "" && role!== "") {
         const existingUser = await User.findOne({ where: { username } });
-        if (existingUser) res.status(400).json({ message: 'Username is already in use' });
+        if (existingUser) return res.status(400).json({ message: 'Username is already in use' });
         const [user, created] = await User.findOrCreate({
             where: { email },
             defaults: {
@@ -37,16 +37,16 @@ const postUser= async (req: CustomRequest, res: Response) => {
             if(associatedTeam){
                 await user.setTeam(associatedTeam)
             }
-            res.status(200).json({ message: 'User created successfully', });
+            return res.status(200).json({ message: 'User created successfully', });
         } else {
-            res.status(200).json({ message: 'Email already registered'});
+            return res.status(200).json({ message: 'Email already registered'});
         }
     } else {
-        res.status(400).json({ message: 'Missing data' });
+       return res.status(400).json({ message: 'Missing data' });
     }
     }
     catch (error:any) {
-        res.status(500).json({error:error.message});
+        return res.status(500).json({error:error.message});
     }
 }
 

@@ -56,6 +56,7 @@ export default function SignUp({ setOption }) {
     password: false,
     birthday: false,
     nickName: false,
+    repeatedEmail: false
   });
 
   const [isDeveloper, setIsDeveloper] = useState("Yes");
@@ -66,21 +67,24 @@ export default function SignUp({ setOption }) {
     if (isDeveloper === "No") setDeveloperType("");
   }, [isDeveloper, developerType]);
 
-  useEffect(() => {
-    findEmail();
-  }, [formData.email]);
+
 
   const findEmail = async () => {
-    if (formData.email && !formErrors.email) {
+    if (formData.email) {
       try {
         const { data } = await axios(`/users/getUser?email=${formData.email}`);
         if (data) {
           setFormErrors({
             ...formErrors,
-            email: "repeated",
+            repeatedEmail: true,
           });
-          return;
+          return true;
         }
+        setFormErrors({
+          ...formErrors,
+          repeatedEmail: false,
+        })
+        return false
       } catch (error) {
         return;
       }
@@ -200,6 +204,9 @@ export default function SignUp({ setOption }) {
         role: selectedRole,
         team: developerType,
       };
+
+      const userRepeated = await findEmail()
+      if (userRepeated) return toast.error("Email is already registered.")
       await axios.post("/users/postUser", dataToSend);
       toast.success("User created successfully!");
 
@@ -212,10 +219,10 @@ export default function SignUp({ setOption }) {
           password: formData.password,
         });
       } catch (error) {
-        toast.error("Authentication Error!");
+        toast.error(error.response.data.message);
       }
     } catch (error) {
-      toast.error("Registering Error!");
+      toast.error("Registering Error!\n"+error.response.data.message);
     }
   };
 
@@ -312,21 +319,26 @@ export default function SignUp({ setOption }) {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              error={formErrors.email}
+              error={formErrors.email || formErrors.repeatedEmail}
               onChange={handleChange}
               margin="normal"
               required
               fullWidth
-              id={formErrors.email ? 'outlined-error-helper-text' : 'email'}
-              label={formErrors.email ? 'Error' : 'Email Address'}
+
+              id={(formErrors.email || formErrors.repeatedEmail)? "outlined-error-helper-text" : "email"}
+              label={(formErrors.email || formErrors.repeatedEmail)? "Error" : "Email Address"}
+
+
               name="email"
               autoComplete="email"
               helperText={
                 formErrors.email === true
-                  ? 'Invalid email format'
-                  : formErrors.email === 'repeated'
-                  ? 'This email is already registered'
-                  : ''
+
+                  ? "Invalid email format"
+                  : formErrors.repeatedEmail === true
+                  ? "Please change your email"
+                  : ""
+
               }
               value={formData.email}
             />
