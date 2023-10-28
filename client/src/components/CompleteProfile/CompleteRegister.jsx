@@ -11,7 +11,6 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
-  Link,
 } from "@mui/material";
 import {
   isValidPassword,
@@ -26,17 +25,20 @@ import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import theme from "../../../theme";
 import emailSender from "../SendMail/SendMail";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function CompleteRegister({
   email,
   firstName,
   lastName,
   profilePic,
-  setPassword
+  setPassword,
 }) {
   const [selectedRole, setSelectedRole] = useState("User");
   const { authenticate } = useAuthStore();
-
+  const [showPassword, setShowPassword] = useState(false);
   const [formDataG, setformDataG] = useState({
     email: email,
     firstName: firstName,
@@ -66,10 +68,6 @@ export default function CompleteRegister({
   const handleDeveloperTypeChange = (value) => {
     setDeveloperType(value);
   };
-
-  // const handleAvatarChange = (value) => {
-  //   setprofilePic(value)
-  // }
 
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
@@ -116,7 +114,7 @@ export default function CompleteRegister({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     if (!isValidFirstName(formDataG.firstName)) {
       setFormErrors({ ...formErrors, firstName: true });
       return;
@@ -140,16 +138,12 @@ export default function CompleteRegister({
       return toast.error("Choose a team of developers");
     }
 
-    // if (!profilePic) {
-    //   return toast.error('Choose an avatar')
-    // }
-
     if (!isValidNickName(formDataG.nickName)) {
       setFormErrors({ ...formErrors, nickName: true });
       return toast.error("Choose a Nick valid");
     }
 
-    setPassword(formDataG.password)
+    setPassword(formDataG.password);
 
     const dataToSend = {
       username: formDataG.nickName,
@@ -165,8 +159,9 @@ export default function CompleteRegister({
 
     try {
       await axios.post("/users/postUser", dataToSend);
-      const title = 'Thank you for signing up for Healthech!';
-      const message = "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
+      const title = "Thank you for signing up for Healthech!";
+      const message =
+        "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
       emailSender(email, title, message);
       toast.success("User created successfully!");
       setRegistered(true);
@@ -188,206 +183,203 @@ export default function CompleteRegister({
 
   return (
     <div>
-    <Grid
-      sx={{
-        display: "flex",
-        padding: 8,
-        width: "100%",
-      }}
-    >
-      <Box
-        component="form"
-        noValidate
-        onSubmit={handleSubmit}
+      <Grid
         sx={{
-          backgroundColor: theme.palette.background_ligth.main,
-          width: "50vw",
+          display: "flex",
+          padding: 8,
+          width: "100%",
         }}
       >
-        <Typography
-          variant="h4"
-          component="h4"
-          sx={{ color: theme.palette.primary.main }}
-          style={{
-            fontSize: isDesktop ? "24px" : "18px",
-            textAlign: "center",
-            marginTop: "-3vh",
-            marginBottom: "-1vh",
-            padding: "1vh",
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{
+            backgroundColor: theme.palette.background_ligth.main,
+            width: "50vw",
           }}
         >
-          Please, complete your profile:
-        </Typography>
-        <Grid item xs={12}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="email"
-            value={email}
-            disabled={true}
-            autoComplete="off"
-            sx={{
-              cursor: "not-allowed",
-              marginBlock: "2vh",
-            }}
-          />
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              error={formErrors.firstName}
-              autoComplete="given-name"
-              name="firstName"
-              required
-              fullWidth
-              id={
-                formErrors.firstName
-                  ? "outlined-error-helper-text"
-                  : "firstName"
-              }
-              label={formErrors.firstName ? "Error" : "First Name"}
-              value={formDataG.firstName}
-              onChange={handleChange}
-              helperText={formErrors.firstName ? "Invalid first name" : ""}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
-              id={
-                formErrors.lastName ? "outlined-error-helper-text" : "lastName"
-              }
-              label={formErrors.lastName ? "Error" : "Last Name"}
-              name="lastName"
-              autoComplete="family-name"
-              value={formDataG.lastName}
-              onChange={handleChange}
-              error={formErrors.lastName}
-              helperText={formErrors.lastName ? "Invalid last name" : ""}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
-              name="password"
-              label={formErrors.password ? "Error" : "Password"}
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              value={formDataG.password}
-              onChange={handleChange}
-              error={formErrors.password}
-              helperText={
-                formErrors.password
-                  ? "Password must be at least 8 characters, including an uppercase letter and a number"
-                  : ""
-              }
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              style={{ width: "auto" }}
-              error={formErrors.nickName}
-              name="nickName"
-              required
-              fullWidth
-              id={
-                formErrors.nickName ? "outlined-error-helper-text" : "nickName"
-              }
-              label={formErrors.nickName ? "Error" : "Nick Name"}
-              value={formDataG.nickName}
-              onChange={handleChange}
-              helperText={formErrors.nickName ? "Invalid nickName" : ""}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            style={{ display: "flex", justifyContent: "space-around" }}
+          <Typography
+            variant="h5"
+            color="primary"
           >
-            <TextField
-              id="date"
-              label="Birthday"
-              type="date"
-              name="birthday"
-              value={formDataG.birthday}
-              onChange={handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <SelectLabels
-              isDesktop={isDesktop}
-              isDeveloper={isDeveloper}
-              developerType={developerType}
-              onIsDeveloperChange={handleIsDeveloperChange}
-              onDeveloperTypeChange={handleDeveloperTypeChange}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            style={{
-              display: "flex",
-              flexDirection: "row-reverse",
-              justifyContent: "center",
-              gap: "20vh",
-            }}
-          >
-            <img
-              src={profilePic}
-              style={{
-                borderRadius: "50%",
-                border: `2px groove ${theme.palette.primary.main}`,
-              }}
-            ></img>
-
-            <FormControl component="fieldset">
-              <FormLabel id="demo-controlled-radio-buttons-group">
-                Role
-              </FormLabel>
-              <RadioGroup
-                aria-labelledby="demo-controlled-radio-buttons-group"
-                name="controlled-radio-buttons-group"
-                value={selectedRole}
-                onChange={handleRoleChange}
-                style={{ display: "flex", flexDirection: "row" }}
-              >
-                <FormControlLabel
-                  value="User"
-                  control={<Radio />}
-                  label="User"
-                />
-                <FormControlLabel
-                  value="Trainer"
-                  disabled={true}
-                  control={<Radio />}
-                  label="Trainer"
-                  type="string"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
+            Please, complete your profile:
+          </Typography>
           <Grid item xs={12}>
-            <Button
-              type="submit"
+            <TextField
               fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Complete Profile
-            </Button>
+              name="email"
+              value={email}
+              disabled={true}
+            />
           </Grid>
-          <Link href="/" variant="body2" style={{ marginLeft: "auto" }}>
-            Already have an account? Sign in
-          </Link>
-        </Grid>
-      </Box>
-    </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                error={formErrors.firstName}
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                id={
+                  formErrors.firstName
+                    ? "outlined-error-helper-text"
+                    : "firstName"
+                }
+                label={formErrors.firstName ? "Error" : "First Name"}
+                value={formDataG.firstName}
+                onChange={handleChange}
+                helperText={formErrors.firstName ? "Invalid first name" : ""}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id={
+                  formErrors.lastName
+                    ? "outlined-error-helper-text"
+                    : "lastName"
+                }
+                label={formErrors.lastName ? "Error" : "Last Name"}
+                name="lastName"
+                autoComplete="family-name"
+                value={formDataG.lastName}
+                onChange={handleChange}
+                error={formErrors.lastName}
+                helperText={formErrors.lastName ? "Invalid last name" : ""}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label={formErrors.password ? "Error" : "Password"}
+                type={showPassword ? "text" : "password"} 
+                id="password"
+                autoComplete="new-password"
+                value={formDataG.password}
+                onChange={handleChange}
+                error={formErrors.password}
+                helperText={
+                  formErrors.password
+                    ? "Password must be at least 8 characters, including an uppercase letter and a number"
+                    : ""
+                }
+                InputProps={{
+                  endAdornment: (
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  ),
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                error={formErrors.nickName}
+                name="nickName"
+                required
+                fullWidth
+                id={
+                  formErrors.nickName
+                    ? "outlined-error-helper-text"
+                    : "nickName"
+                }
+                label={formErrors.nickName ? "Error" : "Nick Name"}
+                value={formDataG.nickName}
+                onChange={handleChange}
+                helperText={formErrors.nickName ? "Invalid nickName" : ""}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              style={{ display: "flex", justifyContent: "space-around" }}
+            >
+              <TextField
+                id="date"
+                label="Birthday"
+                type="date"
+                name="birthday"
+                value={formDataG.birthday}
+                onChange={handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <SelectLabels
+                isDesktop={isDesktop}
+                isDeveloper={isDeveloper}
+                developerType={developerType}
+                onIsDeveloperChange={handleIsDeveloperChange}
+                onDeveloperTypeChange={handleDeveloperTypeChange}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{
+                display: "flex",
+                flexDirection: "row-reverse",
+                justifyContent: "center",
+                gap: "20vh",
+              }}
+            >
+              <img
+                src={profilePic}
+                style={{
+                  borderRadius: "50%",
+                  border: `2px groove ${theme.palette.primary.main}`,
+                }}
+              ></img>
+
+              <FormControl component="fieldset">
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  Role
+                </FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-controlled-radio-buttons-group"
+                  name="controlled-radio-buttons-group"
+                  value={selectedRole}
+                  onChange={handleRoleChange}
+                  style={{ display: "flex", flexDirection: "row" }}
+                >
+                  <FormControlLabel
+                    value="User"
+                    control={<Radio />}
+                    label="User"
+                  />
+                  <FormControlLabel
+                    value="Trainer"
+                    disabled={true}
+                    control={<Radio />}
+                    label="Trainer"
+                    type="string"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mb: -4 }}
+              >
+                Complete Profile
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Grid>
     </div>
   );
 }

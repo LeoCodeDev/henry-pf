@@ -17,12 +17,8 @@ import { ThemeProvider } from "@mui/system";
 import theme from "../../../theme";
 import { useAuthStore } from "../../store/authStore";
 import guest from "../../assets/images/avatars/avatar10.jpg";
-
-// Firebase
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
-// Importa react-hot-toast
 import toast, { Toaster } from "react-hot-toast";
 
 const firebaseConfig = {
@@ -56,11 +52,10 @@ export default function Profile({onlyEdit}) {
   let downloadURL = "";
 
   const handleTeamChange = (event) => {
-    setSelectedTeam(event.target.value); // Actualiza el estado con el equipo seleccionado
+    setSelectedTeam(event.target.value); 
     setHasChanges(true); // bandera para saber que si hubo cambio
   };
 
-  console.log(onlyEdit);
   useEffect(() => {
     handleGetSales();
     axios
@@ -264,7 +259,6 @@ export default function Profile({onlyEdit}) {
                   value={formData.first_name}
                   onChange={handleInputChange}
                   disabled={!isEditing}
-                  sx={{ marginBottom: "16px" }}
                 />
                 <TextField
                   type="text"
@@ -275,7 +269,6 @@ export default function Profile({onlyEdit}) {
                   value={formData.last_name}
                   onChange={handleInputChange}
                   disabled={!isEditing}
-                  sx={{ marginBottom: "16px" }}
                 />
                 <TextField
                   type="text"
@@ -286,7 +279,6 @@ export default function Profile({onlyEdit}) {
                   value={formData.username}
                   onChange={handleInputChange}
                   disabled={!isEditing}
-                  sx={{ marginBottom: "16px" }}
                 />
                 <Select
                   label="Team"
@@ -295,7 +287,6 @@ export default function Profile({onlyEdit}) {
                   onChange={handleTeamChange}
                   size="small"
                   fullWidth
-                  sx={{ marginBottom: "16px" }}
                   disabled={!isEditing}
                 >
                   {teams?.map((team, key) => (
@@ -349,7 +340,6 @@ export default function Profile({onlyEdit}) {
                         cursor: "pointer",
                         borderRadius: "4px",
                         fontSize: "12px",
-                        marginBottom: "1rem",
                       }}
                       disabled={!isEditing}
                     >
