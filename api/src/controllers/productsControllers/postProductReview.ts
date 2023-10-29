@@ -14,7 +14,6 @@ const postProductReview = async (req: Request, res: Response) => {
         });
 
         if (existingReview) {
-            // Si existe una revisión, debería preguntarme si esta tiene borrado lógico
             if (!existingReview.active) {
                 existingReview.comment = comment;
                 existingReview.rating = rating;
@@ -23,13 +22,12 @@ const postProductReview = async (req: Request, res: Response) => {
                 
                 await ratingService.updateProductRating(productId);
 
-                return res.status(200).json({ message: "Reseña actualizada exitosamente", existingReview });
+                return res.status(200).json({ message: "Review updated succesfully", existingReview });
             } else {
-                return res.status(400).json({ message: "No puedes actualizar una revisión inactiva." });
+                return res.status(400).json({ message: "Review is not active" });
             }
         }
 
-        // Si no existe una revisión previa, crea una nueva revisión
         const newReview = await Rating.create({
             comment,
             rating,
@@ -37,11 +35,8 @@ const postProductReview = async (req: Request, res: Response) => {
             productId,
             active: true,
         });
-
-        // Después de crear la reseña, llama a la función para actualizar el rating del producto
         await ratingService.updateProductRating(productId);
-
-        return res.status(201).json({ message: "Reseña publicada exitosamente", newReview });
+        return res.status(201).json({ message: "Review posted succesfully", newReview });
     } catch (error:any) {
         return res.status(500).json({ error: error.message });
     }

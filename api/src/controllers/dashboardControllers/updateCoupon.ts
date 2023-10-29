@@ -25,7 +25,7 @@ const updateCoupon = async (req: Request, res: Response) => {
         await coupon.save();
         return res.json({ message: 'Coupon updated successfully' });
     } catch (error:any) {
-        return res.status(500).json(error.message);
+        return res.status(500).json({error:error.message});
     }
 }
 

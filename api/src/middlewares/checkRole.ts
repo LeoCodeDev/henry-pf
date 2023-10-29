@@ -16,29 +16,21 @@ const checkRole =
 
       const verifysing = verifyToken(accessToken, trueAccesTokend)
       if (!verifysing) {
-        res.status(409)
-        res.send({ error: 'Token invalid', lugar: 'checkRole' })
+        return res.status(409).send({ error: 'Token invalid', lugar: 'checkRole' })
       } else {
         const user = await getDetail(verifysing.id_user)
         if (user) {
           if (Array.isArray(roles) && roles.includes(user.role)) {
-            next()
+            return next()
           } else {
-            // console.log(user)
-            // console.log(user.role)
-
-            res.status(401)
-            res.send({ error: 'No tienes permisos' })
+            return res.status(401).send({ error: 'You are not allowed to view this content' })
           }
         } else {
-          res.status(401)
-          res.send({ error: 'No tienes permisos' })
+          return res.status(401).send({ error: 'You do not have permissions' })
         }
       }
-    } catch (e) {
-      console.log('___Error auth___')
-      res.status(409)
-      res.send({ error: 'Algo sucedio en el middleware authRol' })
+    } catch (error:any) {
+      return res.status(500).send({ error: error.message })
     }
   }
 

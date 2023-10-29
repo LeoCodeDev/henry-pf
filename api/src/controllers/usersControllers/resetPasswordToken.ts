@@ -3,6 +3,7 @@ import {Request, Response} from 'express'
 const nodemailer = require('nodemailer');
 const {generateResetToken}= require ('../JWT')
 const { PASS_MAIL, DIR_MAIL } = process.env;
+const domain = process.env.DOMAIN || 'localhost';
 
 const resetPassword= async (req:Request, res:Response) => {
 const { email } = req.query;
@@ -30,10 +31,10 @@ const { email } = req.query;
         }
     try {
         await transporter.sendMail(mailOptions);
-        res.cookie('resetToken', resetToken, { httpOnly: true, maxAge: 3600000 })
-        res.status(200).json({ message: 'Mail sent successfully' });
+        res.cookie('resetToken', resetToken, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true, domain:domain })
+        return res.status(200).json({ message: 'Mail sent successfully' });
         } catch (error:any) {
-        res.status(500).json({error:error.message});
+        return res.status(500).json({error:error.message});
         }
 }
 

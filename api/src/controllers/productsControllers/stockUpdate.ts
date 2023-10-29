@@ -24,9 +24,8 @@ const updateProductStock = async (req:Request, res:Response) => {
             }
         }
         return res.status(200).json({ message: 'Stock updated successfully' });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error' });
+    } catch (error:any) {
+        return res.status(500).json({ message:error.message });
     }
 };
 
