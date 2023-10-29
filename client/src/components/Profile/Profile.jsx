@@ -19,7 +19,6 @@ import { useAuthStore } from "../../store/authStore";
 import guest from "../../assets/images/avatars/avatar10.jpg";
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import toast, { Toaster } from "react-hot-toast";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -414,7 +413,6 @@ export default function Profile({onlyEdit}) {
           }
         </Grid>
       </Container>
-      <Toaster position="top-center" reverseOrder={false} />
     </ThemeProvider>
   );
 }
