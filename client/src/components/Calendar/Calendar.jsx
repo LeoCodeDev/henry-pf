@@ -109,6 +109,7 @@ export default function Calendar({ routines }) {
                   hourOnly: d.hour,
                   description: name_routine,
                   complete: d.complete,
+                  color : d.complete ? "green" : "red"
                 }))
               : []
           );
@@ -243,6 +244,8 @@ export default function Calendar({ routines }) {
       Date: selectEvent.dateOnly,
       hour: selectEvent.hourOnly,
     });
+    setSend(send ? false : true);
+
   };
   const secondSubmit = async (days, routine) => {
     console.log({ aviso: "estoy entrando" });
@@ -261,6 +264,7 @@ export default function Calendar({ routines }) {
       idUser: id_user,
       idRoutine: id_routine,
       Dates: selectedDates,
+      Hour: Hour ? Hour : null
     });
     setSend(send ? false : true);
     setDays({
@@ -341,7 +345,7 @@ export default function Calendar({ routines }) {
                   </AccordionSummary>
                   <AccordionDetails>
                     <FormControl>
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" >
                       schedule routine in a singel day:{" "}
                     </Typography>
                       <TextField
@@ -364,16 +368,30 @@ export default function Calendar({ routines }) {
                         }}
                         onChange={(e) => setFecha(e.target.value)}
                       />
-                      <Typography>or recurring in the month</Typography>
+                      <Typography
+                      style={{marginTop: "1rem"}}>or recurring in the month</Typography>
+                      <TextField
+                        label="Hora 24H"
+                        type="time"
+                        value={Hour}
+                        // style={{ marginTop: '1rem' }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onChange={(e) => setHour(`${e.target.value}:00`)}
+                      />
                       <div
                         style={{
                           display: "grid",
+                          gridTemplateColumns: "repeat(3, max-content)", // 3 columnas, ajusta según tu preferencia
                           gridColumn: "3",
                           gridRow: "3",
                         }}
                       >
-                        {Object.keys(Days).map((propiedad) => (
+                        { 
+                        Object.keys(Days).map((propiedad) => (
                           <ToggleButton
+                          style={{width : "maxcontent"}}
                             key={propiedad}
                             value="check"
                             selected={Days[propiedad]}
