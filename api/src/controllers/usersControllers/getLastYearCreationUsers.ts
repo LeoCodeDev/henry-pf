@@ -40,10 +40,9 @@ const lastYearSales = async (_req: Request, res: Response) => {
       usersCount[months[month]] = total;      
     });
 
-    res.json(usersCount);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Hubo un error al obtener las ventas de los últimos 12 meses' });
+    res.status(200).json(usersCount);
+  } catch (error:any) {
+    res.status(500).json({ error: error.message });
   }
 };
 

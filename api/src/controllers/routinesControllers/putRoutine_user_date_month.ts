@@ -8,12 +8,6 @@ const putUserRoutineDateMonth = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  //   const date = {
-  //     Date: Date,
-  //     hour: '12:00:00',
-  //     complete: false,
-  //   };
-
   try {
     const userRoutineDate = await Routines_users.findOne({
       where: { RoutineIdRoutine: idRoutine, UserIdUser: idUser },

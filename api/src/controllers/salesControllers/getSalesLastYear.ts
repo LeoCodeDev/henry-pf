@@ -54,14 +54,9 @@ const lastYearSales = async (req: Request, res: Response) => {
       sales[months[month]] = total
     })
 
-    res.json(sales)
-  } catch (error) {
-    console.error(error)
-    res
-      .status(500)
-      .json({
-        error: 'Hubo un error al obtener las ventas de los últimos 12 meses',
-      })
+    return res.status(200).json(sales)
+  } catch (error:any) {
+    return res.status(500).json({error: error.message})
   }
 }
 
