@@ -10,7 +10,6 @@ const createSale = async (req:Request, res:Response) => {
     try {
         if(!total || !address || !phone_number || !products || !email)
         {return res.status(400).json({ message: "Missing required fields" })}
-        console.log({coupon})
         const user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -60,7 +59,6 @@ const createSale = async (req:Request, res:Response) => {
         await sale.setProducts(productsToAssociate);
         return res.status(200).json({ message: "Sale created successfully" });
     } catch (error:any) {
-        console.log(error)
         return res.status(500).json({ error: error.message });
     }
 }

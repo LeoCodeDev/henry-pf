@@ -17,7 +17,7 @@ const addCoupon = async (req: Request, res: Response) => {
             return res.json({message: 'Coupon added successfully'})
         }
     } catch (error:any) {
-        return res.status(500).json({erro:error.message})
+        return res.status(500).json({error:error.message})
     }
 }
 
