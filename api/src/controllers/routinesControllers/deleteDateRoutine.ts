@@ -25,10 +25,15 @@ const deleteDateRoutine = async (req: Request, res: Response) => {
     if (dateToUpdate.length === dates.length) {
       return res.status(404).json({ error: 'Date not found in the routine' });
     }
+
+
+    // Usa el método update para actualizar la propiedad date en la base de datos
     await Routines_users.update(
         { date: dateToUpdate },
       { where: { RoutineIdRoutine: idRoutine, UserIdUser: idUser } }
     );
+
+    // Recupera el objeto actualizado desde la base de datos
     const updatedUserRoutineDate = await Routines_users.findOne({
       where: { RoutineIdRoutine: idRoutine, UserIdUser: idUser },
     });

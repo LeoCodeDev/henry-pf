@@ -22,10 +22,12 @@ const postMail = async (req: Request, res: Response) => {
   };  
 
   try {
+    // Envía el correo electrónico
     await transporter.sendMail(mailOptions);
-    return res.status(200).json({ message: 'The mail sent successfully' });
-  } catch (error:any) {
-    return res.status(500).json({ error:error.message});
+    res.status(200).json({ message: 'The mail sent successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error sending mail' });
   }
 };
 

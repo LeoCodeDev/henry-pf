@@ -22,7 +22,7 @@ const manageUser = async (req:Request, res:Response) => {
         await user.save();
     return res.status(200).json({ message:'Data updated succesfully'});
   } catch (error:any) {
-    return res.status(500).json({error:error.message});
+    return res.status(500).json(error.message);
   }
 };
 

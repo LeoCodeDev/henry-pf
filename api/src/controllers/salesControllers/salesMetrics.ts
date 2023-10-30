@@ -30,7 +30,7 @@ async function salesMetrics(req: Request, res: Response) {
     `, { type: QueryTypes.SELECT });
         return res.status(200).json(products);
     } catch (error:any) {
-        return res.status(500).json({error:error.message});
+        return res.status(500).json(error.message);
     }
 }
 

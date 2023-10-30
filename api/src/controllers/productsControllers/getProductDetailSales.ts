@@ -24,6 +24,7 @@ const productDetailSales = async(req: Request, res: Response) => {
                     },
                 ]
         })
+        console.log(detailForProduct);
         res.status(200).json(detailForProduct)
     } catch (error) {
         res.status(404).json({error: "Product not found"})

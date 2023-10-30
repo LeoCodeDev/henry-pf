@@ -8,8 +8,8 @@ const postProduct = async (req: Request, res: Response) => {
         const parsedStock = parseInt(stock);
         const parsedRating = parseInt(rating);
         if (!name || name === "" || !image || image === "" || !description || description === "" || isNaN(parsedPrice) || isNaN(parsedStock) || isNaN(parsedRating) || !category || category === "") {
-            return res.status(400).json({ message: "Missing or invalid data" });
-            
+            res.status(400).json({ message: "Missing or invalid data" });
+            return;
         }
         const [product, created] = await Product.findOrCreate({
             where: { name },
@@ -29,12 +29,12 @@ const postProduct = async (req: Request, res: Response) => {
             if (associatedCategory) {
                 await product.setCategory(associatedCategory);
             }
-            return res.status(200).json({status:200, message: "Product created successfully", data: product});
+            res.status(200).json({status:200, message: "Product created successfully", data: product});
         } else {
-            return res.status(400).json({message: "Product is already registered", data: product });
+            res.status(400).json({message: "Product is already registered", data: product });
         }
     } catch (error:any) {
-        return res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 }
 

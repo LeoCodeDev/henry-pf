@@ -13,11 +13,11 @@ try {
         ]
       });
     if(allUsers){
-        return res.status(200).json(allUsers)
+        res.status(200).json(allUsers)
     } else{
-        return res.status(404).json({message:"Users not found"})
+        res.status(404).json({message:"Users not found"})
     }} catch (error:any) {
-    return res.status(500).json({error: error.message})
+    res.status(500).json({error: error.message})
 }
 }
 

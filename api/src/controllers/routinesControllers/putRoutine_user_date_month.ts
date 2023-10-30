@@ -2,11 +2,17 @@ const { Routines_users } = require("../../db_connection");
 import { Request, Response } from "express";
 
 const putUserRoutineDateMonth = async (req: Request, res: Response) => {
-  const { idUser, idRoutine, Dates, Hour } = req.body;
+  const { idUser, idRoutine, Dates } = req.body;
 
   if (!idUser || !idRoutine || !Dates) {
     return res.status(400).json({ error: "Missing required fields" });
   }
+
+  //   const date = {
+  //     Date: Date,
+  //     hour: '12:00:00',
+  //     complete: false,
+  //   };
 
   try {
     const userRoutineDate = await Routines_users.findOne({
@@ -21,7 +27,7 @@ const putUserRoutineDateMonth = async (req: Request, res: Response) => {
     Dates.forEach((date: { Date: string }) => {
       const day = {
             Date: date,
-            hour: Hour ? Hour : '12:00:00',
+            hour: '12:00:00',
             complete: false,
           };
       
