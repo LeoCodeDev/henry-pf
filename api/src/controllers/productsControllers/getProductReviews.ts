@@ -8,7 +8,7 @@ const getProductReviews = async (req: Request, res: Response) => {
     const product = await Product.findByPk(productId);
 
     if (!product) {
-      return res.status(404).json({ message: 'Producto no encontrado' });
+      return res.status(404).json({ message: 'Product not found' });
     }
     
     const comments = await Rating.findAll({
@@ -25,9 +25,8 @@ const getProductReviews = async (req: Request, res: Response) => {
     });
 
     return res.json(comments);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Error al obtener los comentarios' });
+  } catch (error:any) {
+    return res.status(500).json({ error:error.message });
   }
 };
 

@@ -7,7 +7,7 @@ const userLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body
   try {
     if (!email || !password) {
-      res.status(400).json({ message: 'Missing data' })
+      return res.status(400).json({ message: 'Missing data' })
     } else {
       const userFound = await User.findOne({ where: { email } })
       if (userFound) {
@@ -33,11 +33,9 @@ const userLogin = async (req: Request, res: Response) => {
             expiresAt: expiresAt,
           })
           await newRefreshToken.setUser(userFound.id_user)
-          // res.status(200).cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000, sameSite: 'lax' })
-          // res.status(200).cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000, sameSite: 'lax' })
           res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true, domain:domain})
           res.cookie('refreshToken', newRefreshToken.token, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000,  sameSite: 'none', secure: true, domain:domain})
-          res.status(200).json({
+          return res.status(200).json({
             id_user: userFound.id_user,
             username: userFound.username,
             first_name: userFound.first_name,
@@ -53,14 +51,14 @@ const userLogin = async (req: Request, res: Response) => {
             refreshToken: refreshToken,
           })
         } else {
-          res.status(401).json({ message: 'Email/Password not valid' })
+          return res.status(401).json({ message: 'Email/Password not valid' })
         }
       } else {
-        res.status(404).json({ message: 'User not found' })
+        return res.status(404).json({ message: 'User not found' })
       }
     }
   } catch (error: any) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: error.message })
   }
 }
 
