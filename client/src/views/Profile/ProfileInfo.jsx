@@ -35,12 +35,14 @@ function ProfilePage() {
   };
 
   const getRoutines = async () => {
+      if (user.email === '') return
     const { data } = await axios.get(
       `/routines/getUserRoutines?email=${user.email}`
     );
     setRoutines(data);
   };
   const getSales = async () => {
+      if (!user.id_user) return
     const { data } = await axios.get(
       `/sales/getUserSales?id_user=${user.id_user}`
     );

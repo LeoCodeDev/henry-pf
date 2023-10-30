@@ -32,10 +32,10 @@ export function ProfileTabs({ sales }) {
   const { user } = useAuthStore();
   const [userRoutines, setUserRoutines] = useState([]);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-  
 
   const fetchRoutinesUser = async () => {
     try {
+      if(user.email === '') return
       const { data } = await axios.get(
         `routines/getUserRoutines?email=${user.email}`
       );
@@ -124,7 +124,7 @@ export function ProfileTabs({ sales }) {
             </Typography>
           ) : (
             userRoutines.map((routine) => (
-              <Card style={{ margin: "1em", position: "relative" }}>
+              <Card key={routine.id_routine} style={{ margin: "1em", position: "relative" }}>
                 <CardContent>
                   <Typography variant="h5" component="div">
                     🏋️‍♂️ {routine.name_routine}

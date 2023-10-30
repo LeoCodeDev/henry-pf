@@ -74,6 +74,7 @@ export default function Calendar({ routines }) {
   };
 
   const fechRoutine = async () => {
+    if(user.email === '') return
     const { data } = await axios.get(
       `/routines/getUserRoutines?email=${user.email}`
     );
