@@ -22,7 +22,7 @@ const validateCoupon = async (req: Request, res: Response) => {
         }
         return res.status(200).json({ message: 'Coupon is valid', discount:coupon.discount });
     } catch (error:any) {
-        return res.status(500).json(error.message);
+        return res.status(500).json({error:error.message});
     }
 }
 
