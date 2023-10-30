@@ -18,15 +18,19 @@ const checkToken = async (
 
     const verifysing = verifyToken(accessToken, trueAccesTokend)
     if (!verifysing) {
-      return res.status(401).send({ error: 'Token invalid', verifyToken: verifysing })
+      res.status(401)
+      res.send({ error: 'Token invalid', verifyToken: verifysing })
     } else {
+      // console.log({avios : '---------------aqui-------------------',verifysing})
       const userDetail = await User.findByPk(verifysing.id_user)
       req.user = userDetail
-      return next()
+      next()
     }
   } catch (error: any) {
-    return res.status(500).send({
-      aviso: 'Something ocurred in the auth middleware',
+    // console.log('___Error auth___');
+    res.status(409)
+    res.send({
+      aviso: 'Algo sucedió en el middleware auth',
       error: error.message,
     })
   }

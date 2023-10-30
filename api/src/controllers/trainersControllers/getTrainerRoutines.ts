@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 
 const getTrainerRoutines = async (req: Request, res: Response) => {
     const { trainer_id } = req.query
+    console.log(req.query);
     
   try {
     const createdRoutines = await Routine.findAll({

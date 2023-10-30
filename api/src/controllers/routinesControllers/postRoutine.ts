@@ -9,8 +9,8 @@ const postRoutine= async (req: Request, res: Response) => {
         if(email && exercises){
         const author= await User.findOne({where:{email:email}})
         if(!author){
-            return res.status(404).json({message:"User not found"})
-        } else{
+            res.status(404).json({message:"User not found"})
+        } 
         const newRoutine= await Routine.create({author:author.username,name_routine, puntuation:parsedPuntuation})
         interface Exercise {
             id_exercise: number;
@@ -31,16 +31,15 @@ const postRoutine= async (req: Request, res: Response) => {
         }
         });
         if(!exercisesToAssociate){
-            return res.status(404).json({message:"Exercises not found"})
-        }else{
+            res.status(404).json({message:"Exercises not found"})
+        }
+        //pending to validate if there is an existing routine with same exercises already
         await newRoutine.setExercises(exercisesToAssociate)  
         await newRoutine.addUser(author)
-        return res.status(200).json({message:"Routine created succesfully"})
-    }}}
-    return res.status(404).json({message:'Missing data'})
-}
+        res.status(200).json({message:"Routine created succesfully"})
+    }}
     catch (error:any) {
-        return res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 }
 

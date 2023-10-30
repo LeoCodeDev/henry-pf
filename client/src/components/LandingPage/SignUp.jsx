@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import Typography from '@mui/material/Typography'
+import { useState, useEffect } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Typography from "@mui/material/Typography";
 import {
   Button,
   TextField,
@@ -8,41 +8,47 @@ import {
   Box,
   Grid,
   Avatar,
-} from '@mui/material'
-import IconButton from '@mui/material/IconButton'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import { useTheme } from '@mui/material/styles'
+  RadioGroup,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useTheme } from "@mui/material/styles";
 import {
   isValidEmail,
   isValidPassword,
   isValidFirstName,
   isValidLastName,
   isMinimumAge,
-  isValidNickName
-} from './validations'
-import SelectLabels from './DevOption'
-import toast from 'react-hot-toast'
-import AvatarSelection from './AvatarSelection'
-import { avatars } from './avatars'
-import axios from 'axios'
-import { useAuthStore } from '../../store/authStore'
-import emailSender from '../SendMail/SendMail'
+  isValidNickName,
+} from "./validations";
+import SelectLabels from "./DevOption";
+import toast from "react-hot-toast";
+import AvatarSelection from "./AvatarSelection";
+import { avatars } from "./avatars";
+import axios from "axios";
+import { useAuthStore } from "../../store/authStore";
+import emailSender from "../SendMail/SendMail";
 
 export default function SignUp({ setOption }) {
-  const [formVisible, setFormVisible] = useState(false)
-  const theme = useTheme()
-  const { authenticate } = useAuthStore()
-  const [showPassword, setShowPassword] = useState(false)
+  const [formVisible, setFormVisible] = useState(false);
+  const theme = useTheme();
+  const [selectedRole, setSelectedRole] = useState("User");
+  const { authenticate } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    birthday: '',
-    nickName: ''
-  })
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    birthday: "",
+    nickName: "",
+  });
   const [formErrors, setFormErrors] = useState({
     firstName: false,
     lastName: false,
@@ -50,135 +56,136 @@ export default function SignUp({ setOption }) {
     password: false,
     birthday: false,
     nickName: false,
-    repeatedEmail: false
-  })
+  });
 
-  const [isDeveloper, setIsDeveloper] = useState('Yes')
-  const [developerType, setDeveloperType] = useState('')
-  const [selectedAvatar, setSelectedAvatar] = useState('')
+  const [isDeveloper, setIsDeveloper] = useState("Yes");
+  const [developerType, setDeveloperType] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState("");
 
   useEffect(() => {
-    if (isDeveloper === 'No') setDeveloperType('')
-  }, [isDeveloper, developerType])
+    if (isDeveloper === "No") setDeveloperType("");
+  }, [isDeveloper, developerType]);
+
+  useEffect(() => {
+    findEmail();
+  }, [formData.email]);
 
   const findEmail = async () => {
-    if (formData.email) {
+    if (formData.email && !formErrors.email) {
       try {
-        const { data } = await axios(`/users/getUser?email=${formData.email}`)
+        const { data } = await axios(`/users/getUser?email=${formData.email}`);
         if (data) {
           setFormErrors({
             ...formErrors,
-            repeatedEmail: true
-          })
-          return true
+            email: "repeated",
+          });
+          return;
         }
-        setFormErrors({
-          ...formErrors,
-          repeatedEmail: false
-        })
-        return false
       } catch (error) {
-        return
+        return;
       }
     }
-  }
+  };
 
   const handleIsDeveloperChange = (value) => {
-    setIsDeveloper(value)
-  }
+    setIsDeveloper(value);
+  };
 
   const handleDeveloperTypeChange = (value) => {
-    setDeveloperType(value)
-  }
+    setDeveloperType(value);
+  };
 
   const handleAvatarChange = (value) => {
-    setSelectedAvatar(value)
-  }
+    setSelectedAvatar(value);
+  };
+
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+  };
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-    const newValue = value
+    const { name, value } = event.target;
+    const newValue = value;
 
     setFormData({
       ...formData,
-      [name]: newValue
-    })
+      [name]: newValue,
+    });
 
     switch (name) {
-      case 'firstName':
+      case "firstName":
         setFormErrors({
           ...formErrors,
-          firstName: !isValidFirstName(newValue)
-        })
-        break
-      case 'nickName':
+          firstName: !isValidFirstName(newValue),
+        });
+        break;
+      case "nickName":
         setFormErrors({
           ...formErrors,
-          nickName: !isValidNickName(newValue)
-        })
-        break
-      case 'lastName':
+          nickName: !isValidNickName(newValue),
+        });
+        break;
+      case "lastName":
         setFormErrors({
           ...formErrors,
-          lastName: !isValidLastName(newValue)
-        })
-        break
-      case 'email':
+          lastName: !isValidLastName(newValue),
+        });
+        break;
+      case "email":
         setFormErrors({
           ...formErrors,
           email: !isValidEmail(newValue),
-          repeatedEmail: false
-        })
-        break
-      case 'password':
+        });
+        break;
+      case "password":
         setFormErrors({
           ...formErrors,
-          password: !isValidPassword(newValue)
-        })
-        break
+          password: !isValidPassword(newValue),
+        });
+        break;
       default:
-        break
+        break;
     }
-  }
+  };
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!isValidFirstName(formData.firstName)) {
-      setFormErrors({ ...formErrors, firstName: true })
-      return toast.error('Choose a valid FirstName')
+      setFormErrors({ ...formErrors, firstName: true });
+      return toast.error("Choose a valid FirstName");
     }
 
     if (!isValidLastName(formData.lastName)) {
-      setFormErrors({ ...formErrors, lastName: true })
-      return toast.error('Choose a valid LastName')
+      setFormErrors({ ...formErrors, lastName: true });
+      return toast.error("Choose a valid LastName");
     }
 
     if (!isValidEmail(formData.email)) {
-      setFormErrors({ ...formErrors, email: true })
-      return toast.error('Choose a valid email')
+      setFormErrors({ ...formErrors, email: true });
+      return toast.error("Choose a valid email");
     }
 
     if (!isValidPassword(formData.password)) {
-      setFormErrors({ ...formErrors, password: true })
-      return toast.error('Choose a valid password')
+      setFormErrors({ ...formErrors, password: true });
+      return toast.error("Choose a valid password");
     }
 
     if (!isMinimumAge(formData.birthday)) {
-      return toast.error('You must be at least 12 years old to register.')
+      return toast.error("You must be at least 12 years old to register.");
     }
 
-    if (isDeveloper === 'Yes' && developerType === '') {
-      return toast.error('Choose a team of developers')
+    if (isDeveloper === "Yes" && developerType === "") {
+      return toast.error("Choose a team of developers");
     }
 
     if (!selectedAvatar) {
-      return toast.error('Choose a avatar')
+      return toast.error("Choose a avatar");
     }
 
     if (!isValidNickName(formData.nickName)) {
-      setFormErrors({ ...formErrors, nickName: true })
-      return toast.error('Choose a valid Nick')
+      setFormErrors({ ...formErrors, nickName: true });
+      return toast.error("Choose a valid Nick");
     }
 
     try {
@@ -190,38 +197,35 @@ export default function SignUp({ setOption }) {
         birth_date: formData.birthday,
         email: formData.email,
         avatar: selectedAvatar,
-        role: 'User',
-        team: developerType
-      }
+        role: selectedRole,
+        team: developerType,
+      };
+      await axios.post("/users/postUser", dataToSend);
+      toast.success("User created successfully!");
 
-      const userRepeated = await findEmail()
-      if (userRepeated) return toast.error('Email is already registered.')
-      await axios.post('/users/postUser', dataToSend)
-      toast.success('User created successfully!')
-
-      const title = 'Thank you for signing up for Healthech!'
-      const message =
-        "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!"
-      emailSender(formData.email, title, message)
+      const title = 'Thank you for signing up for Healthech!';
+      const message = "Thank you for signing up for Healtech! We're excited to have you as part of our community. If you have any questions or need assistance, please don't hesitate to contact us. We hope you enjoy your experience with Healtech!";
+      emailSender(formData.email, title, message);
       try {
         await authenticate({
           email: formData.email,
-          password: formData.password
-        })
+          password: formData.password,
+        });
       } catch (error) {
-        toast.error(error.response.data.message)
+        toast.error("Authentication Error!");
       }
     } catch (error) {
-      toast.error('Registering Error!\n' + error.response.data.message)
-      setFormErrors({ ...formErrors, nickName: error.response.data.message })
+      toast.error("Registering Error!");
     }
-  }
+  };
 
   useEffect(() => {
-      setFormVisible(true)
-  }, [])
+    setTimeout(() => {
+      setFormVisible(true);
+    }, 200);
+  }, []);
 
-  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('lg'))
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 
   return (
     <Box
@@ -308,29 +312,21 @@ export default function SignUp({ setOption }) {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              error={formErrors.email || formErrors.repeatedEmail}
+              error={formErrors.email}
               onChange={handleChange}
               margin="normal"
               required
               fullWidth
-              id={
-                formErrors.email || formErrors.repeatedEmail
-                  ? 'outlined-error-helper-text'
-                  : 'email'
-              }
-              label={
-                formErrors.email || formErrors.repeatedEmail
-                  ? 'Error'
-                  : 'Email Address'
-              }
+              id={formErrors.email ? 'outlined-error-helper-text' : 'email'}
+              label={formErrors.email ? 'Error' : 'Email Address'}
               name="email"
               autoComplete="email"
               helperText={
-                formErrors.email
+                formErrors.email === true
                   ? 'Invalid email format'
-                  : formErrors.repeatedEmail
-                  ? 'Please change your email'
-                  : false
+                  : formErrors.email === 'repeated'
+                  ? 'This email is already registered'
+                  : ''
               }
               value={formData.email}
             />
@@ -404,19 +400,46 @@ export default function SignUp({ setOption }) {
               label={formErrors.nickName ? 'Error' : 'Nick Name'}
               value={formData.nickName}
               onChange={handleChange}
-              helperText={
-                formErrors.nickName && formErrors.nickName.length < 2
-                  ? 'Invalid nickName'
-                  : formErrors.nickName && formErrors.nickName.length > 2 && formErrors.nickName.includes('Username')
-                  ? formErrors.nickName
-                  : ''
-              }
+              helperText={formErrors.nickName ? 'Invalid nickName' : ''}
             />
             <AvatarSelection
               isDesktop={isDesktop}
               avatars={avatars}
               onChange={handleAvatarChange}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl
+              component="fieldset"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '2vw'
+              }}>
+              <FormLabel id="demo-controlled-radio-buttons-group">
+                Role
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                value={selectedRole}
+                onChange={handleRoleChange}
+                sx={{ display: 'flex', flexDirection: 'row' }}>
+                <FormControlLabel
+                  value="User"
+                  control={<Radio />}
+                  label="User"
+                />
+                <FormControlLabel
+                  value="Trainer"
+                  disabled={true}
+                  control={<Radio />}
+                  label="Trainer"
+                />
+              </RadioGroup>
+            </FormControl>
           </Grid>
           <Grid item xs={12}>
             <Button type="submit" fullWidth variant="contained" sx={{ mb: 2 }}>

@@ -14,7 +14,7 @@ const checkReport=async(req:Request,res:Response)=>{
             res.status(404).json({message:"Report not found"})
         }
     } catch(error:any) {
-        res.status(500).json({error:error.message})  
+        res.status(500).json(error.message)  
 }}
 
 module.exports=checkReport

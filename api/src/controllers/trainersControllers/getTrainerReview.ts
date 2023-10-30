@@ -32,9 +32,10 @@ const getTrainerReview = async (req: Request, res: Response) => {
       order: [['date', 'DESC']], 
     });
 
-    return res.status(200).json(comments);
-  } catch (error:any) {
-    return res.status(500).json({error:error.message});
+    return res.json(comments);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error fetching Trainer comments' });
   }
 };
 

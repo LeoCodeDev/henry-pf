@@ -2,10 +2,10 @@ import axios from 'axios'
 import { create } from 'zustand'
 
 const userGuest = {
-  username: 'guest',
+  username: '?',
   email: '',
   role: 'guest',
-  avatar: '../src/assets/images/avatars/avatar10.jpg',
+  avatar: '../assets/images/avatars/avatar10.jpg',
   teamName: 'none',
   ip_location:{
     currency: "USD",

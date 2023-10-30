@@ -26,8 +26,8 @@ const processImage = async (req: Request, res: Response) => {
       )
       .end(req.file.buffer)
       return
-  } catch (error:any) {
-    return res.status(500).json({ error:error.message })
+  } catch (error) {
+    return res.status(500).json({ error })
   }
 }
 module.exports = { postImage, processImage }

@@ -33,6 +33,7 @@ const updateUser = async (req: Request, res: Response) => {
 
     if (team) {
       const teamUpdate = await Team.findOne({ where: { name: team } });
+      console.log(teamUpdate);
       
       if (!teamUpdate) {
         return res.status(404).json({ error: 'Team not found' });

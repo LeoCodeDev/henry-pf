@@ -16,9 +16,9 @@ const emailSender=async(req:Request, res:Response)=>{
         };
         
         await sgMail.sendMultiple(msg)
-        return res.status(200).json({ message: 'Email sent' });
+        res.status(200).json({ message: 'Email sent' });
     }catch (error:any) {
-        return res.status(500).json({error:error.message})
+        res.status(500).json(error.message)
     }
 }
 
