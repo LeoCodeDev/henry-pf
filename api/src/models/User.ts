@@ -1,6 +1,6 @@
 import DataTypes from 'sequelize';
 import { Sequelize } from 'sequelize';
-const Score = require('score-js/lib/score')
+const Score = require('../utils/score-js/lib/score')
 
 const score = new Score({persistant: false}).scorecard()
 
