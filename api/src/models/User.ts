@@ -1,5 +1,8 @@
 import DataTypes from 'sequelize';
 import { Sequelize } from 'sequelize';
+const Score = require('score-js/lib/score')
+
+const score = new Score({persistant: false}).scorecard()
 
 export const UserModel = (sequelize: Sequelize) => {
     sequelize.define('User',{
@@ -55,6 +58,10 @@ export const UserModel = (sequelize: Sequelize) => {
                 symbol:"$",
                 currencyName:"US Dollar"},
             allowNull: false
+        },
+        score: {
+            type: DataTypes.JSONB,
+            defaultValue: score
         }
     },{ timestamps: true })
 }
