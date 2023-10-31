@@ -1,0 +1,35 @@
+.playerContainer {
+    padding: 0.3rem;
+    color: rgb(221, 218, 218);
+    border-radius: 0.3rem;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+    justify-items: stretch;
+  }
+
+.playerInfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.username{
+    display: flex;
+    justify-content: center;
+}
+.avatar{
+    width: 50px;
+    margin-left: 1.5rem;
+}
+.avatar img {
+    border-radius: 50%;
+}
+.team {
+    display: flex;
+    justify-content: flex-end;
+}

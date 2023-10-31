@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import theme from '../../../theme';
 
-const TopBar = () => {
+const TopBar = ({onTeamChange}) => {
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
@@ -16,7 +16,6 @@ const TopBar = () => {
           });
       }, []); 
 
-      console.log('equipos', teams);
   return (
     <ThemeProvider theme={theme}>
     <Box
@@ -31,9 +30,9 @@ const TopBar = () => {
     >
       
       <ButtonGroup size="small" variant="contained" aria-label="outlined primary button group">
-        <Button>All Teams</Button>
+        <Button onClick={() => onTeamChange(null)}>All Teams</Button>
         {teams.map((team) => (
-            <Button key={team.id_team}>{team.name}</Button>
+            <Button key={team.id_team} onClick={() => onTeamChange(team.name)}>{team.name}</Button>
         ))}
       </ButtonGroup>
     </Box>
