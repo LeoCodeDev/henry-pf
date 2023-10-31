@@ -6,36 +6,33 @@ const domain = process.env.DOMAIN || 'localhost';
 const userLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body
   try {
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Missing data' })
-    } else {
-      const userFound = await User.findOne({ where: { email } })
-      if (userFound) {
-        if (password === userFound.password) {
-          const team = await Team.findOne({
+    if (!email || !password) return res.status(400).json({ message: 'Missing data' })
+    const userFound = await User.findOne({ where: { email,password } })
+    if (!userFound) return res.status(401).json({ message: 'Email/Password not valid' })
+    const team = await Team.findOne({
             where: { id_team: userFound.TeamIdTeam },
-          })
-          const teamName = team.name
-          const accessToken = generateAccessToken({
+    })
+    const teamName = team.name
+    const accessToken = generateAccessToken({
             username: userFound.username,
             id_user: userFound.id_user,
             role: userFound.role,
-          })
-          const refreshToken = generateRefreshToken({
+    })
+    const refreshToken = generateRefreshToken({
             username: userFound.username,
             id_user: userFound.id_user,
             role: userFound.role,
-          })
-          const expiresAt = new Date()
-          expiresAt.setDate(expiresAt.getDate() + 15)
-          const newRefreshToken = await RefreshToken.create({
+    })
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + 15)
+    const newRefreshToken = await RefreshToken.create({
             token: refreshToken,
             expiresAt: expiresAt,
-          })
-          await newRefreshToken.setUser(userFound.id_user)
-          res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true, domain:domain})
-          res.cookie('refreshToken', newRefreshToken.token, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000,  sameSite: 'none', secure: true, domain:domain})
-          return res.status(200).json({
+    })
+    await newRefreshToken.setUser(userFound.id_user)
+    res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true, domain:domain})
+    res.cookie('refreshToken', newRefreshToken.token, { httpOnly: true, maxAge: 15 * 24 * 60 * 60 * 1000,  sameSite: 'none', secure: true, domain:domain})
+    return res.status(200).json({
             id_user: userFound.id_user,
             username: userFound.username,
             first_name: userFound.first_name,
@@ -49,14 +46,7 @@ const userLogin = async (req: Request, res: Response) => {
             access: true,
             accessToken: accessToken,
             refreshToken: refreshToken,
-          })
-        } else {
-          return res.status(401).json({ message: 'Email/Password not valid' })
-        }
-      } else {
-        return res.status(404).json({ message: 'User not found' })
-      }
-    }
+    })
   } catch (error: any) {
     return res.status(500).json({ error: error.message })
   }

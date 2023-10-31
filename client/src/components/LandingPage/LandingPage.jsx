@@ -55,7 +55,7 @@ function SignInSide() {
     try {
       await authenticate({ email, password });
     } catch (error) {
-      option === "signin" && toast.error("Authentication Error!");
+      option === "signin" && toast.error(error.message);
     }
   };
 
