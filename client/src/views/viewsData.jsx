@@ -30,7 +30,7 @@ const viewsData = [
   },
   {
     // path: "product-list",
-    path: "/shop",
+    path: "shop",
     element: <ProductList />,
     title: "product-list",
   },

@@ -1,11 +1,15 @@
-import { Typography } from '@mui/material';
 import { NavBar } from '../../components/NavBar/NavBar';
+import { VariantButtonGroup } from '../../components/TopBar/Topbar';
 
 const Home = () => {
     return (
-      <div>
+      <div style={{position:'relative', width:'100vw'}}>
+      <>
         <NavBar />
-        <Typography variant='h2' color>Home</Typography>
+        <section>
+          <VariantButtonGroup />
+        </section>
+      </>
       </div>
     );
   };
