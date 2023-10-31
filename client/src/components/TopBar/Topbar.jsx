@@ -1,8 +1,23 @@
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const VariantButtonGroup = () => {
+    const [teams, setTeams] = useState([]);
+
+    useEffect(() => {
+        axios.get("/users/getTeams")
+          .then((response) => {
+            setTeams(response.data);
+          })
+          .catch((error) => {
+            console.error("Error al realizar la solicitud GET:", error);
+          });
+      }, []); 
+
+      console.log('equipos', teams);
   return (
     <Box
       sx={{
@@ -15,17 +30,11 @@ const VariantButtonGroup = () => {
       }}
     >
       
-      <ButtonGroup variant="text" aria-label="text button group">
+      <ButtonGroup variant="contained" aria-label="outlined primary button group">
         <Button>All Teams</Button>
-        <Button>FrontEnd</Button>
-        <Button>BackEnd</Button>
-        <Button>FullStack</Button>
-        <Button>MobileApp</Button>
-        <Button>DataScientist</Button>
-        <Button>DevOps</Button>
-        <Button>UX/UI</Button>
-        <Button>QA Engineer</Button>
-        <Button>Users</Button>
+        {teams.map((team) => (
+            <Button key={team.id_team}>{team.name}</Button>
+        ))}
       </ButtonGroup>
     </Box>
   );
