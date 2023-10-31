@@ -58,6 +58,7 @@ export const ModalCart = ({ toggleDrawer }) => {
   const setCouponDiscount=async(coupon)=>{
     if(coupon){
       try {
+        if (!user.email) return toast.error('"Guest" users can\'t add coupons. Please Login.')
         const { data} = await axios.get(`/dashboard/validateCoupon?email=${user.email}&code=${coupon}`)
         if(data.message != 'Coupon is valid'){
             toast.error("Invalid or expired coupon!")

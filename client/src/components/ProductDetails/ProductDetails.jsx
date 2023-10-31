@@ -1,6 +1,6 @@
-import { NavBar } from "../NavBar/NavBar";
-import { useState, useEffect } from "react";
-import { useShowProductStore } from "../../store/showProduct";
+import { NavBar } from '../NavBar/NavBar'
+import { useState, useEffect } from 'react'
+import { useShowProductStore } from '../../store/showProduct'
 import {
   Box,
   Container,
@@ -8,43 +8,45 @@ import {
   Paper,
   Button,
   Card,
-  CardContent,
-} from "@mui/material/";
-import { CircularProgress } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { useCartStore } from "../../store/shoppingCartStore";
-import { useAuthStore } from "../../store/authStore";
-import { favoriteStore } from "../../store/favoriteStore";
-import Reviews from "../Comments/Reviews";
-import CustomizedAccordions from "../Comments/CustomizedAccordions";
-import { isDesktop } from "react-device-detect";
-import theme from "../../../theme";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import RemoveShoppingCartOutlinedIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
-import axios from "axios";
+  CardContent
+} from '@mui/material/'
+import { CircularProgress } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
+import { useCartStore } from '../../store/shoppingCartStore'
+import { useAuthStore } from '../../store/authStore'
+import { favoriteStore } from '../../store/favoriteStore'
+import Reviews from '../Comments/Reviews'
+import CustomizedAccordions from '../Comments/CustomizedAccordions'
+import { isDesktop } from 'react-device-detect'
+import theme from '../../../theme'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import RemoveShoppingCartOutlinedIcon from '@mui/icons-material/RemoveShoppingCartOutlined'
+import axios from 'axios'
+import toast, {Toaster} from 'react-hot-toast'
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#B0B0B0" : "#fff",
+  backgroundColor: theme.palette.mode === 'dark' ? '#B0B0B0' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+  textAlign: 'center',
+  color: theme.palette.text.secondary
+}))
 
 export const ProductDetails = () => {
-  const [isFav, setFav] = useState(false);
-  const [cart, setCart] = useState(false);
-  const { product } = useShowProductStore();
-  const { addProductToCart, deleteProductFromCart, shoppingCart, total } = useCartStore();
-  const { user } = useAuthStore();
+  const [isFav, setFav] = useState(false)
+  const [cart, setCart] = useState(false)
+  const { product } = useShowProductStore()
+  const { addProductToCart, deleteProductFromCart, shoppingCart, total } =
+    useCartStore()
+  const { user } = useAuthStore()
   const initialState = useAuthStore((state) => state.user)
-  const { favorites, addFavorite, deleteFavorite } = favoriteStore();
-  const idProduct = product.id_product;
-  const [Sales, setSales] = useState([]);
-  const [update, setUpdate] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { favorites, addFavorite, deleteFavorite } = favoriteStore()
+  const idProduct = product.id_product
+  const [Sales, setSales] = useState([])
+  const [update, setUpdate] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     setCart(
@@ -55,62 +57,66 @@ export const ProductDetails = () => {
     total(),
       setFav(
         favorites.some((element) => element.id_product === product.id_product)
-      );
-  }, [shoppingCart, product, favorites, total]);
+      )
+  }, [shoppingCart, product, favorites, total])
 
   const handleFav = (id) => {
+    if (initialState.username === 'guest')
+      return toast.error('"Guest" users can\'t add favorites. Please Login.')
     if (isFav) {
       deleteFavorite(initialState.username, id)
     } else {
       addFavorite(initialState.username, id)
     }
-  };
+  }
 
   const handleCart = () => {
     if (cart) {
-      deleteProductFromCart(product);
+      deleteProductFromCart(product)
     } else {
-      addProductToCart(product);
+      addProductToCart(product)
       // setCart(true);
     }
-  };
+  }
 
   const handleProductDetail = async () => {
-    let DS = {};
-    setIsLoading(true);
-    try {
-      const { data } = await axios.get("/products/getProductDetailSales", {
-        params: {
-          product: product.id_product,
-        },
-      });
-      DS = data;
-      setSales(data.Sales);
-    } catch (error) {
-      console.log(error.message);
+    let DS = {}
+    setIsLoading(true)
+    if (user.username !== 'guest') {
+      try {
+        const { data } = await axios.get('/products/getProductDetailSales', {
+          params: {
+            product: product.id_product
+          }
+        })
+        DS = data
+        setSales(data.Sales)
+      } catch (error) {
+        console.log(error.message)
+      }
     }
     setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    setSales(DS.Sales);
-  };
+      setIsLoading(false)
+    }, 500)
+    setSales(DS.Sales)
+  }
 
   useEffect(() => {
-    handleProductDetail();
-  }, [product]);
+    handleProductDetail()
+  }, [product])
 
-  const hasUserPurchased = (sales) => { 
+  const hasUserPurchased = (sales) => {
     if (sales) {
       for (const sale of sales) {
         if (sale.UserIdUser === user.id_user) {
-          return true;
+          return true
         }
       }
-      return false;
+      return false
     }
-  };
-  let userCanCommentAndRate = false;
-  userCanCommentAndRate = hasUserPurchased(Sales);
+  }
+  let userCanCommentAndRate = false
+  userCanCommentAndRate = hasUserPurchased(Sales)
 
   return (
     <div>
@@ -339,8 +345,7 @@ export const ProductDetails = () => {
                       borderRadius: '10px',
                       border: '3px solid #B0B0B0'
                     }}
-                    variant="outlined"
-                    >
+                    variant="outlined">
                     {isFav ? (
                       <FavoriteOutlinedIcon
                         fontSize="large"
@@ -405,6 +410,7 @@ export const ProductDetails = () => {
           </div>
         </>
       )}
+      <Toaster></Toaster>
     </div>
   )
-};
+}

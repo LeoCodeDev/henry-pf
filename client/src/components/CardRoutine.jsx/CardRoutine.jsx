@@ -10,6 +10,7 @@ const CardRoutine = ({ routine }) => {
 
   const addUserRoutine=async()=>{
     try {
+      if(!user.email) return toast.error('"Guest" users can\'t add routines. Please Login.')
       await axios.post('/routines/addUserRoutine',{email:user.email, routine:routine.id_routine });
       toast.success('Routine added successfully');
     } catch (error) {
