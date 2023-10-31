@@ -1,10 +1,9 @@
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Box from '@mui/material/Box';
+import {Box, ButtonGroup, Button, ThemeProvider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import theme from '../../../theme';
 
-const VariantButtonGroup = () => {
+const TopBar = () => {
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
@@ -19,25 +18,27 @@ const VariantButtonGroup = () => {
 
       console.log('equipos', teams);
   return (
+    <ThemeProvider theme={theme}>
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         '& > *': {
-         marginTop: 9,
+         marginTop: 10,
         },
       }}
     >
       
-      <ButtonGroup variant="contained" aria-label="outlined primary button group">
+      <ButtonGroup size="small" variant="contained" aria-label="outlined primary button group">
         <Button>All Teams</Button>
         {teams.map((team) => (
             <Button key={team.id_team}>{team.name}</Button>
         ))}
       </ButtonGroup>
     </Box>
+    </ThemeProvider>
   );
 }
 
-export { VariantButtonGroup }
+export { TopBar }

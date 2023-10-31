@@ -1,5 +1,6 @@
 import { NavBar } from '../../components/NavBar/NavBar';
-import { VariantButtonGroup } from '../../components/TopBar/Topbar';
+import { TopBar } from '../../components/TopBar/Topbar';
+import { UsersList } from '../../components/UsersList/UsersList';
 
 const Home = () => {
     return (
@@ -7,7 +8,10 @@ const Home = () => {
       <>
         <NavBar />
         <section>
-          <VariantButtonGroup />
+          <TopBar />
+        </section>
+        <section>
+          <UsersList />
         </section>
       </>
       </div>
