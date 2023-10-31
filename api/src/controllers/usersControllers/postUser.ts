@@ -13,7 +13,7 @@ const postUser= async (req: CustomRequest, res: Response) => {
      
     try {
         const { username, first_name, last_name, password, avatar, email, birth_date, role, team} = req.body;
-        if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && team!== "" && role!== "") {
+        if (username!== "" && first_name!== "" && last_name!== "" && password!== "" && email!== ""&& avatar!== "" && birth_date!== "" && role!== "") {
         const existingUser = await User.findOne({ where: { username } });
         if (existingUser) return res.status(400).json({ message: 'Username is already in use' });
         const [user, created] = await User.findOrCreate({
@@ -33,7 +33,7 @@ const postUser= async (req: CustomRequest, res: Response) => {
         } 
         );
         if (created) {
-            const associatedTeam= await Team.findOne({ where: { name: team } });
+            const associatedTeam= await Team.findOne({ where: { name: team || "Users" } });
             if(associatedTeam){
                 await user.setTeam(associatedTeam)
             }
