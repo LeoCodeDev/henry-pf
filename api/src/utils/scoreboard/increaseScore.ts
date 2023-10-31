@@ -1,13 +1,13 @@
-const Score = require('score-js/lib/score')
+const Score = require('../score-js/lib/score')
 const {User} = require('../../db_connection')
 
 export const increaseScore = async (userId: number,exp: number) => {
     
     try {
         const user = await User.findByPk(userId)
-        
         const newScore = new Score()
         newScore.set(user.score) //*
+        console.log(newScore);
     
         newScore.increment(exp)
         if (newScore.scorecard().totalprogress === "100.00") newScore.prestige() //*Increase prestige if exp and LVL are MAX

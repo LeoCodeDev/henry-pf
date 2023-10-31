@@ -1,4 +1,4 @@
-const Score = require('score-js/lib/score')
+const Score = require('../score-js/lib/score')
 const {User} = require('../../db_connection')
 
 export const decreaseScore = async (userId: number,exp: number) => {
