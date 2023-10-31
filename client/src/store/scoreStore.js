@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const scoreStore = create((set) => ({
   scoreCard: {},
+  topPlayers: [],
   fetchScoreCard: async (username) => {
     try {
       const { data } = await axios(
@@ -24,6 +25,14 @@ const scoreStore = create((set) => ({
           prestige: 10,
         },
       })
+    }
+  },
+  fetchTopPlayers: async () => {
+    try {
+      const { data } = await axios(`/scoreboard/getTopScores`)
+      set({ topPlayers: data })
+    } catch (error) {
+      throw new Error(error.message)
     }
   },
   
