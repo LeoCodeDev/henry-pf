@@ -6,8 +6,7 @@ export const increaseScore = async (userId: number,exp: number) => {
     try {
         const user = await User.findByPk(userId)
         const newScore = new Score()
-        newScore.set(user.score) //*
-        console.log(newScore);
+        newScore.set(user.score)
     
         newScore.increment(exp)
         if (newScore.scorecard().totalprogress === "100.00") newScore.prestige() //*Increase prestige if exp and LVL are MAX

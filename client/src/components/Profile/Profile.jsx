@@ -19,6 +19,7 @@ import { useAuthStore } from "../../store/authStore";
 import guest from "../../assets/images/avatars/avatar10.jpg";
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import toast from "react-hot-toast";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -70,6 +71,7 @@ export default function Profile({onlyEdit}) {
   useEffect(() => {
     const handleGetUser = async () => {
       try {
+        if (!user.email) return
         const response = await axios.get("/users/getUser", {
           params: {
             email: user.email,
@@ -182,9 +184,9 @@ export default function Profile({onlyEdit}) {
       toast.error("Cannot edit guest user");
     }
   };
-
   const handleGetSales = async () => {
     try {
+      if (!user.id_user) return
       const { data } = await axios(
         `sales/getUserSales?id_user=${user.id_user}`
       );
