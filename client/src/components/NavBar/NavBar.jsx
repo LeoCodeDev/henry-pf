@@ -206,6 +206,7 @@ export const NavBar = () => {
               ))}
             </Box>
 
+            {/* Implementación de barra de progreso */}
             <BarNav username={user.username} />
 
             <IconButton size="large" color="inherit" onClick={handleSearch}>
