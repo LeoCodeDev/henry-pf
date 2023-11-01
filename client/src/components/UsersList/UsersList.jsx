@@ -14,7 +14,10 @@ useEffect(() => {
 }, [fetchTopPlayers]);
 
 
-const topThree = topPlayers.slice(0, 3);
+const topThree = topPlayers.filter(player => player.Team.name === selectedTeam).slice(0, 3).length 
+  ? topPlayers.filter(player => player.Team.name === selectedTeam).slice(0, 3)
+  : topPlayers.slice(0,3);
+
 
   return (
     <div className={styles.container}>
