@@ -5,6 +5,7 @@ const updateCoupon = async (req: Request, res: Response) => {
     const { id } = req.query;
     const { code, discount, expiration, active } = req.body;
     try {
+        console.log(req.body);
         const coupon = await Coupon.findByPk(id);
         if (!coupon) {
             return res.status(404).json({ message: 'Coupon not found' });
@@ -24,7 +25,7 @@ const updateCoupon = async (req: Request, res: Response) => {
         await coupon.save();
         return res.json({ message: 'Coupon updated successfully' });
     } catch (error:any) {
-        return res.status(500).json({error:error.message});
+        return res.status(500).json(error.message);
     }
 }
 

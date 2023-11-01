@@ -17,15 +17,15 @@ try {
         entity = await Product.findByPk(parseItemId);
         break;
     default:
-        return res.status(400).json({ message: "Invalid type" });
+        return res.status(400).json({ error: "Invalid type" });
     }
     if (!entity) {
-        return res.status(404).json({message: "Entity not found" });
+        return res.status(404).json({ error: "Entity not found" });
     }
     await entity.update({ active });
     return res.status(200).json({ message: `${type} deactivated successfully` });
 } catch (error: any) {
-    return res.status(500).json({error:error.message});
+    return res.status(500).json(error.message);
 }
 };
 

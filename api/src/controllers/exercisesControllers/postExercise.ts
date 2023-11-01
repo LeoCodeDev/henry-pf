@@ -12,6 +12,7 @@ const addExercisesFromAPI = async (req:Request, res:Response) => {
         'Content-Type': 'application/json'
         }
     });
+    console.log(exercisesResponse.data);
     const exercisesData = exercisesResponse.data;
     if (!exercisesData || exercisesData.length === 0) {
         return res.status(404).json({ error: 'No exercises found for the given parameters' });
@@ -38,9 +39,11 @@ const addExercisesFromAPI = async (req:Request, res:Response) => {
         name: exercisesToCreate.map(exercise => exercise.name)
         }
     });
+    console.log({existingExercises})
     const exercisesToInsert = exercisesToCreate.filter(exercise => {
         return !existingExercises.some((existingExercise:Exercise) => existingExercise.name === exercise.name);
     });
+    console.log(exercisesToInsert)
     const createdExercises = await Exercise.bulkCreate(exercisesToInsert);
     return res.status(201).json({message:'Excercises added succesfully', data:createdExercises});
     } catch (error:any) {

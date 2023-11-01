@@ -58,8 +58,7 @@ export const UserModel = (sequelize: Sequelize) => {
                 symbol:"$",
                 currencyName:"US Dollar"},
             allowNull: false
-        },
-        score: {
+        },score: {
             type: DataTypes.JSONB,
             defaultValue: score
         }

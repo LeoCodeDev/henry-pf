@@ -14,9 +14,10 @@ const getAvgTrainerRating = async (req: Request, res: Response) => {
     const countRatings = await Trainers_users.count('rating',{where:{trainer_id: trainer_id}})
     const avgRating = sumRatings/countRatings
     
-    return res.status(200).json({countRatings,avgRating});
-    } catch (error:any) {
-    return res.status(500).json({error:error.message});
+    return res.json({countRatings,avgRating});
+    } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error fetching Trainer Average' });
     }
 };
 

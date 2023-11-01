@@ -21,8 +21,9 @@ const getAllTrainersReviews = async (_req: Request, res: Response) => {
     });
 
     return res.json(trainersComments);
-  } catch (error:any) {
-    return res.status(500).json({ error:error.message});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error fetching Trainers comments' });
   }
 };
 

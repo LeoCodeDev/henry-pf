@@ -4,6 +4,7 @@ import {Request, Response} from "express";
 
 const postFavorite = async (req: Request, res: Response)=> {
     const { username, id_product} = req.body;
+    console.log(username,id_product);
     
     const parsedIdProduct = parseInt(id_product);
     try {

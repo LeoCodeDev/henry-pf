@@ -19,8 +19,8 @@ const payment = async (req:Request, res:Response) => {
         },
       });
       return res.json({client_secret: paymentIntent.client_secret})
-    } catch (error:any) {
-      return res.status(500).json({error:error.message})
+    } catch (error) {
+      return res.status(500).json(error)
     }
 
 }

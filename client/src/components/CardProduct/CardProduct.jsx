@@ -16,7 +16,6 @@ import { useAuthStore } from '../../store/authStore'
 import { favoriteStore } from '../../store/favoriteStore'
 import { useCartStore } from '../../store/shoppingCartStore'
 import { Link } from 'react-router-dom'
-import toast, { Toaster } from 'react-hot-toast'
 
 export const CardProduct = ({ product }) => {
   const { productById } = useShowProductStore()
@@ -51,7 +50,6 @@ export const CardProduct = ({ product }) => {
   }, [shoppingCart, product, total, favorites])
 
   const handleFav = (id) => {
-    if (initialState.username === 'guest') return toast.error("\"Guest\" users can't add favorites. Please Login.")
     if (isFav) {
       deleteFavorite(initialState.username, id)
     } else {
@@ -174,7 +172,6 @@ export const CardProduct = ({ product }) => {
           </div>
         </CardContent>
       </Card>
-      <Toaster></Toaster>
     </ThemeProvider>
   )
 }

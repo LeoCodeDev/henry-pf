@@ -5,9 +5,9 @@ const addCoupon = async (req: Request, res: Response) => {
     const {code, discount, expiration} = req.body;
     try {
         if(!code || !discount || !expiration) return res.status(400).json({message: 'Missing required fields'})
-        if(discount > 100) return res.status(400).json({message:'Discount cannot be greater than 100'})
-        if(discount < 0) return res.status(400).json({message:'Discount cannot be less than 0'})
-        if( await Coupon.findOne({where: {code}})) return res.status(400).json({message:'Coupon already exists'})
+        if(discount > 100) return res.status(400).json('Discount cannot be greater than 100')
+        if(discount < 0) return res.status(400).json('Discount cannot be less than 0')
+        if( await Coupon.findOne({where: {code}})) return res.status(400).json('Coupon already exists')
         else{
             await Coupon.create({
                 code,
@@ -17,7 +17,7 @@ const addCoupon = async (req: Request, res: Response) => {
             return res.json({message: 'Coupon added successfully'})
         }
     } catch (error:any) {
-        return res.status(500).json({error:error.message})
+        return res.status(500).json(error.message)
     }
 }
 
