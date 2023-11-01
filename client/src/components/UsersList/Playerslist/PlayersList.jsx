@@ -6,6 +6,7 @@ import { Player } from '../Player/Player';
 
 const PlayersList = ({selectedTeam}) => {
 const { topPlayers, fetchTopPlayers } = scoreStore();
+console.log({topPlayers, fetchTopPlayers})
 
 useEffect(() => {
     fetchTopPlayers();
@@ -13,7 +14,9 @@ useEffect(() => {
 
 console.log('topPlayers', topPlayers);
 
-const topThree = topPlayers.slice(0, 10);
+const filterTopPlayers = topPlayers.filter((player) => !selectedTeam || player.Team.name === selectedTeam).slice(0, 10);
+
+const topTen = filterTopPlayers.lenght >= 10 ? filterTopPlayers.slice(0, 10): filterTopPlayers ;
 
   return (
     <div className={styles.container}>
@@ -27,8 +30,7 @@ const topThree = topPlayers.slice(0, 10);
         <Typography sx={{fontSize: '1rem', marginRight: '0.5rem'}}>Experience</Typography>
       </section>
       <section style={{width: '60%'}}>
-        {topThree
-        .filter((player) => !selectedTeam || player.Team.name === selectedTeam)
+        {topTen
         .map((player, index) => (
             <div className={styles.playerWithPlace} key={index}>
             <Typography variant='h3' sx={{color: '#c9c9c9', marginLeft: '1rem'}}>{index + 1}</Typography>
