@@ -21,9 +21,9 @@ const topThree = topPlayers.slice(0, 10);
     <Typography variant='h6'>Top 10</Typography>
     </section>
       <section className={styles.containerCard}>
-        <Typography sx={{fontSize: '1rem', marginLeft: '0.5rem'}}>Place</Typography>
+        <Typography sx={{fontSize: '1rem'}}>Place</Typography>
         <Typography sx={{fontSize: '1rem'}}>Player</Typography>
-        <Typography sx={{fontSize: '1rem'}}>Team</Typography>
+        <Typography sx={{fontSize: '1rem', marginLeft: '5rem'}}>Team</Typography>
         <Typography sx={{fontSize: '1rem', marginRight: '0.5rem'}}>Experience</Typography>
       </section>
       <section style={{width: '60%'}}>

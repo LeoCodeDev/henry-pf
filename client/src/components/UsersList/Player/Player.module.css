@@ -8,13 +8,14 @@
 .gridContainer {
     display: grid;
     grid-template-columns: 1fr 0.5fr 0.5fr;
-    gap: 20px;
+    gap: 1.25rem;
     place-items: center;
   }
 
 .playerInfo{
     display: grid;
-    width: 80%;
+    padding-left: 12rem;
+    width: 100%;
     grid-template-columns: 0.3fr 1fr;
     place-items: center;
     gap: 1.25rem;
