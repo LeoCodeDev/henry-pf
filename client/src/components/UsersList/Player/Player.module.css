@@ -1,21 +1,23 @@
 .playerContainer {
     padding: 0.3rem;
+    width: 100%;
     color: rgb(221, 218, 218);
     border-radius: 0.3rem;
 }
 
 .gridContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 0.5fr 0.5fr;
     gap: 20px;
-    align-items: center;
-    justify-items: stretch;
+    place-items: center;
   }
 
 .playerInfo{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    display: grid;
+    width: 80%;
+    grid-template-columns: 0.3fr 1fr;
+    place-items: center;
+    gap: 1.25rem;
 }
 
 .username{
@@ -32,4 +34,5 @@
 .team {
     display: flex;
     justify-content: flex-end;
+    padding-left: 2.5rem;
 }
