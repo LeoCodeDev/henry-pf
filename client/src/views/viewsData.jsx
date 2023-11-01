@@ -1,4 +1,4 @@
-// import Home from "./Home/Home";
+import Home from "./Home/Home";
 import Login from "./Login/Login";
 import ProductDetail from "./Product Detail/ProductDetail";
 import ProductList from "./Product List/ProductList";
@@ -13,11 +13,11 @@ import {DetailRoutine} from "../components/DetailRoutine/DetailRoutine";
 import Calendar from "../components/Calendar/Calendar";
 import ProfilePage from "./Profile/ProfileInfo";
 const viewsData = [
-  // {
-  //   path: "home",
-  //   element: <Home />,
-  //   title: "home",
-  // },
+ {
+    path: "home",
+    element: <Home />,
+    title: "home",
+   },
   {
     path: "",
     element: <Login />,
@@ -30,7 +30,7 @@ const viewsData = [
   },
   {
     // path: "product-list",
-    path: "/home",
+    path: "shop",
     element: <ProductList />,
     title: "product-list",
   },

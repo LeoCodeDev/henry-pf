@@ -1,0 +1,39 @@
+.playerContainer {
+    padding: 0.3rem;
+    width: 100%;
+    color: rgb(221, 218, 218);
+    border-radius: 0.3rem;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 0.5fr;
+    gap: 1.25rem;
+    place-items: center;
+  }
+
+.playerInfo{
+    display: grid;
+    padding-left: 12rem;
+    width: 100%;
+    grid-template-columns: 0.3fr 1fr;
+    place-items: center;
+    gap: 1.25rem;
+}
+
+.username{
+    display: flex;
+    justify-content: center;
+}
+.avatar{
+    width: 50px;
+    margin-left: 1.5rem;
+}
+.avatar img {
+    border-radius: 50%;
+}
+.team {
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 2.5rem;
+}

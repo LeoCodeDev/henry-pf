@@ -85,11 +85,11 @@ export const NavBar = () => {
   };
 
   const handleMenu = (e) => {
-    const value = e.target.innerText;
-    if (value === "HOME") navigate("/home");
-    if (value === "SHOP") navigate("/home");
-    if (value === "ROUTINES") navigate("/routines");
-  };
+    const value = e.target.innerText
+    if (value === 'HOME') navigate('/home')
+    if (value === 'SHOP') navigate('/shop')
+    if (value === 'ROUTINES') navigate('/routines')
+  }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
