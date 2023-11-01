@@ -48,7 +48,7 @@ const userLogin = async (req: Request, res: Response) => {
             refreshToken: refreshToken,
     })
   } catch (error: any) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: error.message })
   }
 }
 
