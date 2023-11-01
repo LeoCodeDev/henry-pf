@@ -11,7 +11,6 @@ const Home = () => {
   const handleTeamChange = (teamId) => {
     setSelectedTeam(teamId);
   };
-  console.log("selectedTeam:", selectedTeam);
     return (
       <div style={{position:'relative', width:'100vw'}}>
       <>
