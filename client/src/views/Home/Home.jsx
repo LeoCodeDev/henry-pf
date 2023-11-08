@@ -20,7 +20,7 @@ const Home = () => {
       <>
         <NavBar />
         <section style={{ marginTop: '2rem', width: '100%' }}>
-          <Slider arrImage={slide} />
+          <Slider arrImage={slide} interval={8000}/>
         </section>
         <section>
           <TopBar onTeamChange={handleTeamChange} />

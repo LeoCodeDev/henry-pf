@@ -15,8 +15,8 @@ const theme = createTheme({
   },
 })
 
-const Slider = ({ arrImage }) => {
-  
+const Slider = ({ arrImage, interval = 4000 }) => {
+
   const sliderConstructor = (arrImage) =>
     arrImage.map((image, i) => ({
       id: i,
@@ -40,7 +40,7 @@ const Slider = ({ arrImage }) => {
           width: '100%',
         }}
       >
-        <Carousel indicators={false}>
+        <Carousel indicators={false} interval={interval}>
           {slide.map((item) => (
             <Item key={item.id} item={item} />
           ))}
