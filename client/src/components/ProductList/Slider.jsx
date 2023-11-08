@@ -1,28 +1,7 @@
-import Carousel from "react-material-ui-carousel";
-import Box from "@mui/material/Box";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Item from "./Item";
-import slide1 from "../../assets/images/slide1.webp";
-import slide2 from "../../assets/images/slide2.webp";
-import slide3 from "../../assets/images/slide3.webp";
-
-const slide = [
-  {
-    id: 1,
-    image: slide1,
-    title: "--gym one--",
-  },
-  {
-    id: 2,
-    image: slide2,
-    title: "--gym two--",
-  },
-  {
-    id: 3,
-    image: slide3,
-    title: "--gym three--",
-  },
-];
+import Carousel from 'react-material-ui-carousel'
+import Box from '@mui/material/Box'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import Item from './Item'
 
 const theme = createTheme({
   breakpoints: {
@@ -34,26 +13,41 @@ const theme = createTheme({
       xl: 1440,
     },
   },
-});
+})
 
-const Slider = () => {
+const Slider = ({ arrImage, interval = 4000 }) => {
+
+  const sliderConstructor = (arrImage) =>
+    arrImage.map((image, i) => ({
+      id: i,
+      image: image,
+    }))
+
+  const slide = sliderConstructor(arrImage)
+
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ height: {
-        xs: '300px',
-        sm: '300px',
-        md: '550px',
-        lg: '800px',
-        xl: '800px'
-      }, overflow: "hidden", width: '100%' }}>
-        <Carousel indicators={false}>
+      <Box
+        sx={{
+          height: {
+            xs: '300px',
+            sm: '300px',
+            md: '550px',
+            lg: '800px',
+            xl: '800px',
+          },
+          overflow: 'hidden',
+          width: '100%',
+        }}
+      >
+        <Carousel indicators={false} interval={interval}>
           {slide.map((item) => (
             <Item key={item.id} item={item} />
           ))}
         </Carousel>
       </Box>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Slider;
+export default Slider

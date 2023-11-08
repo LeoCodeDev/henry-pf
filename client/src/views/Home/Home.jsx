@@ -1,33 +1,37 @@
-import { useState } from 'react';
-import { NavBar } from '../../components/NavBar/NavBar';
-import { TopBar } from '../../components/TopBar/Topbar';
-import { PlayersList } from '../../components/UsersList/Playerslist/PlayersList';
-import { UsersList } from '../../components/UsersList/UsersList';
-import Programing from './Programing.gif'
+import { useState } from 'react'
+import { NavBar } from '../../components/NavBar/NavBar'
+import { TopBar } from '../../components/TopBar/Topbar'
+import { PlayersList } from '../../components/UsersList/Playerslist/PlayersList'
+import { UsersList } from '../../components/UsersList/UsersList'
+import Slider from '../../components/ProductList/Slider'
+import img1 from '../../assets/images/green_and_black_modern_gym_banner_1.jpg'
+import img2 from '../../assets/images/GYM_FITNESS_Banner_Landscape_1.jpg'
+import img3 from '../../assets/images/Gym_Fitness_Banner_Landscape_2.jpg'
 
 const Home = () => {
-  const [selectedTeam, setSelectedTeam] = useState(null); 
+  const [selectedTeam, setSelectedTeam] = useState(null)
+  const slide = [img1, img2, img3]
 
   const handleTeamChange = (teamId) => {
-    setSelectedTeam(teamId);
-  };
-    return (
-      <div style={{position:'relative', width:'100vw'}}>
+    setSelectedTeam(teamId)
+  }
+  return (
+    <div style={{ position: 'relative', width: '100vw' }}>
       <>
         <NavBar />
-          <section>
-            <img style={{width:'93%', height: '35rem'}} src={Programing} alt="" />
-          <TopBar onTeamChange={handleTeamChange}/>
+        <section style={{ marginTop: '2rem', width: '100%' }}>
+          <Slider arrImage={slide} interval={8000}/>
         </section>
         <section>
-          <UsersList selectedTeam={selectedTeam}/>
+          <TopBar onTeamChange={handleTeamChange} />
+          <UsersList selectedTeam={selectedTeam} />
         </section>
         <section>
-        <PlayersList selectedTeam={selectedTeam}/>
+          <PlayersList selectedTeam={selectedTeam} />
         </section>
       </>
-      </div>
-    );
-  };
-  
-  export default Home;
+    </div>
+  )
+}
+
+export default Home
