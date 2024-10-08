@@ -64,7 +64,7 @@ const useAuthStore = create((set) => ({
       } else {
         throw new Error('Invalid credentials')
       }
-    } catch (error) {;
+    } catch (error) {
       throw new Error(error.response.data.message)
     }
   },
